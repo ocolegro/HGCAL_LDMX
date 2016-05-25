@@ -55,6 +55,7 @@ public:
 					}
 				}
 				sens_HitVec_size_max = 0;
+				abs_HitVec_size_max = 0;
 				resetCounters();
 
 				std::cout << " -- End of sampling section initialisation. Input " << aThicknessVec.size() << " elements, constructing " << n_elements << " elements with " << n_sens_elements << " sensitive elements." << std::endl;
@@ -90,9 +91,8 @@ public:
 			inline unsigned getSensitiveLayerIndex(std::string astr) {
 				if (astr.find("_")== astr.npos) return 0;
 				size_t pos = astr.find("phys");
-				//std::cout << astr << " " << pos << std::endl;
 				if (pos != astr.npos && pos>1) {
-					unsigned idx = 0;	//atoi(astr[pos-1]);
+					unsigned idx = 0;
 					std::istringstream(astr.substr(pos-1,1))>>idx;
 					return idx;
 				}
@@ -154,8 +154,15 @@ public:
 						sens_HitVec_size_max = 2*sens_HitVec[idx].size();
 						G4cout << "-- SamplingSection::resetCounters(), space reserved for HitVec vector increased to " << sens_HitVec_size_max << G4endl;
 					}
+					if (abs_HitVec.size() > abs_HitVec_size_max){
+						abs_HitVec_size_max = 2*abs_HitVec.size();
+						G4cout << "-- SamplingSection::resetCounters(), space reserved for absHitVec vector increased to " << abs_HitVec_size_max << G4endl;
+
+					}
 					sens_HitVec[idx].clear();
 					sens_HitVec[idx].reserve(sens_HitVec_size_max);
+					abs_HitVec.clear();
+					abs_HitVec.reserve(abs_HitVec_size_max);
 				}
 			}
 
@@ -201,6 +208,8 @@ public:
 			G4double getTotalSensE();
 
 			const G4SiHitVec & getSiHitVec(const unsigned & idx) const;
+			const G4SiHitVec & getAbsHits() const;
+
 			void trackParticleHistory(const unsigned & idx,const G4SiHitVec & incoming);
 
 			//
@@ -222,7 +231,11 @@ public:
 			sens_hadFlux, sens_hadKinFlux, sens_time;
 			G4double Total_thick;
 			std::vector<G4SiHitVec> sens_HitVec;
+			G4SiHitVec abs_HitVec;
+
 			unsigned sens_HitVec_size_max;
+			unsigned abs_HitVec_size_max;
+
 			bool hasScintillator;
 
 		};

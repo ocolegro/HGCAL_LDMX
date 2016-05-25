@@ -48,7 +48,8 @@ int main() {
 	freopen("test_log_2.txt", "w", stdout);
 
 	TFile *infile = TFile::Open(
-			"/afs/cern.ch/work/o/ocolegro/signal_events.root");
+			"/afs/cern.ch/work/m/mullin/signal/git_hexaV02-01-01/version_1/model_2/signal_1.000/run_1/HGcal__version1_model2_run1.root");
+//			"/afs/cern.ch/work/o/ocolegro/signal_events.root");
 	TTree *tree = (TTree*) infile->Get("RecoTree");
 
 	std::vector<HGCSSRecoHit> * rechits = 0;

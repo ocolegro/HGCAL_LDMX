@@ -8,13 +8,29 @@ void SamplingSection::add(G4double eng, G4double den, G4double dl,
 		const G4ThreeVector & position, G4int trackID, G4int parentID,
 		G4int layerId) {
 	std::string lstr = vol->GetName();
+
+
 	for (unsigned ie(0); ie < n_elements * n_sectors; ++ie) {
 		if (ele_vol[ie] && lstr == ele_vol[ie]->GetName()) {
+			unsigned idx = getSensitiveLayerIndex(lstr);
 			unsigned eleidx = ie % n_elements;
 			ele_den[eleidx] += den;
 			ele_dl[eleidx] += dl;
+
+			//add hit
+			G4SiHit lHit;
+			lHit.energy = den;
+			lHit.time = globalTime;
+			lHit.pdgId = pdgId;
+			lHit.layer = layerId;
+			lHit.hit_x = position.x();
+			lHit.hit_y = position.y();
+			lHit.hit_z = position.z();
+			lHit.trackId = trackID;
+			lHit.parentId = parentID;
+			lHit.parentEng = eng;
+
 			if (isSensitiveElement(eleidx)) { //if Si || sci
-				unsigned idx = getSensitiveLayerIndex(lstr);
 				sens_time[idx] += den * globalTime;
 
 				//discriminate further by particle type
@@ -36,22 +52,13 @@ void SamplingSection::add(G4double eng, G4double den, G4double dl,
 							&& (pdgId != -2212))
 						sens_hadKinFlux[idx] += eng;
 				}
-
-				//add hit
-				G4SiHit lHit;
-				lHit.energy = den;
-				lHit.time = globalTime;
-				lHit.pdgId = pdgId;
-				lHit.layer = layerId;
-				lHit.hit_x = position.x();
-				lHit.hit_y = position.y();
-				lHit.hit_z = position.z();
-				lHit.trackId = trackID;
-				lHit.parentId = parentID;
-				lHit.parentEng = eng;
-
 				sens_HitVec[idx].push_back(lHit);
 			} //if Si
+			else{
+				//check for W in layer
+				if ((lstr.find("W") == std::string::npos) == 0)
+				abs_HitVec.push_back(lHit);
+			}
 		} //if in right material
 	} //loop on available materials
 
@@ -207,6 +214,9 @@ const G4SiHitVec & SamplingSection::getSiHitVec(const unsigned & idx) const {
 	return sens_HitVec[idx];
 }
 
+const G4SiHitVec & SamplingSection::getAbsHits() const {
+	return abs_HitVec;
+}
 void SamplingSection::trackParticleHistory(const unsigned & idx,
 		const G4SiHitVec & incoming) {
 	for (unsigned iP(0); iP < sens_HitVec[idx].size(); ++iP) { //loop on g4hits

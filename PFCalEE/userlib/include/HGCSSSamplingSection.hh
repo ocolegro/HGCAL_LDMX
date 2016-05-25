@@ -13,7 +13,7 @@ public:
 			volNb_(0), volX0trans_(0), voldEdx_(0), volLambdatrans_(0), measuredE_(
 					0), absorberE_(0), totalE_(0), gFrac_(0), eFrac_(0), muFrac_(
 					0), neutronFrac_(0), hadFrac_(0), muKin_(0), neutronKin_(0), hadKin_(
-					0), avgTime_(0), nSiHits_(0) {
+					0), avgTime_(0), nSiHits_(0), eleWgtCnt_(0), hadWgtCnt_(0), neutWgtCnt_(0), muWgtCnt_(0) {
 
 	}
 	;
@@ -89,10 +89,28 @@ public:
 		return avgTime_;
 	}
 	;
+	inline double eleWgtCnt() {
+		return eleWgtCnt_;
+	}
+	;
+
+	inline double hadWgtCnt() {
+		return hadWgtCnt_;
+	}
+	;
+	inline double neutWgtCnt() {
+		return neutWgtCnt_;
+	}
+	;
+	inline double muWgtCnt() {
+		return muWgtCnt_;
+	}
+	;
 	inline unsigned nSiHits() const {
 		return nSiHits_;
 	}
 	;
+
 
 	//setters
 	inline void volNb(const unsigned & aVal) {
@@ -163,6 +181,23 @@ public:
 		hadKin_ = aVal;
 	}
 	;
+
+	inline void eleWgtCnt(const double & aVal) {
+		eleWgtCnt_ = aVal;
+	}
+	;
+	inline void hadWgtCnt(const double & aVal) {
+		neutWgtCnt_ = aVal;
+	}
+	;
+	inline void neutWgtCnt(const double & aVal) {
+		hadWgtCnt_ = aVal;
+	}
+	;
+	inline void muWgtCnt(const double & aVal) {
+		muWgtCnt_ = aVal;
+	}
+	;
 private:
 	unsigned volNb_;
 	double volX0trans_;
@@ -176,11 +211,17 @@ private:
 	double muFrac_;
 	double neutronFrac_;
 	double hadFrac_;
-	double muKin_;
-	double neutronKin_;
-	double hadKin_;
 	double avgTime_;
 	unsigned nSiHits_;
+
+	double neutronKin_;
+	double muKin_;
+	double hadKin_;
+	double eleWgtCnt_;
+	double hadWgtCnt_;
+	double neutWgtCnt_;
+	double muWgtCnt_;
+
 
 ClassDef(HGCSSSamplingSection,1)
 	;
