@@ -34,12 +34,11 @@
 #pragma link C++ class vector<float>+;
 #endif
 
-int main() {
+int main(int argc, char** argv) {
 	freopen("hadron_log.txt", "w", stdout);
+	std::cout << "Opening the file " << argv[1] << std::endl;
+	TFile *infile = TFile::Open(argv[1]);
 
-	TFile *infile = TFile::Open("/afs/cern.ch/work/m/mullin/signal/git_hexaV02-01-01/version_1/model_2/signal_1.000/run_1/HGcal__version1_model2_run1.root");
-
-	//TFile *infile = TFile::Open("/afs/cern.ch/work/o/ocolegro/electron_high_stats_model1/git_hexaV02-01-01/version_30/model_1/e-/BOFF/et_30/eta_10000.000/run_0/HGcal__version30_model1_BOFF_et30_eta10000.000_run0.root");
 
 	TTree *tree = (TTree*) infile->Get("HGCSSTree");
 
@@ -48,7 +47,7 @@ int main() {
 
 	unsigned nEvts = tree->GetEntries();
 
-	TFile hfile("simhits.root", "RECREATE");
+	TFile hfile("analyzed_tuple.root", "RECREATE");
 	TTree t1("hadrons", "Hadron Study");
 
 	Float_t Full_dep, Full_sen, Hadron_dep, Neutron_Dep, Muon_Dep;
