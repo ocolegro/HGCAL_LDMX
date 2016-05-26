@@ -50,16 +50,21 @@ for interCalib in interCalibList:
     outDir='%s/git_%s/version_%d/model_%d/'%(opt.out,opt.gittag,opt.version,opt.model)
     outDir='%s/%s'%(outDir,label)
 
-    #eosDirIn='%s'%(opt.eosin)
+
     if (opt.run>=0) : outDir='%s/run_%d/'%(outDir,opt.run)
 
     if len(opt.eos)>0:
         eosDir='%s/git%s'%(opt.eos,opt.gittag)
-        eosDirIn='root://eoscms//eos/cms%s/git%s'%(opt.eosin,opt.gittag)
+
     else:
         eosDir='%s/'%(outDir)
-        eosDirIn='%s/'%(outDir)
-
+    #Digi%s_%s.root\n'%(eosDir,suffix,outTag)
+    outTag='%s_version%d_model%d'%(label,opt.version,opt.model)
+    if (opt.run>=0) : outTag='%s_run%d'%(outTag,opt.run)    
+#    eosDirIn = 'root://eoscms//eos/cms%s/HGcal%s_%s.root' % (eosDir,suffix,outTag)
+    eosDirIn = 'root://eoscms//eos/cms%s/' % (eosDir) 
+    print 'The eosdir is ' + str(eosDir)
+    print 'The eosdirIn is ' + str(eosDirIn)
     outlog='%s/digitizer%s.log'%(outDir,suffix)
     g4log='digijob%s.log'%(suffix)
     os.system('mkdir -p %s'%outDir)
@@ -68,9 +73,6 @@ for interCalib in interCalibList:
     scriptFile = open('%s/runDigiJob%s.sh'%(outDir,suffix), 'w')
     scriptFile.write('#!/bin/bash\n')
     scriptFile.write('source %s/../g4env.sh\n'%(os.getcwd()))
-    #scriptFile.write('cd %s\n'%(outDir))
-    outTag='%s_version%d_model%d'%(label,opt.version,opt.model)
-    if (opt.run>=0) : outTag='%s_run%d'%(outTag,opt.run)
     scriptFile.write('localdir=`pwd`\n')
     scriptFile.write('%s/bin/digitizer %d %s/HGcal_%s.root $localdir/ %s %s %s %d %d %d %s | tee %s\n'%(os.getcwd(),opt.nevts,eosDirIn,outTag,granularity,noise,threshold,interCalib,nSiLayers,nPuVtx,INPATHPU,outlog))
     scriptFile.write('echo "--Local directory is " $localdir >> %s\n'%(g4log))
