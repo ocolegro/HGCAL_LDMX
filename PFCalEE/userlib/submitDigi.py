@@ -29,7 +29,7 @@ label=''
 INPATHPU="root://eoscms//eos/cms/store/cmst3/group/hgcal/Standalone/V12/MinBias/"
 
 nPuVtx=0
-interCalibList=[3];#0,1,2,3,4,5,10,15,20,50]
+interCalibList=[3];
 
 granularity='0-27:4'
 noise='0-27:0.15'
@@ -55,14 +55,17 @@ for interCalib in interCalibList:
 
     if len(opt.eos)>0:
         eosDir='%s/git%s'%(opt.eos,opt.gittag)
+        eosDirIn = 'root://eoscms//eos/cms%s/' % (eosDir)
+
 
     else:
         eosDir='%s/'%(outDir)
+        eosDirIn = '%s/' % (eosDir)
+
     #Digi%s_%s.root\n'%(eosDir,suffix,outTag)
     outTag='%s_version%d_model%d'%(label,opt.version,opt.model)
     if (opt.run>=0) : outTag='%s_run%d'%(outTag,opt.run)    
 #    eosDirIn = 'root://eoscms//eos/cms%s/HGcal%s_%s.root' % (eosDir,suffix,outTag)
-    eosDirIn = 'root://eoscms//eos/cms%s/' % (eosDir) 
     print 'The eosdir is ' + str(eosDir)
     print 'The eosdirIn is ' + str(eosDirIn)
     outlog='%s/digitizer%s.log'%(outDir,suffix)
@@ -81,7 +84,7 @@ for interCalib in interCalibList:
         scriptFile.write('grep "alias eos=" /afs/cern.ch/project/eos/installation/cms/etc/setup.sh | sed "s/alias /export my/" > eosenv.sh\n')
         scriptFile.write('source eosenv.sh\n')
         scriptFile.write('$myeos mkdir -p %s\n'%eosDir)
-        scriptFile.write('cmsStage -f DigiPFcal.root %s/Digi%s_%s.root\n'%(eosDir,suffix,outTag))
+        scriptFile.write('$myeos cp DigiPFcal.root /eos/cms%s/Digi%s_%s.root\n'%(eosDir,suffix,outTag))
         scriptFile.write('if (( "$?" != "0" )); then\n')
         scriptFile.write('echo " --- Problem with copy of file DigiPFcal.root to EOS. Keeping locally." >> %s\n'%(g4log))
         scriptFile.write('else\n')
