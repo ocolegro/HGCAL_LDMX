@@ -85,6 +85,6 @@ g4Macro.close()
 
 #submit
 os.system('chmod u+rwx %s/runJob.sh'%outDir)
-if opt.nosubmit : os.system('echo bsub -q %s %s/runJob.sh'%(myqueue,outDir))
+if opt.nosubmit : os.system('LSB_JOB_REPORT_MAIL=N echo bsub -q %s -N %s/runJob.sh'%(myqueue,outDir))
 else: os.system("bsub -q %s \'%s/runJob.sh\'"%(myqueue,outDir))
 
