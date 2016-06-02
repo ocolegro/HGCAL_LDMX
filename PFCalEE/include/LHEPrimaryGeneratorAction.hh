@@ -34,7 +34,7 @@
 #ifndef LHEPrimaryGeneratorAction_h
 #define LHEPrimaryGeneratorAction_h 1
 
-#include "G4VUserLHEPrimaryGeneratorAction.hh"
+#include "G4VUserPrimaryGeneratorAction.hh"
 #include "G4PrimaryParticle.hh"
 #include "G4ThreeVector.hh"
 #include "globals.hh"
@@ -51,7 +51,7 @@ class LHEPrimaryGeneratorMessenger;
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-class LHEPrimaryGeneratorAction : public G4VUserLHEPrimaryGeneratorAction
+class LHEPrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
 {
 public:
   LHEPrimaryGeneratorAction(G4int mod = 0);    
