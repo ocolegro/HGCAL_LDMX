@@ -43,19 +43,18 @@ class G4UIcmdWithAString;
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-class PrimaryGeneratorMessenger: public G4UImessenger {
-public:
-	PrimaryGeneratorMessenger(PrimaryGeneratorAction*);
-	virtual ~PrimaryGeneratorMessenger();
+class PrimaryGeneratorMessenger: public G4UImessenger
+{
+  public:
+    PrimaryGeneratorMessenger(PrimaryGeneratorAction*);
+    virtual ~PrimaryGeneratorMessenger();
+    
+    void SetNewValue(G4UIcommand*, G4String);
 
-	void SetNewValue(G4UIcommand*, G4String);
-	G4String GetCurrentValue(G4UIcommand* command);
-
-private:
-	PrimaryGeneratorAction* Action;
-	G4UIdirectory* dir;
-	G4UIcmdWithAString* RndmCmd;
-	G4UIcmdWithAString* select;
+  private:
+    PrimaryGeneratorAction*        fAction;
+    G4UIdirectory*                 fDir;
+    G4UIcmdWithAString*            fInputFile;
 
 };
 

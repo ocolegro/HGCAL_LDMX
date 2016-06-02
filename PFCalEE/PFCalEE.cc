@@ -59,13 +59,13 @@ int main(int argc, char** argv) {
 	runManager->SetUserInitialization(new PhysicsList);
 
 	// Set user action classes
-	runManager->SetUserAction(new PrimaryGeneratorAction(model, signal, data));
+	runManager->SetUserAction(new PrimaryGeneratorAction(model/*, signal, data*/));
 	runManager->SetUserAction(new RunAction);
 	runManager->SetUserAction(new EventAction);
 	runManager->SetUserAction(new SteppingAction);
 
 	// Initialize G4 kernel
-	runManager->Initialize();
+	//runManager->Initialize();
 
 	// Initialize visualization
 #ifdef G4VIS_USE
