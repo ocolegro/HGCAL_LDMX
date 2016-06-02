@@ -51,7 +51,7 @@
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 LHEPrimaryGeneratorAction::LHEPrimaryGeneratorAction(G4int mod)
-: G4VUserLHEPrimaryGeneratorAction(),
+: G4VUserPrimaryGeneratorAction(),
 fParticleGun(0),
 fEventStream(0),
 fNEventsRead(0),
