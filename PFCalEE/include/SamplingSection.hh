@@ -137,6 +137,11 @@ public:
 				sens_neutronKinFlux.clear();
 				sens_hadKinFlux.clear();
 
+				sens_muCounter.clear();
+				sens_neutronCounter.clear();
+				sens_hadCounter.clear();
+
+
 				ele_den.resize(n_elements,0);
 				ele_dl.resize(n_elements,0);
 				sens_time.resize(n_sens_elements,0);
@@ -145,16 +150,21 @@ public:
 				sens_muFlux.resize(n_sens_elements,0);
 				sens_neutronFlux.resize(n_sens_elements,0);
 				sens_hadFlux.resize(n_sens_elements,0);
+
 				sens_muKinFlux.resize(n_sens_elements,0);
 				sens_neutronKinFlux.resize(n_sens_elements,0);
 				sens_hadKinFlux.resize(n_sens_elements,0);
+
+				sens_muCounter.resize(n_sens_elements,0);
+				sens_neutronCounter.resize(n_sens_elements,0);
+				sens_hadCounter.resize(n_sens_elements,0);
 				//reserve some space based on first event....
 				for (unsigned idx(0); idx<n_sens_elements; ++idx) {
 					if (sens_HitVec[idx].size() > sens_HitVec_size_max) {
 						sens_HitVec_size_max = 2*sens_HitVec[idx].size();
 						G4cout << "-- SamplingSection::resetCounters(), space reserved for HitVec vector increased to " << sens_HitVec_size_max << G4endl;
 					}
-					if (abs_HitVec.size() > abs_HitVec_size_max){
+					if (abs_HitVec.size() > abs_HitVec_size_max) {
 						abs_HitVec_size_max = 2*abs_HitVec.size();
 						G4cout << "-- SamplingSection::resetCounters(), space reserved for absHitVec vector increased to " << abs_HitVec_size_max << G4endl;
 
@@ -191,6 +201,30 @@ public:
 			}
 			;
 
+			inline unsigned getMuonCount() {
+				unsigned int  val = 0;
+				for (unsigned ie(0); ie < n_sens_elements; ++ie) {
+					val += sens_muCounter[ie];
+				}
+				return val;
+			}
+			;
+			inline unsigned getHadronCount() {
+				unsigned int val = 0;
+				for (unsigned ie(0); ie < n_sens_elements; ++ie) {
+					val += sens_hadCounter[ie];
+				}
+				return val;
+			}
+			;
+			inline unsigned getNeutronCount() {
+				unsigned int val = 0;
+				for (unsigned ie(0); ie < n_sens_elements; ++ie) {
+					val += sens_neutronCounter[ie];
+				}
+				return val;
+			}
+			;
 			//
 			G4double getMeasuredEnergy(bool weighted=true);
 			G4double getAbsorbedEnergy();
@@ -229,6 +263,7 @@ public:
 			std::vector<G4VPhysicalVolume*> ele_vol;
 			std::vector<G4double> sens_gFlux, sens_eFlux, sens_muFlux, sens_muKinFlux,sens_neutronFlux, sens_neutronKinFlux,
 			sens_hadFlux, sens_hadKinFlux, sens_time;
+			std::vector<unsigned int> sens_neutronCounter,sens_hadCounter,sens_muCounter;
 			G4double Total_thick;
 			std::vector<G4SiHitVec> sens_HitVec;
 			G4SiHitVec abs_HitVec;
