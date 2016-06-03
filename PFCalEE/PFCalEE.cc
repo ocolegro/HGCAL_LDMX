@@ -106,7 +106,7 @@ int main(int argc, char** argv) {
 		delete ui;
 #endif
 	}
-        //runManager->Initialize();
+
 #ifdef G4VIS_USE
 	delete visManager;
 #endif
