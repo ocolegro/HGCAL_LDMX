@@ -42,7 +42,7 @@ int main(int argc, char** argv) {
 
 	int model = DetectorConstruction::m_FULLSECTION;
 
-	bool signal = true;
+	bool signal = false;
 	std::string data = "";
 	if (argc > 2)
 		version = atoi(argv[2]);
@@ -67,7 +67,7 @@ int main(int argc, char** argv) {
 	runManager->SetUserAction(new SteppingAction);
 
 	// Initialize G4 kernel
-	//runManager->Initialize();
+	runManager->Initialize();
 
 	// Initialize visualization
 #ifdef G4VIS_USE
@@ -103,7 +103,7 @@ int main(int argc, char** argv) {
 		delete ui;
 #endif
 	}
-        runManager->Initialize();
+       // runManager->Initialize();
 #ifdef G4VIS_USE
 	delete visManager;
 #endif
