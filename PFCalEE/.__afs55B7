@@ -1,0 +1,8 @@
+/control/verbose 0
+/control/saveHistory
+/run/verbose 0
+/event/verbose 0
+/tracking/verbose 0
+/N03/det/setModel 2
+/random/setSeeds 14143 74597
+/run/beamOn 1

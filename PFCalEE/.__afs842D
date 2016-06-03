@@ -1,0 +1,811 @@
+ -- G4VIS_USE is set 
+
+*************************************************************
+ Geant4 version Name: geant4-09-06-patch-02    (17-May-2013)
+                      Copyright : Geant4 Collaboration
+                      Reference : NIM A 506 (2003), 250-303
+                            WWW : http://cern.ch/geant4
+*************************************************************
+
+-- Running version 1 model 2
+[DetectorConstruction] starting v_HGCALEE_v6
+ -- End of sampling section initialisation. Input 2 elements, constructing 2 elements with 0 sensitive elements.
+ -- End of sampling section initialisation. Input 11 elements, constructing 10 elements with 3 sensitive elements.
+ -- End of sampling section initialisation. Input 9 elements, constructing 8 elements with 3 sensitive elements.
+ -- End of sampling section initialisation. Input 11 elements, constructing 10 elements with 3 sensitive elements.
+ -- End of sampling section initialisation. Input 9 elements, constructing 8 elements with 3 sensitive elements.
+ -- End of sampling section initialisation. Input 11 elements, constructing 10 elements with 3 sensitive elements.
+ -- End of sampling section initialisation. Input 9 elements, constructing 8 elements with 3 sensitive elements.
+ -- End of sampling section initialisation. Input 11 elements, constructing 10 elements with 3 sensitive elements.
+ -- End of sampling section initialisation. Input 9 elements, constructing 8 elements with 3 sensitive elements.
+ -- End of sampling section initialisation. Input 11 elements, constructing 10 elements with 3 sensitive elements.
+ -- End of sampling section initialisation. Input 9 elements, constructing 8 elements with 3 sensitive elements.
+ -- End of sampling section initialisation. Input 11 elements, constructing 10 elements with 3 sensitive elements.
+ -- End of sampling section initialisation. Input 9 elements, constructing 8 elements with 3 sensitive elements.
+ -- End of sampling section initialisation. Input 11 elements, constructing 10 elements with 3 sensitive elements.
+ -- End of sampling section initialisation. Input 9 elements, constructing 8 elements with 3 sensitive elements.
+ -- End of sampling section initialisation. Input 11 elements, constructing 10 elements with 3 sensitive elements.
+ -- End of sampling section initialisation. Input 9 elements, constructing 8 elements with 3 sensitive elements.
+ -- End of sampling section initialisation. Input 11 elements, constructing 10 elements with 3 sensitive elements.
+ -- End of sampling section initialisation. Input 9 elements, constructing 8 elements with 3 sensitive elements.
+ -- End of sampling section initialisation. Input 11 elements, constructing 10 elements with 3 sensitive elements.
+ -- End of sampling section initialisation. Input 9 elements, constructing 8 elements with 3 sensitive elements.
+ -- End of sampling section initialisation. Input 11 elements, constructing 10 elements with 3 sensitive elements.
+ -- End of sampling section initialisation. Input 9 elements, constructing 8 elements with 3 sensitive elements.
+ -- End of sampling section initialisation. Input 11 elements, constructing 10 elements with 3 sensitive elements.
+ -- End of sampling section initialisation. Input 9 elements, constructing 8 elements with 3 sensitive elements.
+ -- End of sampling section initialisation. Input 11 elements, constructing 10 elements with 3 sensitive elements.
+ -- End of sampling section initialisation. Input 9 elements, constructing 8 elements with 3 sensitive elements.
+ Material: Scintillator    density:  1.032 g/cm3   RadL:  42.538 cm   Nucl.Int.Length:  70.134 cm   Imean:  64.749 eV 
+   --->  Element: C (C)   Z =  6.0   N =  12.0   A =  12.01 g/mole
+         --->  Isotope:   C12   Z =  6   N =  12   A =  12.00 g/mole   abundance:  98.93 %
+         --->  Isotope:   C13   Z =  6   N =  13   A =  13.00 g/mole   abundance:   1.07 %
+          ElmMassFraction:  91.51 %  ElmAbundance  47.50 % 
+
+   --->  Element: H (H)   Z =  1.0   N =   1.0   A =   1.01 g/mole
+         --->  Isotope:    H1   Z =  1   N =   1   A =   1.01 g/mole   abundance:  99.99 %
+         --->  Isotope:    H2   Z =  1   N =   2   A =   2.01 g/mole   abundance:   0.01 %
+          ElmMassFraction:   8.49 %  ElmAbundance  52.50 % 
+
+!!@! ENTERING SETMAGFIELD !!@!
+
+-----------------------------------------------------------
+      Magnetic field
+-----------------------------------------------------------
+ ---> Reading the field grid from b18d36.dat ... 
+Number of lines in data file: 301
+Resized arrays successfully.
+Array size [x]: 52
+Array size [y]: 52
+Array size [z]: 602
+
+ ---> ... done reading 
+ ---> assumed the order:  x, y, z, Bx, By, Bz 
+ ---> Min values x,y,z: -27 -27 -149.5 cm 
+ ---> Max values x,y,z: 27 27 149.5 cm 
+ ---> The field will be offset by -4.42248 cm 
+
+After reordering if neccesary
+ ---> Min values x,y,z: -27 -27 -149.5 cm  
+ ---> Max values x,y,z: 27 27 149.5 cm 
+ ---> Dif values x,y,z (range): 54 54 299 cm in z 
+-----------------------------------------------------------
+!!@! EXITING SETMAGFIELD !!@!
+Constructing the model = 2Calo.
+The m_CalorSizeZ 489.35
+The maximum radius is 282.527
+[DetectorConstruction][UpdateCalorSize] Z x XY = 489.35 x 565.053 mm , nsectors = 1
+<<< Geant4 Physics List simulation engine: QGSP_BERT 4.0
+
+ -- Gun position set to: 0,0,-269.143
+ -- check Info: version = 1 model = 2
+ -- Initialising HoneyComb with parameters: 
+ ---- (xstart,ystart) = (-282.506,-246.647), side = 4.5936, nx = 65, ny=62
+ -- Check geomMap: size = 3998
+ -- Initialising squareMap with parameters: 
+ ---- xymin = -565.053, side = 10, nx = 113, ny=113
+ -- Check geomMap: size = 12769
+Visualization Manager instantiating with verbosity "warnings (3)"...
+Visualization Manager initialising...
+Registering graphics systems...
+
+You have successfully registered the following graphics systems.
+Current available graphics systems are:
+  ASCIITree (ATree)
+  DAWNFILE (DAWNFILE)
+  G4HepRep (HepRepXML)
+  G4HepRepFile (HepRepFile)
+  OpenGLImmediateQt (OGLI, OGLIQt)
+  OpenGLImmediateX (OGLIX)
+  OpenGLImmediateXm (OGLIXm, OGLI_FALLBACK, OGLIQt_FALLBACK)
+  OpenGLStoredQt (OGL, OGLS, OGLSQt)
+  OpenGLStoredX (OGLSX)
+  OpenGLStoredXm (OGLSXm, OGL_FALLBACK, OGLS_FALLBACK, OGLSQt_FALLBACK)
+  RayTracer (RayTracer)
+  RayTracerX (RayTracerX)
+  VRML1FILE (VRML1FILE)
+  VRML2FILE (VRML2FILE)
+  gMocrenFile (gMocrenFile)
+
+Registering model factories...
+
+You have successfully registered the following model factories.
+Registered model factories:
+  generic
+  drawByCharge
+  drawByParticleID
+  drawByOriginVolume
+  drawByAttribute
+
+Registered filter factories:
+  chargeFilter
+  particleFilter
+  originVolumeFilter
+  attributeFilter
+
+You have successfully registered the following user vis actions.
+Run Duration User Vis Actions: none
+End of Event User Vis Actions: none
+End of Run User Vis Actions: none
+
+Some /vis commands (optionally) take a string to specify colour.
+Available colours:
+  black, blue, brown, cyan, gray, green, grey, magenta, red, white, yellow
+
+ ====================================== 
+ ========  Running batch mode ========= 
+ ====================================== 
+ -- Setting detector model to 2
+m_WorldSizeXY = 621.558, m_WorldSizeZ = 538.285
+************ W layer 0 dEdx=2.21 X0=3.50418 L0=103.057 zpos=0mm w=0.3504mm TotX0=0.0999949 TotLambda=0.00340007
+************ G4_Galactic layer 0 dEdx=0 X0=6.30435e+27 L0=3.52779e+27 zpos=0.3504mm w=200mm TotX0=0.0999949 TotLambda=0.00340007
+Building a layer with radius 115.672
+************ Cu layer 1 dEdx=1.257 X0=14.3558 L0=155.141 zpos=200.35mm w=0.5mm TotX0=0.134824 TotLambda=0.00662295
+Building a layer with radius 115.961
+************ CFMix layer 1 dEdx=0 X0=498.277 L0=909.149 zpos=200.85mm w=0.5mm TotX0=0.135827 TotLambda=0.00717292
+Building a layer with radius 116.25
+************ W layer 1 dEdx=2.21 X0=3.50418 L0=103.057 zpos=201.35mm w=2mm TotX0=0.706574 TotLambda=0.0265797
+Building a layer with radius 117.404
+************ CFMix layer 1 dEdx=0 X0=498.277 L0=909.149 zpos=203.35mm w=0.5mm TotX0=0.707578 TotLambda=0.0271297
+Building a layer with radius 117.693
+************ Cu layer 1 dEdx=1.257 X0=14.3558 L0=155.141 zpos=203.85mm w=0.5mm TotX0=0.742407 TotLambda=0.0303526
+Building a layer with radius 117.982
+************ Air layer 1 dEdx=0 X0=303921 L0=710261 zpos=204.35mm w=2mm TotX0=0.742414 TotLambda=0.0303554
+Building a layer with radius 119.136
+************ PCB layer 1 dEdx=0 X0=175.049 L0=484.239 zpos=206.35mm w=2mm TotX0=0.753839 TotLambda=0.0344856
+Building a layer with radius 120.291
+************ Si layer 1 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=208.35mm w=0.1mm TotX0=0.754907 TotLambda=0.0347041
+Building a layer with radius 120.349
+************ Si layer 1 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=208.45mm w=0.1mm TotX0=0.755974 TotLambda=0.0349227
+Building a layer with radius 120.407
+************ Si layer 1 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=208.55mm w=0.1mm TotX0=0.757042 TotLambda=0.0351413
+Building a layer with radius 120.464
+************ WCu layer 2 dEdx=1.97175 X0=5.1223 L0=119.873 zpos=208.65mm w=0.6mm TotX0=0.874177 TotLambda=0.0401466
+Building a layer with radius 120.811
+************ Cu layer 2 dEdx=1.257 X0=14.3558 L0=155.141 zpos=209.25mm w=6mm TotX0=1.29213 TotLambda=0.0788211
+Building a layer with radius 124.275
+************ WCu layer 2 dEdx=1.97175 X0=5.1223 L0=119.873 zpos=215.25mm w=0.6mm TotX0=1.40926 TotLambda=0.0838264
+Building a layer with radius 124.621
+************ Si layer 2 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=215.85mm w=0.1mm TotX0=1.41033 TotLambda=0.084045
+Building a layer with radius 124.679
+************ Si layer 2 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=215.95mm w=0.1mm TotX0=1.4114 TotLambda=0.0842635
+Building a layer with radius 124.737
+************ Si layer 2 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=216.05mm w=0.1mm TotX0=1.41246 TotLambda=0.0844821
+Building a layer with radius 124.794
+************ PCB layer 2 dEdx=0 X0=175.049 L0=484.239 zpos=216.15mm w=2mm TotX0=1.42389 TotLambda=0.0886123
+Building a layer with radius 125.949
+************ Air layer 2 dEdx=0 X0=303921 L0=710261 zpos=218.15mm w=2mm TotX0=1.4239 TotLambda=0.0886151
+Building a layer with radius 127.104
+************ Cu layer 3 dEdx=1.257 X0=14.3558 L0=155.141 zpos=220.15mm w=0.5mm TotX0=1.45873 TotLambda=0.091838
+Building a layer with radius 127.393
+************ CFMix layer 3 dEdx=0 X0=498.277 L0=909.149 zpos=220.65mm w=0.5mm TotX0=1.45973 TotLambda=0.092388
+Building a layer with radius 127.681
+************ W layer 3 dEdx=2.21 X0=3.50418 L0=103.057 zpos=221.15mm w=2mm TotX0=2.03048 TotLambda=0.111795
+Building a layer with radius 128.836
+************ CFMix layer 3 dEdx=0 X0=498.277 L0=909.149 zpos=223.15mm w=0.5mm TotX0=2.03148 TotLambda=0.112345
+Building a layer with radius 129.125
+************ Cu layer 3 dEdx=1.257 X0=14.3558 L0=155.141 zpos=223.65mm w=0.5mm TotX0=2.06631 TotLambda=0.115568
+Building a layer with radius 129.413
+************ Air layer 3 dEdx=0 X0=303921 L0=710261 zpos=224.15mm w=2mm TotX0=2.06632 TotLambda=0.11557
+Building a layer with radius 130.568
+************ PCB layer 3 dEdx=0 X0=175.049 L0=484.239 zpos=226.15mm w=2mm TotX0=2.07774 TotLambda=0.119701
+Building a layer with radius 131.723
+************ Si layer 3 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=228.15mm w=0.1mm TotX0=2.07881 TotLambda=0.119919
+Building a layer with radius 131.78
+************ Si layer 3 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=228.25mm w=0.1mm TotX0=2.07988 TotLambda=0.120138
+Building a layer with radius 131.838
+************ Si layer 3 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=228.35mm w=0.1mm TotX0=2.08094 TotLambda=0.120356
+Building a layer with radius 131.896
+************ WCu layer 4 dEdx=1.97175 X0=5.1223 L0=119.873 zpos=228.45mm w=0.6mm TotX0=2.19808 TotLambda=0.125362
+Building a layer with radius 132.242
+************ Cu layer 4 dEdx=1.257 X0=14.3558 L0=155.141 zpos=229.05mm w=6mm TotX0=2.61603 TotLambda=0.164036
+Building a layer with radius 135.706
+************ WCu layer 4 dEdx=1.97175 X0=5.1223 L0=119.873 zpos=235.05mm w=0.6mm TotX0=2.73316 TotLambda=0.169041
+Building a layer with radius 136.053
+************ Si layer 4 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=235.65mm w=0.1mm TotX0=2.73423 TotLambda=0.16926
+Building a layer with radius 136.111
+************ Si layer 4 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=235.75mm w=0.1mm TotX0=2.7353 TotLambda=0.169479
+Building a layer with radius 136.168
+************ Si layer 4 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=235.85mm w=0.1mm TotX0=2.73637 TotLambda=0.169697
+Building a layer with radius 136.226
+************ PCB layer 4 dEdx=0 X0=175.049 L0=484.239 zpos=235.95mm w=2mm TotX0=2.74779 TotLambda=0.173827
+Building a layer with radius 137.381
+************ Air layer 4 dEdx=0 X0=303921 L0=710261 zpos=237.95mm w=2mm TotX0=2.7478 TotLambda=0.17383
+Building a layer with radius 138.535
+************ Cu layer 5 dEdx=1.257 X0=14.3558 L0=155.141 zpos=239.95mm w=0.5mm TotX0=2.78263 TotLambda=0.177053
+Building a layer with radius 138.824
+************ CFMix layer 5 dEdx=0 X0=498.277 L0=909.149 zpos=240.45mm w=0.5mm TotX0=2.78363 TotLambda=0.177603
+Building a layer with radius 139.113
+************ W layer 5 dEdx=2.21 X0=3.50418 L0=103.057 zpos=240.95mm w=2mm TotX0=3.35438 TotLambda=0.19701
+Building a layer with radius 140.267
+************ CFMix layer 5 dEdx=0 X0=498.277 L0=909.149 zpos=242.95mm w=0.5mm TotX0=3.35538 TotLambda=0.19756
+Building a layer with radius 140.556
+************ Cu layer 5 dEdx=1.257 X0=14.3558 L0=155.141 zpos=243.45mm w=0.5mm TotX0=3.39021 TotLambda=0.200783
+Building a layer with radius 140.845
+************ Air layer 5 dEdx=0 X0=303921 L0=710261 zpos=243.95mm w=2mm TotX0=3.39022 TotLambda=0.200785
+Building a layer with radius 142
+************ PCB layer 5 dEdx=0 X0=175.049 L0=484.239 zpos=245.95mm w=2mm TotX0=3.40164 TotLambda=0.204916
+Building a layer with radius 143.154
+************ Si layer 5 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=247.95mm w=0.1mm TotX0=3.40271 TotLambda=0.205134
+Building a layer with radius 143.212
+************ Si layer 5 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=248.05mm w=0.1mm TotX0=3.40378 TotLambda=0.205353
+Building a layer with radius 143.27
+************ Si layer 5 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=248.15mm w=0.1mm TotX0=3.40485 TotLambda=0.205571
+Building a layer with radius 143.327
+************ WCu layer 6 dEdx=1.97175 X0=5.1223 L0=119.873 zpos=248.25mm w=0.6mm TotX0=3.52198 TotLambda=0.210577
+Building a layer with radius 143.674
+************ Cu layer 6 dEdx=1.257 X0=14.3558 L0=155.141 zpos=248.85mm w=6mm TotX0=3.93993 TotLambda=0.249251
+Building a layer with radius 147.138
+************ WCu layer 6 dEdx=1.97175 X0=5.1223 L0=119.873 zpos=254.85mm w=0.6mm TotX0=4.05707 TotLambda=0.254257
+Building a layer with radius 147.484
+************ Si layer 6 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=255.45mm w=0.1mm TotX0=4.05813 TotLambda=0.254475
+Building a layer with radius 147.542
+************ Si layer 6 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=255.55mm w=0.1mm TotX0=4.0592 TotLambda=0.254694
+Building a layer with radius 147.6
+************ Si layer 6 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=255.65mm w=0.1mm TotX0=4.06027 TotLambda=0.254912
+Building a layer with radius 147.658
+************ PCB layer 6 dEdx=0 X0=175.049 L0=484.239 zpos=255.75mm w=2mm TotX0=4.07169 TotLambda=0.259042
+Building a layer with radius 148.812
+************ Air layer 6 dEdx=0 X0=303921 L0=710261 zpos=257.75mm w=2mm TotX0=4.0717 TotLambda=0.259045
+Building a layer with radius 149.967
+************ Cu layer 7 dEdx=1.257 X0=14.3558 L0=155.141 zpos=259.75mm w=0.5mm TotX0=4.10653 TotLambda=0.262268
+Building a layer with radius 150.256
+************ CFMix layer 7 dEdx=0 X0=498.277 L0=909.149 zpos=260.25mm w=0.5mm TotX0=4.10753 TotLambda=0.262818
+Building a layer with radius 150.544
+************ W layer 7 dEdx=2.21 X0=3.50418 L0=103.057 zpos=260.75mm w=2mm TotX0=4.67828 TotLambda=0.282225
+Building a layer with radius 151.699
+************ CFMix layer 7 dEdx=0 X0=498.277 L0=909.149 zpos=262.75mm w=0.5mm TotX0=4.67928 TotLambda=0.282775
+Building a layer with radius 151.988
+************ Cu layer 7 dEdx=1.257 X0=14.3558 L0=155.141 zpos=263.25mm w=0.5mm TotX0=4.71411 TotLambda=0.285998
+Building a layer with radius 152.276
+************ Air layer 7 dEdx=0 X0=303921 L0=710261 zpos=263.75mm w=2mm TotX0=4.71412 TotLambda=0.286001
+Building a layer with radius 153.431
+************ PCB layer 7 dEdx=0 X0=175.049 L0=484.239 zpos=265.75mm w=2mm TotX0=4.72554 TotLambda=0.290131
+Building a layer with radius 154.586
+************ Si layer 7 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=267.75mm w=0.1mm TotX0=4.72661 TotLambda=0.290349
+Building a layer with radius 154.644
+************ Si layer 7 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=267.85mm w=0.1mm TotX0=4.72768 TotLambda=0.290568
+Building a layer with radius 154.701
+************ Si layer 7 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=267.95mm w=0.1mm TotX0=4.72875 TotLambda=0.290786
+Building a layer with radius 154.759
+************ WCu layer 8 dEdx=1.97175 X0=5.1223 L0=119.873 zpos=268.05mm w=0.6mm TotX0=4.84588 TotLambda=0.295792
+Building a layer with radius 155.105
+************ Cu layer 8 dEdx=1.257 X0=14.3558 L0=155.141 zpos=268.65mm w=6mm TotX0=5.26383 TotLambda=0.334466
+Building a layer with radius 158.569
+************ WCu layer 8 dEdx=1.97175 X0=5.1223 L0=119.873 zpos=274.65mm w=0.6mm TotX0=5.38097 TotLambda=0.339472
+Building a layer with radius 158.916
+************ Si layer 8 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=275.25mm w=0.1mm TotX0=5.38204 TotLambda=0.33969
+Building a layer with radius 158.974
+************ Si layer 8 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=275.35mm w=0.1mm TotX0=5.3831 TotLambda=0.339909
+Building a layer with radius 159.031
+************ Si layer 8 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=275.45mm w=0.1mm TotX0=5.38417 TotLambda=0.340127
+Building a layer with radius 159.089
+************ PCB layer 8 dEdx=0 X0=175.049 L0=484.239 zpos=275.55mm w=2mm TotX0=5.3956 TotLambda=0.344257
+Building a layer with radius 160.244
+************ Air layer 8 dEdx=0 X0=303921 L0=710261 zpos=277.55mm w=2mm TotX0=5.3956 TotLambda=0.34426
+Building a layer with radius 161.398
+************ Cu layer 9 dEdx=1.257 X0=14.3558 L0=155.141 zpos=279.55mm w=0.5mm TotX0=5.43043 TotLambda=0.347483
+Building a layer with radius 161.687
+************ CFMix layer 9 dEdx=0 X0=498.277 L0=909.149 zpos=280.05mm w=0.5mm TotX0=5.43144 TotLambda=0.348033
+Building a layer with radius 161.976
+************ W layer 9 dEdx=2.21 X0=3.50418 L0=103.057 zpos=280.55mm w=2.8mm TotX0=6.23048 TotLambda=0.375203
+Building a layer with radius 163.592
+************ CFMix layer 9 dEdx=0 X0=498.277 L0=909.149 zpos=283.35mm w=0.5mm TotX0=6.23148 TotLambda=0.375753
+Building a layer with radius 163.881
+************ Cu layer 9 dEdx=1.257 X0=14.3558 L0=155.141 zpos=283.85mm w=0.5mm TotX0=6.26631 TotLambda=0.378975
+Building a layer with radius 164.17
+************ Air layer 9 dEdx=0 X0=303921 L0=710261 zpos=284.35mm w=2mm TotX0=6.26632 TotLambda=0.378978
+Building a layer with radius 165.324
+************ PCB layer 9 dEdx=0 X0=175.049 L0=484.239 zpos=286.35mm w=2mm TotX0=6.27775 TotLambda=0.383108
+Building a layer with radius 166.479
+************ Si layer 9 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=288.35mm w=0.1mm TotX0=6.27881 TotLambda=0.383327
+Building a layer with radius 166.537
+************ Si layer 9 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=288.45mm w=0.1mm TotX0=6.27988 TotLambda=0.383546
+Building a layer with radius 166.595
+************ Si layer 9 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=288.55mm w=0.1mm TotX0=6.28095 TotLambda=0.383764
+Building a layer with radius 166.652
+************ WCu layer 10 dEdx=1.97175 X0=5.1223 L0=119.873 zpos=288.65mm w=1.2mm TotX0=6.51522 TotLambda=0.393775
+Building a layer with radius 167.345
+************ Cu layer 10 dEdx=1.257 X0=14.3558 L0=155.141 zpos=289.85mm w=6mm TotX0=6.93317 TotLambda=0.432449
+Building a layer with radius 170.809
+************ WCu layer 10 dEdx=1.97175 X0=5.1223 L0=119.873 zpos=295.85mm w=1.2mm TotX0=7.16744 TotLambda=0.44246
+Building a layer with radius 171.502
+************ Si layer 10 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=297.05mm w=0.1mm TotX0=7.16851 TotLambda=0.442678
+Building a layer with radius 171.56
+************ Si layer 10 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=297.15mm w=0.1mm TotX0=7.16957 TotLambda=0.442897
+Building a layer with radius 171.618
+************ Si layer 10 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=297.25mm w=0.1mm TotX0=7.17064 TotLambda=0.443116
+Building a layer with radius 171.675
+************ PCB layer 10 dEdx=0 X0=175.049 L0=484.239 zpos=297.35mm w=2mm TotX0=7.18207 TotLambda=0.447246
+Building a layer with radius 172.83
+************ Air layer 10 dEdx=0 X0=303921 L0=710261 zpos=299.35mm w=2mm TotX0=7.18207 TotLambda=0.447249
+Building a layer with radius 173.985
+************ Cu layer 11 dEdx=1.257 X0=14.3558 L0=155.141 zpos=301.35mm w=0.5mm TotX0=7.2169 TotLambda=0.450471
+Building a layer with radius 174.273
+************ CFMix layer 11 dEdx=0 X0=498.277 L0=909.149 zpos=301.85mm w=0.5mm TotX0=7.21791 TotLambda=0.451021
+Building a layer with radius 174.562
+************ W layer 11 dEdx=2.21 X0=3.50418 L0=103.057 zpos=302.35mm w=2.8mm TotX0=8.01695 TotLambda=0.478191
+Building a layer with radius 176.179
+************ CFMix layer 11 dEdx=0 X0=498.277 L0=909.149 zpos=305.15mm w=0.5mm TotX0=8.01796 TotLambda=0.478741
+Building a layer with radius 176.467
+************ Cu layer 11 dEdx=1.257 X0=14.3558 L0=155.141 zpos=305.65mm w=0.5mm TotX0=8.05278 TotLambda=0.481964
+Building a layer with radius 176.756
+************ Air layer 11 dEdx=0 X0=303921 L0=710261 zpos=306.15mm w=2mm TotX0=8.05279 TotLambda=0.481967
+Building a layer with radius 177.911
+************ PCB layer 11 dEdx=0 X0=175.049 L0=484.239 zpos=308.15mm w=2mm TotX0=8.06422 TotLambda=0.486097
+Building a layer with radius 179.065
+************ Si layer 11 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=310.15mm w=0.1mm TotX0=8.06528 TotLambda=0.486315
+Building a layer with radius 179.123
+************ Si layer 11 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=310.25mm w=0.1mm TotX0=8.06635 TotLambda=0.486534
+Building a layer with radius 179.181
+************ Si layer 11 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=310.35mm w=0.1mm TotX0=8.06742 TotLambda=0.486753
+Building a layer with radius 179.239
+************ WCu layer 12 dEdx=1.97175 X0=5.1223 L0=119.873 zpos=310.45mm w=1.2mm TotX0=8.30169 TotLambda=0.496763
+Building a layer with radius 179.931
+************ Cu layer 12 dEdx=1.257 X0=14.3558 L0=155.141 zpos=311.65mm w=6mm TotX0=8.71964 TotLambda=0.535438
+Building a layer with radius 183.396
+************ WCu layer 12 dEdx=1.97175 X0=5.1223 L0=119.873 zpos=317.65mm w=1.2mm TotX0=8.95391 TotLambda=0.545448
+Building a layer with radius 184.088
+************ Si layer 12 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=318.85mm w=0.1mm TotX0=8.95498 TotLambda=0.545667
+Building a layer with radius 184.146
+************ Si layer 12 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=318.95mm w=0.1mm TotX0=8.95604 TotLambda=0.545885
+Building a layer with radius 184.204
+************ Si layer 12 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=319.05mm w=0.1mm TotX0=8.95711 TotLambda=0.546104
+Building a layer with radius 184.262
+************ PCB layer 12 dEdx=0 X0=175.049 L0=484.239 zpos=319.15mm w=2mm TotX0=8.96854 TotLambda=0.550234
+Building a layer with radius 185.416
+************ Air layer 12 dEdx=0 X0=303921 L0=710261 zpos=321.15mm w=2mm TotX0=8.96854 TotLambda=0.550237
+Building a layer with radius 186.571
+************ Cu layer 13 dEdx=1.257 X0=14.3558 L0=155.141 zpos=323.15mm w=0.5mm TotX0=9.00337 TotLambda=0.55346
+Building a layer with radius 186.86
+************ CFMix layer 13 dEdx=0 X0=498.277 L0=909.149 zpos=323.65mm w=0.5mm TotX0=9.00438 TotLambda=0.55401
+Building a layer with radius 187.148
+************ W layer 13 dEdx=2.21 X0=3.50418 L0=103.057 zpos=324.15mm w=2.8mm TotX0=9.80342 TotLambda=0.581179
+Building a layer with radius 188.765
+************ CFMix layer 13 dEdx=0 X0=498.277 L0=909.149 zpos=326.95mm w=0.5mm TotX0=9.80443 TotLambda=0.581729
+Building a layer with radius 189.054
+************ Cu layer 13 dEdx=1.257 X0=14.3558 L0=155.141 zpos=327.45mm w=0.5mm TotX0=9.83925 TotLambda=0.584952
+Building a layer with radius 189.342
+************ Air layer 13 dEdx=0 X0=303921 L0=710261 zpos=327.95mm w=2mm TotX0=9.83926 TotLambda=0.584955
+Building a layer with radius 190.497
+************ PCB layer 13 dEdx=0 X0=175.049 L0=484.239 zpos=329.95mm w=2mm TotX0=9.85069 TotLambda=0.589085
+Building a layer with radius 191.652
+************ Si layer 13 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=331.95mm w=0.1mm TotX0=9.85175 TotLambda=0.589304
+Building a layer with radius 191.709
+************ Si layer 13 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=332.05mm w=0.1mm TotX0=9.85282 TotLambda=0.589522
+Building a layer with radius 191.767
+************ Si layer 13 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=332.15mm w=0.1mm TotX0=9.85389 TotLambda=0.589741
+Building a layer with radius 191.825
+************ WCu layer 14 dEdx=1.97175 X0=5.1223 L0=119.873 zpos=332.25mm w=1.2mm TotX0=10.0882 TotLambda=0.599751
+Building a layer with radius 192.518
+************ Cu layer 14 dEdx=1.257 X0=14.3558 L0=155.141 zpos=333.45mm w=6mm TotX0=10.5061 TotLambda=0.638426
+Building a layer with radius 195.982
+************ WCu layer 14 dEdx=1.97175 X0=5.1223 L0=119.873 zpos=339.45mm w=1.2mm TotX0=10.7404 TotLambda=0.648437
+Building a layer with radius 196.675
+************ Si layer 14 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=340.65mm w=0.1mm TotX0=10.7414 TotLambda=0.648655
+Building a layer with radius 196.732
+************ Si layer 14 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=340.75mm w=0.1mm TotX0=10.7425 TotLambda=0.648874
+Building a layer with radius 196.79
+************ Si layer 14 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=340.85mm w=0.1mm TotX0=10.7436 TotLambda=0.649092
+Building a layer with radius 196.848
+************ PCB layer 14 dEdx=0 X0=175.049 L0=484.239 zpos=340.95mm w=2mm TotX0=10.755 TotLambda=0.653222
+Building a layer with radius 198.003
+************ Air layer 14 dEdx=0 X0=303921 L0=710261 zpos=342.95mm w=2mm TotX0=10.755 TotLambda=0.653225
+Building a layer with radius 199.157
+************ Cu layer 15 dEdx=1.257 X0=14.3558 L0=155.141 zpos=344.95mm w=0.5mm TotX0=10.7898 TotLambda=0.656448
+Building a layer with radius 199.446
+************ CFMix layer 15 dEdx=0 X0=498.277 L0=909.149 zpos=345.45mm w=0.5mm TotX0=10.7908 TotLambda=0.656998
+Building a layer with radius 199.735
+************ W layer 15 dEdx=2.21 X0=3.50418 L0=103.057 zpos=345.95mm w=2.8mm TotX0=11.5899 TotLambda=0.684168
+Building a layer with radius 201.351
+************ CFMix layer 15 dEdx=0 X0=498.277 L0=909.149 zpos=348.75mm w=0.5mm TotX0=11.5909 TotLambda=0.684718
+Building a layer with radius 201.64
+************ Cu layer 15 dEdx=1.257 X0=14.3558 L0=155.141 zpos=349.25mm w=0.5mm TotX0=11.6257 TotLambda=0.687941
+Building a layer with radius 201.928
+************ Air layer 15 dEdx=0 X0=303921 L0=710261 zpos=349.75mm w=2mm TotX0=11.6257 TotLambda=0.687943
+Building a layer with radius 203.083
+************ PCB layer 15 dEdx=0 X0=175.049 L0=484.239 zpos=351.75mm w=2mm TotX0=11.6372 TotLambda=0.692074
+Building a layer with radius 204.238
+************ Si layer 15 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=353.75mm w=0.1mm TotX0=11.6382 TotLambda=0.692292
+Building a layer with radius 204.296
+************ Si layer 15 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=353.85mm w=0.1mm TotX0=11.6393 TotLambda=0.692511
+Building a layer with radius 204.353
+************ Si layer 15 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=353.95mm w=0.1mm TotX0=11.6404 TotLambda=0.692729
+Building a layer with radius 204.411
+************ WCu layer 16 dEdx=1.97175 X0=5.1223 L0=119.873 zpos=354.05mm w=1.2mm TotX0=11.8746 TotLambda=0.70274
+Building a layer with radius 205.104
+************ Cu layer 16 dEdx=1.257 X0=14.3558 L0=155.141 zpos=355.25mm w=6mm TotX0=12.2926 TotLambda=0.741414
+Building a layer with radius 208.568
+************ WCu layer 16 dEdx=1.97175 X0=5.1223 L0=119.873 zpos=361.25mm w=1.2mm TotX0=12.5269 TotLambda=0.751425
+Building a layer with radius 209.261
+************ Si layer 16 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=362.45mm w=0.1mm TotX0=12.5279 TotLambda=0.751644
+Building a layer with radius 209.319
+************ Si layer 16 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=362.55mm w=0.1mm TotX0=12.529 TotLambda=0.751862
+Building a layer with radius 209.376
+************ Si layer 16 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=362.65mm w=0.1mm TotX0=12.5301 TotLambda=0.752081
+Building a layer with radius 209.434
+************ PCB layer 16 dEdx=0 X0=175.049 L0=484.239 zpos=362.75mm w=2mm TotX0=12.5415 TotLambda=0.756211
+Building a layer with radius 210.589
+************ Air layer 16 dEdx=0 X0=303921 L0=710261 zpos=364.75mm w=2mm TotX0=12.5415 TotLambda=0.756214
+Building a layer with radius 211.743
+************ Cu layer 17 dEdx=1.257 X0=14.3558 L0=155.141 zpos=366.75mm w=0.5mm TotX0=12.5763 TotLambda=0.759437
+Building a layer with radius 212.032
+************ CFMix layer 17 dEdx=0 X0=498.277 L0=909.149 zpos=367.25mm w=0.5mm TotX0=12.5773 TotLambda=0.759987
+Building a layer with radius 212.321
+************ W layer 17 dEdx=2.21 X0=3.50418 L0=103.057 zpos=367.75mm w=2.8mm TotX0=13.3764 TotLambda=0.787156
+Building a layer with radius 213.937
+************ CFMix layer 17 dEdx=0 X0=498.277 L0=909.149 zpos=370.55mm w=0.5mm TotX0=13.3774 TotLambda=0.787706
+Building a layer with radius 214.226
+************ Cu layer 17 dEdx=1.257 X0=14.3558 L0=155.141 zpos=371.05mm w=0.5mm TotX0=13.4122 TotLambda=0.790929
+Building a layer with radius 214.515
+************ Air layer 17 dEdx=0 X0=303921 L0=710261 zpos=371.55mm w=2mm TotX0=13.4122 TotLambda=0.790932
+Building a layer with radius 215.669
+************ PCB layer 17 dEdx=0 X0=175.049 L0=484.239 zpos=373.55mm w=2mm TotX0=13.4236 TotLambda=0.795062
+Building a layer with radius 216.824
+************ Si layer 17 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=375.55mm w=0.1mm TotX0=13.4247 TotLambda=0.79528
+Building a layer with radius 216.882
+************ Si layer 17 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=375.65mm w=0.1mm TotX0=13.4258 TotLambda=0.795499
+Building a layer with radius 216.94
+************ Si layer 17 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=375.75mm w=0.1mm TotX0=13.4268 TotLambda=0.795718
+Building a layer with radius 216.997
+************ WCu layer 18 dEdx=1.97175 X0=5.1223 L0=119.873 zpos=375.85mm w=1.2mm TotX0=13.6611 TotLambda=0.805728
+Building a layer with radius 217.69
+************ Cu layer 18 dEdx=1.257 X0=14.3558 L0=155.141 zpos=377.05mm w=6mm TotX0=14.0791 TotLambda=0.844403
+Building a layer with radius 221.154
+************ WCu layer 18 dEdx=1.97175 X0=5.1223 L0=119.873 zpos=383.05mm w=1.2mm TotX0=14.3133 TotLambda=0.854413
+Building a layer with radius 221.847
+************ Si layer 18 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=384.25mm w=0.1mm TotX0=14.3144 TotLambda=0.854632
+Building a layer with radius 221.905
+************ Si layer 18 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=384.35mm w=0.1mm TotX0=14.3155 TotLambda=0.85485
+Building a layer with radius 221.963
+************ Si layer 18 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=384.45mm w=0.1mm TotX0=14.3165 TotLambda=0.855069
+Building a layer with radius 222.02
+************ PCB layer 18 dEdx=0 X0=175.049 L0=484.239 zpos=384.55mm w=2mm TotX0=14.3279 TotLambda=0.859199
+Building a layer with radius 223.175
+************ Air layer 18 dEdx=0 X0=303921 L0=710261 zpos=386.55mm w=2mm TotX0=14.328 TotLambda=0.859202
+Building a layer with radius 224.33
+************ Cu layer 19 dEdx=1.257 X0=14.3558 L0=155.141 zpos=388.55mm w=0.5mm TotX0=14.3628 TotLambda=0.862425
+Building a layer with radius 224.618
+************ CFMix layer 19 dEdx=0 X0=498.277 L0=909.149 zpos=389.05mm w=0.5mm TotX0=14.3638 TotLambda=0.862975
+Building a layer with radius 224.907
+************ W layer 19 dEdx=2.21 X0=3.50418 L0=103.057 zpos=389.55mm w=4.2mm TotX0=15.5624 TotLambda=0.903729
+Building a layer with radius 227.332
+************ CFMix layer 19 dEdx=0 X0=498.277 L0=909.149 zpos=393.75mm w=0.5mm TotX0=15.5634 TotLambda=0.904279
+Building a layer with radius 227.621
+************ Cu layer 19 dEdx=1.257 X0=14.3558 L0=155.141 zpos=394.25mm w=0.5mm TotX0=15.5982 TotLambda=0.907502
+Building a layer with radius 227.909
+************ Air layer 19 dEdx=0 X0=303921 L0=710261 zpos=394.75mm w=2mm TotX0=15.5982 TotLambda=0.907505
+Building a layer with radius 229.064
+************ PCB layer 19 dEdx=0 X0=175.049 L0=484.239 zpos=396.75mm w=2mm TotX0=15.6096 TotLambda=0.911635
+Building a layer with radius 230.219
+************ Si layer 19 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=398.75mm w=0.1mm TotX0=15.6107 TotLambda=0.911854
+Building a layer with radius 230.276
+************ Si layer 19 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=398.85mm w=0.1mm TotX0=15.6118 TotLambda=0.912072
+Building a layer with radius 230.334
+************ Si layer 19 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=398.95mm w=0.1mm TotX0=15.6128 TotLambda=0.912291
+Building a layer with radius 230.392
+************ WCu layer 20 dEdx=1.97175 X0=5.1223 L0=119.873 zpos=399.05mm w=2.2mm TotX0=16.0423 TotLambda=0.930643
+Building a layer with radius 231.662
+************ Cu layer 20 dEdx=1.257 X0=14.3558 L0=155.141 zpos=401.25mm w=6mm TotX0=16.4603 TotLambda=0.969318
+Building a layer with radius 235.126
+************ WCu layer 20 dEdx=1.97175 X0=5.1223 L0=119.873 zpos=407.25mm w=2.2mm TotX0=16.8898 TotLambda=0.987671
+Building a layer with radius 236.396
+************ Si layer 20 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=409.45mm w=0.1mm TotX0=16.8908 TotLambda=0.987889
+Building a layer with radius 236.454
+************ Si layer 20 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=409.55mm w=0.1mm TotX0=16.8919 TotLambda=0.988108
+Building a layer with radius 236.512
+************ Si layer 20 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=409.65mm w=0.1mm TotX0=16.893 TotLambda=0.988326
+Building a layer with radius 236.57
+************ PCB layer 20 dEdx=0 X0=175.049 L0=484.239 zpos=409.75mm w=2mm TotX0=16.9044 TotLambda=0.992457
+Building a layer with radius 237.724
+************ Air layer 20 dEdx=0 X0=303921 L0=710261 zpos=411.75mm w=2mm TotX0=16.9044 TotLambda=0.992459
+Building a layer with radius 238.879
+************ Cu layer 21 dEdx=1.257 X0=14.3558 L0=155.141 zpos=413.75mm w=0.5mm TotX0=16.9392 TotLambda=0.995682
+Building a layer with radius 239.168
+************ CFMix layer 21 dEdx=0 X0=498.277 L0=909.149 zpos=414.25mm w=0.5mm TotX0=16.9402 TotLambda=0.996232
+Building a layer with radius 239.456
+************ W layer 21 dEdx=2.21 X0=3.50418 L0=103.057 zpos=414.75mm w=4.2mm TotX0=18.1388 TotLambda=1.03699
+Building a layer with radius 241.881
+************ CFMix layer 21 dEdx=0 X0=498.277 L0=909.149 zpos=418.95mm w=0.5mm TotX0=18.1398 TotLambda=1.03754
+Building a layer with radius 242.17
+************ Cu layer 21 dEdx=1.257 X0=14.3558 L0=155.141 zpos=419.45mm w=0.5mm TotX0=18.1746 TotLambda=1.04076
+Building a layer with radius 242.458
+************ Air layer 21 dEdx=0 X0=303921 L0=710261 zpos=419.95mm w=2mm TotX0=18.1746 TotLambda=1.04076
+Building a layer with radius 243.613
+************ PCB layer 21 dEdx=0 X0=175.049 L0=484.239 zpos=421.95mm w=2mm TotX0=18.1861 TotLambda=1.04489
+Building a layer with radius 244.768
+************ Si layer 21 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=423.95mm w=0.1mm TotX0=18.1871 TotLambda=1.04511
+Building a layer with radius 244.826
+************ Si layer 21 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=424.05mm w=0.1mm TotX0=18.1882 TotLambda=1.04533
+Building a layer with radius 244.883
+************ Si layer 21 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=424.15mm w=0.1mm TotX0=18.1893 TotLambda=1.04555
+Building a layer with radius 244.941
+************ WCu layer 22 dEdx=1.97175 X0=5.1223 L0=119.873 zpos=424.25mm w=2.2mm TotX0=18.6188 TotLambda=1.0639
+Building a layer with radius 246.211
+************ Cu layer 22 dEdx=1.257 X0=14.3558 L0=155.141 zpos=426.45mm w=6mm TotX0=19.0367 TotLambda=1.10258
+Building a layer with radius 249.675
+************ WCu layer 22 dEdx=1.97175 X0=5.1223 L0=119.873 zpos=432.45mm w=2.2mm TotX0=19.4662 TotLambda=1.12093
+Building a layer with radius 250.946
+************ Si layer 22 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=434.65mm w=0.1mm TotX0=19.4673 TotLambda=1.12115
+Building a layer with radius 251.003
+************ Si layer 22 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=434.75mm w=0.1mm TotX0=19.4683 TotLambda=1.12137
+Building a layer with radius 251.061
+************ Si layer 22 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=434.85mm w=0.1mm TotX0=19.4694 TotLambda=1.12158
+Building a layer with radius 251.119
+************ PCB layer 22 dEdx=0 X0=175.049 L0=484.239 zpos=434.95mm w=2mm TotX0=19.4808 TotLambda=1.12571
+Building a layer with radius 252.273
+************ Air layer 22 dEdx=0 X0=303921 L0=710261 zpos=436.95mm w=2mm TotX0=19.4808 TotLambda=1.12572
+Building a layer with radius 253.428
+************ Cu layer 23 dEdx=1.257 X0=14.3558 L0=155.141 zpos=438.95mm w=0.5mm TotX0=19.5157 TotLambda=1.12894
+Building a layer with radius 253.717
+************ CFMix layer 23 dEdx=0 X0=498.277 L0=909.149 zpos=439.45mm w=0.5mm TotX0=19.5167 TotLambda=1.12949
+Building a layer with radius 254.005
+************ W layer 23 dEdx=2.21 X0=3.50418 L0=103.057 zpos=439.95mm w=4.2mm TotX0=20.7152 TotLambda=1.17024
+Building a layer with radius 256.43
+************ CFMix layer 23 dEdx=0 X0=498.277 L0=909.149 zpos=444.15mm w=0.5mm TotX0=20.7162 TotLambda=1.17079
+Building a layer with radius 256.719
+************ Cu layer 23 dEdx=1.257 X0=14.3558 L0=155.141 zpos=444.65mm w=0.5mm TotX0=20.7511 TotLambda=1.17402
+Building a layer with radius 257.008
+************ Air layer 23 dEdx=0 X0=303921 L0=710261 zpos=445.15mm w=2mm TotX0=20.7511 TotLambda=1.17402
+Building a layer with radius 258.162
+************ PCB layer 23 dEdx=0 X0=175.049 L0=484.239 zpos=447.15mm w=2mm TotX0=20.7625 TotLambda=1.17815
+Building a layer with radius 259.317
+************ Si layer 23 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=449.15mm w=0.1mm TotX0=20.7636 TotLambda=1.17837
+Building a layer with radius 259.375
+************ Si layer 23 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=449.25mm w=0.1mm TotX0=20.7646 TotLambda=1.17859
+Building a layer with radius 259.433
+************ Si layer 23 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=449.35mm w=0.1mm TotX0=20.7657 TotLambda=1.17881
+Building a layer with radius 259.49
+************ WCu layer 24 dEdx=1.97175 X0=5.1223 L0=119.873 zpos=449.45mm w=2.2mm TotX0=21.1952 TotLambda=1.19716
+Building a layer with radius 260.76
+************ Cu layer 24 dEdx=1.257 X0=14.3558 L0=155.141 zpos=451.65mm w=6mm TotX0=21.6132 TotLambda=1.23583
+Building a layer with radius 264.225
+************ WCu layer 24 dEdx=1.97175 X0=5.1223 L0=119.873 zpos=457.65mm w=2.2mm TotX0=22.0426 TotLambda=1.25419
+Building a layer with radius 265.495
+************ Si layer 24 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=459.85mm w=0.1mm TotX0=22.0437 TotLambda=1.2544
+Building a layer with radius 265.552
+************ Si layer 24 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=459.95mm w=0.1mm TotX0=22.0448 TotLambda=1.25462
+Building a layer with radius 265.61
+************ Si layer 24 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=460.05mm w=0.1mm TotX0=22.0459 TotLambda=1.25484
+Building a layer with radius 265.668
+************ PCB layer 24 dEdx=0 X0=175.049 L0=484.239 zpos=460.15mm w=2mm TotX0=22.0573 TotLambda=1.25897
+Building a layer with radius 266.823
+************ Air layer 24 dEdx=0 X0=303921 L0=710261 zpos=462.15mm w=2mm TotX0=22.0573 TotLambda=1.25897
+Building a layer with radius 267.977
+************ Cu layer 25 dEdx=1.257 X0=14.3558 L0=155.141 zpos=464.15mm w=0.5mm TotX0=22.0921 TotLambda=1.2622
+Building a layer with radius 268.266
+************ CFMix layer 25 dEdx=0 X0=498.277 L0=909.149 zpos=464.65mm w=0.5mm TotX0=22.0931 TotLambda=1.26275
+Building a layer with radius 268.555
+************ W layer 25 dEdx=2.21 X0=3.50418 L0=103.057 zpos=465.15mm w=4.2mm TotX0=23.2917 TotLambda=1.3035
+Building a layer with radius 270.98
+************ CFMix layer 25 dEdx=0 X0=498.277 L0=909.149 zpos=469.35mm w=0.5mm TotX0=23.2927 TotLambda=1.30405
+Building a layer with radius 271.268
+************ Cu layer 25 dEdx=1.257 X0=14.3558 L0=155.141 zpos=469.85mm w=0.5mm TotX0=23.3275 TotLambda=1.30727
+Building a layer with radius 271.557
+************ Air layer 25 dEdx=0 X0=303921 L0=710261 zpos=470.35mm w=2mm TotX0=23.3275 TotLambda=1.30728
+Building a layer with radius 272.712
+************ PCB layer 25 dEdx=0 X0=175.049 L0=484.239 zpos=472.35mm w=2mm TotX0=23.339 TotLambda=1.31141
+Building a layer with radius 273.866
+************ Si layer 25 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=474.35mm w=0.1mm TotX0=23.34 TotLambda=1.31163
+Building a layer with radius 273.924
+************ Si layer 25 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=474.45mm w=0.1mm TotX0=23.3411 TotLambda=1.31184
+Building a layer with radius 273.982
+************ Si layer 25 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=474.55mm w=0.1mm TotX0=23.3422 TotLambda=1.31206
+Building a layer with radius 274.04
+************ WCu layer 26 dEdx=1.97175 X0=5.1223 L0=119.873 zpos=474.65mm w=2.2mm TotX0=23.7716 TotLambda=1.33042
+Building a layer with radius 275.31
+************ Cu layer 26 dEdx=1.257 X0=14.3558 L0=155.141 zpos=476.85mm w=6mm TotX0=24.1896 TotLambda=1.36909
+Building a layer with radius 278.774
+************ WCu layer 26 dEdx=1.97175 X0=5.1223 L0=119.873 zpos=482.85mm w=2.2mm TotX0=24.6191 TotLambda=1.38744
+Building a layer with radius 280.044
+************ Si layer 26 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=485.05mm w=0.1mm TotX0=24.6202 TotLambda=1.38766
+Building a layer with radius 280.102
+************ Si layer 26 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=485.15mm w=0.1mm TotX0=24.6212 TotLambda=1.38788
+Building a layer with radius 280.159
+************ Si layer 26 dEdx=0.3876 X0=93.6607 L0=457.531 zpos=485.25mm w=0.1mm TotX0=24.6223 TotLambda=1.3881
+Building a layer with radius 280.217
+************ PCB layer 26 dEdx=0 X0=175.049 L0=484.239 zpos=485.35mm w=2mm TotX0=24.6337 TotLambda=1.39223
+Building a layer with radius 281.372
+************ Air layer 26 dEdx=0 X0=303921 L0=710261 zpos=487.35mm w=2mm TotX0=24.6337 TotLambda=1.39223
+WARNING: model G4LENeutronInelastic is being deprecated and will
+disappear in Geant4 version 10.0
+WARNING: model G4LEProtonInelastic is being deprecated and will
+disappear in Geant4 version 10.0
+WARNING: model G4LEPionPlusInelastic is being deprecated and will
+disappear in Geant4 version 10.0
+WARNING: model G4LEPionMinusInelastic is being deprecated and will
+disappear in Geant4 version 10.0
+WARNING: model G4LEKaonPlusInelastic is being deprecated and will
+disappear in Geant4 version 10.0
+WARNING: model G4LEKaonMinusInelastic is being deprecated and will
+disappear in Geant4 version 10.0
+WARNING: model G4LEKaonZeroInelastic is being deprecated and will
+disappear in Geant4 version 10.0
+WARNING: model G4LEAntiKaonZeroInelastic is being deprecated and will
+disappear in Geant4 version 10.0
+WARNING: model G4LEKaonZeroLInelastic is being deprecated and will
+disappear in Geant4 version 10.0
+WARNING: model G4LEKaonZeroInelastic is being deprecated and will
+disappear in Geant4 version 10.0
+WARNING: model G4LEAntiKaonZeroInelastic is being deprecated and will
+disappear in Geant4 version 10.0
+WARNING: model G4LEKaonZeroSInelastic is being deprecated and will
+disappear in Geant4 version 10.0
+WARNING: model G4LEAntiProtonInelastic is being deprecated and will
+disappear in Geant4 version 10.0
+WARNING: model G4HEAntiProtonInelastic is being deprecated and will
+disappear in Geant4 version 10.0
+WARNING: model G4LEAntiNeutronInelastic is being deprecated and will
+disappear in Geant4 version 10.0
+WARNING: model G4HEAntiNeutronInelastic is being deprecated and will
+disappear in Geant4 version 10.0
+WARNING: model G4LELambdaInelastic is being deprecated and will
+disappear in Geant4 version 10.0
+WARNING: model G4HELambdaInelastic is being deprecated and will
+disappear in Geant4 version 10.0
+WARNING: model G4LEAntiLambdaInelastic is being deprecated and will
+disappear in Geant4 version 10.0
+WARNING: model G4HEAntiLambdaInelastic is being deprecated and will
+disappear in Geant4 version 10.0
+WARNING: model G4LESigmaMinusInelastic is being deprecated and will
+disappear in Geant4 version 10.0
+WARNING: model G4HESigmaMinusInelastic is being deprecated and will
+disappear in Geant4 version 10.0
+WARNING: model G4LEAntiSigmaMinusInelastic is being deprecated and will
+disappear in Geant4 version 10.0
+WARNING: model G4HEAntiSigmaMinusInelastic is being deprecated and will
+disappear in Geant4 version 10.0
+WARNING: model G4LESigmaPlusInelastic is being deprecated and will
+disappear in Geant4 version 10.0
+WARNING: model G4HESigmaPlusInelastic is being deprecated and will
+disappear in Geant4 version 10.0
+WARNING: model G4LEAntiSigmaPlusInelastic is being deprecated and will
+disappear in Geant4 version 10.0
+WARNING: model G4HEAntiSigmaPlusInelastic is being deprecated and will
+disappear in Geant4 version 10.0
+WARNING: model G4LEXiMinusInelastic is being deprecated and will
+disappear in Geant4 version 10.0
+WARNING: model G4HEXiMinusInelastic is being deprecated and will
+disappear in Geant4 version 10.0
+WARNING: model G4LEAntiXiMinusInelastic is being deprecated and will
+disappear in Geant4 version 10.0
+WARNING: model G4HEAntiXiMinusInelastic is being deprecated and will
+disappear in Geant4 version 10.0
+WARNING: model G4LEXiZeroInelastic is being deprecated and will
+disappear in Geant4 version 10.0
+WARNING: model G4HEXiZeroInelastic is being deprecated and will
+disappear in Geant4 version 10.0
+WARNING: model G4LEAntiXiZeroInelastic is being deprecated and will
+disappear in Geant4 version 10.0
+WARNING: model G4HEAntiXiZeroInelastic is being deprecated and will
+disappear in Geant4 version 10.0
+WARNING: model G4LEOmegaMinusInelastic is being deprecated and will
+disappear in Geant4 version 10.0
+WARNING: model G4HEOmegaMinusInelastic is being deprecated and will
+disappear in Geant4 version 10.0
+WARNING: model G4LEAntiOmegaMinusInelastic is being deprecated and will
+disappear in Geant4 version 10.0
+WARNING: model G4HEAntiOmegaMinusInelastic is being deprecated and will
+disappear in Geant4 version 10.0
+### Adding tracking cuts for neutron  TimeCut(ns)= 10000  KinEnergyCut(MeV)= 0
+PhysicsList::SetCuts:CutLength : 30 um 
+Graphics systems deleted.
+Visualization Manager deleting...
+--Local directory is  /afs/cern.ch/user/n/nmorrow/HGCAL_LDMX/PFCalEE
+b18d36.dat
+compile.sh
+currentEvent.rndm
+currentRun.rndm
+eosenv.sh
+g4env4lpc.csh
+g4env4lpc.sh
+g4env.sh
+G4History.macro
+g4.log
+g4steer.mac
+GNUmakefile
+gui.mac
+HGcal__version1_model2.root
+icons.mac
+PFCalEE.cc
+README.md
+runWithPU.sh
+submitProdLPC.py
+submitProd.py
+submitProdUMN.py
+submitRunHEPMC.py
+submitRun.py
+VERSIONS
+vis.mac
+
+analysis:
+data
+include
+macros
+makefile
+README.md
+runAllFill.sh
+runCheck.sh
+runDigiForAll.sh
+scripts
+src
+submitDigi.py
+submitEGReso.py
+submitHiggs.py
+submitNabove.py
+submitPuMixing.py
+test
+
+data:
+SLAC.4GeV.W.mchi.0.01.map.0.01.alpha0.1.fermionDM_unweighted_events.csv
+SLAC.4GeV.W.mchi.0.01.map.0.025.alpha0.1.fermionDM_unweighted_events.csv
+SLAC.4GeV.W.mchi.0.01.map.0.1.alpha0.1.fermionDM_unweighted_events.csv
+SLAC.4GeV.W.mchi.0.01.map.0.2.alpha0.1.fermionDM_unweighted_events.csv
+
+generators:
+myGenerator.py
+
+include:
+DetectorConstruction.hh
+DetectorMessenger.hh
+EventAction.hh
+EventActionMessenger.hh
+HepMCG4AsciiReader.hh
+HepMCG4AsciiReaderMessenger.hh
+HepMCG4Interface.hh
+HepMCG4PythiaInterface.hh
+HepMCG4PythiaMessenger.hh
+LHEPrimaryGeneratorAction.hh
+LHEPrimaryGeneratorMessenger.hh
+PhysicsList.hh
+PrimaryGeneratorAction.hh
+PrimaryGeneratorMessenger.hh
+PurgMagTabulatedField3D.hh
+RunAction.hh
+SamplingSection.hh
+SteppingAction.hh
+SteppingVerbose.hh
+
+LSFJOB_805140237:
+LSFJOB
+STDOUT
+
+neutron_events:
+myFile1.lhe
+myFile.lhe
+
+src:
+b18d36.dat
+DetectorConstruction.cc
+DetectorMessenger.cc
+EventAction.cc
+EventActionMessenger.cc
+HEPEvtcom.cc
+HepMCG4AsciiReader.cc
+HepMCG4AsciiReaderMessenger.cc
+HepMCG4Interface.cc
+HepMCG4PythiaInterface.cc
+HepMCG4PythiaMessenger.cc
+LHEPrimaryGeneratorAction.cc
+LHEPrimaryGeneratorMessenger.cc
+PhysicsList.cc
+PrimaryGeneratorAction.cc
+PrimaryGeneratorMessenger.cc
+PurgMagTabulatedField3D.cc
+RunAction.cc
+SamplingSection.cc
+SteppingAction.cc
+SteppingVerbose.cc
+
+userlib:
+bin
+include
+lib
+makefile
+obj
+README.md
+src
+submitAnalyze.py
+submitDigi4LPC.py
+submitDigi.py
+test
