@@ -27,6 +27,10 @@ public:
 
 	enum DetectorVersion {
 		v_HGCALEE_v6 = 1,
+		v_HGCALSYM_v1 = 2,
+		v_HGCALEE_v6_s05 = 3,
+		v_HGCALEE_v6_s10 = 4,
+		v_HGCALEE_v6_s20 = 5,
 
 	};
 

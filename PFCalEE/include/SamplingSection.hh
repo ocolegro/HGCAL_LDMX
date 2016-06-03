@@ -55,6 +55,7 @@ public:
 					}
 				}
 				sens_HitVec_size_max = 0;
+				abs_HitVec_size_max = 0;
 				resetCounters();
 
 				std::cout << " -- End of sampling section initialisation. Input " << aThicknessVec.size() << " elements, constructing " << n_elements << " elements with " << n_sens_elements << " sensitive elements." << std::endl;
@@ -90,9 +91,8 @@ public:
 			inline unsigned getSensitiveLayerIndex(std::string astr) {
 				if (astr.find("_")== astr.npos) return 0;
 				size_t pos = astr.find("phys");
-				//std::cout << astr << " " << pos << std::endl;
 				if (pos != astr.npos && pos>1) {
-					unsigned idx = 0;	//atoi(astr[pos-1]);
+					unsigned idx = 0;
 					std::istringstream(astr.substr(pos-1,1))>>idx;
 					return idx;
 				}
@@ -137,6 +137,11 @@ public:
 				sens_neutronKinFlux.clear();
 				sens_hadKinFlux.clear();
 
+				sens_muCounter.clear();
+				sens_neutronCounter.clear();
+				sens_hadCounter.clear();
+
+
 				ele_den.resize(n_elements,0);
 				ele_dl.resize(n_elements,0);
 				sens_time.resize(n_sens_elements,0);
@@ -145,17 +150,29 @@ public:
 				sens_muFlux.resize(n_sens_elements,0);
 				sens_neutronFlux.resize(n_sens_elements,0);
 				sens_hadFlux.resize(n_sens_elements,0);
+
 				sens_muKinFlux.resize(n_sens_elements,0);
 				sens_neutronKinFlux.resize(n_sens_elements,0);
 				sens_hadKinFlux.resize(n_sens_elements,0);
+
+				sens_muCounter.resize(n_sens_elements,0);
+				sens_neutronCounter.resize(n_sens_elements,0);
+				sens_hadCounter.resize(n_sens_elements,0);
 				//reserve some space based on first event....
 				for (unsigned idx(0); idx<n_sens_elements; ++idx) {
 					if (sens_HitVec[idx].size() > sens_HitVec_size_max) {
 						sens_HitVec_size_max = 2*sens_HitVec[idx].size();
 						G4cout << "-- SamplingSection::resetCounters(), space reserved for HitVec vector increased to " << sens_HitVec_size_max << G4endl;
 					}
+					if (abs_HitVec.size() > abs_HitVec_size_max) {
+						abs_HitVec_size_max = 2*abs_HitVec.size();
+						G4cout << "-- SamplingSection::resetCounters(), space reserved for absHitVec vector increased to " << abs_HitVec_size_max << G4endl;
+
+					}
 					sens_HitVec[idx].clear();
 					sens_HitVec[idx].reserve(sens_HitVec_size_max);
+					abs_HitVec.clear();
+					abs_HitVec.reserve(abs_HitVec_size_max);
 				}
 			}
 
@@ -184,6 +201,30 @@ public:
 			}
 			;
 
+			inline unsigned getMuonCount() {
+				unsigned int  val = 0;
+				for (unsigned ie(0); ie < n_sens_elements; ++ie) {
+					val += sens_muCounter[ie];
+				}
+				return val;
+			}
+			;
+			inline unsigned getHadronCount() {
+				unsigned int val = 0;
+				for (unsigned ie(0); ie < n_sens_elements; ++ie) {
+					val += sens_hadCounter[ie];
+				}
+				return val;
+			}
+			;
+			inline unsigned getNeutronCount() {
+				unsigned int val = 0;
+				for (unsigned ie(0); ie < n_sens_elements; ++ie) {
+					val += sens_neutronCounter[ie];
+				}
+				return val;
+			}
+			;
 			//
 			G4double getMeasuredEnergy(bool weighted=true);
 			G4double getAbsorbedEnergy();
@@ -201,6 +242,8 @@ public:
 			G4double getTotalSensE();
 
 			const G4SiHitVec & getSiHitVec(const unsigned & idx) const;
+			const G4SiHitVec & getAbsHits() const;
+
 			void trackParticleHistory(const unsigned & idx,const G4SiHitVec & incoming);
 
 			//
@@ -220,9 +263,14 @@ public:
 			std::vector<G4VPhysicalVolume*> ele_vol;
 			std::vector<G4double> sens_gFlux, sens_eFlux, sens_muFlux, sens_muKinFlux,sens_neutronFlux, sens_neutronKinFlux,
 			sens_hadFlux, sens_hadKinFlux, sens_time;
+			std::vector<unsigned int> sens_neutronCounter,sens_hadCounter,sens_muCounter;
 			G4double Total_thick;
 			std::vector<G4SiHitVec> sens_HitVec;
+			G4SiHitVec abs_HitVec;
+
 			unsigned sens_HitVec_size_max;
+			unsigned abs_HitVec_size_max;
+
 			bool hasScintillator;
 
 		};

@@ -35,7 +35,7 @@ public:
 	void Detect(G4double eng, G4double edep, G4double stepl,
 			G4double globalTime, G4int pdgId, G4VPhysicalVolume *volume,
 			const G4ThreeVector & position, G4int trackID, G4int parentID,
-			const HGCSSGenParticle & genPart);
+			const HGCSSGenParticle & genPart, G4bool targetParticle);
 
 	void SetPrintModulo(G4int val) {
 		printModulo = val;
@@ -44,6 +44,7 @@ public:
 	void Add(std::vector<SamplingSection> *newDetector) {
 		detector_ = newDetector;
 	}
+	std::vector<G4int> trackids;
 
 private:
 	RunAction* runAct;
@@ -58,7 +59,9 @@ private:
 	HGCSSSamplingSectionVec ssvec_;
 	HGCSSSimHitVec hitvec_;
 	HGCSSGenParticleVec genvec_;
+	HGCSSGenParticleVec trackvec_;
 	EventActionMessenger* eventMessenger;
+
 	//std::ofstream fout_;
 
 };

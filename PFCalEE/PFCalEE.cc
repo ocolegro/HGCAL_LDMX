@@ -7,6 +7,7 @@
 #include "PhysicsList.hh"
 
 #include "PrimaryGeneratorAction.hh"
+#include "LHEPrimaryGeneratorAction.hh"
 #include "RunAction.hh"
 #include "EventAction.hh"
 #include "SteppingAction.hh"
@@ -41,7 +42,7 @@ int main(int argc, char** argv) {
 
 	int model = DetectorConstruction::m_FULLSECTION;
 
-	bool signal = false;
+	bool signal = true;
 	std::string data = "";
 	if (argc > 2)
 		version = atoi(argv[2]);
@@ -59,13 +60,14 @@ int main(int argc, char** argv) {
 	runManager->SetUserInitialization(new PhysicsList);
 
 	// Set user action classes
-	runManager->SetUserAction(new PrimaryGeneratorAction(model, signal, data));
+        if (signal) {runManager->SetUserAction(new LHEPrimaryGeneratorAction(model)); }
+        else {runManager->SetUserAction(new PrimaryGeneratorAction(model, signal, data)); }
 	runManager->SetUserAction(new RunAction);
 	runManager->SetUserAction(new EventAction);
 	runManager->SetUserAction(new SteppingAction);
 
 	// Initialize G4 kernel
-	runManager->Initialize();
+	//runManager->Initialize();
 
 	// Initialize visualization
 #ifdef G4VIS_USE
@@ -101,7 +103,7 @@ int main(int argc, char** argv) {
 		delete ui;
 #endif
 	}
-
+        runManager->Initialize();
 #ifdef G4VIS_USE
 	delete visManager;
 #endif

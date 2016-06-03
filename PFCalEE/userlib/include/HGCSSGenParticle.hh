@@ -67,7 +67,10 @@ public:
 		return trackID_;
 	}
 	;
-
+	inline int layer() const{
+		return layer_;
+	}
+	;
 	inline double pt() const {
 		return sqrt(px_ * px_ + py_ * py_);
 	}
@@ -149,7 +152,10 @@ public:
 		trackID_ = val;
 	}
 	;
-
+	inline void layer(const int & val) {
+		 layer_ = val;
+	}
+	;
 	inline bool isIncoming() const {
 		//do not want back-scattered particles, 
 		return ((pdgid_ != 0 || mass_ > 0) && pz_ >= 0);
@@ -170,6 +176,7 @@ private:
 	double py_;
 	double pz_;
 	int pdgid_;
+	int layer_;
 	double charge_;
 	int trackID_;
 
