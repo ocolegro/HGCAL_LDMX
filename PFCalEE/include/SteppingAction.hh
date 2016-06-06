@@ -36,6 +36,7 @@ private:
 	//to correct the energy in the scintillator
 	G4EmSaturation* saturationEngine;
 	G4double timeLimit_;
+	G4int version_;
 
 };
 

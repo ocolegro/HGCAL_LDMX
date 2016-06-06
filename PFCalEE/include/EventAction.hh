@@ -49,7 +49,7 @@ public:
 private:
 	RunAction* runAct;
 	std::vector<SamplingSection> *detector_;
-	G4int evtNb_, printModulo;
+	G4int evtNb_, printModulo,initLayer;
 
 	HGCSSGeometryConversion* geomConv_;
 

@@ -14,14 +14,14 @@
 class SamplingSection {
 public:
 	//CTOR
-	SamplingSection(const std::vector<G4double> & aThicknessVec,
-			const std::vector<std::string> & aMaterialVec) {
-		if (aMaterialVec.size() != aThicknessVec.size()) {
-			G4cout
-					<< " -- ERROR in sampling section definition. Expect input vectors with same size containing thicknesses (size="
-					<< aThicknessVec.size() << ") and material names (size="
-					<< aMaterialVec.size() << "). Exiting..." << G4endl;
-					exit(1);
+	SamplingSection(std::vector<std::pair <G4double,std::string>> iEle) {
+
+			std::vector<G4double> aThicknessVec;std::vector<std::string> aMaterialVec;
+				for (unsigned i = 0; i < iEle.size(); i++)
+				{
+					aThicknessVec.push_back(iEle.at(i).first);
+					aMaterialVec.push_back(iEle.at(i).second);
+
 				}
 				Total_thick = 0;
 				n_sens_elements=0;
@@ -79,7 +79,7 @@ public:
 					G4VPhysicalVolume* vol,
 					const G4ThreeVector & position,
 					G4int trackID, G4int parentID,
-					G4int layerId);
+					G4int layerId,G4bool inc_);
 
 			inline bool isSensitiveElement(const unsigned & aEle) {
 				if (aEle < n_elements &&

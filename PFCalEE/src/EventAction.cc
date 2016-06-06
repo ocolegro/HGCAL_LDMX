@@ -37,7 +37,7 @@ EventAction::EventAction() {
 	std::cout << " -- check Info: version = " << info->version() << " model = "
 			<< info->model() << std::endl;
 	outF_->WriteObjectAny(info, "HGCSSInfo", "Info");
-
+	initLayer = ((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->initLayer();
 	//honeycomb
 	geomConv_ = new HGCSSGeometryConversion(info->model(), CELL_SIZE_X);
 	geomConv_->initialiseHoneyComb(xysize, CELL_SIZE_X);
@@ -80,11 +80,12 @@ void EventAction::Detect(G4double eng, G4double edep, G4double stepl,
 		G4double globalTime, G4int pdgId, G4VPhysicalVolume *volume,
 		const G4ThreeVector & position, G4int trackID, G4int parentID,
 		const HGCSSGenParticle & genPart, G4bool targetParticle) {
+	G4bool inc_ = genPart.isIncoming();
 	for (size_t i = 0; i < detector_->size(); i++)
 		(*detector_)[i].add(eng, edep, stepl, globalTime, pdgId, volume,
-				position, trackID, parentID, i);
+				position, trackID, parentID, i,inc_);
 
-	if (genPart.isIncoming()){
+	if (inc_){
 		if (targetParticle){
 			genvec_.push_back(genPart);
 		}
@@ -108,7 +109,7 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 	ssvec_.clear();
 	ssvec_.reserve(detector_->size());
 
-	for (size_t i = 0; i < detector_->size(); i++) {
+	for (size_t i = initLayer; i < detector_->size(); i++) {
 		HGCSSSamplingSection lSec;
 		lSec.volNb(i);
 		lSec.volX0trans((*detector_)[i].getAbsorberX0());
@@ -158,7 +159,7 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 				if (!isInserted.second)
 					isInserted.first->second.Add(lSiHit);
 				if (idx == 0) {
-					TVector3 v1(lSiHit.hit_x, lSiHit.hit_y, lSiHit.hit_z);
+					TVector3 v1(lSiHit.hit_x, lSiHit.hit_y,0);
 					Int_t pdgId_ = lSiHit.pdgId;
 					Double_t parentEng = lSiHit.parentEng;
 					if ((abs(pdgId_) == 11) || (abs(pdgId_) == 22)) {
@@ -194,7 +195,7 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 
 			for (unsigned jAbsHit(0); jAbsHit < absSize_; ++jAbsHit) {
 				G4SiHit lAbsHit = (*detector_)[i].getSiHitVec(0)[jAbsHit];
-				TVector3 v1(lAbsHit.hit_x, lAbsHit.hit_y, lAbsHit.hit_z);
+				TVector3 v1(lAbsHit.hit_x, lAbsHit.hit_y, 0);
 				Int_t pdgId_ = lAbsHit.pdgId;
 				Double_t parentEng = lAbsHit.parentEng;
 				if (jAbsHit == 0) {
@@ -221,10 +222,10 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 			}
 			(eleWgtCnt_ > 0) ?
 					lSec.eleWgtCnt(TMath::Sqrt(eleWgt) / eleWgtCnt_) :
-					lSec.eleWgtCnt(-1);
+					lSec.eleWgtCnt(0);
 			(muWgtCnt_ > 0) ?
 					lSec.muWgtCnt(TMath::Sqrt(muWgt) / muWgtCnt_) :
-					lSec.muWgtCnt(-1);
+					lSec.muWgtCnt(0);
 			(hadWgtCnt_ > 0) ?
 					lSec.hadWgtCnt(TMath::Sqrt(hadWgt) / hadWgtCnt_) :
 					lSec.hadWgtCnt(0);
@@ -236,7 +237,7 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 		ssvec_.push_back(lSec);
 
 		if (debug) {
-			(*detector_)[i].report((i == 0));
+			(*detector_)[i].report((i == 1));
 		}
 
 		(*detector_)[i].resetCounters();

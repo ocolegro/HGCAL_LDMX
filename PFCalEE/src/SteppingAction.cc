@@ -5,6 +5,7 @@
 
 #include "G4Step.hh"
 #include "G4RunManager.hh"
+#include "DetectorConstruction.hh"
 
 #include "HGCSSGenParticle.hh"
 
@@ -16,6 +17,7 @@ SteppingAction::SteppingAction() {
 			((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->getStructure());
 	saturationEngine = new G4EmSaturation();
 	timeLimit_ = 20000000000; //ns
+	version_ = ((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->getVersion();
 }
 
 //
@@ -59,13 +61,21 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 	G4double kineng = lTrack->GetKineticEnergy();
 
 	const G4ThreeVector & position = thePreStepPoint->GetPosition();
-
 	HGCSSGenParticle genPart;
 	G4bool targetParticle = false;
+	/*
+	if (trackID == 1){
+		std::cout << "The main particle is now at thePrePVname " << thePrePVname  << std::endl;
+		std::cout << "The main particle is now at thePostPVname " << thePostPVname  << std::endl;
+
+	}
+	*/
 	if ((globalTime < timeLimit_)
-			&& ((thePrePVname == "Wphys" && thePostPVname == "W1phys")
-					|| (thePrePVname == "W1phys"
-							&& thePostPVname == "G4_Galactic1phys")))
+			//Select target particles from model v2
+			&& ((version_ == 2 && thePrePVname == "Wphys" && thePostPVname == "Si1_0phys") ||
+					//Select target particles from model v1,v>=3
+					((version_ == 1 || version_ > 2) && thePrePVname == "Wphys" && thePostPVname == "W1phys") ||
+					(thePrePVname == "W1phys" && thePostPVname == "G4_Galactic1phys")))
 	{
 		targetParticle = true;
 		const G4ThreeVector & postposition = thePostStepPoint->GetPosition();
@@ -78,12 +88,15 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 		genPart.pdgid(pdgId);
 		genPart.charge(pd->GetPDGCharge());
 		genPart.trackID(trackID);
+		genPart.layer(getLayer(thePostPVname) - ((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->initLayer());
+
 	}
 	unsigned int id_ = std::find(eventAction_->trackids.begin(),
 			eventAction_->trackids.end(), trackID)
 			- eventAction_->trackids.begin();
-
+	//Only select new tracks with kin. energy > 10 MeV
 	if ((id_ == eventAction_->trackids.size()) && (kineng>10)) {
+		//Only select hadrons
 		if ((abs(pdgId) != 11) && (abs(pdgId) != 22 ) && (pdgId != -2112) && (pdgId != -2212)  && (abs(pdgId) != 310) && (abs(pdgId) != 111)){
 		const G4ThreeVector & postposition = thePostStepPoint->GetPosition();
 
@@ -96,8 +109,12 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 		genPart.pdgid(pdgId);
 		genPart.charge(pd->GetPDGCharge());
 		genPart.trackID(trackID);
-		genPart.layer(getLayer(thePostPVname));
+		genPart.layer(getLayer(thePostPVname) - ((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->initLayer());
 		eventAction_->trackids.push_back(trackID);
+
+		if(targetParticle == true)
+			eventAction_->Detect(kineng, edep, stepl, globalTime, pdgId, volume,
+					position, trackID, parentID, genPart, false);
 		}
 	}
 	eventAction_->Detect(kineng, edep, stepl, globalTime, pdgId, volume,
