@@ -1,0 +1,12 @@
+PLOTS/
+LSFJOB_*
+*.d
+*.so
+bin
+obj
+*.root
+*.swp
+*.log
+*.swo
+*.history
+*.rndm
