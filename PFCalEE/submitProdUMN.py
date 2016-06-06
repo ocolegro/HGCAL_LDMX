@@ -14,7 +14,7 @@ parser = optparse.OptionParser(usage)
 parser.add_option('-E', '--energy'      ,    dest='energy'             , help='set energy'                   , default=1,      type=int)
 parser.add_option('-m', '--model'       ,    dest='model'              , help='set model'                    , default=0,      type=int)
 parser.add_option('-b', '--Bfield'      ,    dest='Bfield'             , help='B field value in Tesla'       , default=0,      type=float)
-parser.add_option('-f', '--datafile'    ,    dest='datafile'           , help='full path to input file', default='/local/cms/hiltbran/standalone_sim/PFCalEE/neutron_events/myFile.lhe')
+parser.add_option('-f', '--datafile'    ,    dest='datafile'           , help='full path to input file', default='/data/cmszfs1/user/hiltbran/HGCAL_LDMX/PFCalEE/neutron_events/myFile.lhe')
 parser.add_option('-n', '--nevts'       ,    dest='nevts'              , help='number of events to generate' , default=15,    type=int)
 parser.add_option('-o', '--out'         ,    dest='out'                , help='output directory'             , default=os.getcwd() )
 parser.add_option('-e', '--eos'         ,    dest='eos'                , help='eos path to save root file to EOS',         default='')
@@ -26,6 +26,7 @@ bval="BOFF"
 if opt.Bfield>0 : bval="BON" 
 
 outDir = os.getcwd()
+outTag='model%d_energy%d'%(opt.model,opt.energy)
 
 #wrapper
 scriptFile = open('%s/runJob.sh'%outDir, 'w')
@@ -68,7 +69,7 @@ g4Macro.write('/run/verbose 0\n')
 g4Macro.write('/event/verbose 0\n')
 g4Macro.write('/tracking/verbose 0\n')
 g4Macro.write('/N03/det/setField %1.1f T\n'%opt.Bfield)
-g4Macro.write('/N03/det/setModel %d\n'%opt.Model)
+g4Macro.write('/N03/det/setModel %d\n'%opt.model)
 if opt.dogun: 
     g4Macro.write('/generator/select particleGun\n')
     g4Macro.write('/gun/energy %s GeV\n'%(opt.energy))
