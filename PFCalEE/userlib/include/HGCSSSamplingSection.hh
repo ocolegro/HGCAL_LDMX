@@ -142,35 +142,35 @@ public:
 		volLambdatrans_ = aVal;
 	}
 	;
-	inline void measuredE(const double & aVal) {
+	inline void sensDep(const double & aVal) {
 		measuredE_ = aVal;
 	}
 	;
-	inline void absorberE(const double & aVal) {
+	inline void absorberDep(const double & aVal) {
 		absorberE_ = aVal;
 	}
 	;
-	inline void totalE(const double & aVal) {
+	inline void totalDep(const double & aVal) {
 		totalE_ = aVal;
 	}
 	;
-	inline void gFrac(const double & aVal) {
+	inline void gDepFrac(const double & aVal) {
 		gFrac_ = aVal;
 	}
 	;
-	inline void eFrac(const double & aVal) {
+	inline void eDepFrac(const double & aVal) {
 		eFrac_ = aVal;
 	}
 	;
-	inline void muFrac(const double & aVal) {
+	inline void muDepFrac(const double & aVal) {
 		muFrac_ = aVal;
 	}
 	;
-	inline void neutronFrac(const double & aVal) {
+	inline void neutronDepFrac(const double & aVal) {
 		neutronFrac_ = aVal;
 	}
 	;
-	inline void hadFrac(const double & aVal) {
+	inline void hadDepFrac(const double & aVal) {
 		hadFrac_ = aVal;
 	}
 	;
@@ -182,32 +182,32 @@ public:
 		nSiHits_ = aVal;
 	}
 	;
-	inline void muKin(const double & aVal) {
+	inline void muKinFlux(const double & aVal) {
 		muKin_ = aVal;
 	}
 	;
-	inline void neutronKin(const double & aVal) {
+	inline void neutronKinFlux(const double & aVal) {
 		neutronKin_ = aVal;
 	}
 	;
-	inline void hadKin(const double & aVal) {
+	inline void hadKinFlux(const double & aVal) {
 		hadKin_ = aVal;
 	}
 	;
 
-	inline void eleWgtCnt(const double & aVal) {
+	inline void eleShowerSize(const double & aVal) {
 		eleWgtCnt_ = aVal;
 	}
 	;
-	inline void hadWgtCnt(const double & aVal) {
+	inline void hadronShowerSize(const double & aVal) {
 		neutWgtCnt_ = aVal;
 	}
 	;
-	inline void neutWgtCnt(const double & aVal) {
+	inline void neutronShowerSize(const double & aVal) {
 		hadWgtCnt_ = aVal;
 	}
 	;
-	inline void muWgtCnt(const double & aVal) {
+	inline void muShowerSize(const double & aVal) {
 		muWgtCnt_ = aVal;
 	}
 	;

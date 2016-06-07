@@ -36,7 +36,6 @@
 
 int main(int argc, char** argv) {
 	std::cout << "Opening the file " << argv[1] << std::endl;
-	//freopen("test_log.txt", "w", stdout);
 	TFile *infile = TFile::Open(argv[1]);
 	TTree *tree = (TTree*) infile->Get("HGCSSTree");
 
@@ -46,18 +45,16 @@ int main(int argc, char** argv) {
 	std::vector<HGCSSSimHit> * hitVec = 0;
 	tree->SetBranchAddress("HGCSSSimHitVec", &hitVec);
 
+	std::vector<HGCSSGenParticle> * hadronVec = 0;
+	tree->SetBranchAddress("HGCSSHadronVec", &hadronVec);
 
-	std::vector<HGCSSGenParticle> * trackVec = 0;
-	tree->SetBranchAddress("HGCSSTrackVec", &trackVec);
-
-	std::vector<HGCSSGenParticle> * genVec = 0;
-	tree->SetBranchAddress("HGCSSGenParticleVec", &genVec);
-
-	Int_t firstLayer = 1;
+	std::vector<HGCSSGenParticle> * targetVec = 0;
+	tree->SetBranchAddress("HGCSSTargetVec", &targetVec);
+	Int_t firstLayer = 0;
 	unsigned nEvts = tree->GetEntries();
 
 	TFile hfile("analyzed_tuple.root", "RECREATE");
-	TTree t1("hadrons", "Hadron Study");
+	TTree t1("sampling", "Sampling Study");
 
 	Float_t summedDep, summedSen, summedHFlux, summedNFlux, summedMFlux,maxTrackKe,genKin;
 	Float_t layerHFlux[500], layerNFlux[500], layerMFlux[500],
@@ -126,9 +123,6 @@ int main(int argc, char** argv) {
 			summedSen += sec.measuredE();
 			summedDep += sec.totalE();
 
-			layerSen[j - firstLayer] = sec.measuredE()/nSens;
-			layerDep[j - firstLayer] = sec.totalE()/nSens;
-
 			summedHFlux += sec.hadKin()/(nSens * nLayers);
 			summedNFlux += sec.neutronKin()/(nSens * nLayers);
 			summedMFlux += sec.muKin()/(nSens * nLayers);
@@ -137,6 +131,9 @@ int main(int argc, char** argv) {
 			summedNCount += sec.neutronCount()/(nSens * nLayers);
 			summedMcount += sec.muCount()/(nSens * nLayers);
 
+			layerSen[j - firstLayer] = sec.measuredE()/nSens;
+			layerDep[j - firstLayer] = sec.totalE()/nSens;
+
 			layerHFlux[j - firstLayer] = sec.hadKin()/nSens;
 			layerNFlux[j - firstLayer] = sec.neutronKin()/nSens;
 			layerMFlux[j - firstLayer] = sec.muKin()/nSens;
@@ -144,7 +141,6 @@ int main(int argc, char** argv) {
 			layerHCount[j - firstLayer] = sec.hadCount()/nSens;
 			layerNCount[j - firstLayer] = sec.neutronCount()/nSens;
 			layerMCount[j - firstLayer] = sec.muCount()/nSens;
-
 
 			layerHWgtCnt[j - firstLayer] = sec.hadWgtCnt();
 			layerEWgtCnt[j - firstLayer] = sec.eleWgtCnt();
@@ -155,8 +151,8 @@ int main(int argc, char** argv) {
 			layer[j - firstLayer] = j - firstLayer;
 			caloLen = caloLen + 1;
 		}
-			for (Int_t j = 0; j < trackVec->size(); j++) {
-				HGCSSGenParticle& parton = (*trackVec)[j];
+			for (Int_t j = 0; j < hadronVec->size(); j++) {
+				HGCSSGenParticle& parton = (*hadronVec)[j];
 				genCounter += 1;
 				Float_t engK = parton.E() -parton.mass();
 				genKin += engK;

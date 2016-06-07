@@ -3,7 +3,7 @@
 #include "SamplingSection.hh"
 
 //
-void SamplingSection::add(G4double eng, G4double den, G4double dl,
+void SamplingSection::add(G4double parentKE, G4double depositE, G4double dl,
 		G4double globalTime, G4int pdgId, G4VPhysicalVolume* vol,
 		const G4ThreeVector & position, G4int trackID, G4int parentID,
 		G4int layerId,G4bool inc_) {
@@ -13,12 +13,12 @@ void SamplingSection::add(G4double eng, G4double den, G4double dl,
 		if (ele_vol[ie] && lstr == ele_vol[ie]->GetName()) {
 			unsigned idx = getSensitiveLayerIndex(lstr);
 			unsigned eleidx = ie % n_elements;
-			ele_den[eleidx] += den;
+			ele_den[eleidx] += depositE;
 			ele_dl[eleidx] += dl;
 
 			//add hit
 			G4SiHit lHit;
-			lHit.energy = den;
+			lHit.energyDep = depositE;
 			lHit.time = globalTime;
 			lHit.pdgId = pdgId;
 			lHit.layer = layerId;
@@ -27,32 +27,32 @@ void SamplingSection::add(G4double eng, G4double den, G4double dl,
 			lHit.hit_z = position.z();
 			lHit.trackId = trackID;
 			lHit.parentId = parentID;
-			lHit.parentEng = eng;
+			lHit.parentKE = parentKE;
 
 			if (isSensitiveElement(eleidx)) { //if Si || sci
-				sens_time[idx] += den * globalTime;
+				sens_time[idx] += depositE * globalTime;
 
 				//discriminate further by particle type
 				if (abs(pdgId) == 22)
-					sens_gFlux[idx] += den;
+					sens_photonDep[idx] += depositE;
 				else if (abs(pdgId) == 11)
-					sens_eFlux[idx] += den;
+					sens_eleDep[idx] += depositE;
 
 				else if (abs(pdgId) == 13) {
-					sens_muFlux[idx] += den;
-					sens_muKinFlux[idx] += eng;
+					sens_muDep[idx] += depositE;
+					sens_muKinFlux[idx] += parentKE;
 					sens_muCounter[idx] += 1;
 				} else if (abs(pdgId) == 2112) {
 					if (pdgId == 2112 && inc_)
-						sens_neutronFlux[idx] += den;
-						sens_neutronKinFlux[idx] += eng;
+						sens_neutronDep[idx] += depositE;
+						sens_neutronKinFlux[idx] += parentKE;
 						sens_neutronCounter[idx] += 1;
 
 				} else {
 					if ((abs(pdgId) != 111) && (abs(pdgId) != 310)
 							&& (pdgId != -2212) && (inc_) )
-						sens_hadFlux[idx] += den;
-						sens_hadKinFlux[idx] += eng;
+						sens_hadDep[idx] += depositE;
+						sens_hadKinFlux[idx] += parentKE;
 						sens_hadCounter[idx] += 1;
 				}
 				sens_HitVec[idx].push_back(lHit);
@@ -60,7 +60,7 @@ void SamplingSection::add(G4double eng, G4double den, G4double dl,
 			else {
 				//check for W in layer
 				if ((lstr.find("W") == std::string::npos) == 0)
-					abs_HitVec.push_back(lHit);
+					abs_HitSumVec.push_back(lHit);
 			}
 		} //if in right material
 	} //loop on available materials
@@ -111,7 +111,7 @@ G4double SamplingSection::getPhotonFraction() {
 	double etot = getTotalSensE();
 	double val = 0;
 	for (unsigned ie(0); ie < n_sens_elements; ++ie) {
-		val += sens_gFlux[ie];
+		val += sens_photonDep[ie];
 	}
 	return etot > 0 ? val / etot : 0;
 }
@@ -121,7 +121,7 @@ G4double SamplingSection::getElectronFraction() {
 	double etot = getTotalSensE();
 	double val = 0;
 	for (unsigned ie(0); ie < n_sens_elements; ++ie) {
-		val += sens_eFlux[ie];
+		val += sens_eleDep[ie];
 	}
 	return etot > 0 ? val / etot : 0;
 }
@@ -131,7 +131,7 @@ G4double SamplingSection::getMuonFraction() {
 	double etot = getTotalSensE();
 	double val = 0;
 	for (unsigned ie(0); ie < n_sens_elements; ++ie) {
-		val += sens_muFlux[ie];
+		val += sens_muDep[ie];
 	}
 	return etot > 0 ? val / etot : 0;
 }
@@ -141,7 +141,7 @@ G4double SamplingSection::getNeutronFraction() {
 	double etot = getTotalSensE();
 	double val = 0;
 	for (unsigned ie(0); ie < n_sens_elements; ++ie) {
-		val += sens_neutronFlux[ie];
+		val += sens_neutronDep[ie];
 	}
 	return etot > 0 ? val / etot : 0;
 }
@@ -151,7 +151,7 @@ G4double SamplingSection::getHadronicFraction() {
 	double etot = getTotalSensE();
 	double val = 0;
 	for (unsigned ie(0); ie < n_sens_elements; ++ie) {
-		val += sens_hadFlux[ie];
+		val += sens_hadDep[ie];
 	}
 	return etot > 0 ? val / etot : 0;
 }
@@ -218,7 +218,7 @@ const G4SiHitVec & SamplingSection::getSiHitVec(const unsigned & idx) const {
 }
 
 const G4SiHitVec & SamplingSection::getAbsHits() const {
-	return abs_HitVec;
+	return abs_HitSumVec;
 }
 void SamplingSection::trackParticleHistory(const unsigned & idx,
 		const G4SiHitVec & incoming) {

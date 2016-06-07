@@ -35,49 +35,95 @@
 #endif
 
 int main(int argc, char** argv) {
-	freopen("hadron_log.txt", "w", stdout);
 	std::cout << "Opening the file " << argv[1] << std::endl;
 	TFile *infile = TFile::Open(argv[1]);
-
-
 	TTree *tree = (TTree*) infile->Get("HGCSSTree");
 
-	std::vector<HGCSSSamplingSection> * simhits = 0;
-	tree->SetBranchAddress("HGCSSSamplingSectionVec", &simhits);
+	std::vector<HGCSSSamplingSection> * samplingVec = 0;
+	tree->SetBranchAddress("HGCSSSamplingSectionVec", &samplingVec);
 
-	unsigned nEvts = tree->GetEntries();
+	std::vector<HGCSSSimHit> * hitVec = 0;
+	tree->SetBranchAddress("HGCSSSimHitVec", &hitVec);
+
+	std::vector<HGCSSGenParticle> * hadronVec = 0;
+	tree->SetBranchAddress("HGCSSTrackVec", &hadronVec);
+
+	std::vector<HGCSSGenParticle> * targetVec = 0;
+	tree->SetBranchAddress("HGCSSGenParticleVec", &targetVec);
 
 	TFile hfile("analyzed_tuple.root", "RECREATE");
 	TTree t1("hadrons", "Hadron Study");
 
-	Float_t Full_dep, Full_sen, Hadron_dep, Neutron_Dep, Muon_Dep;
+	Int_t nHadrons,nTargets,hadronId[500],targetId[500],nTargetPhotons,
+	nTargetElectrons,nTargetHadrons,nTargetNeutrons,nProtons,nNeutrons;
+	Float_t hadronKE[500],hadronTheta[500],hadronPhi[500],
+	targetE[500],targetTheta[500],targetPhi[500];
 
-	t1.Branch("Full_dep", &Full_dep, "Full_dep/F");
-	t1.Branch("Full_sen", &Full_sen, "Full_sen/F");
-	t1.Branch("Hadron_dep", &Hadron_dep, "Hadron_dep/F");
-	t1.Branch("Neutron_Dep", &Neutron_Dep, "Neutron_Dep/F");
-	t1.Branch("Muon_Dep", &Muon_Dep, "Muon_Dep/F");
+	t1.Branch("nHadrons", &nHadrons, "nHadrons/I");
+	t1.Branch("nProtons", &nProtons, "nProtons/I");
+	t1.Branch("nNeutrons", &nNeutrons, "nNeutrons/I");
+
+	t1.Branch("hadronId", &hadronId, "hadronId[nHadrons]/I");
+	t1.Branch("hadronKE", &hadronKE, "KE[nHadrons]/F");
+	t1.Branch("hadronTheta", &hadronTheta, "hadronTheta[nHadrons]/F");
+
+	t1.Branch("nTargets", &nTargets, "nTargets/I");
+	t1.Branch("nTargetHadrons", &nTargetHadrons, "nTargetHadrons/I");
+	t1.Branch("nTargetElectrons", &nTargetElectrons, "nTargetElectrons/I");
+	t1.Branch("nTargetPhotons", &nTargetPhotons, "nTargetPhotons/I");
+
+	t1.Branch("targetId", &targetId, "targetid[nTargets]/I");
+	t1.Branch("targetE", &targetE, "targetE[nTargets]/F");
+	t1.Branch("targetTheta", &targetTheta, "targetTheta[nTargets]/I");
+
+	unsigned nEvts = tree->GetEntries();
 
 	for (unsigned ievt(0); ievt < nEvts; ++ievt) { //loop on entries
 		tree->GetEntry(ievt);
 
-		Full_sen = 0;
-		Full_dep = 0;
-		Hadron_dep = 0;
-		Neutron_Dep = 0;
-		Muon_Dep = 0;
+		nHadrons = 0,nTargets = 0,nTargetHadrons = 0,nTargetNeutrons = 0,nTargetElectrons = 0,nTargetPhotons = 0;
 
-		if (ievt > 10000)
-			break;
 
-		for (Int_t j = 0; j < simhits->size(); j++) {
-			HGCSSSamplingSection& sec = (*simhits)[j];
-			Full_sen += sec.measuredE();
-			Full_dep += sec.totalE();
-			Hadron_dep += sec.totalE() * sec.hadFrac();
-			Neutron_Dep += sec.totalE() * sec.neutronFrac();
-			Muon_Dep += sec.totalE() * sec.muFrac();
+		for (Int_t j = 0; j < targetVec->size(); j++) {
+			nTargets = nTargets + 1;
+			HGCSSGenParticle& target = (*targetVec)[j];
+			Int_t tPdg = target.pdgid();
+			targetId[j]    = tPdg;
+			targetE[j] 	   = target.E();
+			targetTheta[j] = target.theta();
+			targetPhi[j]   = target.phi();
+
+			if (abs(tPdg) == 11){
+				nTargetElectrons += 1;
+			}
+			else if (abs(tPdg) == 22){
+				nTargetPhotons += 1;
+			}
+			else if (tPdg == 2112){
+				nTargetNeutrons += 1;
+			}
+			else if ((abs(tPdg) != 111) && (abs(tPdg) != 310) && (tPdg != -2212)){
+				nTargetHadrons += 1;
+			}
 		}
+
+		for (Int_t j = 0; j < hadronVec->size(); j++) {
+			HGCSSGenParticle& hadron = (*hadronVec)[j];
+			Int_t hPdg   = hadron.pdgid();
+			hadronId[j]  = hPdg;
+			hadronKE[j]	 = hadron.E() - hadron.mass();
+			hadronTheta[j] = hadron.theta();
+			hadronPhi[j] = hadron.phi();
+			nHadrons = nHadrons + 1;
+			if (hPdg == 2112){
+				nNeutrons  += 1;
+			}
+			else if (hPdg == 2212){
+				nProtons += 1;
+			}
+		}
+
+
 
 		t1.Fill();
 	}

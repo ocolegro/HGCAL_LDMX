@@ -58,8 +58,8 @@ private:
 	HGCSSEvent event_;
 	HGCSSSamplingSectionVec ssvec_;
 	HGCSSSimHitVec hitvec_;
-	HGCSSGenParticleVec genvec_;
-	HGCSSGenParticleVec trackvec_;
+	HGCSSGenParticleVec targetvec_;
+	HGCSSGenParticleVec hadronvec_;
 	EventActionMessenger* eventMessenger;
 
 	//std::ofstream fout_;

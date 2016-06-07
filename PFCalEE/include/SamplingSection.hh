@@ -127,11 +127,11 @@ public:
 				ele_den.clear();
 				ele_dl.clear();
 				sens_time.clear();
-				sens_gFlux.clear();
-				sens_eFlux.clear();
-				sens_muFlux.clear();
-				sens_neutronFlux.clear();
-				sens_hadFlux.clear();
+				sens_photonDep.clear();
+				sens_eleDep.clear();
+				sens_muDep.clear();
+				sens_neutronDep.clear();
+				sens_hadDep.clear();
 
 				sens_muKinFlux.clear();
 				sens_neutronKinFlux.clear();
@@ -145,11 +145,11 @@ public:
 				ele_den.resize(n_elements,0);
 				ele_dl.resize(n_elements,0);
 				sens_time.resize(n_sens_elements,0);
-				sens_gFlux.resize(n_sens_elements,0);
-				sens_eFlux.resize(n_sens_elements,0);
-				sens_muFlux.resize(n_sens_elements,0);
-				sens_neutronFlux.resize(n_sens_elements,0);
-				sens_hadFlux.resize(n_sens_elements,0);
+				sens_photonDep.resize(n_sens_elements,0);
+				sens_eleDep.resize(n_sens_elements,0);
+				sens_muDep.resize(n_sens_elements,0);
+				sens_neutronDep.resize(n_sens_elements,0);
+				sens_hadDep.resize(n_sens_elements,0);
 
 				sens_muKinFlux.resize(n_sens_elements,0);
 				sens_neutronKinFlux.resize(n_sens_elements,0);
@@ -164,15 +164,15 @@ public:
 						sens_HitVec_size_max = 2*sens_HitVec[idx].size();
 						G4cout << "-- SamplingSection::resetCounters(), space reserved for HitVec vector increased to " << sens_HitVec_size_max << G4endl;
 					}
-					if (abs_HitVec.size() > abs_HitVec_size_max) {
-						abs_HitVec_size_max = 2*abs_HitVec.size();
+					if (abs_HitSumVec.size() > abs_HitVec_size_max) {
+						abs_HitVec_size_max = 2*abs_HitSumVec.size();
 						G4cout << "-- SamplingSection::resetCounters(), space reserved for absHitVec vector increased to " << abs_HitVec_size_max << G4endl;
 
 					}
 					sens_HitVec[idx].clear();
 					sens_HitVec[idx].reserve(sens_HitVec_size_max);
-					abs_HitVec.clear();
-					abs_HitVec.reserve(abs_HitVec_size_max);
+					abs_HitSumVec.clear();
+					abs_HitSumVec.reserve(abs_HitVec_size_max);
 				}
 			}
 
@@ -261,12 +261,12 @@ public:
 			std::vector<G4double> ele_den;
 			std::vector<G4double> ele_dl;
 			std::vector<G4VPhysicalVolume*> ele_vol;
-			std::vector<G4double> sens_gFlux, sens_eFlux, sens_muFlux, sens_muKinFlux,sens_neutronFlux, sens_neutronKinFlux,
-			sens_hadFlux, sens_hadKinFlux, sens_time;
+			std::vector<G4double> sens_photonDep, sens_eleDep, sens_muDep, sens_muKinFlux,sens_neutronDep, sens_neutronKinFlux,
+			sens_hadDep, sens_hadKinFlux, sens_time;
 			std::vector<unsigned int> sens_neutronCounter,sens_hadCounter,sens_muCounter;
 			G4double Total_thick;
 			std::vector<G4SiHitVec> sens_HitVec;
-			G4SiHitVec abs_HitVec;
+			G4SiHitVec abs_HitSumVec;
 
 			unsigned sens_HitVec_size_max;
 			unsigned abs_HitVec_size_max;

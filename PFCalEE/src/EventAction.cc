@@ -49,9 +49,11 @@ EventAction::EventAction() {
 	tree_->Branch("HGCSSSamplingSectionVec",
 			"std::vector<HGCSSSamplingSection>", &ssvec_);
 	tree_->Branch("HGCSSSimHitVec", "std::vector<HGCSSSimHit>", &hitvec_);
-	tree_->Branch("HGCSSGenParticleVec", "std::vector<HGCSSGenParticle>",
-			&genvec_);
-	tree_->Branch("HGCSSTrackVec", "std::vector<HGCSSGenParticle>", &trackvec_);
+	//Branch containing incident particle and secondaries from the initial W target
+	tree_->Branch("HGCSSTargetVec", "std::vector<HGCSSGenParticle>",
+			&targetvec_);
+	//Branch containing (''long lasting'') hadronic tracks
+	tree_->Branch("HGCSSHadronVec", "std::vector<HGCSSGenParticle>", &hadronvec_);
 	// }
 }
 
@@ -87,10 +89,10 @@ void EventAction::Detect(G4double eng, G4double edep, G4double stepl,
 
 	if (inc_){
 		if (targetParticle){
-			genvec_.push_back(genPart);
+			targetvec_.push_back(genPart);
 		}
 		else{
-			trackvec_.push_back(genPart);
+			hadronvec_.push_back(genPart);
 		}
 	}
 }
@@ -108,38 +110,47 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 
 	ssvec_.clear();
 	ssvec_.reserve(detector_->size());
-
+	//Changing initLayer because initial layers contain tracking sections.
 	for (size_t i = initLayer; i < detector_->size(); i++) {
 		HGCSSSamplingSection lSec;
 		lSec.volNb(i);
+
 		lSec.volX0trans((*detector_)[i].getAbsorberX0());
 		lSec.voldEdx((*detector_)[i].getAbsorberdEdx());
 		lSec.volLambdatrans((*detector_)[i].getAbsorberLambda());
-		lSec.absorberE((*detector_)[i].getAbsorbedEnergy());
-		lSec.measuredE((*detector_)[i].getMeasuredEnergy(false));
-		lSec.totalE((*detector_)[i].getTotalEnergy());
-		lSec.gFrac((*detector_)[i].getPhotonFraction());
-		lSec.eFrac((*detector_)[i].getElectronFraction());
-		lSec.muFrac((*detector_)[i].getMuonFraction());
-		lSec.neutronFrac((*detector_)[i].getNeutronFraction());
-		lSec.hadFrac((*detector_)[i].getHadronicFraction());
+
+		//Measurements now follow
+
+		lSec.absorberDep((*detector_)[i].getAbsorbedEnergy());
+		lSec.sensDep((*detector_)[i].getMeasuredEnergy(false));
+		lSec.totalDep((*detector_)[i].getTotalEnergy());
+
+		lSec.gDepFrac((*detector_)[i].getPhotonFraction());
+		lSec.eDepFrac((*detector_)[i].getElectronFraction());
+		lSec.muDepFrac((*detector_)[i].getMuonFraction());
+		lSec.neutronDepFrac((*detector_)[i].getNeutronFraction());
+		lSec.hadDepFrac((*detector_)[i].getHadronicFraction());
+
 		lSec.avgTime((*detector_)[i].getAverageTime());
 		lSec.nSiHits((*detector_)[i].getTotalSensHits());
 
-		lSec.neutronKin((*detector_)[i].getKinNeutron());
-		lSec.hadKin((*detector_)[i].getKinHadron());
-		lSec.muKin((*detector_)[i].getKinMuon());
+		//Gen level quantities now follow
+
+		lSec.neutronKinFlux((*detector_)[i].getKinNeutron());
+		lSec.hadKinFlux((*detector_)[i].getKinHadron());
+		lSec.muKinFlux((*detector_)[i].getKinMuon());
 
 		lSec.neutronCount((*detector_)[i].getNeutronCount());
 		lSec.hadCount((*detector_)[i].getHadronCount());
 		lSec.muCount((*detector_)[i].getMuonCount());
+
 		if (evtNb_ == 1)
 			std::cout << "if (layer==" << i << ") return " << lSec.voldEdx()
 					<< ";" << std::endl;
 
-		TVector3 eleCnt_, hadCnt_, neutCnt_, muCnt_;
-		double eleWgt = 0, muWgt = 0, neutWgt = 0, hadWgt = 0, eleWgtCnt_ = 0,
-				hadWgtCnt_ = 0, neutWgtCnt_ = 0, muWgtCnt_ = 0;
+		TVector3 eleCentroid_, hadCentroid_, neutCentroid_, muCentroid_;
+		double eleShowerSizeE_ = 0, muShowerSizeE_ = 0, neutShowerSizeE_ = 0, hadShowerSizeE_ = 0, eleEWgt_ = 0,
+				hadEWgt_ = 0, neutEWgt_ = 0, muEWgt_ = 0;
 		bool is_scint = (*detector_)[i].hasScintillator;
 		for (unsigned idx(0); idx < (*detector_)[i].n_sens_elements; ++idx) {
 			std::map<unsigned, HGCSSSimHit> lHitMap;
@@ -161,21 +172,21 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 				if (idx == 0) {
 					TVector3 v1(lSiHit.hit_x, lSiHit.hit_y,0);
 					Int_t pdgId_ = lSiHit.pdgId;
-					Double_t parentEng = lSiHit.parentEng;
+					Double_t parentEng = lSiHit.parentKE;
 					if ((abs(pdgId_) == 11) || (abs(pdgId_) == 22)) {
-						eleCnt_ += v1 * parentEng;
-						eleWgtCnt_ += parentEng;
+						eleCentroid_ += v1 * parentEng;
+						eleEWgt_ += parentEng;
 					} else if (abs(pdgId_) == 13) {
-						muCnt_ += v1 * parentEng;
-						muWgtCnt_ += parentEng;
+						muCentroid_ += v1 * parentEng;
+						muEWgt_ += parentEng;
 
 					} else if (pdgId_ == 2112) {
-						neutCnt_ += v1 * parentEng;
-						neutWgtCnt_ += parentEng;
+						neutCentroid_ += v1 * parentEng;
+						neutEWgt_ += parentEng;
 					} else if ((abs(pdgId_) != 111) && (abs(pdgId_) != 310)
 							&& (pdgId_ != -2212)) {
-						hadCnt_ += v1 * parentEng;
-						hadWgtCnt_ += parentEng;
+						hadCentroid_ += v1 * parentEng;
+						hadEWgt_ += parentEng;
 					}
 				}
 			}
@@ -197,41 +208,41 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 				G4SiHit lAbsHit = (*detector_)[i].getSiHitVec(0)[jAbsHit];
 				TVector3 v1(lAbsHit.hit_x, lAbsHit.hit_y, 0);
 				Int_t pdgId_ = lAbsHit.pdgId;
-				Double_t parentEng = lAbsHit.parentEng;
+				Double_t parentEng = lAbsHit.parentKE;
 				if (jAbsHit == 0) {
-					if (eleWgtCnt_ > 0)
-						eleCnt_ = eleCnt_ * (1.0 / eleWgtCnt_);
-					if (muWgtCnt_ > 0)
-						muCnt_ = muCnt_ * (1.0 / muWgtCnt_);
-					if (neutWgtCnt_ > 0)
-						neutCnt_ = neutCnt_ * (1.0 / neutWgtCnt_);
-					if (hadWgtCnt_ > 0)
-						hadCnt_ = hadCnt_ * (1.0 / hadWgtCnt_);
+					if (eleEWgt_ > 0)
+						eleCentroid_ = eleCentroid_ * (1.0 / eleEWgt_);
+					if (muEWgt_ > 0)
+						muCentroid_ = muCentroid_ * (1.0 / muEWgt_);
+					if (neutEWgt_ > 0)
+						neutCentroid_ = neutCentroid_ * (1.0 / neutEWgt_);
+					if (hadEWgt_ > 0)
+						hadCentroid_ = hadCentroid_ * (1.0 / hadEWgt_);
 				}
 				if ((abs(pdgId_) == 11) || (abs(pdgId_) == 22)) {
-					eleWgt += TMath::Power((v1 - eleCnt_).Mag() * parentEng, 2);
+					eleShowerSizeE_ += TMath::Power((v1 - eleCentroid_).Mag() * parentEng, 2);
 				} else if (abs(pdgId_) == 13) {
-					muWgt += TMath::Power((v1 - muCnt_).Mag() * parentEng, 2);
+					muShowerSizeE_ += TMath::Power((v1 - muCentroid_).Mag() * parentEng, 2);
 				} else if (pdgId_ == 2112) {
-					neutWgt += TMath::Power((v1 - neutCnt_).Mag() * parentEng,
+					neutShowerSizeE_ += TMath::Power((v1 - neutCentroid_).Mag() * parentEng,
 							2);
 				} else if ((abs(pdgId_) != 111) && (abs(pdgId_) != 310)
 						&& (pdgId_ != -2212)) {
-					hadWgt += TMath::Power((v1 - hadCnt_).Mag() * parentEng, 2);
+					hadShowerSizeE_ += TMath::Power((v1 - hadCentroid_).Mag() * parentEng, 2);
 				}
 			}
-			(eleWgtCnt_ > 0) ?
-					lSec.eleWgtCnt(TMath::Sqrt(eleWgt) / eleWgtCnt_) :
-					lSec.eleWgtCnt(0);
-			(muWgtCnt_ > 0) ?
-					lSec.muWgtCnt(TMath::Sqrt(muWgt) / muWgtCnt_) :
-					lSec.muWgtCnt(0);
-			(hadWgtCnt_ > 0) ?
-					lSec.hadWgtCnt(TMath::Sqrt(hadWgt) / hadWgtCnt_) :
-					lSec.hadWgtCnt(0);
-			(neutWgtCnt_ > 0) ?
-					lSec.neutWgtCnt(TMath::Sqrt(neutWgt) / neutWgtCnt_) :
-					lSec.neutWgtCnt(0);
+			(eleEWgt_ > 0) ?
+					lSec.eleShowerSize(TMath::Sqrt(eleShowerSizeE_) / eleEWgt_) :
+					lSec.eleShowerSize(0);
+			(muEWgt_ > 0) ?
+					lSec.muShowerSize(TMath::Sqrt(muShowerSizeE_) / muEWgt_) :
+					lSec.muShowerSize(0);
+			(hadEWgt_ > 0) ?
+					lSec.hadronShowerSize(TMath::Sqrt(hadShowerSizeE_) / hadEWgt_) :
+					lSec.hadronShowerSize(0);
+			(neutEWgt_ > 0) ?
+					lSec.neutronShowerSize(TMath::Sqrt(neutShowerSizeE_) / neutEWgt_) :
+					lSec.neutronShowerSize(0);
 
 		}
 		ssvec_.push_back(lSec);
@@ -243,7 +254,7 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 		(*detector_)[i].resetCounters();
 	}
 	if (debug) {
-		G4cout << " -- Number of truth particles = " << genvec_.size() << G4endl<< " -- Number of simhits = " << hitvec_.size() << G4endl
+		G4cout << " -- Number of truth particles = " << targetvec_.size() << G4endl<< " -- Number of simhits = " << hitvec_.size() << G4endl
 		<< " -- Number of sampling sections = " << ssvec_.size() << G4endl;
 
 	}
@@ -251,9 +262,9 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 	tree_->Fill();
 
 	//reset vectors
-	genvec_.clear();
+	targetvec_.clear();
 	hitvec_.clear();
 	ssvec_.clear();
-	trackvec_.clear();
+	hadronvec_.clear();
 	trackids.clear();
 }

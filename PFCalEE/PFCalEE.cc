@@ -5,6 +5,7 @@
 
 #include "DetectorConstruction.hh"
 #include "PhysicsList.hh"
+#include "PhysicsListEM.hh"
 
 #include "PrimaryGeneratorAction.hh"
 #include "LHEPrimaryGeneratorAction.hh"
