@@ -56,27 +56,27 @@ int main(int argc, char** argv) {
 	TFile hfile("analyzed_tuple.root", "RECREATE");
 	TTree t1("sampling", "Sampling Study");
 
-	Float_t summedDep, summedSen, summedHFlux, summedNFlux, summedMFlux,maxTrackKe,genKin;
+	Float_t layerAvgDep, layerAvgSen, layerAvgHFlux, layerAvgNFlux, layerAvgMFlux,maxHadronKe,genKin;
 	Float_t layerHFlux[500], layerNFlux[500], layerMFlux[500],
 			layerHWgtCnt[500], layerEWgtCnt[500], layerDep[500], layerSen[500],layerHCount[500],layerNCount[500],layerMCount[500],
-			summedNCount,summedHCount,summedMcount,layerHWgtAvg,layerEWgtAvg,hardestFirst;
+			layerAvgNCount,layerAvgHCount,layerAvgMcount,layerHShowerSize,layerEWgtAvg,hardestEarlyHadron;
 
-	Int_t layer[500], caloLen, layMax,genCounter;
+	Int_t layer[500], caloLen, maxHadronProdLayer,genCounter;
 	t1.Branch("caloLen", &caloLen, "caloLen/I");
 
-	t1.Branch("summedDep", &summedDep, "summedDep/F");
-	t1.Branch("summedSen", &summedSen, "summedSen/F");
+	t1.Branch("layerAvgDep", &layerAvgDep, "layerAvgDep/F");
+	t1.Branch("layerAvgSen", &layerAvgSen, "layerAvgSen/F");
 
-	t1.Branch("summedHFlux", &summedHFlux, "summedHFlux/F");
-	t1.Branch("summedNFlux", &summedNFlux, "summedNFlux/F");
-	t1.Branch("summedMFlux", &summedMFlux, "summedMFlux/F");
+	t1.Branch("layerAvgHFlux", &layerAvgHFlux, "layerAvgHFlux/F");
+	t1.Branch("layerAvgNFlux", &layerAvgNFlux, "layerAvgNFlux/F");
+	t1.Branch("layerAvgMFlux", &layerAvgMFlux, "layerAvgMFlux/F");
 
 
-	t1.Branch("summedHCount", &summedHCount, "summedHCount/F");
-	t1.Branch("summedNCount", &summedNCount, "summedNCount/F");
-	t1.Branch("summedMcount", &summedMcount, "summedMcount/F");
+	t1.Branch("layerAvgHCount", &layerAvgHCount, "layerAvgHCount/F");
+	t1.Branch("layerAvgNCount", &layerAvgNCount, "layerAvgNCount/F");
+	t1.Branch("layerAvgMcount", &layerAvgMcount, "layerAvgMcount/F");
 
-	t1.Branch("layerHWgtAvg", &layerHWgtAvg, "layerHWgtAvg/F");
+	t1.Branch("layerHShowerSize", &layerHShowerSize, "layerHShowerSize/F");
 	t1.Branch("layerEWgtAvg", &layerEWgtAvg, "layerEWgtAvg/F");
 
 	t1.Branch("layerHFlux", &layerHFlux, "layerHFlux[caloLen]/F");
@@ -92,11 +92,11 @@ int main(int argc, char** argv) {
 	t1.Branch("layerEWgtCnt", &layerEWgtCnt, "layerEWgtCnt[caloLen]/F");
 
 
-	t1.Branch("maxTrackKe", &maxTrackKe, "maxTrackKe/F");
+	t1.Branch("maxHadronKe", &maxHadronKe, "maxHadronKe/F");
 	t1.Branch("genKin", &genKin, "genKin/F");
 
 	t1.Branch("genCounter", &genCounter, "genCounter/I");
-	t1.Branch("layMax", &layMax, "layMax/I");
+	t1.Branch("maxHadronProdLayer", &maxHadronProdLayer, "maxHadronProdLayer/I");
 
 	t1.Branch("layerSen", &layerSen, "layerSen[caloLen]/F");
 	t1.Branch("layerDep", &layerDep, "layerDep[caloLen]/F");
@@ -105,31 +105,31 @@ int main(int argc, char** argv) {
 	t1.Branch("layer", &layer, "layer[caloLen]/I");
 
 
-	t1.Branch("hardestFirst", &hardestFirst, "hardestFirst/F");
+	t1.Branch("hardestEarlyHadron", &hardestEarlyHadron, "hardestEarlyHadron/F");
 
 	for (unsigned ievt(0); ievt < nEvts; ++ievt) { //loop on entries
 		tree->GetEntry(ievt);
 
-		summedSen = 0, summedDep = 0, summedHFlux = 0, summedNFlux = 0, summedMFlux =
-				0, caloLen = 0,summedHCount=0,summedNCount=0,summedMcount=0,maxTrackKe=0,genCounter = 0,genKin=0,layerHWgtAvg=0,layerEWgtAvg=0;
+		layerAvgSen = 0, layerAvgDep = 0, layerAvgHFlux = 0, layerAvgNFlux = 0, layerAvgMFlux =
+				0, caloLen = 0,layerAvgHCount=0,layerAvgNCount=0,layerAvgMcount=0,maxHadronKe=0,genCounter = 0,genKin=0,layerHShowerSize=0,layerEWgtAvg=0;
 
-		hardestFirst = 0;
+		hardestEarlyHadron = 0;
 		if (ievt > 10000)
 			break;
 		Float_t nSens = 3.0;
 		Float_t nLayers = 26.0;
 		for (Int_t j = firstLayer; j < samplingVec->size(); j++) {
 			HGCSSSamplingSection& sec = (*samplingVec)[j];
-			summedSen += sec.measuredE();
-			summedDep += sec.totalE();
+			layerAvgSen += sec.measuredE();
+			layerAvgDep += sec.totalE();
 
-			summedHFlux += sec.hadKin()/(nSens * nLayers);
-			summedNFlux += sec.neutronKin()/(nSens * nLayers);
-			summedMFlux += sec.muKin()/(nSens * nLayers);
+			layerAvgHFlux += sec.hadKin()/(nSens * nLayers);
+			layerAvgNFlux += sec.neutronKin()/(nSens * nLayers);
+			layerAvgMFlux += sec.muKin()/(nSens * nLayers);
 
-			summedHCount += sec.hadCount()/(nSens * nLayers);
-			summedNCount += sec.neutronCount()/(nSens * nLayers);
-			summedMcount += sec.muCount()/(nSens * nLayers);
+			layerAvgHCount += sec.hadCount()/(nSens * nLayers);
+			layerAvgNCount += sec.neutronCount()/(nSens * nLayers);
+			layerAvgMcount += sec.muCount()/(nSens * nLayers);
 
 			layerSen[j - firstLayer] = sec.measuredE()/nSens;
 			layerDep[j - firstLayer] = sec.totalE()/nSens;
@@ -145,7 +145,7 @@ int main(int argc, char** argv) {
 			layerHWgtCnt[j - firstLayer] = sec.hadWgtCnt();
 			layerEWgtCnt[j - firstLayer] = sec.eleWgtCnt();
 
-			layerHWgtAvg += sec.hadWgtCnt()/nLayers;
+			layerHShowerSize += sec.hadWgtCnt()/nLayers;
 			layerEWgtAvg += sec.eleWgtCnt()/nLayers;
 
 			layer[j - firstLayer] = j - firstLayer;
@@ -157,12 +157,12 @@ int main(int argc, char** argv) {
 				Float_t engK = parton.E() -parton.mass();
 				genKin += engK;
 				if (parton.layer() < 12){
-					if (engK > hardestFirst)
-						hardestFirst = engK;
+					if (engK > hardestEarlyHadron)
+						hardestEarlyHadron = engK;
 				}
-				if (engK> maxTrackKe){
-					maxTrackKe = engK;
-					layMax  = parton.layer();
+				if (engK> maxHadronKe){
+					maxHadronKe = engK;
+					maxHadronProdLayer  = parton.layer();
 				}
 
 		}
