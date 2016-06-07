@@ -85,7 +85,7 @@ void EventAction::Detect(G4double eng, G4double edep, G4double stepl,
 	G4bool genIncCheck = genPart.isIncoming();
 	for (size_t i = 0; i < detector_->size(); i++)
 		(*detector_)[i].add(eng, edep, stepl, globalTime, pdgId, volume,
-				position, trackID, parentID, i,genIncCheck,forwardCheck);
+				position, trackID, parentID, i,genIncCheck,targetParticle);
 
 	if (genIncCheck){
 		if (targetParticle){
