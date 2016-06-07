@@ -79,7 +79,7 @@ public:
 					G4VPhysicalVolume* vol,
 					const G4ThreeVector & position,
 					G4int trackID, G4int parentID,
-					G4int layerId,G4bool inc_);
+					G4int layerId,G4bool goodGen,G4bool forward);
 
 			inline bool isSensitiveElement(const unsigned & aEle) {
 				if (aEle < n_elements &&
@@ -127,7 +127,7 @@ public:
 				ele_den.clear();
 				ele_dl.clear();
 				sens_time.clear();
-				sens_photonDep.clear();
+				sens_gamDep.clear();
 				sens_eleDep.clear();
 				sens_muDep.clear();
 				sens_neutronDep.clear();
@@ -136,16 +136,20 @@ public:
 				sens_muKinFlux.clear();
 				sens_neutronKinFlux.clear();
 				sens_hadKinFlux.clear();
+				sens_gamKinFlux.clear();
+				sens_eleKinFlux.clear();
+
 
 				sens_muCounter.clear();
 				sens_neutronCounter.clear();
 				sens_hadCounter.clear();
-
+				sens_eleCounter.clear();
+				sens_gamCounter.clear();
 
 				ele_den.resize(n_elements,0);
 				ele_dl.resize(n_elements,0);
 				sens_time.resize(n_sens_elements,0);
-				sens_photonDep.resize(n_sens_elements,0);
+				sens_gamDep.resize(n_sens_elements,0);
 				sens_eleDep.resize(n_sens_elements,0);
 				sens_muDep.resize(n_sens_elements,0);
 				sens_neutronDep.resize(n_sens_elements,0);
@@ -154,10 +158,14 @@ public:
 				sens_muKinFlux.resize(n_sens_elements,0);
 				sens_neutronKinFlux.resize(n_sens_elements,0);
 				sens_hadKinFlux.resize(n_sens_elements,0);
+				sens_eleKinFlux.resize(n_sens_elements,0);
+				sens_gamKinFlux.resize(n_sens_elements,0);
 
 				sens_muCounter.resize(n_sens_elements,0);
 				sens_neutronCounter.resize(n_sens_elements,0);
 				sens_hadCounter.resize(n_sens_elements,0);
+				sens_eleCounter.resize(n_sens_elements,0);
+				sens_gamCounter.resize(n_sens_elements,0);
 				//reserve some space based on first event....
 				for (unsigned idx(0); idx<n_sens_elements; ++idx) {
 					if (sens_HitVec[idx].size() > sens_HitVec_size_max) {
@@ -200,7 +208,22 @@ public:
 				return val;
 			}
 			;
-
+			inline G4double getKinEle() {
+				double val = 0;
+				for (unsigned ie(0); ie < n_sens_elements; ++ie) {
+					val += sens_eleKinFlux[ie];
+				}
+				return val;
+			}
+			;
+			inline G4double getKinGam() {
+				double val = 0;
+				for (unsigned ie(0); ie < n_sens_elements; ++ie) {
+					val += sens_gamKinFlux[ie];
+				}
+				return val;
+			}
+			;
 			inline unsigned getMuonCount() {
 				unsigned int  val = 0;
 				for (unsigned ie(0); ie < n_sens_elements; ++ie) {
@@ -221,6 +244,22 @@ public:
 				unsigned int val = 0;
 				for (unsigned ie(0); ie < n_sens_elements; ++ie) {
 					val += sens_neutronCounter[ie];
+				}
+				return val;
+			}
+			;
+			inline unsigned getEleCount() {
+				unsigned int val = 0;
+				for (unsigned ie(0); ie < n_sens_elements; ++ie) {
+					val += sens_eleCounter[ie];
+				}
+				return val;
+			}
+			;
+			inline unsigned getGamCount() {
+				unsigned int val = 0;
+				for (unsigned ie(0); ie < n_sens_elements; ++ie) {
+					val += sens_gamCounter[ie];
 				}
 				return val;
 			}
@@ -261,9 +300,10 @@ public:
 			std::vector<G4double> ele_den;
 			std::vector<G4double> ele_dl;
 			std::vector<G4VPhysicalVolume*> ele_vol;
-			std::vector<G4double> sens_photonDep, sens_eleDep, sens_muDep, sens_muKinFlux,sens_neutronDep, sens_neutronKinFlux,
+			std::vector<G4double> sens_gamDep, sens_eleDep, sens_muDep, sens_gamKinFlux,sens_eleKinFlux,
+			sens_muKinFlux,sens_neutronDep, sens_neutronKinFlux,
 			sens_hadDep, sens_hadKinFlux, sens_time;
-			std::vector<unsigned int> sens_neutronCounter,sens_hadCounter,sens_muCounter;
+			std::vector<unsigned int> sens_neutronCounter,sens_hadCounter,sens_muCounter,sens_gamCounter,sens_eleCounter;
 			G4double Total_thick;
 			std::vector<G4SiHitVec> sens_HitVec;
 			G4SiHitVec abs_HitSumVec;

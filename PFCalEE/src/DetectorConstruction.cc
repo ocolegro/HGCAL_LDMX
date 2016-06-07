@@ -29,7 +29,7 @@ using namespace std;
 
 //
 
-DetectorConstruction::DetectorConstruction(G4int ver, G4int mod, bool signal) :
+DetectorConstruction::DetectorConstruction(G4int ver, G4int mod,bool signal) :
 		version_(ver), model_(mod) {
 	initLayer(0);
 	switch (version_) {

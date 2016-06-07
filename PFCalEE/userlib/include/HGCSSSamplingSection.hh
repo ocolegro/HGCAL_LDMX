@@ -14,7 +14,7 @@ public:
 					0), absorberE_(0), totalE_(0), gFrac_(0), eFrac_(0), muFrac_(
 					0), neutronFrac_(0), hadFrac_(0), muKin_(0), neutronKin_(0), hadKin_(
 					0), avgTime_(0), nSiHits_(0), eleWgtCnt_(0), hadWgtCnt_(0), neutWgtCnt_(
-					0), muWgtCnt_(0),neutronCount_(0),hadCount_(0),muCount_(0) {
+					0), muWgtCnt_(0),neutronCount_(0),hadCount_(0),muCount_(0),eleCount_(0),gamCount_(0) {
 
 	}
 	;
@@ -86,6 +86,14 @@ public:
 		return hadKin_;
 	}
 	;
+	inline double eleKin() const {
+		return eleKin_;
+	}
+	;
+	inline double gamKin() const {
+		return gamKin_;
+	}
+	;
 	inline double avgTime() const {
 		return avgTime_;
 	}
@@ -125,6 +133,14 @@ public:
 	}
 	;
 
+	inline unsigned gamCount() {
+		return gamCount_;
+	}
+	;
+	inline unsigned eleCount() const {
+		return eleCount_;
+	}
+	;
 	//setters
 	inline void volNb(const unsigned & aVal) {
 		volNb_ = aVal;
@@ -194,7 +210,14 @@ public:
 		hadKin_ = aVal;
 	}
 	;
-
+	inline void gamKinFlux(const double & aVal) {
+		gamKin_ = aVal;
+	}
+	;
+	inline void eleKinFlux(const double & aVal) {
+		eleKin_ = aVal;
+	}
+	;
 	inline void eleShowerSize(const double & aVal) {
 		eleWgtCnt_ = aVal;
 	}
@@ -224,6 +247,14 @@ public:
 		neutronCount_ = aVal;
 	}
 	;
+	inline void gamCount(const double & aVal) {
+		gamCount_ = aVal;
+	}
+	;
+	inline void eleCount(const double & aVal) {
+		eleCount_ = aVal;
+	}
+	;
 private:
 	unsigned volNb_;
 	double volX0trans_;
@@ -243,6 +274,8 @@ private:
 	double neutronKin_;
 	double muKin_;
 	double hadKin_;
+	double eleKin_;
+	double gamKin_;
 	double eleWgtCnt_;
 	double hadWgtCnt_;
 	double neutWgtCnt_;
@@ -251,6 +284,8 @@ private:
 	unsigned muCount_;
 	unsigned hadCount_;
 	unsigned neutronCount_;
+	unsigned gamCount_;
+	unsigned eleCount_;
 
 ClassDef(HGCSSSamplingSection,1)
 	;

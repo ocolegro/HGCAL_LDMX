@@ -81,13 +81,13 @@ void EventAction::BeginOfEventAction(const G4Event* evt) {
 void EventAction::Detect(G4double eng, G4double edep, G4double stepl,
 		G4double globalTime, G4int pdgId, G4VPhysicalVolume *volume,
 		const G4ThreeVector & position, G4int trackID, G4int parentID,
-		const HGCSSGenParticle & genPart, G4bool targetParticle) {
-	G4bool inc_ = genPart.isIncoming();
+		const HGCSSGenParticle & genPart, G4bool targetParticle,G4bool forwardCheck) {
+	G4bool genIncCheck = genPart.isIncoming();
 	for (size_t i = 0; i < detector_->size(); i++)
 		(*detector_)[i].add(eng, edep, stepl, globalTime, pdgId, volume,
-				position, trackID, parentID, i,inc_);
+				position, trackID, parentID, i,genIncCheck,forwardCheck);
 
-	if (inc_){
+	if (genIncCheck){
 		if (targetParticle){
 			targetvec_.push_back(genPart);
 		}
@@ -139,11 +139,14 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 		lSec.neutronKinFlux((*detector_)[i].getKinNeutron());
 		lSec.hadKinFlux((*detector_)[i].getKinHadron());
 		lSec.muKinFlux((*detector_)[i].getKinMuon());
+		lSec.eleKinFlux((*detector_)[i].getKinEle());
+		lSec.gamKinFlux((*detector_)[i].getKinGam());
 
 		lSec.neutronCount((*detector_)[i].getNeutronCount());
 		lSec.hadCount((*detector_)[i].getHadronCount());
 		lSec.muCount((*detector_)[i].getMuonCount());
-
+		lSec.eleCount((*detector_)[i].getEleCount());
+		lSec.gamCount((*detector_)[i].getGamCount());
 		if (evtNb_ == 1)
 			std::cout << "if (layer==" << i << ") return " << lSec.voldEdx()
 					<< ";" << std::endl;
