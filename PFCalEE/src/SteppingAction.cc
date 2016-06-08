@@ -51,7 +51,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 	}
 
 	G4double eRawDep = aStep->GetTotalEnergyDeposit();
-	G4double eNonIonDep = aStep->GetTotalEnergyDeposit();
+	G4double eNonIonDep = aStep->GetNonIonizingEnergyDeposit();
 
 	G4double stepl = 0.;
 	if (lTrack->GetDefinition()->GetPDGCharge() != 0.)
