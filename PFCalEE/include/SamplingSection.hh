@@ -27,22 +27,22 @@ public:
 				n_sens_elements=0;
 				n_elements=0;
 				n_sectors=0;
-				ele_thick.clear();
+				sublayer_thick.clear();
 				ele_name.clear();
-				ele_X0.clear();
-				ele_L0.clear();
-				ele_vol.clear();
+				sublayer_X0.clear();
+				sublayer_L0.clear();
+				sublayer_vol.clear();
 				hasScintillator = false;
 				for (unsigned ie(0); ie<aThicknessVec.size(); ++ie) {
 					//consider only material with some non-0 width...
 					if (aThicknessVec[ie]>0) {
-						ele_thick.push_back(aThicknessVec[ie]);
+						sublayer_thick.push_back(aThicknessVec[ie]);
 						ele_name.push_back(aMaterialVec[ie]);
 						if (aMaterialVec[ie]== "Scintillator") hasScintillator = true;
-						ele_X0.push_back(0);
-						ele_dEdx.push_back(0);
-						ele_L0.push_back(0);
-						ele_vol.push_back(0);
+						sublayer_X0.push_back(0);
+						sublayer_dEdx.push_back(0);
+						sublayer_L0.push_back(0);
+						sublayer_vol.push_back(0);
 						Total_thick+=aThicknessVec[ie];
 						++n_elements;
 						//the following method check the total size...
@@ -67,9 +67,9 @@ public:
 
 			inline void setNumberOfSectors(const unsigned nSec) {
 				n_sectors = nSec;
-				ele_vol.clear();
+				sublayer_vol.clear();
 				for (unsigned ie(0); ie<n_elements*n_sectors; ++ie) {
-					ele_vol.push_back(0);
+					sublayer_vol.push_back(0);
 				}
 			};
 
@@ -125,9 +125,9 @@ public:
 			//reset
 			inline void resetCounters()
 			{
-				hit_RawDep.clear();
-				hit_NonIonDep.clear();
-				ele_dl.clear();
+				sublayer_RawDep.clear();
+				sublayer_NonIonDep.clear();
+				sublayer_dl.clear();
 				sens_time.clear();
 				sens_gamDep.clear();
 				sens_eleDep.clear();
@@ -148,9 +148,9 @@ public:
 				sens_eleCounter.clear();
 				sens_gamCounter.clear();
 
-				hit_RawDep.resize(n_elements,0);
-				hit_NonIonDep.resize(n_elements,0);
-				ele_dl.resize(n_elements,0);
+				sublayer_RawDep.resize(n_elements,0);
+				sublayer_NonIonDep.resize(n_elements,0);
+				sublayer_dl.resize(n_elements,0);
 				sens_time.resize(n_sens_elements,0);
 				sens_gamDep.resize(n_sens_elements,0);
 				sens_eleDep.resize(n_sens_elements,0);
@@ -296,20 +296,21 @@ public:
 			unsigned n_elements;
 			unsigned n_sectors;
 			unsigned n_sens_elements;
-			std::vector<G4double> ele_thick;
+			std::vector<G4double> sublayer_thick;
 			std::vector<std::string> ele_name;
-			std::vector<G4double> ele_X0;
-			std::vector<G4double> ele_dEdx;
-			std::vector<G4double> ele_L0;
-			std::vector<G4double> hit_RawDep;
-			std::vector<G4double> hit_NonIonDep;
-			std::vector<G4double> ele_dl;
-			std::vector<G4VPhysicalVolume*> ele_vol;
+			std::vector<G4double> sublayer_X0;
+			std::vector<G4double> sublayer_dEdx;
+			std::vector<G4double> sublayer_L0;
+			std::vector<G4double> sublayer_RawDep;
+			std::vector<G4double> sublayer_NonIonDep;
+			std::vector<G4double> sublayer_dl;
+			std::vector<G4VPhysicalVolume*> sublayer_vol;
 			std::vector<G4double> sens_gamDep, sens_eleDep, sens_muDep, sens_gamKinFlux,sens_eleKinFlux,
 			sens_muKinFlux,sens_neutronDep, sens_neutronKinFlux,
 			sens_hadDep, sens_hadKinFlux, sens_time;
 			std::vector<unsigned int> sens_neutronCounter,sens_hadCounter,sens_muCounter,sens_gamCounter,sens_eleCounter;
 			G4double Total_thick;
+
 			std::vector<G4SiHitVec> sens_HitVec;
 			G4SiHitVec abs_HitSumVec;
 

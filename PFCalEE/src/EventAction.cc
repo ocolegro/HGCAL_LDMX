@@ -125,8 +125,8 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 		lSec.sensDep((*detector_)[i].getMeasuredEnergy(false));
 		lSec.totalDep((*detector_)[i].getTotalEnergy());
 		lSec.totalNonIonDep((*detector_)[i].getTotalEnergy(false));
-		lSec.gDepFrac((*detector_)[i].getPhotonFraction());
-		lSec.eDepFrac((*detector_)[i].getElectronFraction());
+		lSec.gamDepFrac((*detector_)[i].getPhotonFraction());
+		lSec.eleDepFrac((*detector_)[i].getElectronFraction());
 		lSec.muDepFrac((*detector_)[i].getMuonFraction());
 		lSec.neutronDepFrac((*detector_)[i].getNeutronFraction());
 		lSec.hadDepFrac((*detector_)[i].getHadronicFraction());

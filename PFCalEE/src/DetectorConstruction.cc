@@ -480,7 +480,7 @@ void DetectorConstruction::buildSectorStack(const unsigned sectorNum,
 				idx++;
 			}
 			std::string baseName(nameBuf);
-			G4double thick = m_caloStruct[i].ele_thick[ie];
+			G4double thick = m_caloStruct[i].sublayer_thick[ie];
 			//
 
 			if (thick > 0) {
@@ -494,26 +494,26 @@ void DetectorConstruction::buildSectorStack(const unsigned sectorNum,
 						minL, width, i);
 				G4LogicalVolume *logi = new G4LogicalVolume(solid,
 						m_materials[eleName], baseName + "log");
-				m_caloStruct[i].ele_X0[ie] = m_materials[eleName]->GetRadlen();
-				m_caloStruct[i].ele_dEdx[ie] = m_dEdx[eleName];
-				m_caloStruct[i].ele_L0[ie] =
+				m_caloStruct[i].sublayer_X0[ie] = m_materials[eleName]->GetRadlen();
+				m_caloStruct[i].sublayer_dEdx[ie] = m_dEdx[eleName];
+				m_caloStruct[i].sublayer_L0[ie] =
 						m_materials[eleName]->GetNuclearInterLength();
 				if (sectorNum == 0 || sectorNum == m_nSectors - 1) {
 					G4cout << "************ " << eleName;
 					if (m_nSectors > 1)
 						G4cout << " sector " << sectorNum;
 					G4cout << " layer " << i << " dEdx="
-							<< m_caloStruct[i].ele_dEdx[ie] << " X0="
-							<< m_caloStruct[i].ele_X0[ie] << " L0="
-							<< m_caloStruct[i].ele_L0[ie] << " zpos="
+							<< m_caloStruct[i].sublayer_dEdx[ie] << " X0="
+							<< m_caloStruct[i].sublayer_X0[ie] << " L0="
+							<< m_caloStruct[i].sublayer_L0[ie] << " zpos="
 							<< zOffset + zOverburden << "mm w="
-							<< m_caloStruct[i].ele_thick[ie] << "mm";
+							<< m_caloStruct[i].sublayer_thick[ie] << "mm";
 
-					totalLengthX0 += m_caloStruct[i].ele_thick[ie]
-							/ m_caloStruct[i].ele_X0[ie];
+					totalLengthX0 += m_caloStruct[i].sublayer_thick[ie]
+							/ m_caloStruct[i].sublayer_X0[ie];
 					G4cout << " TotX0=" << totalLengthX0;
-					totalLengthL0 += m_caloStruct[i].ele_thick[ie]
-							/ m_caloStruct[i].ele_L0[ie];
+					totalLengthL0 += m_caloStruct[i].sublayer_thick[ie]
+							/ m_caloStruct[i].sublayer_L0[ie];
 					G4cout << " TotLambda=" << totalLengthL0 << G4endl;
 				}
 
@@ -527,7 +527,7 @@ void DetectorConstruction::buildSectorStack(const unsigned sectorNum,
 				<< "), logi,"
 				<< baseName+"phys, m_logicWorld, false, 0);" << endl;
 #endif
-				m_caloStruct[i].ele_vol[nEle * sectorNum + ie] =
+				m_caloStruct[i].sublayer_vol[nEle * sectorNum + ie] =
 						new G4PVPlacement(0,
 								G4ThreeVector(xpvpos, 0.,
 										zOffset + zOverburden + thick / 2),
@@ -567,7 +567,7 @@ void DetectorConstruction::fillInterSectorSpace(const unsigned sectorNum,
 		for (unsigned ie(0); ie < nEle; ++ie) {
 
 			std::string eleName = m_caloStruct[i].ele_name[ie];
-			G4double thick = m_caloStruct[i].ele_thick[ie];
+			G4double thick = m_caloStruct[i].sublayer_thick[ie];
 
 			eleName = "CFMix";
 			sprintf(nameBuf, "%s%d_%d", eleName.c_str(), int(sectorNum),

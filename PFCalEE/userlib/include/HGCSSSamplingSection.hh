@@ -10,11 +10,11 @@ class HGCSSSamplingSection {
 
 public:
 	HGCSSSamplingSection() :
-			volNb_(0), volX0trans_(0), voldEdx_(0), volLambdatrans_(0), measuredE_(
-					0), absorberE_(0), totalNonIonE_(0), totalRawE_(0),gFrac_(0), eFrac_(0), muFrac_(
+			volNb_(0), volX0trans_(0), voldEdx_(0), volLambdatrans_(0), sensDep_(
+					0), absorberDep_(0), totalNonIonE_(0), totalRawE_(0),gamFrac_(0), eleFrac_(0), muFrac_(
 					0), neutronFrac_(0), hadFrac_(0), muKin_(0), neutronKin_(0), hadKin_(
-					0), avgTime_(0), nSiHits_(0), eleWgtCnt_(0), hadWgtCnt_(0), neutWgtCnt_(
-					0), muWgtCnt_(0),neutronCount_(0),hadCount_(0),muCount_(0),eleCount_(0),gamCount_(0) {
+					0), avgTime_(0), nSiHits_(0), eleShowerSize_(0), hadShowerSize_(0), neutShowerSize_(
+					0), muShowerSize_(0),neutronCount_(0),hadCount_(0),muCount_(0),eleCount_(0),gamCount_(0) {
 
 	}
 	;
@@ -42,85 +42,65 @@ public:
 		return volLambdatrans_;
 	}
 	;
-	inline double measuredE() const {
-		return measuredE_;
+
+	inline double sensDep() const {
+		return sensDep_;
 	}
 	;
-	inline double absorberE() const {
-		return absorberE_;
+	inline double absorberDep() const {
+		return absorberDep_;
 	}
 	;
-	inline double totalE() const {
+	inline double totalDep() const {
 		return totalRawE_;
 	}
 	;
-	inline double nonIonE() {
+	inline double totalNonIonDep() {
 		return totalNonIonE_;
 	}
 	;
-	inline double gFrac() const {
-		return gFrac_;
+
+	inline double gamDepFrac() const {
+		return gamFrac_;
 	}
 	;
-	inline double eFrac() const {
-		return eFrac_;
+	inline double eleDepFrac() const {
+		return eleFrac_;
 	}
 	;
-	inline double muFrac() const {
+	inline double muDepFrac() const {
 		return muFrac_;
 	}
 	;
-	inline double muKin() const {
-		return muKin_;
-	}
-	;
-	inline double neutronFrac() const {
+
+	inline double neutronDepFrac() const {
 		return neutronFrac_;
 	}
 	;
-	inline double neutronKin() const {
-		return neutronKin_;
-	}
-	;
-	inline double hadFrac() const {
+
+	inline double hadDepFrac() const {
 		return hadFrac_;
 	}
 	;
-	inline double hadKin() const {
+
+	inline double neutronKinFlux() const {
+		return neutronKin_;
+	}
+	;
+	inline double muKinFlux() const {
+		return muKin_;
+	}
+	;
+	inline double hadKinFlux() const {
 		return hadKin_;
 	}
 	;
-	inline double eleKin() const {
+	inline double eleKinFlux() const {
 		return eleKin_;
 	}
 	;
-	inline double gamKin() const {
+	inline double gamKinFlux() const {
 		return gamKin_;
-	}
-	;
-	inline double avgTime() const {
-		return avgTime_;
-	}
-	;
-	inline double eleWgtCnt() {
-		return eleWgtCnt_;
-	}
-	;
-
-	inline double hadWgtCnt() {
-		return hadWgtCnt_;
-	}
-	;
-	inline double neutWgtCnt() {
-		return neutWgtCnt_;
-	}
-	;
-	inline double muWgtCnt() {
-		return muWgtCnt_;
-	}
-	;
-	inline unsigned nSiHits() const {
-		return nSiHits_;
 	}
 	;
 
@@ -136,13 +116,37 @@ public:
 		return neutronCount_;
 	}
 	;
-
 	inline unsigned gamCount() {
 		return gamCount_;
 	}
 	;
 	inline unsigned eleCount() const {
 		return eleCount_;
+	}
+	;
+
+	inline double avgTime() const {
+		return avgTime_;
+	}
+	;
+	inline double eleShowerSize() {
+		return eleShowerSize_;
+	}
+	;
+	inline double hadronShowerSize() {
+		return hadShowerSize_;
+	}
+	;
+	inline double neutronShowerSize() {
+		return neutShowerSize_;
+	}
+	;
+	inline double muShowerSize() {
+		return muShowerSize_;
+	}
+	;
+	inline unsigned nSiHits() const {
+		return nSiHits_;
 	}
 	;
 	//setters
@@ -163,11 +167,11 @@ public:
 	}
 	;
 	inline void sensDep(const double & aVal) {
-		measuredE_ = aVal;
+		sensDep_ = aVal;
 	}
 	;
 	inline void absorberDep(const double & aVal) {
-		absorberE_ = aVal;
+		absorberDep_ = aVal;
 	}
 	;
 	inline void totalDep(const double & aVal) {
@@ -178,12 +182,12 @@ public:
 		totalNonIonE_ = aVal;
 	}
 	;
-	inline void gDepFrac(const double & aVal) {
-		gFrac_ = aVal;
+	inline void gamDepFrac(const double & aVal) {
+		gamFrac_ = aVal;
 	}
 	;
-	inline void eDepFrac(const double & aVal) {
-		eFrac_ = aVal;
+	inline void eleDepFrac(const double & aVal) {
+		eleFrac_ = aVal;
 	}
 	;
 	inline void muDepFrac(const double & aVal) {
@@ -227,19 +231,19 @@ public:
 	}
 	;
 	inline void eleShowerSize(const double & aVal) {
-		eleWgtCnt_ = aVal;
+		eleShowerSize_ = aVal;
 	}
 	;
 	inline void hadronShowerSize(const double & aVal) {
-		neutWgtCnt_ = aVal;
+		neutShowerSize_ = aVal;
 	}
 	;
 	inline void neutronShowerSize(const double & aVal) {
-		hadWgtCnt_ = aVal;
+		hadShowerSize_ = aVal;
 	}
 	;
 	inline void muShowerSize(const double & aVal) {
-		muWgtCnt_ = aVal;
+		muShowerSize_ = aVal;
 	}
 	;
 
@@ -268,33 +272,41 @@ private:
 	double volX0trans_;
 	double voldEdx_;
 	double volLambdatrans_;
-	double measuredE_;
-	double absorberE_;
+	double sensDep_;
+	double absorberDep_;
 	double totalNonIonE_;
 	double totalRawE_;
-	double gFrac_;
-	double eFrac_;
+
+
+	double gamFrac_;
+	double eleFrac_;
 	double muFrac_;
 	double neutronFrac_;
 	double hadFrac_;
-	double avgTime_;
-	unsigned nSiHits_;
+
 
 	double neutronKin_;
 	double muKin_;
 	double hadKin_;
 	double eleKin_;
 	double gamKin_;
-	double eleWgtCnt_;
-	double hadWgtCnt_;
-	double neutWgtCnt_;
-	double muWgtCnt_;
+
 
 	unsigned muCount_;
 	unsigned hadCount_;
 	unsigned neutronCount_;
 	unsigned gamCount_;
 	unsigned eleCount_;
+
+
+	double eleShowerSize_;
+	double hadShowerSize_;
+	double neutShowerSize_;
+	double muShowerSize_;
+
+
+	double avgTime_;
+	unsigned nSiHits_;
 
 ClassDef(HGCSSSamplingSection,1)
 	;

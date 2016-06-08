@@ -10,14 +10,14 @@ void SamplingSection::add(G4double parentKE, G4double depositRawE, G4double depo
 	std::string lstr = vol->GetName();
 
 	for (unsigned ie(0); ie < n_elements * n_sectors; ++ie) {
-		if (ele_vol[ie] && lstr == ele_vol[ie]->GetName()) {
+		if (sublayer_vol[ie] && lstr == sublayer_vol[ie]->GetName()) {
 			unsigned idx = getSensitiveLayerIndex(lstr);
 			unsigned eleidx = ie % n_elements;
 			if(!targetParticle){
-				hit_RawDep[eleidx] += depositRawE;
-				hit_NonIonDep[eleidx] += depositNonIonE;
+				sublayer_RawDep[eleidx] += depositRawE;
+				sublayer_NonIonDep[eleidx] += depositNonIonE;
 
-				ele_dl[eleidx] += dl;
+				sublayer_dl[eleidx] += dl;
 
 				//add hit
 				G4SiHit lHit;
@@ -101,7 +101,7 @@ G4double SamplingSection::getTotalSensE() {
 	double etot = 0;
 	for (unsigned ie(0); ie < n_elements; ++ie) {
 		if (isSensitiveElement(ie))
-			etot += hit_RawDep[ie];
+			etot += sublayer_RawDep[ie];
 	}
 	return etot;
 }
@@ -110,7 +110,7 @@ G4double SamplingSection::getTotalSensNonIonE() {
 	double etot = 0;
 	for (unsigned ie(0); ie < n_elements; ++ie) {
 		if (isSensitiveElement(ie))
-			etot += hit_NonIonDep[ie];
+			etot += sublayer_NonIonDep[ie];
 	}
 	return etot;
 }
@@ -187,8 +187,8 @@ G4double SamplingSection::getAbsorberX0() {
 	double val = 0;
 	for (unsigned ie(0); ie < n_elements; ++ie) {
 		if (isAbsorberElement(ie))
-			if (ele_X0[ie] > 0)
-				val += ele_thick[ie] / ele_X0[ie];
+			if (sublayer_X0[ie] > 0)
+				val += sublayer_thick[ie] / sublayer_X0[ie];
 	}
 	return val;
 }
@@ -198,7 +198,7 @@ G4double SamplingSection::getAbsorberdEdx() {
 	double val = 0;
 	for (unsigned ie(0); ie < n_elements; ++ie) {
 		if (isAbsorberElement(ie))
-			val += ele_thick[ie] * ele_dEdx[ie];
+			val += sublayer_thick[ie] * sublayer_dEdx[ie];
 	}
 	return val;
 }
@@ -207,8 +207,8 @@ G4double SamplingSection::getAbsorberdEdx() {
 G4double SamplingSection::getAbsorberLambda() {
 	double val = 0;
 	for (unsigned ie(0); ie < n_elements; ++ie) {
-		if (isAbsorberElement(ie) && ele_L0[ie] > 0)
-			val += ele_thick[ie] / ele_L0[ie];
+		if (isAbsorberElement(ie) && sublayer_L0[ie] > 0)
+			val += sublayer_thick[ie] / sublayer_L0[ie];
 	}
 	return val;
 }
@@ -218,7 +218,7 @@ G4double SamplingSection::getAbsorbedEnergy() {
 	double val = 0;
 	for (unsigned ie(0); ie < n_elements; ++ie) {
 		if (isAbsorberElement(ie))
-			val += hit_RawDep[ie];
+			val += sublayer_RawDep[ie];
 	}
 	return val;
 }
@@ -228,9 +228,9 @@ G4double SamplingSection::getTotalEnergy(bool raw) {
 	double val = 0;
 	for (unsigned ie(0); ie < n_elements; ++ie) {
 		if (raw)
-			val += hit_RawDep[ie];
+			val += sublayer_RawDep[ie];
 		else
-			val += hit_NonIonDep[ie];
+			val += sublayer_NonIonDep[ie];
 	}
 	return val;
 }
