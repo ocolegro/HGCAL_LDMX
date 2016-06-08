@@ -8,9 +8,11 @@ void SamplingSection::add(G4double parentKE, G4double depositRawE, G4double depo
 		const G4ThreeVector & position, G4int trackID, G4int parentID,
 		G4int layerId,G4bool isHadronTrack,G4bool isForward, G4bool isPrimaryTrack) {
 	std::string lstr = vol->GetName();
-
+	bool breakSwitch = false;
 	for (unsigned ie(0); ie < n_elements * n_sectors; ++ie) {
+			if (breakSwitch) break;
 		if (sublayer_vol[ie] && lstr == sublayer_vol[ie]->GetName()) {
+			breakSwitch = true;
 			unsigned idx = getSensitiveLayerIndex(lstr);
 			unsigned eleidx = ie % n_elements;
 			sublayer_RawDep[eleidx] += depositRawE;
