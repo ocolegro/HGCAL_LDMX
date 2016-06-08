@@ -74,7 +74,8 @@ public:
 			};
 
 			//
-			void add(G4double eng,G4double den, G4double dl,
+			void add(G4double parentKE,G4double depositRawE, G4double depositNonIonE,
+					G4double dl,
 					G4double globalTime,G4int pdgId,
 					G4VPhysicalVolume* vol,
 					const G4ThreeVector & position,
@@ -124,7 +125,8 @@ public:
 			//reset
 			inline void resetCounters()
 			{
-				ele_den.clear();
+				hit_RawDep.clear();
+				hit_NonIonDep.clear();
 				ele_dl.clear();
 				sens_time.clear();
 				sens_gamDep.clear();
@@ -146,7 +148,8 @@ public:
 				sens_eleCounter.clear();
 				sens_gamCounter.clear();
 
-				ele_den.resize(n_elements,0);
+				hit_RawDep.resize(n_elements,0);
+				hit_NonIonDep.resize(n_elements,0);
 				ele_dl.resize(n_elements,0);
 				sens_time.resize(n_sens_elements,0);
 				sens_gamDep.resize(n_sens_elements,0);
@@ -266,8 +269,9 @@ public:
 			;
 			//
 			G4double getMeasuredEnergy(bool weighted=true);
+
 			G4double getAbsorbedEnergy();
-			G4double getTotalEnergy();
+			G4double getTotalEnergy(bool raw = true);
 			G4double getAbsorberX0();
 			G4double getAbsorberdEdx();
 			G4double getAbsorberLambda();
@@ -279,7 +283,7 @@ public:
 			G4double getAverageTime();
 			G4int getTotalSensHits();
 			G4double getTotalSensE();
-
+			G4double getTotalSensNonIonE();
 			const G4SiHitVec & getSiHitVec(const unsigned & idx) const;
 			const G4SiHitVec & getAbsHits() const;
 
@@ -297,7 +301,8 @@ public:
 			std::vector<G4double> ele_X0;
 			std::vector<G4double> ele_dEdx;
 			std::vector<G4double> ele_L0;
-			std::vector<G4double> ele_den;
+			std::vector<G4double> hit_RawDep;
+			std::vector<G4double> hit_NonIonDep;
 			std::vector<G4double> ele_dl;
 			std::vector<G4VPhysicalVolume*> ele_vol;
 			std::vector<G4double> sens_gamDep, sens_eleDep, sens_muDep, sens_gamKinFlux,sens_eleKinFlux,

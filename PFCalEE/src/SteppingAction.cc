@@ -50,7 +50,8 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 		thePostPVname = postvolume->GetName();
 	}
 
-	G4double edep = aStep->GetTotalEnergyDeposit();
+	G4double eRawDep = aStep->GetTotalEnergyDeposit();
+	G4double eNonIonDep = aStep->GetTotalEnergyDeposit();
 
 	G4double stepl = 0.;
 	if (lTrack->GetDefinition()->GetPDGCharge() != 0.)
@@ -115,10 +116,10 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 		eventAction_->trackids.push_back(trackID);
 
 		if(targetParticle == true)
-			eventAction_->Detect(kineng, edep, stepl, globalTime, pdgId, volume,
+			eventAction_->Detect(kineng, eRawDep, eNonIonDep, stepl, globalTime, pdgId, volume,
 					position, trackID, parentID, genPart, false,forward_);
 		}
 	}
-	eventAction_->Detect(kineng, edep, stepl, globalTime, pdgId, volume,
+	eventAction_->Detect(kineng, eRawDep, eNonIonDep, stepl, globalTime, pdgId, volume,
 			position, trackID, parentID, genPart, targetParticle,forward_);
 }
