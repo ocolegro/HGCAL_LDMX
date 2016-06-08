@@ -38,6 +38,7 @@ int main(int argc, char** argv) {
 	std::cout << "Opening the file " << argv[1] << std::endl;
 	TFile *infile = TFile::Open(argv[1]);
 	TTree *tree = (TTree*) infile->Get("HGCSSTree");
+	freopen("log.txt", "w", stdout);
 
 	std::vector<HGCSSSamplingSection> * samplingVec = 0;
 	tree->SetBranchAddress("HGCSSSamplingSectionVec", &samplingVec);
@@ -57,15 +58,15 @@ int main(int argc, char** argv) {
 	TTree t1("sampling", "Sampling Study");
 
 	Float_t summedTotalNonIon,summedTotal, summedSen, maxHadronKe,genKin,
-			layerAvgHFlux,layerAvgNFlux,layerAvgEFlux,layerAvgGFlux,layerAvgMFlux,
+			layerAvgHFlux,layerAvgNFlux,layerAvgEFlux,layerAvgGFlux,layerAvgMFlux,layerAvgEGFlux,
 			layerAvgNCount,layerAvgHCount,layerAvgECount,layerAvgGCount,layerAvgMCount,
-			layerAvgHFrac,layerAvgNFrac,layerAvgMFrac,layerAvgEFrac,layerAvgGFrac,
+			layerAvgHFrac,layerAvgNFrac,layerAvgMFrac,layerAvgEFrac,layerAvgGFrac,layerAvgEGCount,layerAvgEGFrac,
 			layerEShowerSizeAvg,layerHShowerSizeAvg,hardestEarlyHadron,
 			layerHFlux[500], layerNFlux[500], layerMFlux[500],
-			layerHShowerSize[500], layerEShowerSize[500], layerTotal[500],
+			layerHShowerSize[500], layerEShowerSize[500], layerTotal[500],layerEGFrac[500],
 			layerHFrac[500], layerNFrac[500], layerMFrac[500],layerGFrac[500],layerEFrac[500],
 			layerSen[500],layerHCount[500],layerNCount[500],layerMCount[500],layerNonIon[500],
-			layerEFlux[500],layerGFlux[500],layerECount[500],layerGCount[500];
+			layerEFlux[500],layerGFlux[500],layerECount[500],layerGCount[500],layerEGFlux[500],layerEGCount[500];
 
 	Int_t layer[500], caloLen, maxHadronProdLayer,genCounter;
 	t1.Branch("caloLen", &caloLen, "caloLen/I");
@@ -79,12 +80,14 @@ int main(int argc, char** argv) {
 	t1.Branch("layerAvgMFlux", &layerAvgMFlux, "layerAvgMFlux/F");
 	t1.Branch("layerAvgEFlux", &layerAvgEFlux, "layerAvgEFlux/F");
 	t1.Branch("layerAvgGFlux", &layerAvgGFlux, "layerAvgGFlux/F");
+	t1.Branch("layerAvgEGFlux", &layerAvgEGFlux, "layerAvgEGFlux/F");
 
 	t1.Branch("layerAvgHCount", &layerAvgHCount, "layerAvgHCount/F");
 	t1.Branch("layerAvgNCount", &layerAvgNCount, "layerAvgNCount/F");
 	t1.Branch("layerAvgMCount", &layerAvgMCount, "layerAvgMCount/F");
 	t1.Branch("layerAvgECount", &layerAvgECount, "layerAvgECount/F");
 	t1.Branch("layerAvgGCount", &layerAvgGCount, "layerAvgGCount/F");
+	t1.Branch("layerAvgEGCount", &layerAvgEGCount, "layerAvgEGCount/F");
 
 	t1.Branch("layerAvgHFrac", &layerAvgHFrac, "layerAvgHFrac/F");
 	t1.Branch("layerAvgNFrac", &layerAvgNFrac, "layerAvgNFrac/F");
@@ -101,18 +104,21 @@ int main(int argc, char** argv) {
 	t1.Branch("layerMFlux", &layerMFlux, "layerMFlux[caloLen]/F");
 	t1.Branch("layerEFlux", &layerEFlux, "layerEFlux[caloLen]/F");
 	t1.Branch("layerGFlux", &layerGFlux, "layerGFlux[caloLen]/F");
+	t1.Branch("layerEGFlux", &layerEGFlux, "layerEGFlux[caloLen]/F");
 
 	t1.Branch("layerHCount", &layerHCount, "layerHCount[caloLen]/F");
 	t1.Branch("layerNCount", &layerNCount, "layerNCount[caloLen]/F");
 	t1.Branch("layerMCount", &layerMCount, "layerMCount[caloLen]/F");
 	t1.Branch("layerECount", &layerECount, "layerECount[caloLen]/F");
 	t1.Branch("layerGCount", &layerGCount, "layerGCount[caloLen]/F");
+	t1.Branch("layerEGCount", &layerEGCount, "layerEGCount[caloLen]/F");
 
 	t1.Branch("layerHFrac", &layerHFrac, "layerHFrac[caloLen]/F");
 	t1.Branch("layerNFrac", &layerNFrac, "layerNFrac[caloLen]/F");
 	t1.Branch("layerMFrac", &layerMFrac, "layerMFrac[caloLen]/F");
 	t1.Branch("layerEFrac", &layerEFrac, "layerEFrac[caloLen]/F");
 	t1.Branch("layerGFrac", &layerGFrac, "layerGFrac[caloLen]/F");
+	t1.Branch("layerEGFrac", &layerEGFrac, "layerEGFrac[caloLen]/F");
 
 	t1.Branch("layerHShowerSize", &layerHShowerSize, "layerHShowerSize[caloLen]/F");
 	t1.Branch("layerEShowerSize", &layerEShowerSize, "layerEShowerSize[caloLen]/F");
@@ -133,14 +139,15 @@ int main(int argc, char** argv) {
 		tree->GetEntry(ievt);
 
 		summedSen = 0, summedTotal = 0, summedTotalNonIon = 0,caloLen = 0,
-				layerAvgHFlux = 0, layerAvgNFlux = 0, layerAvgMFlux =0,layerAvgEFlux=0,layerAvgGFlux=0,
+				layerAvgHFlux = 0, layerAvgNFlux = 0, layerAvgMFlux =0,layerAvgEFlux=0,layerAvgGFlux=0,layerAvgEGCount = 0,
 				layerAvgHCount=0,layerAvgNCount=0,layerAvgMCount=0,layerAvgECount=0,layerAvgGCount=0,
-				layerAvgHFrac=0,layerAvgNFrac=0,layerAvgMFrac=0,layerAvgEFrac=0,layerAvgGFrac=0,
+				layerAvgHFrac=0,layerAvgNFrac=0,layerAvgMFrac=0,layerAvgEFrac=0,layerAvgGFrac=0,layerAvgEGFrac=0,
 				maxHadronKe=0,genCounter = 0,genKin=0,
 				layerHShowerSizeAvg=0,layerEShowerSizeAvg=0,hardestEarlyHadron = 0;
 
 		Float_t nSens = 3.0;
-		Float_t nLayers = 26.0;
+		Float_t nLayers = samplingVec->size();
+		std::cout << "The number of layers is " << nLayers << std::endl;
 		for (Int_t j = firstLayer; j < samplingVec->size(); j++) {
 			HGCSSSamplingSection& sec = (*samplingVec)[j];
 			summedSen += sec.sensDep();
@@ -152,16 +159,21 @@ int main(int argc, char** argv) {
 			layerAvgMFlux += sec.muKinFlux()/(nSens * nLayers);
 			layerAvgEFlux += sec.eleKinFlux()/(nSens * nLayers);
 			layerAvgGFlux += sec.gamKinFlux()/(nSens * nLayers);
+			layerAvgEGFlux += (sec.eleKinFlux()+sec.gamKinFlux())/(nSens * nLayers);
+
 			layerAvgHCount += sec.hadCount()/(nSens * nLayers);
 			layerAvgNCount += sec.neutronCount()/(nSens * nLayers);
 			layerAvgMCount += sec.muCount()/(nSens * nLayers);
 			layerAvgECount += sec.eleCount()/(nSens * nLayers);
 			layerAvgGCount += sec.gamCount()/(nSens * nLayers);
+			layerAvgEGCount += ( sec.eleCount() +  sec.gamCount())/(nSens * nLayers);
+
 			layerAvgHFrac += sec.hadDepFrac()/(nLayers);
 			layerAvgNFrac += sec.neutronDepFrac()/(nLayers);
 			layerAvgMFrac += sec.muDepFrac()/(nLayers);
 			layerAvgEFrac += sec.eleDepFrac()/(nLayers);
 			layerAvgGFrac += sec.gamDepFrac()/(nLayers);
+			layerAvgEGFrac += (sec.gamDepFrac()+sec.gamDepFrac())/(nLayers);
 
 			layerSen[j - firstLayer] = sec.sensDep()/nSens;
 			layerTotal[j - firstLayer] = sec.totalDep()/nSens;
@@ -170,18 +182,23 @@ int main(int argc, char** argv) {
 			layerHFlux[j - firstLayer] = sec.hadKinFlux()/nSens;
 			layerNFlux[j - firstLayer] = sec.neutronKinFlux()/nSens;
 			layerMFlux[j - firstLayer] = sec.muKinFlux()/nSens;
-			layerEFlux[j - firstLayer] = sec.eleCount()/nSens;
-			layerGFlux[j - firstLayer] = sec.gamCount()/nSens;
+			layerEFlux[j - firstLayer] = sec.eleKinFlux()/nSens;
+			layerGFlux[j - firstLayer] = sec.gamKinFlux()/nSens;
+			layerEGFlux[j - firstLayer] = (sec.eleKinFlux()+sec.gamKinFlux())/nSens;
+
 			layerHCount[j - firstLayer] = sec.hadCount()/nSens;
 			layerNCount[j - firstLayer] = sec.neutronCount()/nSens;
 			layerMCount[j - firstLayer] = sec.muCount()/nSens;
 			layerECount[j - firstLayer] = sec.eleCount()/nSens;
 			layerGCount[j - firstLayer] = sec.gamCount()/nSens;
+			layerEGCount[j - firstLayer] = (sec.eleCount()+sec.gamCount())/nSens;
+
 			layerHFrac[j - firstLayer] = sec.hadDepFrac();
 			layerNFrac[j - firstLayer] = sec.neutronDepFrac();
 			layerMFrac[j - firstLayer] = sec.muDepFrac();
 			layerEFrac[j - firstLayer] = sec.eleDepFrac();
 			layerGFrac[j - firstLayer] = sec.gamDepFrac();
+			layerEGFrac[j - firstLayer] = sec.gamDepFrac() + sec.eleDepFrac();
 
 			layerHShowerSize[j - firstLayer] = sec.hadronShowerSize();
 			layerEShowerSize[j - firstLayer] = sec.eleShowerSize();

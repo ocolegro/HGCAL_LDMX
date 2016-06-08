@@ -6,71 +6,78 @@
 void SamplingSection::add(G4double parentKE, G4double depositRawE, G4double depositNonIonE,
 		G4double dl, G4double globalTime, G4int pdgId, G4VPhysicalVolume* vol,
 		const G4ThreeVector & position, G4int trackID, G4int parentID,
-		G4int layerId,G4bool goodGen,G4bool targetParticle) {
+		G4int layerId,G4bool isHadronTrack,G4bool isForward) {
 	std::string lstr = vol->GetName();
 
 	for (unsigned ie(0); ie < n_elements * n_sectors; ++ie) {
 		if (sublayer_vol[ie] && lstr == sublayer_vol[ie]->GetName()) {
 			unsigned idx = getSensitiveLayerIndex(lstr);
 			unsigned eleidx = ie % n_elements;
-			if(!targetParticle){
-				sublayer_RawDep[eleidx] += depositRawE;
-				sublayer_NonIonDep[eleidx] += depositNonIonE;
+			sublayer_RawDep[eleidx] += depositRawE;
+			sublayer_NonIonDep[eleidx] += depositNonIonE;
 
-				sublayer_dl[eleidx] += dl;
+			sublayer_dl[eleidx] += dl;
 
-				//add hit
-				G4SiHit lHit;
-				lHit.energyDep = depositRawE;
-				lHit.time = globalTime;
-				lHit.pdgId = pdgId;
-				lHit.layer = layerId;
-				lHit.hit_x = position.x();
-				lHit.hit_y = position.y();
-				lHit.hit_z = position.z();
-				lHit.trackId = trackID;
-				lHit.parentId = parentID;
-				lHit.parentKE = parentKE;
+			//add hit
+			G4SiHit lHit;
+			lHit.energyDep = depositRawE;
+			lHit.time = globalTime;
+			lHit.pdgId = pdgId;
+			lHit.layer = layerId;
+			lHit.hit_x = position.x();
+			lHit.hit_y = position.y();
+			lHit.hit_z = position.z();
+			lHit.trackId = trackID;
+			lHit.parentId = parentID;
+			lHit.parentKE = parentKE;
 
-				if (isSensitiveElement(eleidx)) { //if Si || sci
-					sens_time[idx] += depositRawE * globalTime;
+			if (isSensitiveElement(eleidx)) { //if Si || sci
+				sens_time[idx] += depositRawE * globalTime;
 
-					//discriminate further by particle type
-					if (abs(pdgId) == 22){
-						sens_gamDep[idx] += depositRawE;
+				//discriminate further by particle type
+				if (abs(pdgId) == 22){
+					sens_gamDep[idx] += depositRawE;
+					if (isForward){
 						sens_gamKinFlux[idx] += parentKE;
 						sens_gamCounter[idx] += 1;
-
 					}
-					else if (abs(pdgId) == 11){
-						sens_eleDep[idx] += depositRawE;
+				}
+				else if (abs(pdgId) == 11){
+					sens_eleDep[idx] += depositRawE;
+					if (isForward){
 						sens_eleKinFlux[idx] += parentKE;
 						sens_eleCounter[idx] += 1;
 					}
-					else if (abs(pdgId) == 13) {
-						sens_muDep[idx] += depositRawE;
+				}
+				else if (abs(pdgId) == 13) {
+					sens_muDep[idx] += depositRawE;
+					if (isForward){
 						sens_muKinFlux[idx] += parentKE;
 						sens_muCounter[idx] += 1;
-					} else if (abs(pdgId) == 2112) {
-						if (pdgId == 2112 && goodGen)
-							sens_neutronDep[idx] += depositRawE;
-							sens_neutronKinFlux[idx] += parentKE;
-							sens_neutronCounter[idx] += 1;
-
-					} else {
-						if ((abs(pdgId) != 111) && (abs(pdgId) != 310)
-								&& (pdgId != -2212) && (goodGen) )
-							sens_hadDep[idx] += depositRawE;
-							sens_hadKinFlux[idx] += parentKE;
-							sens_hadCounter[idx] += 1;
 					}
-					sens_HitVec[idx].push_back(lHit);
-				} //if Si
-				else {
-					//check for W in layer
-					if ((lstr.find("W") == std::string::npos) == 0)
-						abs_HitSumVec.push_back(lHit);
+				} else if (abs(pdgId) == 2112) {
+					if (pdgId == 2112 && isHadronTrack)
+						sens_neutronDep[idx] += depositRawE;
+					if (isForward){
+						sens_neutronKinFlux[idx] += parentKE;
+						sens_neutronCounter[idx] += 1;
+					}
+				} else {
+					if ((abs(pdgId) != 111) && (abs(pdgId) != 310)
+							&& (pdgId != -2212) && (isHadronTrack) )
+
+						sens_hadDep[idx] += depositRawE;
+					if (isForward){
+						sens_hadKinFlux[idx] += parentKE;
+						sens_hadCounter[idx] += 1;
+					}
 				}
+				sens_HitVec[idx].push_back(lHit);
+			} //if Si
+			else {
+				//check for W in layer
+				if ((lstr.find("W") == std::string::npos) == 0)
+					abs_HitSumVec.push_back(lHit);
 			} //if in right material
 		} //loop on available materials
 	}
