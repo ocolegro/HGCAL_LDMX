@@ -91,13 +91,14 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 		genPart.trackID(trackID);
 		genPart.layer(getLayer(thePostPVname) - ((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->initLayer());
 		isTargetParticle = true;
+		eventAction_->targetTrackIds.push_back(trackID);
 	}
-	unsigned int id_ = std::find(eventAction_->trackids.begin(),
-			eventAction_->trackids.end(), trackID)
-			- eventAction_->trackids.begin();
+	unsigned int hadronTrackLoc = std::find(eventAction_->hadronTrackIds.begin(),
+			eventAction_->hadronTrackIds.end(), trackID)
+			- eventAction_->hadronTrackIds.begin();
 	bool isInitHadron = false;
 	//Only select new hadronic tracks with kin. energy > 10 MeV
-	if ((id_ == eventAction_->trackids.size()) && (kineng>10)) {
+	if ((hadronTrackLoc == eventAction_->hadronTrackIds.size()) && (kineng>10)) {
 		//Only select hadrons
 		if ((abs(pdgId) != 11) && (abs(pdgId) != 22 ) && (pdgId != -2112) && (pdgId != -2212)  && (abs(pdgId) != 310) && (abs(pdgId) != 111)){
 		const G4ThreeVector & postposition = thePostStepPoint->GetPosition();
@@ -110,11 +111,16 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 		genPart.charge(pd->GetPDGCharge());
 		genPart.trackID(trackID);
 		genPart.layer(getLayer(thePostPVname) - ((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->initLayer());
-		eventAction_->trackids.push_back(trackID);
+		eventAction_->hadronTrackIds.push_back(trackID);
 		isInitHadron = true;
 		}
 	}
+	unsigned int targetTrackLoc = std::find(eventAction_->targetTrackIds.begin(),
+			eventAction_->targetTrackIds.end(), trackID)
+			- eventAction_->targetTrackIds.begin();
+	bool isPrimaryTrack = (targetTrackLoc != eventAction_->targetTrackIds.size());
+
 	G4bool isForward = (p[2] > 0);
 	eventAction_->Detect(kineng, eRawDep, eNonIonDep, stepl, globalTime, pdgId, volume,
-			position, trackID, parentID, genPart, isInitHadron,isTargetParticle,isForward);
+			position, trackID, parentID, genPart, isInitHadron,isTargetParticle,isForward,isPrimaryTrack);
 }

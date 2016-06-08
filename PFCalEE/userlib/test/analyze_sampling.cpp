@@ -143,7 +143,7 @@ int main(int argc, char** argv) {
 				layerAvgHCount=0,layerAvgNCount=0,layerAvgMCount=0,layerAvgECount=0,layerAvgGCount=0,
 				layerAvgHFrac=0,layerAvgNFrac=0,layerAvgMFrac=0,layerAvgEFrac=0,layerAvgGFrac=0,layerAvgEGFrac=0,
 				maxHadronKe=0,genCounter = 0,genKin=0,
-				layerHShowerSizeAvg=0,layerEShowerSizeAvg=0,hardestEarlyHadron = 0;
+				layerHShowerSizeAvg=0,layerEShowerSizeAvg=0,hardestEarlyHadron = 0,layerAvgEGFlux=0;
 
 		Float_t nSens = 3.0;
 		Float_t nLayers = samplingVec->size();

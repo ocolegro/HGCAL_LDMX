@@ -6,7 +6,7 @@
 void SamplingSection::add(G4double parentKE, G4double depositRawE, G4double depositNonIonE,
 		G4double dl, G4double globalTime, G4int pdgId, G4VPhysicalVolume* vol,
 		const G4ThreeVector & position, G4int trackID, G4int parentID,
-		G4int layerId,G4bool isHadronTrack,G4bool isForward) {
+		G4int layerId,G4bool isHadronTrack,G4bool isForward, G4bool isPrimaryTrack) {
 	std::string lstr = vol->GetName();
 
 	for (unsigned ie(0); ie < n_elements * n_sectors; ++ie) {
@@ -14,7 +14,8 @@ void SamplingSection::add(G4double parentKE, G4double depositRawE, G4double depo
 			unsigned idx = getSensitiveLayerIndex(lstr);
 			unsigned eleidx = ie % n_elements;
 			sublayer_RawDep[eleidx] += depositRawE;
-			sublayer_NonIonDep[eleidx] += depositNonIonE;
+			if (isPrimaryTrack)
+				sublayer_PrimaryDep[eleidx] += depositRawE;
 
 			sublayer_dl[eleidx] += dl;
 
@@ -31,6 +32,7 @@ void SamplingSection::add(G4double parentKE, G4double depositRawE, G4double depo
 			lHit.parentId = parentID;
 			lHit.parentKE = parentKE;
 
+
 			if (isSensitiveElement(eleidx)) { //if Si || sci
 				sens_time[idx] += depositRawE * globalTime;
 
@@ -38,29 +40,49 @@ void SamplingSection::add(G4double parentKE, G4double depositRawE, G4double depo
 				if (abs(pdgId) == 22){
 					sens_gamDep[idx] += depositRawE;
 					if (isForward){
-						sens_gamKinFlux[idx] += parentKE;
-						sens_gamCounter[idx] += 1;
+						//Prevent twice counting any photon in any given sub-layer.
+						unsigned int trackLoc  = std::find(Gtracks[idx].begin(),Gtracks[idx].end(), trackID) - Gtracks[idx].begin();
+						if (trackLoc == Gtracks[idx].size()){
+							sens_gamKinFlux[idx] += parentKE;
+							sens_gamCounter[idx] += 1;
+							Gtracks[idx].push_back(trackID);
+						}
 					}
 				}
 				else if (abs(pdgId) == 11){
 					sens_eleDep[idx] += depositRawE;
 					if (isForward){
+						//Prevent twice counting any electron in any given sub-layer.
+						unsigned int trackLoc  = std::find(Etracks[idx].begin(),Etracks[idx].end(), trackID) - Etracks[idx].begin();
+						if (trackLoc == Etracks[idx].size()){
 						sens_eleKinFlux[idx] += parentKE;
 						sens_eleCounter[idx] += 1;
+						Etracks[idx].push_back(trackID);
+						}
 					}
 				}
 				else if (abs(pdgId) == 13) {
 					sens_muDep[idx] += depositRawE;
 					if (isForward){
+						//Prevent twice counting any muon in any given sub-layer.
+						unsigned int trackLoc  = std::find(Mtracks[idx].begin(),Mtracks[idx].end(), trackID) - Mtracks[idx].begin();
+						if (trackLoc == Mtracks[idx].size()){
 						sens_muKinFlux[idx] += parentKE;
 						sens_muCounter[idx] += 1;
+						Mtracks[idx].push_back(trackID);
+						}
 					}
 				} else if (abs(pdgId) == 2112) {
 					if (pdgId == 2112 && isHadronTrack)
 						sens_neutronDep[idx] += depositRawE;
 					if (isForward){
+						//Prevent twice counting any neutron in any given sub-layer.
+						unsigned int trackLoc  = std::find(Ntracks[idx].begin(),Ntracks[idx].end(), trackID) - Ntracks[idx].begin();
+						if (trackLoc == Ntracks[idx].size()){
 						sens_neutronKinFlux[idx] += parentKE;
 						sens_neutronCounter[idx] += 1;
+						Ntracks[idx].push_back(trackID);
+						}
 					}
 				} else {
 					if ((abs(pdgId) != 111) && (abs(pdgId) != 310)
@@ -68,8 +90,14 @@ void SamplingSection::add(G4double parentKE, G4double depositRawE, G4double depo
 
 						sens_hadDep[idx] += depositRawE;
 					if (isForward){
+						unsigned int trackLoc  = std::find(Htracks[idx].begin(),Htracks[idx].end(), trackID) - Htracks[idx].begin();
+						if (trackLoc == Htracks[idx].size()){
+						//Prevent twice counting any hadron in any given sub-layer.
 						sens_hadKinFlux[idx] += parentKE;
 						sens_hadCounter[idx] += 1;
+						Htracks[idx].push_back(trackID);
+
+						}
 					}
 				}
 				sens_HitVec[idx].push_back(lHit);
@@ -117,7 +145,7 @@ G4double SamplingSection::getTotalSensNonIonE() {
 	double etot = 0;
 	for (unsigned ie(0); ie < n_elements; ++ie) {
 		if (isSensitiveElement(ie))
-			etot += sublayer_NonIonDep[ie];
+			etot += sublayer_PrimaryDep[ie];
 	}
 	return etot;
 }
@@ -237,7 +265,7 @@ G4double SamplingSection::getTotalEnergy(bool raw) {
 		if (raw)
 			val += sublayer_RawDep[ie];
 		else
-			val += sublayer_NonIonDep[ie];
+			val += sublayer_PrimaryDep[ie];
 	}
 	return val;
 }

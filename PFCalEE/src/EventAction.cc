@@ -80,7 +80,7 @@ void EventAction::BeginOfEventAction(const G4Event* evt) {
 void EventAction::Detect(G4double eng, G4double eDepRaw,G4double eNonIonDep, G4double stepl,
 		G4double globalTime, G4int pdgId, G4VPhysicalVolume *volume,
 		const G4ThreeVector & position, G4int trackID, G4int parentID,
-		const HGCSSGenParticle & genPart, G4bool isInitHadron, G4bool isTargetParticle,G4bool isForward) {
+		const HGCSSGenParticle & genPart, G4bool isInitHadron, G4bool isTargetParticle,G4bool isForward, G4bool isPrimaryTrack) {
 
 	if (isInitHadron)
 		hadronvec_.push_back(genPart);
@@ -91,7 +91,7 @@ void EventAction::Detect(G4double eng, G4double eDepRaw,G4double eNonIonDep, G4d
 
 	for (size_t i = 0; i < detector_->size(); i++)
 		(*detector_)[i].add(eng, eDepRaw, eNonIonDep, stepl, globalTime, pdgId, volume,
-				position, trackID, parentID, i,isInitHadron,isForward);
+				position, trackID, parentID, i,isInitHadron,isForward,isPrimaryTrack);
 }
 
 //
@@ -266,5 +266,6 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 	hitvec_.clear();
 	ssvec_.clear();
 	hadronvec_.clear();
-	trackids.clear();
+	targetTrackIds.clear();
+	hadronTrackIds.clear();
 }

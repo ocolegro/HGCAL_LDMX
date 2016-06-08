@@ -137,8 +137,8 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent) {
 	if (model_ == 0)
 		particleGun->SetParticlePosition(G4ThreeVector(x0, y0, z0));
 
-	G4cout << " -- Gun position set to: " << x0 << "," << y0 << "," << z0
-			<< G4endl;
+	//G4cout << " -- Gun position set to: " << x0 << "," << y0 << "," << z0
+		//	<< G4endl;
 
 	if (currentGenerator) {
 		currentGenerator->GeneratePrimaryVertex(anEvent);

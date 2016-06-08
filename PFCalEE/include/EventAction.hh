@@ -35,7 +35,7 @@ public:
 	void Detect(G4double eng, G4double eRawDep, G4double eNonIonDep,G4double stepl,
 			G4double globalTime, G4int pdgId, G4VPhysicalVolume *volume,
 			const G4ThreeVector & position, G4int trackID, G4int parentID,
-			const HGCSSGenParticle & genPart, G4bool isInitHadron, G4bool isTargetParticle,G4bool isForward);
+			const HGCSSGenParticle & genPart, G4bool isInitHadron, G4bool isTargetParticle,G4bool isForward, G4bool isPrimaryTrack);
 
 	void SetPrintModulo(G4int val) {
 		printModulo = val;
@@ -44,7 +44,7 @@ public:
 	void Add(std::vector<SamplingSection> *newDetector) {
 		detector_ = newDetector;
 	}
-	std::vector<G4int> trackids;
+	std::vector<G4int> targetTrackIds,hadronTrackIds;
 
 private:
 	RunAction* runAct;
