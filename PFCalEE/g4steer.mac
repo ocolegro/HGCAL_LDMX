@@ -4,6 +4,6 @@
 /tracking/verbose 0
 /N03/det/setField 0.0 T
 /N03/det/setModel 0
-/filemode/inputFilename /data/cmszfs1/user/hiltbran/HGCAL_LDMX/PFCalEE/neutron_events/myFile.lhe
+/filemode/inputFilename /data/cmszfs1/user/hiltbran/HGCAL_LDMX/PFCalEE/events/lheFiles/neutrons/25000_4GeV_neutrons.lhe
 /run/initialize
-/run/beamOn 15
+/run/beamOn 25000
