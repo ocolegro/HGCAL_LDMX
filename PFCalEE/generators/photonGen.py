@@ -2,7 +2,6 @@
 import math
 import random
 import optparse
-import numpy
 import os
 
 from time import strftime 

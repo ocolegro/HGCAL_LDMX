@@ -5,6 +5,7 @@
 
 #include "G4Step.hh"
 #include "G4RunManager.hh"
+#include "DetectorConstruction.hh"
 
 #include "HGCSSGenParticle.hh"
 
@@ -16,6 +17,7 @@ SteppingAction::SteppingAction() {
 			((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->getStructure());
 	saturationEngine = new G4EmSaturation();
 	timeLimit_ = 20000000000; //ns
+	version_ = ((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->getVersion();
 }
 
 //
@@ -48,7 +50,8 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 		thePostPVname = postvolume->GetName();
 	}
 
-	G4double edep = aStep->GetTotalEnergyDeposit();
+	G4double eRawDep = aStep->GetTotalEnergyDeposit();
+	G4double eNonIonDep = aStep->GetNonIonizingEnergyDeposit();
 
 	G4double stepl = 0.;
 	if (lTrack->GetDefinition()->GetPDGCharge() != 0.)
@@ -59,17 +62,25 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 	G4double kineng = lTrack->GetKineticEnergy();
 
 	const G4ThreeVector & position = thePreStepPoint->GetPosition();
-
 	HGCSSGenParticle genPart;
-	G4bool targetParticle = false;
+	G4bool isTargetParticle = false;
+	/*
+	if (trackID == 1){
+		std::cout << "The main particle is now at thePrePVname " << thePrePVname  << std::endl;
+		std::cout << "The main particle is now at thePostPVname " << thePostPVname  << std::endl;
+
+	}
+	*/
+	const G4ThreeVector &p = lTrack->GetMomentum();
+
 	if ((globalTime < timeLimit_)
-			&& ((thePrePVname == "Wphys" && thePostPVname == "W1phys")
-					|| (thePrePVname == "W1phys"
-							&& thePostPVname == "G4_Galactic1phys")))
+			//Select target particles from model v2
+			&& ((version_ == 2 && thePrePVname == "Wphys" && thePostPVname == "Si1_0phys") ||
+					//Select target particles from model v1,v>=3
+					((version_ == 1 || version_ > 2) && thePrePVname == "Wphys" && thePostPVname == "W1phys") ||
+					(thePrePVname == "W1phys" && thePostPVname == "G4_Galactic1phys")))
 	{
-		targetParticle = true;
 		const G4ThreeVector & postposition = thePostStepPoint->GetPosition();
-		const G4ThreeVector &p = lTrack->GetMomentum();
 		G4ParticleDefinition *pd = lTrack->GetDefinition();
 		genPart.setPosition(postposition[0], postposition[1], postposition[2]);
 		genPart.setMomentum(p[0], p[1], p[2]);
@@ -78,16 +89,19 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 		genPart.pdgid(pdgId);
 		genPart.charge(pd->GetPDGCharge());
 		genPart.trackID(trackID);
+		genPart.layer(getLayer(thePostPVname) - ((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->initLayer());
+		isTargetParticle = true;
+		eventAction_->targetTrackIds.push_back(trackID);
 	}
-	unsigned int id_ = std::find(eventAction_->trackids.begin(),
-			eventAction_->trackids.end(), trackID)
-			- eventAction_->trackids.begin();
-
-	if ((id_ == eventAction_->trackids.size()) && (kineng>10)) {
+	unsigned int hadronTrackLoc = std::find(eventAction_->hadronTrackIds.begin(),
+			eventAction_->hadronTrackIds.end(), trackID)
+			- eventAction_->hadronTrackIds.begin();
+	bool isInitHadron = false;
+	//Only select new hadronic tracks with kin. energy > 10 MeV
+	if ((hadronTrackLoc == eventAction_->hadronTrackIds.size()) && (kineng>10)) {
+		//Only select hadrons
 		if ((abs(pdgId) != 11) && (abs(pdgId) != 22 ) && (pdgId != -2112) && (pdgId != -2212)  && (abs(pdgId) != 310) && (abs(pdgId) != 111)){
 		const G4ThreeVector & postposition = thePostStepPoint->GetPosition();
-
-		const G4ThreeVector &p = lTrack->GetMomentum();
 		G4ParticleDefinition *pd = lTrack->GetDefinition();
 		genPart.setPosition(postposition[0], postposition[1], postposition[2]);
 		genPart.setMomentum(p[0], p[1], p[2]);
@@ -96,10 +110,17 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 		genPart.pdgid(pdgId);
 		genPart.charge(pd->GetPDGCharge());
 		genPart.trackID(trackID);
-		genPart.layer(getLayer(thePostPVname));
-		eventAction_->trackids.push_back(trackID);
+		genPart.layer(getLayer(thePostPVname) - ((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->initLayer());
+		eventAction_->hadronTrackIds.push_back(trackID);
+		isInitHadron = true;
 		}
 	}
-	eventAction_->Detect(kineng, edep, stepl, globalTime, pdgId, volume,
-			position, trackID, parentID, genPart, targetParticle);
+	unsigned int targetTrackLoc = std::find(eventAction_->targetTrackIds.begin(),
+			eventAction_->targetTrackIds.end(), trackID)
+			- eventAction_->targetTrackIds.begin();
+	bool isPrimaryTrack = (targetTrackLoc != eventAction_->targetTrackIds.size());
+
+	G4bool isForward = (p[2] > 0);
+	eventAction_->Detect(kineng, eRawDep, eNonIonDep, stepl, globalTime, pdgId, volume,
+			position, trackID, parentID, genPart, isInitHadron,isTargetParticle,isForward,isPrimaryTrack);
 }

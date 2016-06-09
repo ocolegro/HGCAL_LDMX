@@ -3,22 +3,27 @@
 #include "SamplingSection.hh"
 
 //
-void SamplingSection::add(G4double eng, G4double den, G4double dl,
-		G4double globalTime, G4int pdgId, G4VPhysicalVolume* vol,
+void SamplingSection::add(G4double parentKE, G4double depositRawE, G4double depositNonIonE,
+		G4double dl, G4double globalTime, G4int pdgId, G4VPhysicalVolume* vol,
 		const G4ThreeVector & position, G4int trackID, G4int parentID,
-		G4int layerId) {
+		G4int layerId,G4bool isHadronTrack,G4bool isForward, G4bool isPrimaryTrack) {
 	std::string lstr = vol->GetName();
-
+	bool breakSwitch = false;
 	for (unsigned ie(0); ie < n_elements * n_sectors; ++ie) {
-		if (ele_vol[ie] && lstr == ele_vol[ie]->GetName()) {
+			if (breakSwitch) break;
+		if (sublayer_vol[ie] && lstr == sublayer_vol[ie]->GetName()) {
+			breakSwitch = true;
 			unsigned idx = getSensitiveLayerIndex(lstr);
 			unsigned eleidx = ie % n_elements;
-			ele_den[eleidx] += den;
-			ele_dl[eleidx] += dl;
+			sublayer_RawDep[eleidx] += depositRawE;
+			if (isPrimaryTrack)
+				sublayer_PrimaryDep[eleidx] += depositRawE;
+
+			sublayer_dl[eleidx] += dl;
 
 			//add hit
 			G4SiHit lHit;
-			lHit.energy = den;
+			lHit.energyDep = depositRawE;
 			lHit.time = globalTime;
 			lHit.pdgId = pdgId;
 			lHit.layer = layerId;
@@ -27,43 +32,85 @@ void SamplingSection::add(G4double eng, G4double den, G4double dl,
 			lHit.hit_z = position.z();
 			lHit.trackId = trackID;
 			lHit.parentId = parentID;
-			lHit.parentEng = eng;
+			lHit.parentKE = parentKE;
+
 
 			if (isSensitiveElement(eleidx)) { //if Si || sci
-				sens_time[idx] += den * globalTime;
+				sens_time[idx] += depositRawE * globalTime;
 
 				//discriminate further by particle type
-				if (abs(pdgId) == 22)
-					sens_gFlux[idx] += den;
-				else if (abs(pdgId) == 11)
-					sens_eFlux[idx] += den;
-
+				if (abs(pdgId) == 22){
+					sens_gamDep[idx] += depositRawE;
+					if (isForward){
+						//Prevent twice counting any photon in any given sub-layer.
+						unsigned int trackLoc  = std::find(Gtracks[idx].begin(),Gtracks[idx].end(), trackID) - Gtracks[idx].begin();
+						if (trackLoc == Gtracks[idx].size()){
+							sens_gamKinFlux[idx] += parentKE;
+							sens_gamCounter[idx] += 1;
+							Gtracks[idx].push_back(trackID);
+						}
+					}
+				}
+				else if (abs(pdgId) == 11){
+					sens_eleDep[idx] += depositRawE;
+					if (isForward){
+						//Prevent twice counting any electron in any given sub-layer.
+						unsigned int trackLoc  = std::find(Etracks[idx].begin(),Etracks[idx].end(), trackID) - Etracks[idx].begin();
+						if (trackLoc == Etracks[idx].size()){
+						sens_eleKinFlux[idx] += parentKE;
+						sens_eleCounter[idx] += 1;
+						Etracks[idx].push_back(trackID);
+						}
+					}
+				}
 				else if (abs(pdgId) == 13) {
-					sens_muFlux[idx] += den;
-					sens_muKinFlux[idx] += eng;
-					sens_muCounter[idx] += 1;
+					sens_muDep[idx] += depositRawE;
+					if (isForward){
+						//Prevent twice counting any muon in any given sub-layer.
+						unsigned int trackLoc  = std::find(Mtracks[idx].begin(),Mtracks[idx].end(), trackID) - Mtracks[idx].begin();
+						if (trackLoc == Mtracks[idx].size()){
+						sens_muKinFlux[idx] += parentKE;
+						sens_muCounter[idx] += 1;
+						Mtracks[idx].push_back(trackID);
+						}
+					}
 				} else if (abs(pdgId) == 2112) {
-					sens_neutronFlux[idx] += den;
-					if (pdgId == 2112)
-						sens_neutronKinFlux[idx] += eng;
+					if (pdgId == 2112 && isHadronTrack)
+						sens_neutronDep[idx] += depositRawE;
+					if (isForward){
+						//Prevent twice counting any neutron in any given sub-layer.
+						unsigned int trackLoc  = std::find(Ntracks[idx].begin(),Ntracks[idx].end(), trackID) - Ntracks[idx].begin();
+						if (trackLoc == Ntracks[idx].size()){
+						sens_neutronKinFlux[idx] += parentKE;
 						sens_neutronCounter[idx] += 1;
+						Ntracks[idx].push_back(trackID);
+						}
+					}
 				} else {
-					sens_hadFlux[idx] += den;
 					if ((abs(pdgId) != 111) && (abs(pdgId) != 310)
-							&& (pdgId != -2212) )
-						sens_hadKinFlux[idx] += eng;
+							&& (pdgId != -2212) && (isHadronTrack) )
+
+						sens_hadDep[idx] += depositRawE;
+					if (isForward){
+						unsigned int trackLoc  = std::find(Htracks[idx].begin(),Htracks[idx].end(), trackID) - Htracks[idx].begin();
+						if (trackLoc == Htracks[idx].size()){
+						//Prevent twice counting any hadron in any given sub-layer.
+						sens_hadKinFlux[idx] += parentKE;
 						sens_hadCounter[idx] += 1;
+						Htracks[idx].push_back(trackID);
+
+						}
+					}
 				}
 				sens_HitVec[idx].push_back(lHit);
 			} //if Si
 			else {
 				//check for W in layer
 				if ((lstr.find("W") == std::string::npos) == 0)
-					abs_HitVec.push_back(lHit);
-			}
-		} //if in right material
-	} //loop on available materials
-
+					abs_HitSumVec.push_back(lHit);
+			} //if in right material
+		} //loop on available materials
+	}
 }
 
 //
@@ -91,7 +138,16 @@ G4double SamplingSection::getTotalSensE() {
 	double etot = 0;
 	for (unsigned ie(0); ie < n_elements; ++ie) {
 		if (isSensitiveElement(ie))
-			etot += ele_den[ie];
+			etot += sublayer_RawDep[ie];
+	}
+	return etot;
+}
+
+G4double SamplingSection::getTotalSensNonIonE() {
+	double etot = 0;
+	for (unsigned ie(0); ie < n_elements; ++ie) {
+		if (isSensitiveElement(ie))
+			etot += sublayer_PrimaryDep[ie];
 	}
 	return etot;
 }
@@ -110,7 +166,7 @@ G4double SamplingSection::getPhotonFraction() {
 	double etot = getTotalSensE();
 	double val = 0;
 	for (unsigned ie(0); ie < n_sens_elements; ++ie) {
-		val += sens_gFlux[ie];
+		val += sens_gamDep[ie];
 	}
 	return etot > 0 ? val / etot : 0;
 }
@@ -120,7 +176,7 @@ G4double SamplingSection::getElectronFraction() {
 	double etot = getTotalSensE();
 	double val = 0;
 	for (unsigned ie(0); ie < n_sens_elements; ++ie) {
-		val += sens_eFlux[ie];
+		val += sens_eleDep[ie];
 	}
 	return etot > 0 ? val / etot : 0;
 }
@@ -130,7 +186,7 @@ G4double SamplingSection::getMuonFraction() {
 	double etot = getTotalSensE();
 	double val = 0;
 	for (unsigned ie(0); ie < n_sens_elements; ++ie) {
-		val += sens_muFlux[ie];
+		val += sens_muDep[ie];
 	}
 	return etot > 0 ? val / etot : 0;
 }
@@ -140,7 +196,7 @@ G4double SamplingSection::getNeutronFraction() {
 	double etot = getTotalSensE();
 	double val = 0;
 	for (unsigned ie(0); ie < n_sens_elements; ++ie) {
-		val += sens_neutronFlux[ie];
+		val += sens_neutronDep[ie];
 	}
 	return etot > 0 ? val / etot : 0;
 }
@@ -150,7 +206,7 @@ G4double SamplingSection::getHadronicFraction() {
 	double etot = getTotalSensE();
 	double val = 0;
 	for (unsigned ie(0); ie < n_sens_elements; ++ie) {
-		val += sens_hadFlux[ie];
+		val += sens_hadDep[ie];
 	}
 	return etot > 0 ? val / etot : 0;
 }
@@ -159,6 +215,7 @@ G4double SamplingSection::getHadronicFraction() {
 G4double SamplingSection::getMeasuredEnergy(bool weighted) {
 	G4double weight = (weighted ? getAbsorberX0() : 1.0);
 	return weight * getTotalSensE();
+
 }
 
 //
@@ -167,8 +224,8 @@ G4double SamplingSection::getAbsorberX0() {
 	double val = 0;
 	for (unsigned ie(0); ie < n_elements; ++ie) {
 		if (isAbsorberElement(ie))
-			if (ele_X0[ie] > 0)
-				val += ele_thick[ie] / ele_X0[ie];
+			if (sublayer_X0[ie] > 0)
+				val += sublayer_thick[ie] / sublayer_X0[ie];
 	}
 	return val;
 }
@@ -178,7 +235,7 @@ G4double SamplingSection::getAbsorberdEdx() {
 	double val = 0;
 	for (unsigned ie(0); ie < n_elements; ++ie) {
 		if (isAbsorberElement(ie))
-			val += ele_thick[ie] * ele_dEdx[ie];
+			val += sublayer_thick[ie] * sublayer_dEdx[ie];
 	}
 	return val;
 }
@@ -187,8 +244,8 @@ G4double SamplingSection::getAbsorberdEdx() {
 G4double SamplingSection::getAbsorberLambda() {
 	double val = 0;
 	for (unsigned ie(0); ie < n_elements; ++ie) {
-		if (isAbsorberElement(ie) && ele_L0[ie] > 0)
-			val += ele_thick[ie] / ele_L0[ie];
+		if (isAbsorberElement(ie) && sublayer_L0[ie] > 0)
+			val += sublayer_thick[ie] / sublayer_L0[ie];
 	}
 	return val;
 }
@@ -198,16 +255,19 @@ G4double SamplingSection::getAbsorbedEnergy() {
 	double val = 0;
 	for (unsigned ie(0); ie < n_elements; ++ie) {
 		if (isAbsorberElement(ie))
-			val += ele_den[ie];
+			val += sublayer_RawDep[ie];
 	}
 	return val;
 }
 
 //
-G4double SamplingSection::getTotalEnergy() {
+G4double SamplingSection::getTotalEnergy(bool raw) {
 	double val = 0;
 	for (unsigned ie(0); ie < n_elements; ++ie) {
-		val += ele_den[ie];
+		if (raw)
+			val += sublayer_RawDep[ie];
+		else
+			val += sublayer_PrimaryDep[ie];
 	}
 	return val;
 }
@@ -217,7 +277,7 @@ const G4SiHitVec & SamplingSection::getSiHitVec(const unsigned & idx) const {
 }
 
 const G4SiHitVec & SamplingSection::getAbsHits() const {
-	return abs_HitVec;
+	return abs_HitSumVec;
 }
 void SamplingSection::trackParticleHistory(const unsigned & idx,
 		const G4SiHitVec & incoming) {

@@ -14,35 +14,35 @@
 class SamplingSection {
 public:
 	//CTOR
-	SamplingSection(const std::vector<G4double> & aThicknessVec,
-			const std::vector<std::string> & aMaterialVec) {
-		if (aMaterialVec.size() != aThicknessVec.size()) {
-			G4cout
-					<< " -- ERROR in sampling section definition. Expect input vectors with same size containing thicknesses (size="
-					<< aThicknessVec.size() << ") and material names (size="
-					<< aMaterialVec.size() << "). Exiting..." << G4endl;
-					exit(1);
+	SamplingSection(std::vector<std::pair <G4double,std::string>> iEle) {
+
+			std::vector<G4double> aThicknessVec;std::vector<std::string> aMaterialVec;
+				for (unsigned i = 0; i < iEle.size(); i++)
+				{
+					aThicknessVec.push_back(iEle.at(i).first);
+					aMaterialVec.push_back(iEle.at(i).second);
+
 				}
 				Total_thick = 0;
 				n_sens_elements=0;
 				n_elements=0;
 				n_sectors=0;
-				ele_thick.clear();
+				sublayer_thick.clear();
 				ele_name.clear();
-				ele_X0.clear();
-				ele_L0.clear();
-				ele_vol.clear();
+				sublayer_X0.clear();
+				sublayer_L0.clear();
+				sublayer_vol.clear();
 				hasScintillator = false;
 				for (unsigned ie(0); ie<aThicknessVec.size(); ++ie) {
 					//consider only material with some non-0 width...
 					if (aThicknessVec[ie]>0) {
-						ele_thick.push_back(aThicknessVec[ie]);
+						sublayer_thick.push_back(aThicknessVec[ie]);
 						ele_name.push_back(aMaterialVec[ie]);
 						if (aMaterialVec[ie]== "Scintillator") hasScintillator = true;
-						ele_X0.push_back(0);
-						ele_dEdx.push_back(0);
-						ele_L0.push_back(0);
-						ele_vol.push_back(0);
+						sublayer_X0.push_back(0);
+						sublayer_dEdx.push_back(0);
+						sublayer_L0.push_back(0);
+						sublayer_vol.push_back(0);
 						Total_thick+=aThicknessVec[ie];
 						++n_elements;
 						//the following method check the total size...
@@ -67,19 +67,20 @@ public:
 
 			inline void setNumberOfSectors(const unsigned nSec) {
 				n_sectors = nSec;
-				ele_vol.clear();
+				sublayer_vol.clear();
 				for (unsigned ie(0); ie<n_elements*n_sectors; ++ie) {
-					ele_vol.push_back(0);
+					sublayer_vol.push_back(0);
 				}
 			};
 
 			//
-			void add(G4double eng,G4double den, G4double dl,
+			void add(G4double parentKE,G4double depositRawE, G4double depositNonIonE,
+					G4double dl,
 					G4double globalTime,G4int pdgId,
 					G4VPhysicalVolume* vol,
 					const G4ThreeVector & position,
 					G4int trackID, G4int parentID,
-					G4int layerId);
+					G4int layerId,G4bool isHadronTrack,G4bool isForward,G4bool isPrimaryTrack);
 
 			inline bool isSensitiveElement(const unsigned & aEle) {
 				if (aEle < n_elements &&
@@ -124,55 +125,74 @@ public:
 			//reset
 			inline void resetCounters()
 			{
-				ele_den.clear();
-				ele_dl.clear();
+				sublayer_RawDep.clear();
+				sublayer_PrimaryDep.clear();
+				sublayer_dl.clear();
 				sens_time.clear();
-				sens_gFlux.clear();
-				sens_eFlux.clear();
-				sens_muFlux.clear();
-				sens_neutronFlux.clear();
-				sens_hadFlux.clear();
-
+				sens_gamDep.clear();
+				sens_eleDep.clear();
+				sens_muDep.clear();
+				sens_neutronDep.clear();
+				sens_hadDep.clear();
 				sens_muKinFlux.clear();
 				sens_neutronKinFlux.clear();
 				sens_hadKinFlux.clear();
+				sens_gamKinFlux.clear();
+				sens_eleKinFlux.clear();
+
+				Etracks.clear();
+				Gtracks.clear();
+				Htracks.clear();
+				Mtracks.clear();
+				Ntracks.clear();
 
 				sens_muCounter.clear();
 				sens_neutronCounter.clear();
 				sens_hadCounter.clear();
+				sens_eleCounter.clear();
+				sens_gamCounter.clear();
 
-
-				ele_den.resize(n_elements,0);
-				ele_dl.resize(n_elements,0);
+				sublayer_RawDep.resize(n_elements,0);
+				sublayer_PrimaryDep.resize(n_elements,0);
+				sublayer_dl.resize(n_elements,0);
 				sens_time.resize(n_sens_elements,0);
-				sens_gFlux.resize(n_sens_elements,0);
-				sens_eFlux.resize(n_sens_elements,0);
-				sens_muFlux.resize(n_sens_elements,0);
-				sens_neutronFlux.resize(n_sens_elements,0);
-				sens_hadFlux.resize(n_sens_elements,0);
-
+				sens_gamDep.resize(n_sens_elements,0);
+				sens_eleDep.resize(n_sens_elements,0);
+				sens_muDep.resize(n_sens_elements,0);
+				sens_neutronDep.resize(n_sens_elements,0);
+				sens_hadDep.resize(n_sens_elements,0);
 				sens_muKinFlux.resize(n_sens_elements,0);
 				sens_neutronKinFlux.resize(n_sens_elements,0);
 				sens_hadKinFlux.resize(n_sens_elements,0);
+				sens_eleKinFlux.resize(n_sens_elements,0);
+				sens_gamKinFlux.resize(n_sens_elements,0);
+
+				Etracks.resize(n_sens_elements);
+				Gtracks.resize(n_sens_elements);
+				Htracks.resize(n_sens_elements);
+				Mtracks.resize(n_sens_elements);
+				Ntracks.resize(n_sens_elements);
 
 				sens_muCounter.resize(n_sens_elements,0);
 				sens_neutronCounter.resize(n_sens_elements,0);
 				sens_hadCounter.resize(n_sens_elements,0);
+				sens_eleCounter.resize(n_sens_elements,0);
+				sens_gamCounter.resize(n_sens_elements,0);
 				//reserve some space based on first event....
 				for (unsigned idx(0); idx<n_sens_elements; ++idx) {
 					if (sens_HitVec[idx].size() > sens_HitVec_size_max) {
 						sens_HitVec_size_max = 2*sens_HitVec[idx].size();
-						G4cout << "-- SamplingSection::resetCounters(), space reserved for HitVec vector increased to " << sens_HitVec_size_max << G4endl;
+						//G4cout << "-- SamplingSection::resetCounters(), space reserved for HitVec vector increased to " << sens_HitVec_size_max << G4endl;
 					}
-					if (abs_HitVec.size() > abs_HitVec_size_max) {
-						abs_HitVec_size_max = 2*abs_HitVec.size();
-						G4cout << "-- SamplingSection::resetCounters(), space reserved for absHitVec vector increased to " << abs_HitVec_size_max << G4endl;
+					if (abs_HitSumVec.size() > abs_HitVec_size_max) {
+						abs_HitVec_size_max = 2*abs_HitSumVec.size();
+						//G4cout << "-- SamplingSection::resetCounters(), space reserved for absHitVec vector increased to " << abs_HitVec_size_max << G4endl;
 
 					}
 					sens_HitVec[idx].clear();
 					sens_HitVec[idx].reserve(sens_HitVec_size_max);
-					abs_HitVec.clear();
-					abs_HitVec.reserve(abs_HitVec_size_max);
+					abs_HitSumVec.clear();
+					abs_HitSumVec.reserve(abs_HitVec_size_max);
 				}
 			}
 
@@ -200,7 +220,22 @@ public:
 				return val;
 			}
 			;
-
+			inline G4double getKinEle() {
+				double val = 0;
+				for (unsigned ie(0); ie < n_sens_elements; ++ie) {
+					val += sens_eleKinFlux[ie];
+				}
+				return val;
+			}
+			;
+			inline G4double getKinGam() {
+				double val = 0;
+				for (unsigned ie(0); ie < n_sens_elements; ++ie) {
+					val += sens_gamKinFlux[ie];
+				}
+				return val;
+			}
+			;
 			inline unsigned getMuonCount() {
 				unsigned int  val = 0;
 				for (unsigned ie(0); ie < n_sens_elements; ++ie) {
@@ -225,10 +260,27 @@ public:
 				return val;
 			}
 			;
+			inline unsigned getEleCount() {
+				unsigned int val = 0;
+				for (unsigned ie(0); ie < n_sens_elements; ++ie) {
+					val += sens_eleCounter[ie];
+				}
+				return val;
+			}
+			;
+			inline unsigned getGamCount() {
+				unsigned int val = 0;
+				for (unsigned ie(0); ie < n_sens_elements; ++ie) {
+					val += sens_gamCounter[ie];
+				}
+				return val;
+			}
+			;
 			//
 			G4double getMeasuredEnergy(bool weighted=true);
+
 			G4double getAbsorbedEnergy();
-			G4double getTotalEnergy();
+			G4double getTotalEnergy(bool raw = true);
 			G4double getAbsorberX0();
 			G4double getAbsorberdEdx();
 			G4double getAbsorberLambda();
@@ -240,7 +292,7 @@ public:
 			G4double getAverageTime();
 			G4int getTotalSensHits();
 			G4double getTotalSensE();
-
+			G4double getTotalSensNonIonE();
 			const G4SiHitVec & getSiHitVec(const unsigned & idx) const;
 			const G4SiHitVec & getAbsHits() const;
 
@@ -253,20 +305,25 @@ public:
 			unsigned n_elements;
 			unsigned n_sectors;
 			unsigned n_sens_elements;
-			std::vector<G4double> ele_thick;
+			std::vector<G4double> sublayer_thick;
 			std::vector<std::string> ele_name;
-			std::vector<G4double> ele_X0;
-			std::vector<G4double> ele_dEdx;
-			std::vector<G4double> ele_L0;
-			std::vector<G4double> ele_den;
-			std::vector<G4double> ele_dl;
-			std::vector<G4VPhysicalVolume*> ele_vol;
-			std::vector<G4double> sens_gFlux, sens_eFlux, sens_muFlux, sens_muKinFlux,sens_neutronFlux, sens_neutronKinFlux,
-			sens_hadFlux, sens_hadKinFlux, sens_time;
-			std::vector<unsigned int> sens_neutronCounter,sens_hadCounter,sens_muCounter;
+			std::vector<G4double> sublayer_X0;
+			std::vector<G4double> sublayer_dEdx;
+			std::vector<G4double> sublayer_L0;
+			std::vector<G4double> sublayer_RawDep;
+			std::vector<G4double> sublayer_PrimaryDep;
+			std::vector<G4double> sublayer_dl;
+
+			std::vector<G4VPhysicalVolume*> sublayer_vol;
+			std::vector<G4double> sens_gamDep, sens_eleDep, sens_muDep, sens_gamKinFlux,sens_eleKinFlux,
+			sens_muKinFlux,sens_neutronDep, sens_neutronKinFlux,
+			sens_hadDep, sens_hadKinFlux, sens_time;
+			std::vector<std::vector<unsigned int>> Etracks,Gtracks,Mtracks,Ntracks,Htracks;
+			std::vector<unsigned int> sens_neutronCounter,sens_hadCounter,sens_muCounter,sens_gamCounter,sens_eleCounter;
 			G4double Total_thick;
+
 			std::vector<G4SiHitVec> sens_HitVec;
-			G4SiHitVec abs_HitVec;
+			G4SiHitVec abs_HitSumVec;
 
 			unsigned sens_HitVec_size_max;
 			unsigned abs_HitVec_size_max;

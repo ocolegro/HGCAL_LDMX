@@ -12,8 +12,8 @@ public:
 	~G4SiHit() {
 	}
 	;
-	double parentEng;
-	double energy;
+	double parentKE;
+	double energyDep;
 	double time;
 	unsigned layer;
 	int pdgId;

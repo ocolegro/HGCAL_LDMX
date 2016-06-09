@@ -27,7 +27,7 @@ public:
 
 	enum DetectorVersion {
 		v_HGCALEE_v6 = 1,
-		v_HGCALSYM_v1 = 2,
+		v_HGCALEE_Tv6 = 2,
 		v_HGCALEE_v6_s05 = 3,
 		v_HGCALEE_v6_s10 = 4,
 		v_HGCALEE_v6_s20 = 5,
@@ -37,6 +37,7 @@ public:
 	enum DetectorModel {
 		m_SIMPLE_20 = 0, m_SIMPLE_50 = 1, m_FULLSECTION = 2, m_SIMPLE_100 = 3,
 	};
+
 
 	/**
 	 @short CTOR
@@ -105,6 +106,12 @@ public:
 		return m_WorldSizeZ;
 	}
 
+	unsigned initLayer() {
+		return initLayer_;
+	}
+	unsigned initLayer(int aVal) {
+		 initLayer_ = aVal;
+	}
 	/**
 	 @short build the detector
 	 */
@@ -139,7 +146,7 @@ private:
 			const size_t which_ele);
 
 	std::vector<G4Material*> m_SensitiveMaterial;
-
+	G4int initLayer_;
 	G4double m_CalorSizeXY, m_CalorSizeZ;
 	G4double m_minRadius, m_maxRadius;
 	G4double m_maxTheta;

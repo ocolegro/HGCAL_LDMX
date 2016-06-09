@@ -6,11 +6,11 @@
 
 HGCSSSimHit::HGCSSSimHit(const G4SiHit & aSiHit, const unsigned & asilayer,
 		TH2Poly* map, const float) {
-	energy_ = aSiHit.energy;
+	energy_ = aSiHit.energyDep;
 	//energy weighted time
 	//PS: need to call calculateTime() after all hits 
 	//have been added to have divided by totalE!!
-	time_ = aSiHit.time * aSiHit.energy;
+	time_ = aSiHit.time * aSiHit.energyDep;
 	zpos_ = aSiHit.hit_z;
 	setLayer(aSiHit.layer, asilayer);
 	//coordinates in mm
@@ -41,14 +41,14 @@ HGCSSSimHit::HGCSSSimHit(const G4SiHit & aSiHit, const unsigned & asilayer,
 		nHadrons_++;
 
 	trackIDMainParent_ = aSiHit.parentId;
-	energyMainParent_ = aSiHit.energy;
+	energyMainParent_ = aSiHit.energyDep;
 	trackID_ = aSiHit.trackId;
-	parentEng_ = aSiHit.parentEng;
+	parentEng_ = aSiHit.parentKE;
 }
 
 void HGCSSSimHit::Add(const G4SiHit & aSiHit) {
 
-	time_ = time_ + aSiHit.time * aSiHit.energy;
+	time_ = time_ + aSiHit.time * aSiHit.energyDep;
 	//PS: need to call calculateTime() after all hits 
 	//have been added to have divided by totalE!!
 
@@ -65,10 +65,10 @@ void HGCSSSimHit::Add(const G4SiHit & aSiHit) {
 	else
 		nHadrons_++;
 
-	energy_ += aSiHit.energy;
-	if (aSiHit.energy > energyMainParent_) {
+	energy_ += aSiHit.energyDep;
+	if (aSiHit.energyDep > energyMainParent_) {
 		trackIDMainParent_ = aSiHit.parentId;
-		energyMainParent_ = aSiHit.energy;
+		energyMainParent_ = aSiHit.energyDep;
 	}
 
 }
