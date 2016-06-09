@@ -99,6 +99,9 @@ public:
 	G4double GetCalorSizeZ() {
 		return m_CalorSizeZ;
 	}
+	G4double steelThickness() {
+		return steelThick_;
+	}
 	G4double GetWorldSizeXY() {
 		return m_WorldSizeXY;
 	}
