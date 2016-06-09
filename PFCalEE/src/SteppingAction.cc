@@ -78,7 +78,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 			}
 		}
 	//Delete tracks that have no hope of making us happy
-	if (lKinEng < 100 && (abs(lPdgId) != 11  &&  abs(lPdgId) != 22 ) ) {
+	if (lKinEng < 100 && (abs(lPdgId) == 11  ||  abs(lPdgId) != 22 ) ) {
 		lTrack->SetTrackStatus(fStopAndKill);}
 }
 
