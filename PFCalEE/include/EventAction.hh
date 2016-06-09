@@ -46,7 +46,7 @@ public:
 	}
 	HGCSSGenParticleVec hadronvec_;
 	std::vector<G4int> parentIDs;
-	std::vector<std::pair<G4int,G4int>> parentInfo;
+	std::vector<std::pair<G4int,G4double>> parentInfo;
 private:
 	RunAction* runAct;
 	std::vector<SamplingSection> *detector_;

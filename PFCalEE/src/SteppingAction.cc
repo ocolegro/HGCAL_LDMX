@@ -45,8 +45,10 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 	unsigned int loc = std::find(eventAction_->parentIDs.begin(),
 			eventAction_->parentIDs.end(), lTrackID)
 			- eventAction_->parentIDs.begin();
-	if (loc == eventAction_->parentIDs.size())
+	if (loc == eventAction_->parentIDs.size()){
 		eventAction_->parentIDs.push_back(lTrackID);
+		eventAction_->parentInfo.push_back(std::make_pair(lPdgId,lKinEng));
+	}
 
 	if (lKinEng > 0 ){
 		if((abs(lPdgId) != 11) && (abs(lPdgId) != 22 ) && (lPdgId != -2112) && (lPdgId != -2212)){
