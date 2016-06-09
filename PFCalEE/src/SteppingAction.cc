@@ -43,9 +43,9 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 	}
 
 	if (lKinEng > 100 && (abs(lPdgId) == 11  ||  abs(lPdgId) == 22 ) ){
-		const std::vector<const G4Track*> secondaryTracks = aStep->GetSecondaryInCurrentStep();
-			for (unsigned iT(0); iT < secondaryTracks.size() < iT; iT++){
-				const G4Track* sTrack = secondaryTracks.at(iT);
+		const std::vector<const G4Track*>* secondaryTracks = aStep->GetSecondaryInCurrentStep();
+			for (unsigned iT(0); iT < secondaryTracks->size() < iT; iT++){
+				const G4Track* sTrack = secondaryTracks->at(iT);
 				G4double sKinEng = sTrack->GetKineticEnergy();
 				G4int sTrackID = sTrack->GetTrackID();
 				G4int sPdgId  = sTrack->GetDefinition()->GetPDGEncoding();
