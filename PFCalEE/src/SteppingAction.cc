@@ -42,6 +42,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 	}
 
 	if (lKinEng > 100 && (abs(lPdgId) == 11  ||  abs(lPdgId) == 22 ) ){
+		//G4cout << "Looking at a secondary "  << G4endl;
 		const std::vector<const G4Track*>* secondaryTracks = aStep->GetSecondaryInCurrentStep();
 			for (unsigned iT(0); iT < secondaryTracks->size() < iT; iT++){
 				const G4Track* sTrack = secondaryTracks->at(iT);
@@ -52,6 +53,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 				if((abs(sPdgId) != 11) && (abs(sPdgId) != 22 ) && (sPdgId != -2112) && (sPdgId != -2212)
 						&& (abs(sPdgId) != 310) && (abs(sPdgId) != 111) && (sTrackID < 1e5) && (sPdgId != 0)
 						&& (sKinEng > 10)){
+					G4cout << "Looking at a hadron "  << G4endl;
 
 					HGCSSGenParticle genPart;
 					const G4ThreeVector & postposition = thePostStepPoint->GetPosition();
