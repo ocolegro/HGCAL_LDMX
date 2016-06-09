@@ -51,15 +51,20 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 	}
 
 	if (lKinEng > 0 ){
-		if((abs(lPdgId) != 11) && (abs(lPdgId) != 22 ) && (lPdgId != -2112) && (lPdgId != -2212)){
-			G4cout << "The particle pdgId = "  << lPdgId << G4endl;
+		if((lPdgId == 2112)){
+			G4cout << "The track pdgid is " << lPdgId << G4endl;
 			unsigned int loc = std::find(eventAction_->parentIDs.begin(),
 					eventAction_->parentIDs.end(), lTrack->GetParentID() )
 					- eventAction_->parentIDs.begin();
+			G4cout << "The parent track is " << lTrack->GetParentID() ;//<< " and to double check " << parentIDs.at(loc) << G4endl;
+		}
+			/*
+			G4cout << "The particle pdgId = "  << lPdgId << G4endl;
+
 
 			G4cout << "The parent pdgid and ke are " << eventAction_->parentInfo.at(loc).first << " and " <<  eventAction_->parentInfo.at(loc).second;
 
-		}
+		}*/
 		const std::vector<const G4Track*>* secondaryTracks = aStep->GetSecondaryInCurrentStep();
 			for (unsigned iT = 0; iT < secondaryTracks->size(); iT++){
 				const G4Track* sTrack = secondaryTracks->at(iT);
