@@ -38,6 +38,7 @@ EventAction::EventAction() {
 			<< info->model() << std::endl;
 	outF_->WriteObjectAny(info, "HGCSSInfo", "Info");
 	initLayer = ((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->initLayer();
+	steelThick = ((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->steelThickness();
 	//honeycomb
 	geomConv_ = new HGCSSGeometryConversion(info->model(), CELL_SIZE_X);
 	geomConv_->initialiseHoneyComb(xysize, CELL_SIZE_X);
@@ -73,25 +74,28 @@ void EventAction::BeginOfEventAction(const G4Event* evt) {
 		G4cout << "\n---> Begin of event: " << evtNb_ << G4endl;
 		CLHEP::HepRandom::showEngineStatus();
 	}
+	//fout_ << "Event " << evtNb_ << std::endl;
 
 }
 
 //
-void EventAction::Detect(G4double eng, G4double eDepRaw,G4double eNonIonDep, G4double stepl,
+void EventAction::Detect(G4double eng, G4double edep, G4double stepl,
 		G4double globalTime, G4int pdgId, G4VPhysicalVolume *volume,
 		const G4ThreeVector & position, G4int trackID, G4int parentID,
-		const HGCSSGenParticle & genPart, G4bool isInitHadron, G4bool isTargetParticle,G4bool isForward, G4bool isPrimaryTrack) {
-
-	if (isInitHadron)
-		hadronvec_.push_back(genPart);
-
-	if (isTargetParticle)
-		targetvec_.push_back(genPart);
-
-
+		const HGCSSGenParticle & genPart, G4bool targetParticle) {
+	G4bool inc_ = genPart.isIncoming();
 	for (size_t i = 0; i < detector_->size(); i++)
-		(*detector_)[i].add(eng, eDepRaw, eNonIonDep, stepl, globalTime, pdgId, volume,
-				position, trackID, parentID, i,isInitHadron,isForward,isPrimaryTrack);
+		(*detector_)[i].add(eng, edep, stepl, globalTime, pdgId, volume,
+				position, trackID, parentID, i,inc_);
+
+	if (inc_){
+		if (targetParticle){
+			targetvec_.push_back(genPart);
+		}
+		else{
+			hadronvec_.push_back(genPart);
+		}
+	}
 }
 
 //
@@ -104,6 +108,7 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 	event_.vtx_x(g4evt->GetPrimaryVertex(0)->GetX0());
 	event_.vtx_y(g4evt->GetPrimaryVertex(0)->GetY0());
 	event_.vtx_z(g4evt->GetPrimaryVertex(0)->GetZ0());
+	event_.steelThick(steelThick);
 
 	ssvec_.clear();
 	ssvec_.reserve(detector_->size());
@@ -121,7 +126,7 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 		lSec.absorberDep((*detector_)[i].getAbsorbedEnergy());
 		lSec.sensDep((*detector_)[i].getMeasuredEnergy(false));
 		lSec.totalDep((*detector_)[i].getTotalEnergy());
-		lSec.totalNonIonDep((*detector_)[i].getTotalEnergy(false));
+
 		lSec.gamDepFrac((*detector_)[i].getPhotonFraction());
 		lSec.eleDepFrac((*detector_)[i].getElectronFraction());
 		lSec.muDepFrac((*detector_)[i].getMuonFraction());
@@ -136,14 +141,11 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 		lSec.neutronKinFlux((*detector_)[i].getKinNeutron());
 		lSec.hadKinFlux((*detector_)[i].getKinHadron());
 		lSec.muKinFlux((*detector_)[i].getKinMuon());
-		lSec.eleKinFlux((*detector_)[i].getKinEle());
-		lSec.gamKinFlux((*detector_)[i].getKinGam());
 
 		lSec.neutronCount((*detector_)[i].getNeutronCount());
 		lSec.hadCount((*detector_)[i].getHadronCount());
 		lSec.muCount((*detector_)[i].getMuonCount());
-		lSec.eleCount((*detector_)[i].getEleCount());
-		lSec.gamCount((*detector_)[i].getGamCount());
+
 		if (evtNb_ == 1)
 			std::cout << "if (layer==" << i << ") return " << lSec.voldEdx()
 					<< ";" << std::endl;
@@ -266,6 +268,5 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 	hitvec_.clear();
 	ssvec_.clear();
 	hadronvec_.clear();
-	targetTrackIds.clear();
-	hadronTrackIds.clear();
+	trackids.clear();
 }

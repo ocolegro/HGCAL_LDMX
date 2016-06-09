@@ -43,7 +43,7 @@ public:
 	 @short CTOR
 	 */
 	DetectorConstruction(G4int ver = DetectorConstruction::v_HGCALEE_v6,
-			G4int mod = DetectorConstruction::m_SIMPLE_20, bool signal = false);
+			G4int mod = DetectorConstruction::m_SIMPLE_20, G4double steelThick = 0.);
 
 	void buildHGCALFHE(const unsigned aVersion);
 	void buildHGCALBHE(const unsigned aVersion);
@@ -150,7 +150,7 @@ private:
 	G4double m_CalorSizeXY, m_CalorSizeZ;
 	G4double m_minRadius, m_maxRadius;
 	G4double m_maxTheta;
-	G4double m_z0pos;
+	G4double m_z0pos,steelThick_;
 	G4double m_WorldSizeXY, m_WorldSizeZ;
 	G4double m_nSectors, m_sectorWidth, m_interSectorWidth;
 
