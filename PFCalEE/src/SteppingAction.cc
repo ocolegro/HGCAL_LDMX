@@ -48,10 +48,10 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 				const G4Track* sTrack = secondaryTracks.at(iT);
 				G4double sKinEng = sTrack->GetKineticEnergy();
 				G4int sTrackID = sTrack->GetTrackID();
-
+				G4int sPdgId  = sTrack->GetDefinition()->GetPDGEncoding();
 				//store good lasting hadrons!
-				if((abs(sTrackID) != 11) && (abs(sTrackID) != 22 ) && (sTrackID != -2112) && (sTrackID != -2212)
-						&& (abs(sTrackID) != 310) && (abs(sTrackID) != 111) && (sTrackID < 1e5)
+				if((abs(sPdgId) != 11) && (abs(sPdgId) != 22 ) && (sPdgId != -2112) && (sPdgId != -2212)
+						&& (abs(sPdgId) != 310) && (abs(sPdgId) != 111) && (sTrackID < 1e5) && (sPdgId == 0)
 						&& (sKinEng > 10)){
 
 					HGCSSGenParticle genPart;
@@ -64,7 +64,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 					genPart.mass(pd->GetPDGMass());
 					G4double globalTime = sTrack->GetGlobalTime();
 					genPart.time(globalTime);
-					genPart.pdgid(sTrack->GetDefinition()->GetPDGEncoding());
+					genPart.pdgid(sPdgId);
 					genPart.charge(pd->GetPDGCharge());
 					genPart.trackID(sTrackID);
 					genPart.layer(getLayer(thePrePVname) - ((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->initLayer());
