@@ -42,9 +42,11 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 	}
 
 	if (lKinEng > 100 && (abs(lPdgId) == 11  ||  abs(lPdgId) == 22 ) ){
-		//G4cout << "Looking at a secondary "  << G4endl;
+		G4cout << "Looking at a primary "  << G4endl;
 		const std::vector<const G4Track*>* secondaryTracks = aStep->GetSecondaryInCurrentStep();
 			for (unsigned iT(0); iT < secondaryTracks->size() < iT; iT++){
+				G4cout << "Looking at a secondary "  << G4endl;
+
 				const G4Track* sTrack = secondaryTracks->at(iT);
 				G4double sKinEng = sTrack->GetKineticEnergy();
 				G4int sTrackID = sTrack->GetTrackID();
