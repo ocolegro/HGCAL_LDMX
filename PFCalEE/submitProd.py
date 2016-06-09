@@ -21,7 +21,7 @@ parser.add_option('-o', '--out'         ,    dest='out'                , help='o
 parser.add_option('-e', '--eos'         ,    dest='eos'                , help='eos path to save root file to EOS',         default='')
 ##Location to a txt file containing a csv [particle_energy,dir_x,dir_y,dir_z]
 parser.add_option('-p', '--particle'   ,    dest='particle'          , help='particle file'                        , default=  "proton")
-parser.add_option('-m', '--thickness'      ,    dest='thickness'             , help='thickness flag'                  , default=0)
+parser.add_option('-steel', '--thickness'      ,    dest='thickness'             , help='thickness flag'                  , default=0)
 parser.add_option('-S', '--no-submit'   ,    action="store_true",  dest='nosubmit'           , help='Do not submit batch job.')
 
 (opt, args) = parser.parse_args()
