@@ -16,7 +16,6 @@ SteppingAction::SteppingAction() {
 	eventAction_->Add(
 			((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->getStructure());
 	saturationEngine = new G4EmSaturation();
-	timeLimit_ = 20000000000; //ns
 	version_ = ((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->getVersion();
 }
 
@@ -51,7 +50,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 				G4int sPdgId  = sTrack->GetDefinition()->GetPDGEncoding();
 				//store good lasting hadrons!
 				if((abs(sPdgId) != 11) && (abs(sPdgId) != 22 ) && (sPdgId != -2112) && (sPdgId != -2212)
-						&& (abs(sPdgId) != 310) && (abs(sPdgId) != 111) && (sTrackID < 1e5) && (sPdgId == 0)
+						&& (abs(sPdgId) != 310) && (abs(sPdgId) != 111) && (sTrackID < 1e5) && (sPdgId != 0)
 						&& (sKinEng > 10)){
 
 					HGCSSGenParticle genPart;
