@@ -70,10 +70,6 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 					genPart.layer(getLayer(thePrePVname) - ((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->initLayer());
 					eventAction_->hadronvec_.push_back(genPart);
 				}
-				//Delete tracks that have no hope of making us happy
-				else if ((abs(sTrackID) != 11) || (abs(sTrackID) != 22 ) || sKinEng < 100 ){
-					sTrack->SetTrackStatus(fStopAndKill);
-				}
 
 			}
 		}
