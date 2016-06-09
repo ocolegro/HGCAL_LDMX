@@ -41,13 +41,10 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 		thePrePVname = volume->GetName();
 	}
 
-	if (lKinEng > 100 && (abs(lPdgId) == 11  ||  abs(lPdgId) == 22 ) ){
-		//G4cout << "Looking at a primary "  << G4endl;
+	if (lKinEng > 10 ){//&& (abs(lPdgId) == 11  ||  abs(lPdgId) == 22 ) ){
 		const std::vector<const G4Track*>* secondaryTracks = aStep->GetSecondaryInCurrentStep();
-		G4cout << "The size of secondary tracks is "  << secondaryTracks->size() << G4endl;
 
 			for (unsigned iT(0); iT < secondaryTracks->size() < iT; iT++){
-				G4cout << "Looking at a secondary "  << G4endl;
 
 				const G4Track* sTrack = secondaryTracks->at(iT);
 				G4double sKinEng = sTrack->GetKineticEnergy();
