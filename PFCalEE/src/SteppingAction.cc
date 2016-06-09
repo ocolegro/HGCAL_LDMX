@@ -61,8 +61,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 
 		}
 		const std::vector<const G4Track*>* secondaryTracks = aStep->GetSecondaryInCurrentStep();
-			std::cout << "The size of secondaryTracks->size() is " << secondaryTracks->size() << std::endl;
-			for (unsigned iT = 0; iT < secondaryTracks->size() < iT; iT++){
+			for (unsigned iT = 0; iT < secondaryTracks->size(); iT++){
 				const G4Track* sTrack = secondaryTracks->at(iT);
 				G4double sKinEng = sTrack->GetKineticEnergy();
 				G4int sTrackID = sTrack->GetTrackID();
