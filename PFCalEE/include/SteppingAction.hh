@@ -37,6 +37,7 @@ private:
 	G4EmSaturation* saturationEngine;
 	G4int version_;
 
+
 };
 
 #endif
