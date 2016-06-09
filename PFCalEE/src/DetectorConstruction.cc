@@ -106,27 +106,24 @@ DetectorConstruction::DetectorConstruction(G4int ver, G4int mod,G4double steelTh
 		m_caloStruct.push_back( SamplingSection(iEleR) );
 	}
 
-	std::vector<std::pair <G4double,std::string>> iEle;
 
 	//Push back W as a marker.
-	iEle.push_back(make_pair(.0001*mm,"W"));
-	iEle.push_back(make_pair(20*cm,"G4_Galactic"));
 
-	m_caloStruct.push_back( SamplingSection(iEle) );
-	iEle.clear();
+
+	iEleL.clear();
 	initLayer(1);
-	iEle.push_back(make_pair(3*mm,"Cu"));
-	iEle.push_back(make_pair(1*mm,"Pb"));
-	iEle.push_back(make_pair(steelThick*mm,"SSteel"));
-	iEle.push_back(make_pair(0.5*mm,"Cu"));
-	iEle.push_back(make_pair(0.1*mm,"Si"));
-	iEle.push_back(make_pair(0.1*mm,"Si"));
-	iEle.push_back(make_pair(0.1*mm,"Si"));
+	iEleL.push_back(make_pair(3*mm,"Cu"));
+	iEleL.push_back(make_pair(1*mm,"Pb"));
+	iEleL.push_back(make_pair(steelThick*mm,"SSteel"));
+	iEleL.push_back(make_pair(0.5*mm,"Cu"));
+	iEleL.push_back(make_pair(0.1*mm,"Si"));
+	iEleL.push_back(make_pair(0.1*mm,"Si"));
+	iEleL.push_back(make_pair(0.1*mm,"Si"));
 
-	unsigned Nmodule=15;
+	Nmodule=15;
 
 	for(unsigned i=0; i<Nmodule; i++) {
-		m_caloStruct.push_back( SamplingSection(iEle) );
+		m_caloStruct.push_back( SamplingSection(iEleL) );
 	}
 	break;
 
