@@ -69,7 +69,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 				G4int sTrackID = sTrack->GetTrackID();
 				G4int sPdgId  = sTrack->GetDefinition()->GetPDGEncoding();
 				//store good lasting hadrons!
-				if((abs(sPdgId) != 11) && (abs(sPdgId) != 22 ) && (sPdgId != -2112) && (sPdgId != -2212)){
+				if((sPdgId == 2112)){
 						//&& (abs(sPdgId) != 310) && (abs(sPdgId) != 111)
 						//&& (sKinEng > 10)){
 					G4cout << "The parent pdgId = "  << lPdgId << G4endl;
