@@ -31,7 +31,6 @@ using namespace std;
 
 DetectorConstruction::DetectorConstruction(G4int ver, G4int mod,G4double steelThick) :
 		version_(ver), model_(mod),steelThick_(steelThick) {
-	initLayer(0);
 
 	initLayer(1);
 	G4cout << "[DetectorConstruction] starting v_HGCALEE_v6" << G4endl;
@@ -125,7 +124,6 @@ DetectorConstruction::DetectorConstruction(G4int ver, G4int mod,G4double steelTh
 	for(unsigned i=0; i<Nmodule; i++) {
 		m_caloStruct.push_back( SamplingSection(iEleL) );
 	}
-	break;
 
 DefineMaterials();
 SetMagField(0);
