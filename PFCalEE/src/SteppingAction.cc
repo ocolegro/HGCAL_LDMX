@@ -41,7 +41,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 		thePrePVname = volume->GetName();
 	}
 
-	if (lKinEng > 0 ){//&& (abs(lPdgId) == 11  ||  abs(lPdgId) == 22 ) ){
+	if (lKinEng > 0 ){
 		const std::vector<const G4Track*>* secondaryTracks = aStep->GetSecondaryInCurrentStep();
 
 			for (unsigned iT(0); iT < secondaryTracks->size() < iT; iT++){
@@ -78,7 +78,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 			}
 		}
 	//Delete tracks that have no hope of making us happy
-	else {
+	if (lKinEng < 100 && (abs(lPdgId) != 11  &&  abs(lPdgId) != 22 ) ) {
 		lTrack->SetTrackStatus(fStopAndKill);}
 }
 
