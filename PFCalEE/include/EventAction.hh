@@ -32,10 +32,10 @@ public:
 	void BeginOfEventAction(const G4Event*);
 	void EndOfEventAction(const G4Event*);
 
-	void Detect(G4double eng, G4double eRawDep, G4double eNonIonDep,G4double stepl,
+	void Detect(G4double eng, G4double edep, G4double stepl,
 			G4double globalTime, G4int pdgId, G4VPhysicalVolume *volume,
 			const G4ThreeVector & position, G4int trackID, G4int parentID,
-			const HGCSSGenParticle & genPart, G4bool isInitHadron, G4bool isTargetParticle,G4bool isForward, G4bool isPrimaryTrack);
+			const HGCSSGenParticle & genPart, G4bool targetParticle);
 
 	void SetPrintModulo(G4int val) {
 		printModulo = val;
@@ -44,13 +44,14 @@ public:
 	void Add(std::vector<SamplingSection> *newDetector) {
 		detector_ = newDetector;
 	}
-	std::vector<G4int> targetTrackIds,hadronTrackIds;
+	std::vector<G4int> hadronTrackIds;
+	HGCSSGenParticleVec hadronvec_;
 
 private:
 	RunAction* runAct;
 	std::vector<SamplingSection> *detector_;
 	G4int evtNb_, printModulo,initLayer;
-
+	G4double steelThick;
 	HGCSSGeometryConversion* geomConv_;
 
 	TFile *outF_;
@@ -58,8 +59,6 @@ private:
 	HGCSSEvent event_;
 	HGCSSSamplingSectionVec ssvec_;
 	HGCSSSimHitVec hitvec_;
-	HGCSSGenParticleVec targetvec_;
-	HGCSSGenParticleVec hadronvec_;
 	EventActionMessenger* eventMessenger;
 
 	//std::ofstream fout_;

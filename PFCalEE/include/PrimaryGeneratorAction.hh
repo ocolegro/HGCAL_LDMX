@@ -43,8 +43,6 @@ class DetectorConstruction;
 class PrimaryGeneratorMessenger;
 class G4VPrimaryGenerator;
 class G4ParticleGun;
-class HepMCG4AsciiReader;
-class HepMCG4PythiaInterface;
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -70,8 +68,6 @@ private:
 	bool signal_;
 	std::string data_;
 	G4ParticleGun* particleGun;
-	HepMCG4AsciiReader* hepmcAscii;
-	HepMCG4PythiaInterface* pythiaGen;
 
 	G4VPrimaryGenerator* currentGenerator;
 	G4String currentGeneratorName;

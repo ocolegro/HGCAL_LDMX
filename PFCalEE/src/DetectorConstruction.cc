@@ -106,7 +106,7 @@ DetectorConstruction::DetectorConstruction(G4int ver, G4int mod,bool signal) :
 			m_caloStruct.push_back( SamplingSection(iEleR) );
 		}
 
-		Nmodule=5;
+		Nmodule=2;
 		iEleL[2].first = 2.8*mm;
 		iEleR[0].first = 1.2*mm;
 		iEleR[2].first = 1.2*mm;
@@ -173,46 +173,14 @@ DetectorConstruction::DetectorConstruction(G4int ver, G4int mod,bool signal) :
 				m_caloStruct.push_back( SamplingSection(iEleL) );
 				m_caloStruct.push_back( SamplingSection(iEleR) );
 			}
-			if (version_ == v_HGCALEE_v6)
-			{
-				Nmodule=5;
-			}
-			else{
-				Nmodule = 4;
-			}
-			iEleL[2].first = 2.8*mm;
-			iEleR[0].first = 1.2*mm;
-			iEleR[2].first = 1.2*mm;
+
+				Nmodule=2;
 
 			for(unsigned i=0; i<Nmodule; i++) {
 				m_caloStruct.push_back( SamplingSection(iEleL) );
 				m_caloStruct.push_back( SamplingSection(iEleR) );
 			}
 
-			Nmodule=4;
-			iEleL[2].first = 4.2*mm;
-			iEleR[0].first = 2.2*mm;
-			iEleR[2].first = 2.2*mm;
-
-			if (version_ == v_HGCALEE_v6_s05){
-				Nmodule=5;
-				iEleL[3].first = 5*mm;
-				iEleR[3].first = 5*mm;
-			}
-			if (version_ == v_HGCALEE_v6_s10){
-				Nmodule=5;
-				iEleL[3].first = 10*mm;
-				iEleR[3].first = 10*mm;
-			}
-			if (version_ == v_HGCALEE_v6_s20){
-				Nmodule=5;
-				iEleL[3].first = 20*mm;
-				iEleR[3].first = 20*mm;
-			}
-			for(unsigned i=0; i<Nmodule; i++) {
-				m_caloStruct.push_back( SamplingSection(iEleL) );
-				m_caloStruct.push_back( SamplingSection(iEleR) );
-			}
 			break;
 		}
 }

@@ -44,8 +44,6 @@
 #include "G4SystemOfUnits.hh"
 #include "Randomize.hh"
 
-#include "HepMCG4AsciiReader.hh"
-#include "HepMCG4PythiaInterface.hh"
 
 #include <fstream>
 #include <string>
@@ -74,15 +72,7 @@ PrimaryGeneratorAction::PrimaryGeneratorAction(G4int mod, bool signal,
 	// default generator is particle gun.
 	currentGenerator = particleGun = new G4ParticleGun(n_particle);
 	currentGeneratorName = "particleGun";
-	hepmcAscii = new HepMCG4AsciiReader();
-#ifdef G4LIB_USE_PYTHIA
-	pythiaGen= new HepMCG4PythiaInterface();
-#else
-	pythiaGen = 0;
-#endif
-	gentypeMap["particleGun"] = particleGun;
-	gentypeMap["hepmcAscii"] = hepmcAscii;
-	gentypeMap["pythia"] = pythiaGen;
+
 
 	Detector =
 			(DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction();
@@ -112,8 +102,6 @@ PrimaryGeneratorAction::PrimaryGeneratorAction(G4int mod, bool signal,
 
 PrimaryGeneratorAction::~PrimaryGeneratorAction() {
 	delete particleGun;
-	delete hepmcAscii;
-	delete pythiaGen;
 	delete gunMessenger;
 }
 
@@ -130,8 +118,8 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent) {
 	particleGun->SetParticleEnergy(et * GeV);
 	particleGun->SetParticleMomentumDirection(G4ThreeVector(0., 0., 1.));
 
-	G4double y0 = G4RandFlat::shoot(-65.,65);
-	G4double x0 = G4RandFlat::shoot(-65.,65);
+	G4double y0 = G4RandFlat::shoot(-10.,10);
+	G4double x0 = G4RandFlat::shoot(-10.,10);
 	G4double z0 = -0.5 * (Detector->GetWorldSizeZ());
 
 	if (model_ == 0)

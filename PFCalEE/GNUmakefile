@@ -29,13 +29,6 @@ include $(G4INSTALL)/config/binmake.gmk
 #    CPPFLAGS += -DG4LIB_USE_PYTHIA
 #endif
 
-INCFLAGS += -I$(HEPMC_DIR)/include/
-
-ifdef G4LIB_USE_PYTHIA
-      LDLIBS1 += -L$(HEPMC_DIR)/lib -lHepMC -lHepMCfio -L$(G4TMPDIR) -lPythia6 -lg2c
-else
-      LDLIBS1 += -L$(HEPMC_DIR)/lib -lHepMC -lHepMCfio #$(G4TMPDIR)/HEPEvtcom.o
-endif
 
 
 SUBDIRS = userlib

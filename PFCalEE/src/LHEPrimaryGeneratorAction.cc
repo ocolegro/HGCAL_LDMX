@@ -45,8 +45,6 @@
 #include "G4GenericMessenger.hh"
 #include "Randomize.hh"
 
-#include "HepMCG4AsciiReader.hh"
-#include "HepMCG4PythiaInterface.hh"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 

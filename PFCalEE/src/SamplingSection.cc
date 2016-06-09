@@ -10,7 +10,7 @@ void SamplingSection::add(G4double parentKE, G4double depositRawE, G4double depo
 	std::string lstr = vol->GetName();
 	bool breakSwitch = false;
 	for (unsigned ie(0); ie < n_elements * n_sectors; ++ie) {
-			if (breakSwitch) break;
+		if (breakSwitch) break;
 		if (sublayer_vol[ie] && lstr == sublayer_vol[ie]->GetName()) {
 			breakSwitch = true;
 			unsigned idx = getSensitiveLayerIndex(lstr);
@@ -106,7 +106,7 @@ void SamplingSection::add(G4double parentKE, G4double depositRawE, G4double depo
 			} //if Si
 			else {
 				//check for W in layer
-				if ((lstr.find("W") == std::string::npos) == 0)
+				if ((lstr.find("SSteel") == std::string::npos) == 0)
 					abs_HitSumVec.push_back(lHit);
 			} //if in right material
 		} //loop on available materials
