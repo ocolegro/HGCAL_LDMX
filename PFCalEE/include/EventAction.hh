@@ -44,8 +44,7 @@ public:
 	void Add(std::vector<SamplingSection> *newDetector) {
 		detector_ = newDetector;
 	}
-	std::vector<G4int> trackids;
-
+	std::vector<G4int> targetTrackIds,hadronTrackIds;
 private:
 	RunAction* runAct;
 	std::vector<SamplingSection> *detector_;
