@@ -44,7 +44,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 	if (lKinEng > 0 ){
 		if((abs(lPdgId) != 11) && (abs(lPdgId) != 22 ) && (lPdgId != -2112) && (lPdgId != -2212)){
 			G4cout << "The particle pdgId = "  << lPdgId << G4endl;
-			G4cout << "The parent trackId = "  << lTrack->GetParentID << G4endl;
+			G4cout << "The parent trackId = "  << lTrack->GetParentID() << G4endl;
 
 
 		}
