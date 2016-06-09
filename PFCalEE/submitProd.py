@@ -37,7 +37,7 @@ outDir='%s/git_%s/version_%d/model_%d'%(opt.out,opt.gittag,opt.version,opt.model
 outDir='%s/%s'%(outDir,label)
 eosDir='%s/git%s'%(opt.eos,opt.gittag)
 outDir='%s/particle_%s/'%(outDir,opt.particle)
-if (opt.run>=0) : outDir='%s/run_%d/'%(outDir,opt.run)
+if (opt.run>=0) : outDir='%s/run_%d/zthick_%3.1f/'%(outDir,opt.run,opt.thickness)
 
 os.system('mkdir -p %s'%outDir)
 
