@@ -41,7 +41,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 		thePrePVname = volume->GetName();
 	}
 
-	if (lKinEng > 10 ){//&& (abs(lPdgId) == 11  ||  abs(lPdgId) == 22 ) ){
+	if (lKinEng > 0 ){//&& (abs(lPdgId) == 11  ||  abs(lPdgId) == 22 ) ){
 		const std::vector<const G4Track*>* secondaryTracks = aStep->GetSecondaryInCurrentStep();
 
 			for (unsigned iT(0); iT < secondaryTracks->size() < iT; iT++){
@@ -54,6 +54,8 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 				if((abs(sPdgId) != 11) && (abs(sPdgId) != 22 ) && (sPdgId != -2112) && (sPdgId != -2212)
 						&& (abs(sPdgId) != 310) && (abs(sPdgId) != 111)
 						&& (sKinEng > 10)){
+					G4cout << "The parent pdgId = "  << lPdgId << G4endl;
+
 					G4cout << "Looking at a hadron "  << G4endl;
 
 					HGCSSGenParticle genPart;
