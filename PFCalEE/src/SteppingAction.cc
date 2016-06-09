@@ -56,14 +56,8 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 			unsigned int loc = std::find(eventAction_->parentIDs.begin(),
 					eventAction_->parentIDs.end(), lTrack->GetParentID() )
 					- eventAction_->parentIDs.begin();
-			if (lloc == eventAction_->parentIDs.size()){
-				eventAction_->parentIDs.push_back(lTrackID);
-				eventAction_->parentInfo.push_back(std::make_pair(lPdgId,lKinEng));
-			}
-			G4cout << "The parent pdgid and ke are " << eventAction_->parentInfo.at(loc).first << " and " <<  eventAction_->parentInfo.at(loc).second;
-			G4cout << "The parent trackId = "  << lTrack->GetParentID() << G4endl;
-			G4cout << "The parent trackId = "  << eventAction_->parentIDs.at(loc) << G4endl;
 
+			G4cout << "The parent pdgid and ke are " << eventAction_->parentInfo.at(loc).first << " and " <<  eventAction_->parentInfo.at(loc).second;
 
 		}
 		const std::vector<const G4Track*>* secondaryTracks = aStep->GetSecondaryInCurrentStep();

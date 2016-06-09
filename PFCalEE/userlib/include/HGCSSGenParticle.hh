@@ -14,7 +14,7 @@ class HGCSSGenParticle {
 public:
 	HGCSSGenParticle() :
 			time_(0), xpos_(0), ypos_(0), zpos_(0), mass_(0), px_(0), py_(0), pz_(
-					0), pdgid_(0), charge_(0), trackID_(0) {
+					0), pdgid_(0), charge_(0), trackID_(0),parentKE_(0),parentPdgId_(0) {
 
 	}
 	;
@@ -85,7 +85,14 @@ public:
 		return sqrt(mass_ * mass_ + p() * p());
 	}
 	;
-
+	inline double parentPdgId() {
+		return parentPdgId_;
+	}
+	;
+	inline double parentKE() {
+		return parentKE_;
+	}
+	;
 	inline double eta() const {
 		double theta = acos(
 				fabs(pz_) / sqrt(pz_ * pz_ + px_ * px_ + py_ * py_));
@@ -156,6 +163,14 @@ public:
 		 layer_ = val;
 	}
 	;
+	inline void parentPdgId(const int & val) {
+		parentPdgId_ = val;
+	}
+	;
+	inline void parentKE(const int & val) {
+		parentKE_ = val;
+	}
+	;
 	inline bool isIncoming() const {
 		//do not want back-scattered particles, 
 		return ((pdgid_ != 0 || mass_ > 0) && pz_ >= 0);
@@ -178,8 +193,9 @@ private:
 	int pdgid_;
 	int layer_;
 	double charge_;
+	int parentPdgId_;
 	int trackID_;
-
+	double parentKE_;
 ClassDef(HGCSSGenParticle,1)
 	;
 
