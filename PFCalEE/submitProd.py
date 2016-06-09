@@ -36,7 +36,7 @@ myqueue=opt.queue
 outDir='%s/git_%s/version_%d/model_%d'%(opt.out,opt.gittag,opt.version,opt.model)
 outDir='%s/%s'%(outDir,label)
 eosDir='%s/git%s'%(opt.eos,opt.gittag)
-outDir='%s/particle_%3.3f/'%(outDir,opt.particle)
+outDir='%s/particle_%s/'%(outDir,opt.particle)
 if (opt.run>=0) : outDir='%s/run_%d/'%(outDir,opt.run)
 
 os.system('mkdir -p %s'%outDir)
