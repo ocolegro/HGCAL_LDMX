@@ -28,71 +28,57 @@ SteppingAction::~SteppingAction() {
 void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 
 	G4Track* lTrack = aStep->GetTrack();
-	G4double kineng = lTrack->GetKineticEnergy();
-	G4int pdgId = lTrack->GetDefinition()->GetPDGEncoding();
-	if ( (abs(pdgId) == 11 || abs(pdgId) == 12 ||abs(pdgId) == 13 || abs(pdgId) == 14 ||  abs(pdgId) == 22 ) ){
-		if (kineng < 100)
-		lTrack->SetTrackStatus(fStopAndKill);
+	G4double lKinEng = lTrack->GetKineticEnergy();
+	G4int lPdgId = lTrack->GetDefinition()->GetPDGEncoding();
+
+
+	const G4StepPoint *thePreStepPoint = aStep->GetPreStepPoint();
+	const G4StepPoint *thePostStepPoint = aStep->GetPostStepPoint();
+	G4VPhysicalVolume* volume = thePreStepPoint->GetPhysicalVolume();
+
+	std::string thePrePVname("null");
+	if (volume == 0) {
+	} else {
+		thePrePVname = volume->GetName();
 	}
-	else{
-		G4int trackID = lTrack->GetTrackID();
-		G4int parentID = lTrack->GetParentID();
-		// get rid of non-long lasting hadrons
 
-		if ((pdgId != -2112) && (pdgId != -2212)  && (abs(pdgId) != 310) && (abs(pdgId) != 111) && (pdgId < 1e5)){
-			unsigned int parentTrackLoc = std::find(eventAction_->hadronTrackIds.begin(),
-					eventAction_->hadronTrackIds.end(), parentID)
-					- eventAction_->hadronTrackIds.begin();
-			if (parentTrackLoc == eventAction_->hadronTrackIds.size()) {
+	if (lKinEng > 100 && (abs(lPdgId) == 11  ||  abs(lPdgId) == 22 ) ){
+		std::vector<const G4Track*> secondaryTracks = aStep->GetSecondaryInCurrentStep();
+			for (unsigned iT(0); iT < secondaryTracks.size() < iT; iT++){
+				const G4Track* sTrack = secondaryTracks.at(iT);
+				G4double sKinEng = sTrack->GetKineticEnergy();
+				G4int sTrackID = sTrack->GetTrackID();
 
-				// get PreStepPoint
-				const G4StepPoint *thePreStepPoint = aStep->GetPreStepPoint();
-				const G4StepPoint *thePostStepPoint = aStep->GetPostStepPoint();
-				G4VPhysicalVolume* postvolume = thePostStepPoint->GetPhysicalVolume();
-				std::string thePostPVname("null");
-				if (postvolume == 0) {
-				} else {
-					thePostPVname = postvolume->GetName();
-				}
+				//store good lasting hadrons!
+				if((abs(sTrackID) != 11) && (abs(sTrackID) != 22 ) && (sTrackID != -2112) && (sTrackID != -2212)
+						&& (abs(sTrackID) != 310) && (abs(sTrackID) != 111) && (sTrackID < 1e5)
+						&& (sKinEng > 10)){
 
-				G4VPhysicalVolume* volume = thePreStepPoint->GetPhysicalVolume();
-				std::string thePrePVname("null");
-				if (volume == 0) {
-				} else {
-					thePrePVname = volume->GetName();
-				}
-
-				HGCSSGenParticle genPart;
-				unsigned int hadronTrackLoc = std::find(eventAction_->hadronTrackIds.begin(),
-						eventAction_->hadronTrackIds.end(), trackID)
-						- eventAction_->hadronTrackIds.begin();
-				//Only select new hadronic tracks with kin. energy > 10 MeV
-				if ((hadronTrackLoc == eventAction_->hadronTrackIds.size()) && (kineng>10)) {
-					//Only select hadrons
-					{
+					HGCSSGenParticle genPart;
 					const G4ThreeVector & postposition = thePostStepPoint->GetPosition();
-					G4ParticleDefinition *pd = lTrack->GetDefinition();
-					const G4ThreeVector &p = lTrack->GetMomentum();
-					const G4StepPoint *thePreStepPoint = aStep->GetPreStepPoint();
+					G4ParticleDefinition *pd = sTrack->GetDefinition();
+					const G4ThreeVector &p = sTrack->GetMomentum();
 					const G4ThreeVector & position = thePreStepPoint->GetPosition();
 					genPart.setPosition(postposition[0], postposition[1], postposition[2]);
 					genPart.setMomentum(p[0], p[1], p[2]);
 					genPart.mass(pd->GetPDGMass());
-					G4double globalTime = lTrack->GetGlobalTime();
+					G4double globalTime = sTrack->GetGlobalTime();
 					genPart.time(globalTime);
-					genPart.pdgid(pdgId);
+					genPart.pdgid(sTrack->GetDefinition()->GetPDGEncoding());
 					genPart.charge(pd->GetPDGCharge());
-					genPart.trackID(trackID);
+					genPart.trackID(sTrackID);
 					genPart.layer(getLayer(thePrePVname) - ((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->initLayer());
-					eventAction_->hadronTrackIds.push_back(trackID);
 					eventAction_->hadronvec_.push_back(genPart);
-
-
-					}
+				}
+				//Delete tracks that have no hope of making us happy
+				else if ((abs(sTrackID) != 11) || (abs(sTrackID) != 22 ) || sKinEng < 100 ){
+					sTrack->SetTrackStatus(fStopAndKill);
 				}
 
-				lTrack->SetTrackStatus(fStopAndKill);
 			}
 		}
-	}
+	//Delete tracks that have no hope of making us happy
+	else {
+		lTrack->SetTrackStatus(fStopAndKill);}
 }
+

@@ -44,7 +44,6 @@ public:
 	void Add(std::vector<SamplingSection> *newDetector) {
 		detector_ = newDetector;
 	}
-	std::vector<G4int> hadronTrackIds;
 	HGCSSGenParticleVec hadronvec_;
 
 private:
