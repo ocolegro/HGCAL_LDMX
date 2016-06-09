@@ -68,6 +68,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 				G4double sKinEng = sTrack->GetKineticEnergy();
 				G4int sTrackID = sTrack->GetTrackID();
 				G4int sPdgId  = sTrack->GetDefinition()->GetPDGEncoding();
+				std::cout << "The secondary id is " << sPdgId << std::endl;
 				//store good lasting hadrons!
 				if((sPdgId == 2112)){
 						//&& (abs(sPdgId) != 310) && (abs(sPdgId) != 111)
