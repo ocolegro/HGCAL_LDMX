@@ -44,15 +44,23 @@ int main(int argc, char** argv) {
 	int model = DetectorConstruction::m_FULLSECTION;
 
 	G4double steelThick = 0.;
-	std::string particle   = "proton";
+	std::string data   = "root://eoscms.cern.ch//eos/cms/store/user/mullin/hadrons/HGcal__version1_model2_run0.root";
+	int run = 0;
+	int nEvents = 0;
 	if (argc > 2)
 		version = atoi(argv[2]);
 	if (argc > 3)
 		model = atoi(argv[3]);
 	if (argc > 4)
-		particle = argv[4];
+		steelThick = std::stof(argv[4]);
 	if (argc > 5)
-		steelThick = std::stof(argv[5]);
+		run = atoi(argv[5]);
+	if (argc > 5)
+		run = atoi(argv[5]);
+	if (argc > 6)
+		nEvents = atoi(argv[5]);
+	if (argc > 7)
+		data = argv[5];
 	std::cout << "-- Running version " << version << " model " << model
 			<< std::endl;
 
@@ -65,7 +73,7 @@ int main(int argc, char** argv) {
 	runManager->SetUserAction(new EventAction);
 	runManager->SetUserAction(new SteppingAction);
 
-	runManager->SetUserAction(new PrimaryGeneratorAction(model, particle));
+	runManager->SetUserAction(new PrimaryGeneratorAction(model, data,run,nEvents));
 	runManager->Initialize();
 
 	

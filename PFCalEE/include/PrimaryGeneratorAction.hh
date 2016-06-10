@@ -37,6 +37,8 @@
 #include "G4VUserPrimaryGeneratorAction.hh"
 #include "globals.hh"
 #include <map>
+#include "HGCSSGenParticle.hh"
+#include "TVector3.h"
 
 class G4Event;
 class DetectorConstruction;
@@ -50,7 +52,7 @@ class HepMCG4PythiaInterface;
 
 class PrimaryGeneratorAction: public G4VUserPrimaryGeneratorAction {
 public:
-	PrimaryGeneratorAction(G4int mod = 0, std::string particleType = "proton");
+	PrimaryGeneratorAction(G4int mod , std::string hadronFile, G4int run, G4int nEvents);
 	virtual ~PrimaryGeneratorAction();
 
 	void GeneratePrimaries(G4Event*);
@@ -66,7 +68,11 @@ public:
 
 private:
 	int model_;
-	std::string particle_;
+	int run_;
+	int nEvents_;
+	TFile* file_;
+	TTree * tree_;
+	HGCSSGenParticleVec* hadrons_ = 0;
 	G4ParticleGun* particleGun;
 	HepMCG4AsciiReader* hepmcAscii;
 	HepMCG4PythiaInterface* pythiaGen;

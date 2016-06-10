@@ -267,5 +267,4 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 	ssvec_.clear();
 	hadronvec_.clear();
 	targetTrackIds.clear();
-	hadronTrackIds.clear();
 }

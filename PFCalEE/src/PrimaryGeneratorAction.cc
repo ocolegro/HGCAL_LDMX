@@ -47,6 +47,9 @@
 #include "HepMCG4AsciiReader.hh"
 #include "HepMCG4PythiaInterface.hh"
 
+#import "TFile.h"
+#import "TTree.h"
+
 #include <fstream>
 #include <string>
 #include <sstream>
@@ -64,9 +67,13 @@ std::vector<std::string> split(const std::string &s, char delim) {
 	return tokens;
 }
 
-PrimaryGeneratorAction::PrimaryGeneratorAction(G4int mod, std::string particleType ) {
+PrimaryGeneratorAction::PrimaryGeneratorAction(G4int mod, std::string hadronFile, G4int run, G4int nEvents) {
 	model_ = mod;
-	particle_ = particleType;
+	run_ = run;
+	nEvents_ = nEvents;
+	file_ = TFile::Open(hadronFile.c_str());
+	tree_  = (TTree*) file_->Get("HGCSSTree");
+	tree_->SetBranchAddress("nHadrons",&hadrons_);
 	G4int n_particle = 1;
 
 	// default generator is particle gun.
@@ -92,8 +99,7 @@ PrimaryGeneratorAction::PrimaryGeneratorAction(G4int mod, std::string particleTy
 
 	G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
 	G4String particleName;
-	G4ParticleDefinition* particle = particleTable->FindParticle(particleName =
-			particle_);
+	G4ParticleDefinition* particle = particleTable->FindParticle("proton");
 	particleGun->SetParticleDefinition(particle);
 	particleGun->SetParticleMomentumDirection(G4ThreeVector(0., 0., 1.));
 	particleGun->SetParticleEnergy(4. * GeV);
@@ -118,33 +124,33 @@ PrimaryGeneratorAction::~PrimaryGeneratorAction() {
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent) {
+	HGCSSGenParticleVec hadronvec_;
+	int currentEvt = anEvent->GetEventID();
 	G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
 	G4String particleName;
+	tree_->GetEntry(run_*nEvents_ + currentEvt);
+	for (Int_t j = 0; j < hadrons_->size(); j++) {
+			HGCSSGenParticle& parton = (*hadrons_)[j];
+			G4ParticleDefinition* particle = particleTable->FindParticle(parton.pdgid());
+			particleGun->SetParticleDefinition(particle);
+			particleGun->SetParticleEnergy(parton.vertexKE() * GeV);
+			G4ThreeVector pos = parton.vertexPos();
+			G4ThreeVector mom = parton.vertexMom();
 
-	G4ParticleDefinition* particle = particleTable->FindParticle(particleName =
-			particle_);
-	particleGun->SetParticleDefinition(particle);
-	G4double et = G4RandFlat::shoot(0.02,4.0);
-	particleGun->SetParticleEnergy(et * GeV);
-	particleGun->SetParticleMomentumDirection(G4ThreeVector(0., 0., 1.));
+			particleGun->SetParticleMomentumDirection(G4ThreeVector(mom[0],mom[1],mom[2]));
 
-	G4double y0 = G4RandFlat::shoot(-65.,65);
-	G4double x0 = G4RandFlat::shoot(-65.,65);
-	G4double z0 = -0.5 * (Detector->GetWorldSizeZ());
+			G4double z0 = -0.5 * (Detector->GetWorldSizeZ());
+			particleGun->SetParticlePosition(G4ThreeVector(pos[0],pos[1],pos[2]-z0));
 
-	if (model_ == 0)
-		particleGun->SetParticlePosition(G4ThreeVector(x0, y0, z0));
 
-	G4cout << " -- Gun position set to: " << x0 << "," << y0 << "," << z0
-			<< G4endl;
+			if (currentGenerator) {
+				currentGenerator->GeneratePrimaryVertex(anEvent);
 
-	if (currentGenerator) {
-		currentGenerator->GeneratePrimaryVertex(anEvent);
-
-	} else
-		G4Exception("PrimaryGeneratorAction::GeneratePrimaries",
-				"PrimaryGeneratorAction001", FatalException,
-				"generator is not instanciated.");
+			} else
+				G4Exception("PrimaryGeneratorAction::GeneratePrimaries",
+						"PrimaryGeneratorAction001", FatalException,
+						"generator is not instanciated.");
+	}
 
 }
 
