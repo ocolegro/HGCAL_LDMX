@@ -70,7 +70,7 @@ PrimaryGeneratorAction::PrimaryGeneratorAction(G4int mod, std::string hadronFile
 	tree_  = (TTree*) file_->Get("HGCSSTree");
 
 	G4cout << "Pointing the tree now " << G4endl;
-	tree_->SetBranchAddress("nHadrons",&hadrons_);
+	tree_->SetBranchAddress("HGCSSHadronVec",&hadrons_);
 
 	hadrons_ = 0;
 	G4int n_particle = 1;
