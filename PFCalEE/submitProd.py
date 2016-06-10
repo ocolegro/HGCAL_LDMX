@@ -39,7 +39,7 @@ for thickness in thickness_:
     outDir='%s/%s'%(outDir,label)
     eosDir='%s/git%s'%(opt.eos,opt.gittag)
     outDir='%s/particle_%s/'%(outDir,opt.particle)
-    if (opt.run>=0) : outDir='%s/run_%d/zthick_%s/'%(outDir,opt.run,thickness_)
+    if (opt.run>=0) : outDir='%s/run_%d/zthick_%s/'%(outDir,opt.run,thickness)
 
     os.system('mkdir -p %s'%outDir)
 
@@ -49,7 +49,7 @@ for thickness in thickness_:
     scriptFile.write('source %s/g4env.sh\n'%(os.getcwd()))
     scriptFile.write('cp %s/g4steer.mac .\n'%(outDir))
     #PFCalEE g4steer.mac 1 2 1 0 2500 | tee g4.log
-    scriptFile.write('PFCalEE g4steer.mac %d %d %s %s| tee g4.log\n'%(opt.version,opt.model,thickness_,opt.run,opt.data))
+    scriptFile.write('PFCalEE g4steer.mac %d %d %s %s| tee g4.log\n'%(opt.version,opt.model,thickness,opt.run,opt.data))
     outTag='%s_version%d_model%d'%(label,opt.version,opt.model)
     if (opt.run>=0) : outTag='%s_run%d'%(outTag,opt.run)
     scriptFile.write('mv PFcal.root HGcal_%s.root\n'%(outTag))
