@@ -136,7 +136,7 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent) {
 			HGCSSGenParticle& parton = (*hadrons_)[j];
 			G4ParticleDefinition* particle = particleTable->FindParticle(parton.pdgid());
 			particleGun->SetParticleDefinition(particle);
-			particleGun->SetParticleEnergy(parton.vertexKE() * GeV);
+			particleGun->SetParticleEnergy(parton.vertexKE() * MeV);
 			TVector3 pos = parton.vertexPos();
 			TVector3 mom = parton.vertexMom();
 
