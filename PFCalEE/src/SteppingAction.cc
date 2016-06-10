@@ -34,50 +34,26 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 	if (kineng < 100) {
 		lTrack->SetTrackStatus(fStopAndKill);
 	}
+
+	//Only select new hadronic tracks with kin. energy > 10 MeV
+	//Only select hadrons
 	else if ((abs(pdgId) != 11) && (abs(pdgId) != 12) && (abs(pdgId) != 13) && (abs(pdgId) != 14) &&  (abs(pdgId) != 22)  &&
 			(pdgId != -2112) && (pdgId != -2212)  && (abs(pdgId) != 310) && (abs(pdgId) != 111) &&
 			(pdgId != 0) && (pdgId < 1e5)) {
-		// get PreStepPoint
-		const G4StepPoint *thePreStepPoint = aStep->GetPreStepPoint();
-		const G4StepPoint *thePostStepPoint = aStep->GetPostStepPoint();
 
-
-		G4int parentID = lTrack->GetParentID();
-
-		G4VPhysicalVolume* volume = thePreStepPoint->GetPhysicalVolume();
-		std::string thePrePVname("null");
-		if (volume == 0) {
-		} else {
-			thePrePVname = volume->GetName();
-		}
-
-
-		G4double stepl = 0.;
-		if (lTrack->GetDefinition()->GetPDGCharge() != 0.)
-			stepl = aStep->GetStepLength();
-		std::cout << "The step length is " << stepl << std::endl;
-		G4double globalTime = lTrack->GetGlobalTime();
-
-		const G4ThreeVector & position = thePreStepPoint->GetPosition();
 		HGCSSGenParticle genPart;
-
-		const G4ThreeVector &p = lTrack->GetMomentum();
-
-		//Only select new hadronic tracks with kin. energy > 10 MeV
-		//Only select hadrons
-		const G4ThreeVector & postposition = thePostStepPoint->GetPosition();
-		G4ParticleDefinition *pd = lTrack->GetDefinition();
+		const G4ThreeVector & postposition = lTrack->GetVertexPosition();
 		genPart.setPosition(postposition[0], postposition[1], postposition[2]);
-		genPart.setMomentum(p[0], p[1], p[2]);
+		G4ParticleDefinition *pd = lTrack->GetDefinition();
 		genPart.mass(pd->GetPDGMass());
-		genPart.time(globalTime);
+		const G4ThreeVector &p = lTrack->GetVertexMomentumDirection();
+		genPart.setMomentum(p[0], p[1], p[2]);
 		genPart.pdgid(pdgId);
-		genPart.charge(pd->GetPDGCharge());
-		genPart.trackID(trackID);
-		genPart.layer(getLayer(thePrePVname) - ((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->initLayer());
-		lTrack->SetTrackStatus(fStopAndKill);
+		genPart.KE(lTrack->GetVertexKineticEnergy());
 		eventAction_->hadronvec_.push_back(genPart);
+		lTrack->SetTrackStatus(fStopAndKill);
 		}
+	//IF it is in the shower we will now kill it.
 	else if ((abs(pdgId) != 11) && (abs(pdgId) != 22)){
 		lTrack->SetTrackStatus(fStopAndKill);
 	}
