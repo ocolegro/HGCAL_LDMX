@@ -66,6 +66,7 @@ PrimaryGeneratorAction::PrimaryGeneratorAction(G4int mod, std::string hadronFile
 	file_ = TFile::Open(hadronFile.c_str());
 	tree_  = (TTree*) file_->Get("HGCSSTree");
 	tree_->SetBranchAddress("nHadrons",&hadrons_);
+	hadrons_ = 0;
 	G4int n_particle = 1;
 
 	// default generator is particle gun.

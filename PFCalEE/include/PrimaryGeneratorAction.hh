@@ -74,7 +74,7 @@ private:
 	int nEvents_;
 	TFile* file_;
 	TTree * tree_;
-	HGCSSGenParticleVec* hadrons_ = 0;
+	HGCSSGenParticleVec* hadrons_ ;
 	G4ParticleGun* particleGun;
 	HepMCG4AsciiReader* hepmcAscii;
 	HepMCG4PythiaInterface* pythiaGen;
