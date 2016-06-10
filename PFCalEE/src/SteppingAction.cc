@@ -39,19 +39,18 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 	G4double kineng = lTrack->GetKineticEnergy();
 	G4int pdgId = lTrack->GetDefinition()->GetPDGEncoding();
 
-	if (kineng > 100 && ((abs(pdgId) == 11) ||  (abs(pdgId) != 22))) {
-		unsigned int loc = std::find(eventAction_->parentIDs.begin(),
-		 			eventAction_->parentIDs.end(), trackID) - eventAction_->parentIDs.begin();
-		if (loc == eventAction_->parentIDs.size())
-		 		eventAction_->parentIDs.push_back(trackID);
-
-	}
 	if (kineng < 100) {
 		lTrack->SetTrackStatus(fStopAndKill);
 	}
 
 	//Only select new hadronic tracks with kin. energy > 10 MeV
 	//Only select hadrons
+	else if  ((abs(pdgId) == 11) ||  (abs(pdgId) == 22)) {
+		unsigned int loc = std::find(eventAction_->parentIDs.begin(),
+		 			eventAction_->parentIDs.end(), trackID) - eventAction_->parentIDs.begin();
+		if (loc == eventAction_->parentIDs.size())
+		 		eventAction_->parentIDs.push_back(trackID);
+	}
 	else if ((abs(pdgId) != 11) && (abs(pdgId) != 12) && (abs(pdgId) != 13) && (abs(pdgId) != 14) &&  (abs(pdgId) != 22)  &&
 			(pdgId != -2112) && (pdgId != -2212)  && (abs(pdgId) != 310) && (abs(pdgId) != 111) &&
 			(pdgId != 0) && (pdgId < 1e5)) {
