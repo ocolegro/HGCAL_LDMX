@@ -9,6 +9,7 @@
 
 #include "HGCSSGenParticle.hh"
 #include "DetectorConstruction.hh"
+#include "TVector3.h"
 
 //
 SteppingAction::SteppingAction() {

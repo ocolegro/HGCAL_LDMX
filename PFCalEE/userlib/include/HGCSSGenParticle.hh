@@ -8,6 +8,7 @@
 #include <map>
 #include <cmath>
 #include "TMath.h"
+#include "TVector3.h"
 
 class HGCSSGenParticle {
 
