@@ -40,19 +40,18 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 	else if ((abs(pdgId) != 11) && (abs(pdgId) != 12) && (abs(pdgId) != 13) && (abs(pdgId) != 14) &&  (abs(pdgId) != 22)  &&
 			(pdgId != -2112) && (pdgId != -2212)  && (abs(pdgId) != 310) && (abs(pdgId) != 111) &&
 			(pdgId != 0) && (pdgId < 1e5)) {
-
 		HGCSSGenParticle genPart;
-		const G4ThreeVector & postposition = lTrack->GetVertexPosition();
-		genPart.setPosition(postposition[0], postposition[1], postposition[2]);
 		G4ParticleDefinition *pd = lTrack->GetDefinition();
-		genPart.mass(pd->GetPDGMass());
 		const G4ThreeVector &p = lTrack->GetVertexMomentumDirection();
-		genPart.setMomentum(p[0], p[1], p[2]);
+		TVector3 vec(p[0], p[1], p[2]);
+		genPart.vertexPos(vec);
 		genPart.pdgid(pdgId);
-		genPart.KE(lTrack->GetVertexKineticEnergy());
+		genPart.mass(pd->GetPDGMass());
+		genPart.vertexKE(lTrack->GetVertexKineticEnergy());
 		eventAction_->hadronvec_.push_back(genPart);
 		lTrack->SetTrackStatus(fStopAndKill);
 		}
+
 	//IF it is in the shower we will now kill it.
 	else if ((abs(pdgId) != 11) && (abs(pdgId) != 22)){
 		lTrack->SetTrackStatus(fStopAndKill);

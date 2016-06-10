@@ -14,7 +14,7 @@ class HGCSSGenParticle {
 public:
 	HGCSSGenParticle() :
 			time_(0), xpos_(0), ypos_(0), zpos_(0), mass_(0), px_(0), py_(0), pz_(
-					0), pdgid_(0), charge_(0), trackID_(0),KE_(0),parentKE_(0),parentPdgId_(0) {
+					0), pdgid_(0), charge_(0), trackID_(0),vertexKE_(0),parentKE_(0),parentPdgId_(0) {
 
 	}
 	;
@@ -155,8 +155,12 @@ public:
 		charge_ = val;
 	}
 	;
-	inline void KE(const double & val) {
-		KE_ = val;
+	inline void vertexKE(const double & val) {
+		vertexKE_ = val;
+	}
+	;
+	inline void vertexPos(TVector3  & val) {
+		vertexPos_ = val;
 	}
 	;
 	inline void trackID(const int & val) {
@@ -175,12 +179,15 @@ public:
 		parentKE_ = val;
 	}
 	;
-	inline double KE() const {
+	inline double vertexKE() const {
 		//do not want back-scattered particles,
-		return KE_;
+		return vertexKE_;
 	}
 	;
-
+	inline TVector3 vertexPos() {
+		return vertexPos_;
+	}
+	;
 	inline bool isIncoming() const {
 		//do not want back-scattered particles, 
 		return ((pdgid_ != 0 || mass_ > 0) && pz_ >= 0);
@@ -205,8 +212,9 @@ private:
 	double charge_;
 	int parentPdgId_;
 	int trackID_;
-	double KE_;
+	double vertexKE_;
 	double parentKE_;
+	TVector3 vertexPos_;
 ClassDef(HGCSSGenParticle,1)
 	;
 
