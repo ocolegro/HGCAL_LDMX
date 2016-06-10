@@ -8,6 +8,7 @@
 #include "DetectorConstruction.hh"
 
 #include "HGCSSGenParticle.hh"
+#include "DetectorConstruction.hh"
 
 //
 SteppingAction::SteppingAction() {
@@ -17,6 +18,12 @@ SteppingAction::SteppingAction() {
 			((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->getStructure());
 	saturationEngine = new G4EmSaturation();
 	version_ = ((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->getVersion();
+
+	DetectorConstruction*  Detector =
+			(DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction();
+	zOff = -0.5 * (Detector->GetWorldSizeZ());
+
+
 }
 
 //
@@ -45,7 +52,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 		G4ThreeVector &pos = lTrack->GetVertexPosition();
 		const G4ThreeVector &p = lTrack->GetVertexMomentumDirection();
 
-		TVector3 posVec(pos[0], pos[1], pos[2]);
+		TVector3 posVec(pos[0], pos[1], pos[2] - zOff);
 		genPart.vertexPos(posVec);
 
 		TVector3 momVec(p[0], p[1], p[2]);
