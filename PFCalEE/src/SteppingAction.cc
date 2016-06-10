@@ -41,13 +41,19 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 			(pdgId != -2112) && (pdgId != -2212)  && (abs(pdgId) != 310) && (abs(pdgId) != 111) &&
 			(pdgId != 0) && (pdgId < 1e5)) {
 		HGCSSGenParticle genPart;
-		G4ParticleDefinition *pd = lTrack->GetDefinition();
+		G4ParticleDefinition *def = lTrack->GetDefinition();
+		G4ThreeVector &pos = lTrack->GetVertexPosition();
 		const G4ThreeVector &p = lTrack->GetVertexMomentumDirection();
-		TVector3 vec(p[0], p[1], p[2]);
-		genPart.vertexPos(vec);
-		genPart.pdgid(pdgId);
-		genPart.mass(pd->GetPDGMass());
+
+		TVector3 posVec(pos[0], pos[1], pos[2]);
+		genPart.vertexPos(posVec);
+
+		TVector3 momVec(p[0], p[1], p[2]);
+		genPart.vertexMom(momVec);
+
 		genPart.vertexKE(lTrack->GetVertexKineticEnergy());
+		genPart.pdgid(pdgId);
+		genPart.mass(def->GetPDGMass());
 		eventAction_->hadronvec_.push_back(genPart);
 		lTrack->SetTrackStatus(fStopAndKill);
 		}

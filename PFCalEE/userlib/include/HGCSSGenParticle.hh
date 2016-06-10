@@ -163,6 +163,10 @@ public:
 		vertexPos_ = val;
 	}
 	;
+	inline void vertexMom(TVector3  & val) {
+		vertexMom_ = val;
+	}
+	;
 	inline void trackID(const int & val) {
 		trackID_ = val;
 	}
@@ -186,6 +190,10 @@ public:
 	;
 	inline TVector3 vertexPos() {
 		return vertexPos_;
+	}
+	;
+	inline TVector3 vertexMom() {
+		return vertexMom_;
 	}
 	;
 	inline bool isIncoming() const {
@@ -215,6 +223,7 @@ private:
 	double vertexKE_;
 	double parentKE_;
 	TVector3 vertexPos_;
+	TVector3 vertexMom_;
 ClassDef(HGCSSGenParticle,1)
 	;
 
