@@ -55,8 +55,6 @@ int main(int argc, char** argv) {
 		steelThick = std::stof(argv[4]);
 	if (argc > 5)
 		run = atoi(argv[5]);
-	if (argc > 5)
-		run = atoi(argv[5]);
 	if (argc > 6)
 		nEvents = atoi(argv[5]);
 	if (argc > 7)

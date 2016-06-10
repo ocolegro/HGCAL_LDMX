@@ -63,9 +63,15 @@ PrimaryGeneratorAction::PrimaryGeneratorAction(G4int mod, std::string hadronFile
 	model_ = mod;
 	run_ = run;
 	nEvents_ = nEvents;
+	G4cout << "Opening root file now " << G4endl;
 	file_ = TFile::Open(hadronFile.c_str());
+
+	G4cout << "Setting tree now " << G4endl;
 	tree_  = (TTree*) file_->Get("HGCSSTree");
+
+	G4cout << "Pointing the tree now " << G4endl;
 	tree_->SetBranchAddress("nHadrons",&hadrons_);
+
 	hadrons_ = 0;
 	G4int n_particle = 1;
 
@@ -121,8 +127,12 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent) {
 	int currentEvt = anEvent->GetEventID();
 	G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
 	G4String particleName;
+	G4cout << "Fetching the entry " << run_*nEvents_ + currentEvt <<  G4endl;
+
 	tree_->GetEntry(run_*nEvents_ + currentEvt);
 	for (Int_t j = 0; j < hadrons_->size(); j++) {
+			G4cout << "Looping" << G4endl;
+
 			HGCSSGenParticle& parton = (*hadrons_)[j];
 			G4ParticleDefinition* particle = particleTable->FindParticle(parton.pdgid());
 			particleGun->SetParticleDefinition(particle);
