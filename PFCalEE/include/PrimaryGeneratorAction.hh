@@ -39,6 +39,8 @@
 #include <map>
 #include "HGCSSGenParticle.hh"
 #include "TVector3.h"
+#include "TFile.h"
+#include "TTree.h"
 
 class G4Event;
 class DetectorConstruction;
