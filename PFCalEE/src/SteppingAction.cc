@@ -50,7 +50,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 			(pdgId != 0) && (pdgId < 1e5)) {
 		HGCSSGenParticle genPart;
 		G4ParticleDefinition *def = lTrack->GetDefinition();
-		G4ThreeVector &pos = lTrack->GetVertexPosition();
+		const G4ThreeVector &pos = lTrack->GetVertexPosition();
 		const G4ThreeVector &p = lTrack->GetVertexMomentumDirection();
 
 		TVector3 posVec(pos[0], pos[1], pos[2] - zOff);
