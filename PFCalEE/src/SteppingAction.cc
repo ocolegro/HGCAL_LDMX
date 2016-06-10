@@ -39,6 +39,13 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 	G4double kineng = lTrack->GetKineticEnergy();
 	G4int pdgId = lTrack->GetDefinition()->GetPDGEncoding();
 
+	if (kineng > 100 && ((abs(pdgId) == 11) ||  (abs(pdgId) != 22))) {
+		unsigned int loc = std::find(eventAction_->parentIDs.begin(),
+		 			eventAction_->parentIDs.end(), trackID) - eventAction_->parentIDs.begin();
+		if (loc == eventAction_->parentIDs.size())
+		 		eventAction_->parentIDs.push_back(trackID);
+
+	}
 	if (kineng < 100) {
 		lTrack->SetTrackStatus(fStopAndKill);
 	}
@@ -48,24 +55,27 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 	else if ((abs(pdgId) != 11) && (abs(pdgId) != 12) && (abs(pdgId) != 13) && (abs(pdgId) != 14) &&  (abs(pdgId) != 22)  &&
 			(pdgId != -2112) && (pdgId != -2212)  && (abs(pdgId) != 310) && (abs(pdgId) != 111) &&
 			(pdgId != 0) && (pdgId < 1e5)) {
-		HGCSSGenParticle genPart;
-		G4ParticleDefinition *def = lTrack->GetDefinition();
-		const G4ThreeVector &pos = lTrack->GetVertexPosition();
-		const G4ThreeVector &p = lTrack->GetVertexMomentumDirection();
+		unsigned int loc = std::find(eventAction_->parentIDs.begin(),
+		 			eventAction_->parentIDs.end(), lTrack->GetParentID()) - eventAction_->parentIDs.begin();
+		if (loc != eventAction_->parentIDs.size()){
+			HGCSSGenParticle genPart;
+			G4ParticleDefinition *def = lTrack->GetDefinition();
+			const G4ThreeVector &pos = lTrack->GetVertexPosition();
+			const G4ThreeVector &p = lTrack->GetVertexMomentumDirection();
 
-		TVector3 posVec(pos[0], pos[1], pos[2] - zOff);
-		genPart.vertexPos(posVec);
+			TVector3 posVec(pos[0], pos[1], pos[2] - zOff);
+			genPart.vertexPos(posVec);
 
-		TVector3 momVec(p[0], p[1], p[2]);
-		genPart.vertexMom(momVec);
+			TVector3 momVec(p[0], p[1], p[2]);
+			genPart.vertexMom(momVec);
 
-		genPart.vertexKE(lTrack->GetVertexKineticEnergy());
-		genPart.pdgid(pdgId);
-		genPart.mass(def->GetPDGMass());
-		eventAction_->hadronvec_.push_back(genPart);
-		lTrack->SetTrackStatus(fStopAndKill);
+			genPart.vertexKE(lTrack->GetVertexKineticEnergy());
+			genPart.pdgid(pdgId);
+			genPart.mass(def->GetPDGMass());
+			eventAction_->hadronvec_.push_back(genPart);
+			lTrack->SetTrackStatus(fStopAndKill);
+			}
 		}
-
 	//IF it is in the shower we will now kill it.
 	else if ((abs(pdgId) != 11) && (abs(pdgId) != 22)){
 		lTrack->SetTrackStatus(fStopAndKill);

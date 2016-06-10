@@ -85,6 +85,5 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 
 	//reset vectors
 	hadronvec_.clear();
-	parentInfo.clear();
-	hadronTrackIds.clear();
+	parentIDs.clear();
 }
