@@ -56,9 +56,9 @@ int main(int argc, char** argv) {
 	if (argc > 5)
 		run = atoi(argv[5]);
 	if (argc > 6)
-		nEvents = atoi(argv[5]);
+		nEvents = atoi(argv[6]);
 	if (argc > 7)
-		data = argv[5];
+		data = argv[7];
 	std::cout << "-- Running version " << version << " model " << model
 			<< std::endl;
 
