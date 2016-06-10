@@ -57,15 +57,7 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-std::vector<std::string> split(const std::string &s, char delim) {
-	std::stringstream ss(s);
-	std::string item;
-	std::vector<std::string> tokens;
-	while (std::getline(ss, item, delim)) {
-		tokens.push_back(item);
-	}
-	return tokens;
-}
+
 
 PrimaryGeneratorAction::PrimaryGeneratorAction(G4int mod, std::string hadronFile, G4int run, G4int nEvents) {
 	model_ = mod;
@@ -134,8 +126,8 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent) {
 			G4ParticleDefinition* particle = particleTable->FindParticle(parton.pdgid());
 			particleGun->SetParticleDefinition(particle);
 			particleGun->SetParticleEnergy(parton.vertexKE() * GeV);
-			G4ThreeVector pos = parton.vertexPos();
-			G4ThreeVector mom = parton.vertexMom();
+			TVector3 pos = parton.vertexPos();
+			TVector3 mom = parton.vertexMom();
 
 			particleGun->SetParticleMomentumDirection(G4ThreeVector(mom[0],mom[1],mom[2]));
 
