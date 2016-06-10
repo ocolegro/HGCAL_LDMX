@@ -80,8 +80,8 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 	event_.vtx_z(g4evt->GetPrimaryVertex(0)->GetZ0());
 
 
-
-	tree_->Fill();
+	if (hadronvec_.size() > 0)
+		tree_->Fill();
 
 	//reset vectors
 	hadronvec_.clear();
