@@ -45,6 +45,8 @@ public:
 		detector_ = newDetector;
 	}
 	std::vector<G4int> targetTrackIds,hadronTrackIds;
+	HGCSSGenParticleVec genvec_;
+
 private:
 	RunAction* runAct;
 	std::vector<SamplingSection> *detector_;
@@ -58,7 +60,6 @@ private:
 	HGCSSSamplingSectionVec ssvec_;
 	HGCSSSimHitVec hitvec_;
 	HGCSSGenParticleVec targetvec_;
-	HGCSSGenParticleVec genvec_;
 	HGCSSGenParticleVec hadronvec_;
 	EventActionMessenger* eventMessenger;
 
