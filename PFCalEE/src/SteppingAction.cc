@@ -110,6 +110,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 
 		TVector3 momVec(pvec[0], pvec[1], pvec[2]);
 		genPart.vertexMom(momVec);
+		genPart.vertexKE(lTrack->GetVertexKineticEnergy());
 		genPart.layer(getLayer(thePostPVname) - ((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->initLayer());
 		eventAction_->novelTrackIds.push_back(trackID);
 		isInitHadron = true;
