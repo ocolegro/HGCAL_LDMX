@@ -146,7 +146,7 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent) {
 			TVector3 mom = parton.vertexMom();
 			particleGun->SetParticleMomentumDirection(G4ThreeVector(mom[0],mom[1],mom[2]));
 			G4double z0 = -0.5 * (Detector->GetCalorSizeZ());
-			particleGun->SetParticlePosition(G4ThreeVector(0,0,z0));
+			particleGun->SetParticlePosition(G4ThreeVector(0,0,1.1*z0));
 			currentGenerator->GeneratePrimaryVertex(anEvent);
 	}
 
