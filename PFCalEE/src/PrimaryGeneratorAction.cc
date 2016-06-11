@@ -139,14 +139,14 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent) {
 			HGCSSGenParticle& parton = (*hadrons_)[j];
 			eventAction_->genvec_.push_back(parton);
 
-			G4ParticleDefinition* particle = particleTable->FindParticle("proton");//parton.pdgid());
-			particleGun->SetParticleDefinition(particle);//particle);
-			particleGun->SetParticleEnergy(100*MeV);//parton.vertexKE() * MeV);
+			G4ParticleDefinition* particle = particleTable->FindParticle(parton.pdgid());
+			particleGun->SetParticleDefinition(particle);
+			particleGun->SetParticleEnergy(parton.vertexKE() * MeV);
 			TVector3 pos = parton.vertexPos();
 			TVector3 mom = parton.vertexMom();
 			particleGun->SetParticleMomentumDirection(G4ThreeVector(mom[0],mom[1],mom[2]));
 			G4double z0 = -0.5 * (Detector->GetCalorSizeZ());
-			particleGun->SetParticlePosition(G4ThreeVector(0,0,1.1*z0));
+			particleGun->SetParticlePosition(G4ThreeVector(pos[0],pos[1],pos[2]+z0));
 			currentGenerator->GeneratePrimaryVertex(anEvent);
 	}
 
