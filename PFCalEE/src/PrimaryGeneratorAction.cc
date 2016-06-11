@@ -142,15 +142,8 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent) {
 
 			G4double z0 = -0.5 * (Detector->GetWorldSizeZ());
 			particleGun->SetParticlePosition(G4ThreeVector(pos[0],pos[1],pos[2]-z0));
+			currentGenerator->GeneratePrimaryVertex(anEvent);
 
-
-			if (currentGenerator) {
-				currentGenerator->GeneratePrimaryVertex(anEvent);
-
-			} else
-				G4Exception("PrimaryGeneratorAction::GeneratePrimaries",
-						"PrimaryGeneratorAction001", FatalException,
-						"generator is not instanciated.");
 	}
 
 }
