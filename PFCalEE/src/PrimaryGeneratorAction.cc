@@ -75,11 +75,6 @@ PrimaryGeneratorAction::PrimaryGeneratorAction(G4int mod, std::string hadronFile
 	hadrons_ = 0;
 	G4int n_particle = 1;
 
-	eventAction_ =
-			(EventAction*) G4RunManager::GetRunManager()->GetUserEventAction();
-	eventAction_->Add(
-			((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->getStructure());
-
 	// default generator is particle gun.
 	currentGenerator = particleGun = new G4ParticleGun(n_particle);
 	currentGeneratorName = "particleGun";
@@ -137,17 +132,18 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent) {
 	for (Int_t j = 0; j < hadrons_->size(); j++) {
 
 			HGCSSGenParticle& parton = (*hadrons_)[j];
-			eventAction_->genvec_.push_back(parton);
-
 			G4ParticleDefinition* particle = particleTable->FindParticle(parton.pdgid());
 			particleGun->SetParticleDefinition(particle);
 			particleGun->SetParticleEnergy(parton.vertexKE() * MeV);
 			TVector3 pos = parton.vertexPos();
 			TVector3 mom = parton.vertexMom();
+
 			particleGun->SetParticleMomentumDirection(G4ThreeVector(mom[0],mom[1],mom[2]));
-			G4double z0 = -0.5 * (Detector->GetCalorSizeZ());
-			particleGun->SetParticlePosition(G4ThreeVector(pos[0],pos[1],pos[2]+z0));
+
+			G4double z0 = -0.5 * (Detector->GetWorldSizeZ());
+			particleGun->SetParticlePosition(G4ThreeVector(pos[0],pos[1],pos[2]-z0));
 			currentGenerator->GeneratePrimaryVertex(anEvent);
+
 	}
 
 }
