@@ -44,7 +44,7 @@ int main(int argc, char** argv) {
 	int model = DetectorConstruction::m_FULLSECTION;
 
 	G4double steelThick = 0.;
-	std::string data   = "root://eoscms.cern.ch//eos/cms/store/user/mullin/hadrons/HGcal__version1_model2_run0.root";
+	std::string data   = "root://eoscms.cern.ch//eos/cms/store/user/mullin/hadrons/hadrons.root";
 	int run = 0;
 	int nEvents = 0;
 	if (argc > 2)

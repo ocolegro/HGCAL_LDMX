@@ -127,11 +127,9 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent) {
 	int currentEvt = anEvent->GetEventID();
 	G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
 	G4String particleName;
-	G4cout << "Fetching the entry " << run_*nEvents_ + currentEvt <<  G4endl;
 
 	tree_->GetEntry(run_*nEvents_ + currentEvt);
 	for (Int_t j = 0; j < hadrons_->size(); j++) {
-			G4cout << "Looping" << G4endl;
 
 			HGCSSGenParticle& parton = (*hadrons_)[j];
 			G4ParticleDefinition* particle = particleTable->FindParticle(parton.pdgid());
