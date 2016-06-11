@@ -72,6 +72,13 @@ PrimaryGeneratorAction::PrimaryGeneratorAction(G4int mod, std::string hadronFile
 	G4cout << "Pointing the tree now " << G4endl;
 	tree_->SetBranchAddress("HGCSSHadronVec",&hadrons_);
 
+	eventAction_ =
+			(EventAction*) G4RunManager::GetRunManager()->GetUserEventAction();
+	eventAction_->Add(
+	 			((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->getStructure());
+	G4double z0 = -0.5 * (Detector->GetWorldSizeZ());
+
+
 	hadrons_ = 0;
 	G4int n_particle = 1;
 
@@ -137,11 +144,10 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent) {
 			particleGun->SetParticleEnergy(parton.vertexKE() * MeV);
 			TVector3 pos = parton.vertexPos();
 			TVector3 mom = parton.vertexMom();
-
+			eventAction_->genvec_.push_back(parton);
 			particleGun->SetParticleMomentumDirection(G4ThreeVector(mom[0],mom[1],mom[2]));
 
-			G4double z0 = -0.5 * (Detector->GetWorldSizeZ());
-			particleGun->SetParticlePosition(G4ThreeVector(pos[0],pos[1],pos[2]-z0));
+			particleGun->SetParticlePosition(G4ThreeVector(pos[0],pos[1],pos[2]+z0));
 			currentGenerator->GeneratePrimaryVertex(anEvent);
 
 	}
