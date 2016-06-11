@@ -37,6 +37,7 @@
 #include "G4VUserPrimaryGeneratorAction.hh"
 #include "globals.hh"
 #include <map>
+#include "EventAction.hh"
 
 class G4Event;
 class DetectorConstruction;
@@ -66,6 +67,7 @@ public:
 	G4String GetGeneratorName() const;
 
 private:
+	EventAction *eventAction_;
 	int model_;
 	bool signal_;
 	std::string data_;

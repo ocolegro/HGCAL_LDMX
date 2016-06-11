@@ -52,8 +52,10 @@ EventAction::EventAction() {
 	//Branch containing incident particle and secondaries from the initial W target
 	tree_->Branch("HGCSSTargetVec", "std::vector<HGCSSGenParticle>",
 			&targetvec_);
+	tree_->Branch("HGCSSGenAction", "std::vector<HGCSSGenParticle>",
+			&genvec_);
 	//Branch containing (''long lasting'') hadronic tracks
-	tree_->Branch("HGCSSHadronVec", "std::vector<HGCSSGenParticle>", &hadronvec_);
+	tree_->Branch("HGCSSNovelVec", "std::vector<HGCSSGenParticle>", &novelvec_);
 	// }
 }
 
@@ -83,7 +85,7 @@ void EventAction::Detect(G4double eng, G4double eDepRaw,G4double eNonIonDep, G4d
 		const HGCSSGenParticle & genPart, G4bool isInitHadron, G4bool isTargetParticle,G4bool isForward, G4bool isPrimaryTrack) {
 
 	if (isInitHadron)
-		hadronvec_.push_back(genPart);
+		novelvec_.push_back(genPart);
 
 	if (isTargetParticle)
 		targetvec_.push_back(genPart);
@@ -104,7 +106,7 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 	event_.vtx_x(g4evt->GetPrimaryVertex(0)->GetX0());
 	event_.vtx_y(g4evt->GetPrimaryVertex(0)->GetY0());
 	event_.vtx_z(g4evt->GetPrimaryVertex(0)->GetZ0());
-
+	event_.steelThick(((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->GetSteelThick());
 	ssvec_.clear();
 	ssvec_.reserve(detector_->size());
 	//Changing initLayer because initial layers contain tracking sections.
@@ -265,7 +267,8 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 	targetvec_.clear();
 	hitvec_.clear();
 	ssvec_.clear();
-	hadronvec_.clear();
+	novelvec_.clear();
 	targetTrackIds.clear();
-	hadronTrackIds.clear();
+	novelTrackIds.clear();
+	genvec_.clear();
 }

@@ -33,7 +33,10 @@ public:
 		return xvtx_;
 	}
 	;
-
+	inline double steelThick() const {
+		return steelThick_;
+	}
+	;
 	inline void vtx_x(const double x) {
 		xvtx_ = x;
 	}
@@ -58,13 +61,17 @@ public:
 		zvtx_ = z;
 	}
 	;
-
+	inline void steelThick(const double thick) {
+		steelThick_ = thick;
+	}
+	;
 private:
 
 	unsigned event_;
 	double xvtx_;
 	double yvtx_;
 	double zvtx_;
+	double steelThick_;
 
 ClassDef(HGCSSEvent,1)
 	;

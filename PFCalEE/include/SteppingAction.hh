@@ -37,6 +37,7 @@ private:
 	G4EmSaturation* saturationEngine;
 	G4double timeLimit_;
 	G4int version_;
+	G4double zOff;
 
 };
 

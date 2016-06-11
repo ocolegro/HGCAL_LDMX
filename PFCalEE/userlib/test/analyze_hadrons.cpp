@@ -35,9 +35,24 @@
 #endif
 
 int main(int argc, char** argv) {
+
+
+
+	Double_t weights[26] = { 5.677, 9.9081, 5.677, 9.9081, 5.677,
+			9.9081, 5.677, 9.9081, 7.445,
+			12.2742, 7.445, 12.2742,
+			7.445, 12.2742, 7.445,
+			12.2742, 7.445, 12.2742,
+			 10.539, 16.2177,  10.539,
+			16.2177,  10.539, 16.2177,
+			 10.539, 16.2177 };
 	std::cout << "Opening the file " << argv[1] << std::endl;
 	TFile *infile = TFile::Open(argv[1]);
 	TTree *tree = (TTree*) infile->Get("HGCSSTree");
+	freopen("log.txt", "w", stdout);
+
+	HGCSSEvent* evt_ = 0;
+	tree->SetBranchAddress("HGCSSEvent", &evt_);
 
 	std::vector<HGCSSSamplingSection> * samplingVec = 0;
 	tree->SetBranchAddress("HGCSSSamplingSectionVec", &samplingVec);
@@ -45,86 +60,194 @@ int main(int argc, char** argv) {
 	std::vector<HGCSSSimHit> * hitVec = 0;
 	tree->SetBranchAddress("HGCSSSimHitVec", &hitVec);
 
-	std::vector<HGCSSGenParticle> * hadronVec = 0;
-	tree->SetBranchAddress("HGCSSTrackVec", &hadronVec);
+	std::vector<HGCSSGenParticle> * novelVec = 0;
+	tree->SetBranchAddress("HGCSSNovelVec", &novelVec);
 
 	std::vector<HGCSSGenParticle> * targetVec = 0;
-	tree->SetBranchAddress("HGCSSGenParticleVec", &targetVec);
+	tree->SetBranchAddress("HGCSSTargetVec", &targetVec);
+	Int_t firstLayer = 0;
 
 	TFile hfile("analyzed_tuple.root", "RECREATE");
-	TTree t1("hadrons", "Hadron Study");
+	TTree t1("sampling", "Sampling Study");
+	Int_t nHadrons,nTargetParticles,nLayers,goodEvt,thickness;
 
-	Int_t nHadrons,nTargets,hadronId[500],targetId[500],nTargetPhotons,
-	nTargetElectrons,nTargetHadrons,nTargetNeutrons,nProtons,nNeutrons;
-	Float_t hadronKE[500],hadronTheta[500],hadronPhi[500],
-	targetE[500],targetTheta[500],targetPhi[500];
+
 
 	t1.Branch("nHadrons", &nHadrons, "nHadrons/I");
-	t1.Branch("nProtons", &nProtons, "nProtons/I");
-	t1.Branch("nNeutrons", &nNeutrons, "nNeutrons/I");
+	t1.Branch("nTargetParticles", &nTargetParticles, "nTargetParticles/I");
+	t1.Branch("nLayers", &nLayers, "nLayers/I");
+	t1.Branch("goodEvt", &goodEvt, "goodEvt/I");
+	t1.Branch("thickness", &thickness, "thickness/I");
 
-	t1.Branch("hadronId", &hadronId, "hadronId[nHadrons]/I");
-	t1.Branch("hadronKE", &hadronKE, "KE[nHadrons]/F");
-	t1.Branch("hadronTheta", &hadronTheta, "hadronTheta[nHadrons]/F");
+	Float_t summedSen,summedTotal,summedTotalEcal,layerAvgEGFlux,summedSenEcal,layerHShowerSizeAvgHcal,layerEGFlux[500],layerHShowerSize[500],
+	hadron_time[500],hadron_xpos[500],hadron_ypos[500],hadron_zpos[500],
+	hadron_mass[500],hadron_px[500],hadron_py[500],hadron_pz[500],
+	hadron_pdgid[500],hadron_layer[500],hadron_charge[500],hadron_trackid[500],hadron_KE[500],
+	layerSen[500],layerSenWgt[500];
 
-	t1.Branch("nTargets", &nTargets, "nTargets/I");
-	t1.Branch("nTargetHadrons", &nTargetHadrons, "nTargetHadrons/I");
-	t1.Branch("nTargetElectrons", &nTargetElectrons, "nTargetElectrons/I");
-	t1.Branch("nTargetPhotons", &nTargetPhotons, "nTargetPhotons/I");
+	t1.Branch("hadron_time", &hadron_time, "hadron_time[nHadrons]/F");
+	t1.Branch("hadron_xpos", &hadron_xpos, "hadron_xpos[nHadrons]/F");
+	t1.Branch("hadron_ypos", &hadron_ypos, "hadron_ypos[nHadrons]/F");
+	t1.Branch("hadron_zpos", &hadron_zpos, "hadron_zpos[nHadrons]/F");
+	t1.Branch("hadron_mass", &hadron_mass, "hadron_mass[nHadrons]/F");
+	t1.Branch("hadron_px", &hadron_px, "hadron_px[nHadrons]/F");
+	t1.Branch("hadron_py", &hadron_py, "hadron_py[nHadrons]/F");
+	t1.Branch("hadron_pz", &hadron_pz, "hadron_pz[nHadrons]/F");
+	t1.Branch("hadron_pdgid", &hadron_pdgid, "hadron_pdgid[nHadrons]/F");
+	t1.Branch("hadron_charge", &hadron_charge, "hadron_charge[nHadrons]/F");
+	t1.Branch("hadron_trackid", &hadron_trackid, "hadron_trackid[nHadrons]/F");
+	t1.Branch("hadron_layer", &hadron_layer, "hadron_layer[nHadrons]/F");
+	t1.Branch("hadron_KE", &hadron_KE, "hadron_KE[nHadrons]/F");
 
-	t1.Branch("targetId", &targetId, "targetid[nTargets]/I");
-	t1.Branch("targetE", &targetE, "targetE[nTargets]/F");
-	t1.Branch("targetTheta", &targetTheta, "targetTheta[nTargets]/I");
+
+	Float_t layerAvgEGFluxEcal,target_time[500],target_xpos[500],target_ypos[500],target_zpos[500],
+	target_mass[500],target_px[500],target_py[500],target_pz[500],maxAng,
+	target_pdgid[500],target_charge[500],target_trackid[500],target_KE[500],
+	layerHFlux[500],layerNFlux[500],summedTotalHcal,summedSenHcal,layerHShowerSizeAvg,layerAvgEGFluxHcal,
+	summedSenWgt,summedSenEcalWgt,summedSenHcalWgt;
+
+
+	t1.Branch("target_time", &target_time, "target_time[nTargetParticles]/F");
+	t1.Branch("target_xpos", &target_xpos, "target_xpos[nTargetParticles]/F");
+	t1.Branch("target_ypos", &target_ypos, "target_ypos[nTargetParticles]/F");
+	t1.Branch("target_zpos", &target_zpos, "target_zpos[nTargetParticles]/F");
+	t1.Branch("target_mass", &target_mass, "target_mass[nTargetParticles]/F");
+	t1.Branch("target_px", &target_px, "target_px[nTargetParticles]/F");
+	t1.Branch("target_py", &target_py, "target_py[nTargetParticles]/F");
+	t1.Branch("target_pz", &target_pz, "target_pz[nTargetParticles]/F");
+	t1.Branch("target_pdgid", &target_pdgid, "target_pdgid[nTargetParticles]/F");
+	t1.Branch("target_charge", &target_charge, "target_charge[nTargetParticles]/F");
+	t1.Branch("target_trackid", &target_trackid, "target_trackid[nTargetParticles]/F");
+	t1.Branch("target_KE", &target_KE, "target_KE[nHadrons]/F");
+
+	t1.Branch("layerAvgEGFlux", &layerAvgEGFlux, "layerAvgEGFlux/F");
+	t1.Branch("layerAvgEGFluxEcal", &layerAvgEGFluxEcal, "layerAvgEGFluxEcal/F");
+	t1.Branch("summedSen", &summedSen, "summedSen/F");
+	t1.Branch("summedSenEcal", &summedSenEcal, "summedSenEcal/F");
+	t1.Branch("summedSenHcal", &summedSenHcal, "summedSenHcal/F");
+
+	t1.Branch("summedSenWgt", &summedSenWgt, "summedSenWgt/F");
+	t1.Branch("summedSenEcalWgt", &summedSenEcalWgt, "summedSenEcalWgt/F");
+	t1.Branch("summedSenHcaWgtl", &summedSenHcalWgt, "summedSenHcalWgt/F");
+
+	t1.Branch("summedTotal", &summedTotal, "summedTotal/F");
+	t1.Branch("summedTotalEcal", &summedTotalEcal, "summedTotalEcal/F");
+	t1.Branch("summedTotalHcal", &summedTotalHcal, "summedTotalHcal/F");
+	t1.Branch("layerHShowerSizeAvg", &layerHShowerSizeAvg, "layerHShowerSizeAvg/F");
+	t1.Branch("layerHShowerSizeAvgHcal", &layerHShowerSizeAvgHcal, "layerHShowerSizeAvgHcal/F");
+	t1.Branch("layerAvgEGFluxHcal", &layerAvgEGFluxHcal, "layerAvgEGFluxHcal/F");
+	t1.Branch("maxAng", &maxAng, "maxAng/F");
+
+
+	t1.Branch("layerSen", &layerSen, "layerSen[nLayers]/F");
+	t1.Branch("layerSenWgt", &layerSenWgt, "layerSenWgt[nLayers]/F");
+	t1.Branch("layerEGFlux", &layerEGFlux, "layerEGFlux[nLayers]/F");
+	t1.Branch("layerHFlux", &layerHFlux, "layerHFlux[nLayers]/F");
+	t1.Branch("layerNFlux", &layerNFlux, "layerNFlux[nLayers]/F");
+	t1.Branch("layerHShowerSize", &layerHShowerSize, "layerHShowerSize[nLayers]/F");
+
+
+	summedSen = 0,summedTotal = 0,summedTotalEcal = 0,
+			summedSenEcal=0,layerAvgEGFluxEcal=0,layerHShowerSizeAvgHcal=0;
+
+
+	Float_t nSens = 3.0,nLayersECal = 26.0,nLayersHCal = 15.0;
 
 	unsigned nEvts = tree->GetEntries();
-
+	std::vector<int> targetTrackIds;
 	for (unsigned ievt(0); ievt < nEvts; ++ievt) { //loop on entries
 		tree->GetEntry(ievt);
-
-		nHadrons = 0,nTargets = 0,nTargetHadrons = 0,nTargetNeutrons = 0,nTargetElectrons = 0,nTargetPhotons = 0;
-
-
+		nLayers = samplingVec->size();
+		nTargetParticles = 0, nHadrons = 0;
+		goodEvt = 0;
+		maxAng = -1e6;
 		for (Int_t j = 0; j < targetVec->size(); j++) {
-			nTargets = nTargets + 1;
 			HGCSSGenParticle& target = (*targetVec)[j];
-			Int_t tPdg = target.pdgid();
-			targetId[j]    = tPdg;
-			targetE[j] 	   = target.E();
-			targetTheta[j] = target.theta();
-			targetPhi[j]   = target.phi();
+			unsigned int hadronTrackLoc = std::find(targetTrackIds.begin(),
+					targetTrackIds.end(), target.trackID()) - targetTrackIds.begin();
+			if (target.vertexKE() > 100 &&hadronTrackLoc == targetTrackIds.size() ){
+				targetTrackIds.push_back(target.trackID());
+				nTargetParticles = nTargetParticles + 1;
 
-			if (abs(tPdg) == 11){
-				nTargetElectrons += 1;
-			}
-			else if (abs(tPdg) == 22){
-				nTargetPhotons += 1;
-			}
-			else if (tPdg == 2112){
-				nTargetNeutrons += 1;
-			}
-			else if ((abs(tPdg) != 111) && (abs(tPdg) != 310) && (tPdg != -2212)){
-				nTargetHadrons += 1;
+				TVector3 momVec = target.vertexMom();
+				TVector3 posVec = target.vertexPos();
+				target_time[j]      = target.time();
+				target_xpos[j] 	    = posVec[0];
+				target_ypos[j] 		= posVec[1];
+				target_zpos[j]   	= posVec[2];
+				target_mass[j]   	= target.mass();
+				target_px[j]   		= momVec[0];
+				target_py[j]   		= momVec[1];
+				target_pz[j]   		= momVec[2];
+				Double_t targAng	= TMath::ATan2(target_pz[j],sqrt(target_px[j] * target_px[j] +target_py[j] * target_py[j]))*180/3.14;
+				if (targAng > 30)
+					goodEvt = 1;
+				if(targAng > maxAng)
+					maxAng = targAng;
+
+				target_pdgid[j]   	= target.pdgid();
+				target_charge[j]   	= target.charge();
+				target_trackid[j]   = target.trackID();
+				target_KE[j]		= target.vertexKE();
 			}
 		}
 
-		for (Int_t j = 0; j < hadronVec->size(); j++) {
-			HGCSSGenParticle& hadron = (*hadronVec)[j];
-			Int_t hPdg   = hadron.pdgid();
-			hadronId[j]  = hPdg;
-			hadronKE[j]	 = hadron.E() - hadron.mass();
-			hadronTheta[j] = hadron.theta();
-			hadronPhi[j] = hadron.phi();
+		for (Int_t j = 0; j < novelVec->size(); j++) {
+			HGCSSGenParticle& hadron = (*novelVec)[j];
 			nHadrons = nHadrons + 1;
-			if (hPdg == 2112){
-				nNeutrons  += 1;
-			}
-			else if (hPdg == 2212){
-				nProtons += 1;
-			}
+			TVector3 momVec = hadron.vertexMom();
+			TVector3 posVec = hadron.vertexPos();
+
+			hadron_time[j]      = hadron.time();
+			hadron_xpos[j] 	    = posVec[0];
+			hadron_ypos[j] 		= posVec[1];
+			hadron_zpos[j]   	= posVec[2];
+			hadron_mass[j]   	= hadron.mass();
+			hadron_px[j]   		= momVec[0];
+			hadron_py[j]   		= momVec[1];
+			hadron_pz[j]   		= momVec[2];
+			hadron_pdgid[j]   	= hadron.pdgid();
+			hadron_charge[j]   	= hadron.charge();
+			hadron_trackid[j]   = hadron.trackID();
+			hadron_trackid[j]   = hadron.layer();
+			hadron_KE[j]		= hadron.vertexKE();
+
 		}
+		summedSen = 0,summedTotal = 0,summedTotalEcal = 0,summedSenWgt = 0,
+				summedSenEcal=0,layerAvgEGFluxEcal=0,layerHShowerSizeAvgHcal=0,
+				summedTotalHcal=0,summedSenHcal=0,layerHShowerSizeAvg=0,layerAvgEGFlux=0,
+				layerAvgEGFluxHcal=0;
+		for (Int_t j = firstLayer; j < samplingVec->size(); j++) {
+					HGCSSSamplingSection& sec = (*samplingVec)[j];
+					summedSen += sec.sensDep();
+					summedSenWgt +=  sec.sensDep() * weights[j];
+					summedTotal += sec.totalDep();
+					layerHShowerSizeAvg += sec.hadronShowerSize()/nLayersHCal;
+					layerAvgEGFlux += (sec.eleKinFlux()+sec.gamKinFlux())/(nSens * nLayersECal + nLayersHCal);
+					if (j < nLayersECal){
+						summedSenEcal += sec.sensDep();
+						summedSenEcalWgt += sec.sensDep() * weights[j];
+						summedTotalEcal += sec.totalDep();
+						layerAvgEGFluxEcal += (sec.eleKinFlux()+sec.gamKinFlux())/(nSens * nLayersECal);
+					}
+					if (j >= nLayersECal){
+						summedTotalHcal += sec.totalDep();
+						summedSenHcal += sec.sensDep();
+						summedSenHcalWgt += sec.sensDep() * weights[j];
 
+						layerHShowerSizeAvgHcal += sec.hadronShowerSize()/nLayersHCal;
+						layerAvgEGFluxHcal += (sec.eleKinFlux()+sec.gamKinFlux())/(nSens * nLayersHCal);
 
+					}
+					layerEGFlux[j] = (sec.eleKinFlux()+sec.gamKinFlux())/nSens;
+					layerHShowerSize[j] = sec.hadronShowerSize();
+					layerNFlux[j] = sec.neutronKinFlux()/nSens;
+					layerHFlux[j] = sec.hadKinFlux()/nSens;
+					layerSen[j] = sec.sensDep();
+					layerSenWgt[j] = sec.sensDep() * weights[j];
 
+		}
+		targetTrackIds.clear();
 		t1.Fill();
 	}
 	t1.Write();

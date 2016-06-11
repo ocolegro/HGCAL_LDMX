@@ -46,6 +46,7 @@
 
 #include "HepMCG4AsciiReader.hh"
 #include "HepMCG4PythiaInterface.hh"
+#include "HGCSSGenParticle.hh"
 
 #include <fstream>
 #include <string>
@@ -70,6 +71,13 @@ PrimaryGeneratorAction::PrimaryGeneratorAction(G4int mod, bool signal,
 	signal_ = signal;
 	data_ = data;
 	G4int n_particle = 1;
+
+
+	eventAction_ =
+			(EventAction*) G4RunManager::GetRunManager()->GetUserEventAction();
+	eventAction_->Add(
+			((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->getStructure());
+
 
 	// default generator is particle gun.
 	currentGenerator = particleGun = new G4ParticleGun(n_particle);
@@ -130,19 +138,22 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent) {
 	particleGun->SetParticleEnergy(et * GeV);
 	particleGun->SetParticleMomentumDirection(G4ThreeVector(0., 0., 1.));
 
-	G4double y0 = G4RandFlat::shoot(-65.,65);
-	G4double x0 = G4RandFlat::shoot(-65.,65);
+	G4double y0 = G4RandFlat::shoot(-10.,10);
+	G4double x0 = G4RandFlat::shoot(-10.,10);
 	G4double z0 = -0.5 * (Detector->GetWorldSizeZ());
 
-	if (model_ == 0)
-		particleGun->SetParticlePosition(G4ThreeVector(x0, y0, z0));
 
-	//G4cout << " -- Gun position set to: " << x0 << "," << y0 << "," << z0
-		//	<< G4endl;
+	particleGun->SetParticlePosition(G4ThreeVector(x0, y0, z0));
+	HGCSSGenParticle genPart;
+	genPart.vertexKE(et);
+	TVector3 vec(x0,y0,z0);
+	genPart.vertexPos(vec);
+	int pdgid = particle->GetPDGEncoding();
+	genPart.pdgid(pdgid);
 
 	if (currentGenerator) {
 		currentGenerator->GeneratePrimaryVertex(anEvent);
-
+		eventAction_->genvec_.push_back(genPart);
 	} else
 		G4Exception("PrimaryGeneratorAction::GeneratePrimaries",
 				"PrimaryGeneratorAction001", FatalException,
