@@ -68,13 +68,6 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 	const G4ThreeVector & position = thePreStepPoint->GetPosition();
 	HGCSSGenParticle genPart;
 	G4bool isTargetParticle = false;
-	/*
-	if (trackID == 1){
-		std::cout << "The main particle is now at thePrePVname " << thePrePVname  << std::endl;
-		std::cout << "The main particle is now at thePostPVname " << thePostPVname  << std::endl;
-
-	}
-	*/
 	const G4ThreeVector &p = lTrack->GetMomentum();
 
 	if ((thePrePVname == "W1phys" && thePostPVname == "G4_Galactic1phys"))
@@ -92,12 +85,12 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 		isTargetParticle = true;
 		eventAction_->targetTrackIds.push_back(trackID);
 	}
-	unsigned int hadronTrackLoc = std::find(eventAction_->hadronTrackIds.begin(),
-			eventAction_->hadronTrackIds.end(), trackID)
-			- eventAction_->hadronTrackIds.begin();
+	unsigned int hadronTrackLoc = std::find(eventAction_->novelTrackIds.begin(),
+			eventAction_->novelTrackIds.end(), trackID)
+			- eventAction_->novelTrackIds.begin();
 	bool isInitHadron = false;
 	//Only select new hadronic tracks with kin. energy > 10 MeV
-	if ((hadronTrackLoc == eventAction_->hadronTrackIds.size()) && (kineng>10)) {
+	if ((hadronTrackLoc == eventAction_->novelTrackIds.size()) && (kineng>10)) {
 		//Only select hadrons
 		if ((abs(pdgId) != 11) && (abs(pdgId) != 22 ) && (pdgId != -2112) && (pdgId != -2212)  && (abs(pdgId) != 310) && (abs(pdgId) != 111)){
 		const G4ThreeVector & postposition = thePostStepPoint->GetPosition();
@@ -118,7 +111,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 		TVector3 momVec(pvec[0], pvec[1], pvec[2]);
 		genPart.vertexMom(momVec);
 		genPart.layer(getLayer(thePostPVname) - ((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->initLayer());
-		eventAction_->hadronTrackIds.push_back(trackID);
+		eventAction_->novelTrackIds.push_back(trackID);
 		isInitHadron = true;
 		}
 	}

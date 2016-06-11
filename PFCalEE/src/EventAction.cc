@@ -57,7 +57,7 @@ EventAction::EventAction() {
 	tree_->Branch("HGCSSTargetVec", "std::vector<HGCSSGenParticle>",
 			&targetvec_);
 	//Branch containing (''long lasting'') hadronic tracks
-	tree_->Branch("HGCSSHadronVec", "std::vector<HGCSSGenParticle>", &hadronvec_);
+	tree_->Branch("HGCSSHadronVec", "std::vector<HGCSSGenParticle>", &novelvec_);
 	// }
 }
 
@@ -88,7 +88,7 @@ void EventAction::Detect(G4double eng, G4double eDepRaw,G4double eNonIonDep, G4d
 		const HGCSSGenParticle & genPart,  G4bool isInitHadron, G4bool isTargetParticle,G4bool isForward, G4bool isPrimaryTrack) {
 
 	if (isInitHadron)
-		hadronvec_.push_back(genPart);
+		novelvec_.push_back(genPart);
 
 	if (isTargetParticle)
 		targetvec_.push_back(genPart);
@@ -268,7 +268,7 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 	targetvec_.clear();
 	hitvec_.clear();
 	ssvec_.clear();
-	hadronvec_.clear();
+	novelvec_.clear();
 	targetTrackIds.clear();
 	genvec_.clear();
 }
