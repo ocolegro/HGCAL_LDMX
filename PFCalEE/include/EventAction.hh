@@ -58,6 +58,7 @@ private:
 	HGCSSSamplingSectionVec ssvec_;
 	HGCSSSimHitVec hitvec_;
 	HGCSSGenParticleVec targetvec_;
+	HGCSSGenParticleVec genvec_;
 	HGCSSGenParticleVec hadronvec_;
 	EventActionMessenger* eventMessenger;
 

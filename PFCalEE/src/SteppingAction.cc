@@ -16,7 +16,6 @@ SteppingAction::SteppingAction() {
 	eventAction_->Add(
 			((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->getStructure());
 	saturationEngine = new G4EmSaturation();
-	timeLimit_ = 20000000000; //ns
 	version_ = ((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->getVersion();
 }
 
@@ -73,12 +72,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 	*/
 	const G4ThreeVector &p = lTrack->GetMomentum();
 
-	if ((globalTime < timeLimit_)
-			//Select target particles from model v2
-			&& ((version_ == 2 && thePrePVname == "Wphys" && thePostPVname == "Si1_0phys") ||
-					//Select target particles from model v1,v>=3
-					((version_ == 1 || version_ > 2) && thePrePVname == "Wphys" && thePostPVname == "W1phys") ||
-					(thePrePVname == "W1phys" && thePostPVname == "G4_Galactic1phys")))
+	if ((thePrePVname == "W1phys" && thePostPVname == "G4_Galactic1phys"))
 	{
 		const G4ThreeVector & postposition = thePostStepPoint->GetPosition();
 		G4ParticleDefinition *pd = lTrack->GetDefinition();
@@ -110,6 +104,14 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 		genPart.pdgid(pdgId);
 		genPart.charge(pd->GetPDGCharge());
 		genPart.trackID(trackID);
+		const G4ThreeVector &posvec = lTrack->GetVertexPosition();
+		const G4ThreeVector &pvec = lTrack->GetVertexMomentumDirection();
+
+		TVector3 posVec(posvec[0], posvec[1], posvec[2] - zOff);
+		genPart.vertexPos(posVec);
+
+		TVector3 momVec(pvec[0], pvec[1], pvec[2]);
+		genPart.vertexMom(momVec);
 		genPart.layer(getLayer(thePostPVname) - ((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->initLayer());
 		eventAction_->hadronTrackIds.push_back(trackID);
 		isInitHadron = true;

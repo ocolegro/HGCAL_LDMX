@@ -69,6 +69,7 @@ public:
 	G4String GetGeneratorName() const;
 
 private:
+	EventAction *eventAction_;
 	int model_;
 	int run_;
 	int nEvents_;

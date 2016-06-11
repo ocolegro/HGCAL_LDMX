@@ -50,6 +50,9 @@ EventAction::EventAction() {
 	tree_->Branch("HGCSSSamplingSectionVec",
 			"std::vector<HGCSSSamplingSection>", &ssvec_);
 	tree_->Branch("HGCSSSimHitVec", "std::vector<HGCSSSimHit>", &hitvec_);
+	//Branch containing generated particle
+	tree_->Branch("HGCSSGenAction", "std::vector<HGCSSGenParticle>",
+			&genvec_);
 	//Branch containing incident particle and secondaries from the initial W target
 	tree_->Branch("HGCSSTargetVec", "std::vector<HGCSSGenParticle>",
 			&targetvec_);
@@ -267,4 +270,5 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 	ssvec_.clear();
 	hadronvec_.clear();
 	targetTrackIds.clear();
+	genvec_.clear();
 }
