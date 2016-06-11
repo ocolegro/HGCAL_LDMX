@@ -17,6 +17,11 @@ SteppingAction::SteppingAction() {
 			((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->getStructure());
 	saturationEngine = new G4EmSaturation();
 	version_ = ((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->getVersion();
+
+	DetectorConstruction*  Detector =
+			(DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction();
+	zOff = -0.5 * (Detector->GetCalorSizeZ());
+
 }
 
 //
