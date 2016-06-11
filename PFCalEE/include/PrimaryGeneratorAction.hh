@@ -41,6 +41,7 @@
 #include "TVector3.h"
 #include "TFile.h"
 #include "TTree.h"
+#include "EventAction.hh"
 
 class G4Event;
 class DetectorConstruction;
