@@ -140,9 +140,9 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent) {
 
 			particleGun->SetParticleMomentumDirection(G4ThreeVector(mom[0],mom[1],mom[2]));
 
-			G4double z0 = -0.5 * (Detector->GetWorldSizeZ());
-			std::cout << "Shooting a particle at position " << pos[2] - z0 << std::endl;
-			particleGun->SetParticlePosition(G4ThreeVector(pos[0],pos[1],pos[2]-z0));
+			G4double z0 = -0.5 * (Detector->GetCalorSizeZ());
+			std::cout << "Shooting a particle at position " << pos[2] + z0 << std::endl;
+			particleGun->SetParticlePosition(G4ThreeVector(pos[0],pos[1],pos[2]+z0));
 			currentGenerator->GeneratePrimaryVertex(anEvent);
 
 	}
