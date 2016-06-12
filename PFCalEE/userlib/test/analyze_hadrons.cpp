@@ -40,6 +40,9 @@ int main(int argc, char** argv) {
 	TTree *tree = (TTree*) infile->Get("HGCSSTree");
 	freopen("log.txt", "w", stdout);
 
+	HGCSSEvent* evt_ = 0;
+	tree->SetBranchAddress("HGCSSEvent", &evt_);
+
 	std::vector<HGCSSSamplingSection> * samplingVec = 0;
 	tree->SetBranchAddress("HGCSSSamplingSectionVec", &samplingVec);
 
@@ -55,12 +58,13 @@ int main(int argc, char** argv) {
 
 	TFile hfile("analyzed_tuple.root", "RECREATE");
 	TTree t1("sampling", "Sampling Study");
-	Int_t nHadrons,nTargetParticles,nLayers=samplingVec->size(),goodEvt;
+	Int_t nHadrons,nTargetParticles,nLayers=samplingVec->size(),goodEvt,thickness = evt_->steelThick();
 
 	t1.Branch("nHadrons", &nHadrons, "nHadrons/I");
 	t1.Branch("nTargetParticles", &nTargetParticles, "nTargetParticles/I");
 	t1.Branch("nLayers", &nLayers, "nLayers/I");
 	t1.Branch("goodEvt", &goodEvt, "goodEvt/I");
+	t1.Branch("thickness", &thickness, "thickness/I");
 
 	Float_t summedSen,summedTotal,summedTotalEcal,layerAvgEGFlux,summedSenEcal,layerHShowerSizeAvgHcal,layerEGFlux[500],layerHShowerSize[500],
 	hadron_time[500],hadron_xpos[500],hadron_ypos[500],hadron_zpos[500],
