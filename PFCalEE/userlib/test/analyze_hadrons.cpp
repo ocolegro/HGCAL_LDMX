@@ -47,10 +47,10 @@ int main(int argc, char** argv) {
 	tree->SetBranchAddress("HGCSSSimHitVec", &hitVec);
 
 	std::vector<HGCSSGenParticle> * hadronVec = 0;
-	tree->SetBranchAddress("HGCSSNovelVec", &hadronVec);
+	tree->SetBranchAddress("HGCSSHadronVec", &hadronVec);
 
 	std::vector<HGCSSGenParticle> * targetVec = 0;
-	tree->SetBranchAddress("HGCSSTargetVec", &targetVec);
+	tree->SetBranchAddress("HGCSSGenAction", &targetVec);
 	Int_t firstLayer = 0;
 
 	TFile hfile("analyzed_tuple.root", "RECREATE");
