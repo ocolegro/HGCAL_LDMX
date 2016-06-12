@@ -59,7 +59,9 @@ int main(int argc, char** argv) {
 	TFile hfile("analyzed_tuple.root", "RECREATE");
 	TTree t1("sampling", "Sampling Study");
 	std::cout << "The steel thickness is " << evt_->steelThick() << std::endl;
-	Int_t nHadrons,nTargetParticles,nLayers=samplingVec->size(),goodEvt,thickness = evt_->steelThick();
+	Int_t nHadrons,nTargetParticles,nLayers,goodEvt,thickness;
+
+
 
 	t1.Branch("nHadrons", &nHadrons, "nHadrons/I");
 	t1.Branch("nTargetParticles", &nTargetParticles, "nTargetParticles/I");
@@ -136,7 +138,8 @@ int main(int argc, char** argv) {
 
 	for (unsigned ievt(0); ievt < nEvts; ++ievt) { //loop on entries
 		tree->GetEntry(ievt);
-
+		nLayers = samplingVec->size();
+		thickness = evt_->steelThick();
 		nTargetParticles = 0, nHadrons = 0;
 		goodEvt = 0;
 
@@ -153,7 +156,7 @@ int main(int argc, char** argv) {
 			target_px[j]   		= momVec[0];
 			target_py[j]   		= momVec[1];
 			target_pz[j]   		= momVec[2];
-			if (target_pz[j]) goodEvt = 1;
+			if (target_pz[j] > 0) goodEvt = 1;
 			target_pdgid[j]   	= target.pdgid();
 			target_charge[j]   	= target.charge();
 			target_trackid[j]   = target.trackID();
