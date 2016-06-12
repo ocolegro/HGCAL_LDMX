@@ -85,7 +85,7 @@ int main(int argc, char** argv) {
 	Float_t layerAvgEGFluxEcal,target_time[500],target_xpos[500],target_ypos[500],target_zpos[500],
 	target_mass[500],target_px[500],target_py[500],target_pz[500],
 	target_pdgid[500],target_charge[500],target_trackid[500],target_KE[500],
-	layerHFlux[500],layerNFlux[500],summedTotalHcal,summedSenHcal,layerHShowerSizeAvg;
+	layerHFlux[500],layerNFlux[500],summedTotalHcal,summedSenHcal,layerHShowerSizeAvg,layerAvgEGFluxHcal;
 
 
 	t1.Branch("target_time", &target_time, "target_time[nTargetParticles]/F");
@@ -112,6 +112,8 @@ int main(int argc, char** argv) {
 	t1.Branch("summedTotalHcal", &summedTotalHcal, "summedTotalHcal/F");
 	t1.Branch("layerHShowerSizeAvg", &layerHShowerSizeAvg, "layerHShowerSizeAvg/F");
 	t1.Branch("layerHShowerSizeAvgHcal", &layerHShowerSizeAvgHcal, "layerHShowerSizeAvgHcal/F");
+	t1.Branch("layerAvgEGFluxHcal", &layerAvgEGFluxHcal, "layerAvgEGFluxHcal/F");
+
 
 	t1.Branch("layerEGFlux", &layerEGFlux, "layerEGFlux[nLayers]/F");
 	t1.Branch("layerHFlux", &layerHFlux, "layerHFlux[nLayers]/F");
@@ -176,7 +178,8 @@ int main(int argc, char** argv) {
 		}
 		summedSen = 0,summedTotal = 0,summedTotalEcal = 0,
 				summedSenEcal=0,layerAvgEGFluxEcal=0,layerHShowerSizeAvgHcal=0,
-				summedTotalHcal=0,summedSenHcal=0,layerHShowerSizeAvg=0;
+				summedTotalHcal=0,summedSenHcal=0,layerHShowerSizeAvg=0,layerAvgEGFlux=0,
+				layerAvgEGFluxHcal=0;
 		for (Int_t j = firstLayer; j < samplingVec->size(); j++) {
 					HGCSSSamplingSection& sec = (*samplingVec)[j];
 					summedSen += sec.sensDep();
@@ -192,6 +195,8 @@ int main(int argc, char** argv) {
 						summedTotalHcal += sec.totalDep();
 						summedSenHcal += sec.sensDep();
 						layerHShowerSizeAvgHcal += sec.hadronShowerSize()/nLayersHCal;
+						layerAvgEGFluxHcal += (sec.eleKinFlux()+sec.gamKinFlux())/(nSens * nLayersHCal);
+
 					}
 					layerEGFlux[j] = (sec.eleKinFlux()+sec.gamKinFlux())/nSens;
 					layerHShowerSize[j] = sec.hadronShowerSize();
