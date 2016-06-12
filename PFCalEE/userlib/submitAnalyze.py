@@ -26,62 +26,65 @@ parser.add_option('-S', '--no-submit'   ,    action="store_true",  dest='nosubmi
 label       = ''
 suffix      = ''
 myqueue=opt.queue
+thickness_ = [5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100,105,110,115,120,125]
+for thickness in thickness_:
 
-outDir='%s/git_%s/version_%d/model_%d/'%(opt.out,opt.gittag,opt.version,opt.model)
-outDir='%s/%s'%(outDir,label)
+    outDir='%s/git_%s/version_%d/model_%d/'%(opt.out,opt.gittag,opt.version,opt.model)
+    outDir='%s/%s'%(outDir,label)
 
-print opt.macro
-if (opt.run>=0) : outDir='%s/run_%d/'%(outDir,opt.run)
+    print opt.macro
+    if (opt.run>=0) : outDir='%s/run_%d/zthick_%s/'%(outDir,opt.run,thickness)
 
-if len(opt.eos)>0:
-    eosDir='%s/git%s'%(opt.eos,opt.gittag)
-    eosDirIn = 'root://eoscms//eos/cms%s/' % (eosDir)
+    if len(opt.eos)>0:
+        eosDir='%s/git%s'%(opt.eos,opt.gittag)
+        eosDirIn = 'root://eoscms//eos/cms%s/' % (eosDir)
 
-else:
-    eosDir='%s/'%(outDir)
-    eosDirIn = '%s/'%(outDir)
-outTag='%s_version%d_model%d'%(label,opt.version,opt.model)
-if (opt.run>=0) : outTag='%s_run%d'%(outTag,opt.run)
+    else:
+        eosDir='%s/'%(outDir)
+        eosDirIn = '%s/'%(outDir)
+    outTag='%s_version%d_model%d'%(label,opt.version,opt.model)
+    if (opt.run>=0) : outTag='%s_run%d_%s'%(outTag,opt.run,thickness)
 
-print 'The eosdir is ' + str(eosDir)
-print 'The eosdirIn is ' + str(eosDirIn)
-outlog='%s/digitizer%s.log'%(outDir,suffix)
-g4log='digijob%s.log'%(suffix)
-os.system('mkdir -p %s'%outDir)
-
-#wrapper
-scriptFile = open('%s/runGEN%s.sh'%(outDir,suffix), 'w')
-scriptFile.write('#!/bin/bash\n')
-scriptFile.write('source %s/../g4env.sh\n'%(os.getcwd()))
-scriptFile.write('localdir=`pwd`\n')
-scriptFile.write('%s/bin/%s  %s/HGcal_%s.root | tee %s\n'%(os.getcwd(),opt.macro,eosDirIn,outTag,outlog))
-scriptFile.write('echo "--Local directory is " $localdir >> %s\n'%(g4log))
-scriptFile.write('ls * >> %s\n'%(g4log))
+    print 'The eosdir is ' + str(eosDir)
+    print 'The eosdirIn is ' + str(eosDirIn)
+    outlog='%s/digitizer%s.log'%(outDir,suffix)
+    g4log='digijob%s.log'%(suffix)
+    os.system('mkdir -p %s'%outDir)
 
 
-if len(opt.eos)>0:
-    scriptFile.write('grep "alias eos=" /afs/cern.ch/project/eos/installation/cms/etc/setup.sh | sed "s/alias /export my/" > eosenv.sh\n')
-    scriptFile.write('source eosenv.sh\n')
-    scriptFile.write('$myeos mkdir -p %s\n'%eosDir)
-    scriptFile.write('$myeos cp analyzed_tuple.root /eos/cms%s/%s%s_%s.root\n'%(eosDir,opt.macro,suffix,outTag))
-    scriptFile.write('if (( "$?" != "0" )); then\n')
-    scriptFile.write('echo " --- Problem with copy of file PFcal.root to EOS. Keeping locally." >> g4.log\n')
-    scriptFile.write('fi\n')
-    scriptFile.write('rm analyzed_tuple.root')
-else:
-    scriptFile.write('mv analyzed_tuple.root %s/%s%s_%s.root' %(eosDir,opt.macro,suffix,outTag))
-    scriptFile.write('rm analyzed_tuple.root')
+    #wrapper
+    scriptFile = open('%s/runGEN%s.sh'%(outDir,suffix), 'w')
+    scriptFile.write('#!/bin/bash\n')
+    scriptFile.write('source %s/../g4env.sh\n'%(os.getcwd()))
+    scriptFile.write('localdir=`pwd`\n')
+    scriptFile.write('%s/bin/%s  %s/HGcal_%s.root | tee %s\n'%(os.getcwd(),opt.macro,eosDirIn,outTag,outlog))
+    scriptFile.write('echo "--Local directory is " $localdir >> %s\n'%(g4log))
+    scriptFile.write('ls * >> %s\n'%(g4log))
 
 
-scriptFile.write('\nrm core.*\n')
-scriptFile.write('cp * %s/\n'%(outDir))
-scriptFile.write('echo "All done"\n')
-scriptFile.close()
+    if len(opt.eos)>0:
+        scriptFile.write('grep "alias eos=" /afs/cern.ch/project/eos/installation/cms/etc/setup.sh | sed "s/alias /export my/" > eosenv.sh\n')
+        scriptFile.write('source eosenv.sh\n')
+        scriptFile.write('$myeos mkdir -p %s\n'%eosDir)
+        scriptFile.write('$myeos cp analyzed_tuple.root /eos/cms%s/%s%s_%s.root\n'%(eosDir,opt.macro,suffix,outTag))
+        scriptFile.write('if (( "$?" != "0" )); then\n')
+        scriptFile.write('echo " --- Problem with copy of file PFcal.root to EOS. Keeping locally." >> g4.log\n')
+        scriptFile.write('fi\n')
+        scriptFile.write('rm analyzed_tuple.root')
+    else:
+        scriptFile.write('mv analyzed_tuple.root %s/%s%s_%s.root' %(eosDir,opt.macro,suffix,outTag))
+        scriptFile.write('rm analyzed_tuple.root')
 
-#submit
-os.system('chmod u+rwx %s/runGEN%s.sh'%(outDir,suffix))
-if opt.nosubmit : os.system('LSB_JOB_REPORT_MAIL=N echo bsub -q %s -N %s/runGEN%s.sh'%(myqueue,outDir,suffix))
-else: os.system("LSB_JOB_REPORT_MAIL=N bsub -q %s -N \'%s/runGEN%s.sh\'"%(myqueue,outDir,suffix))
+
+    scriptFile.write('\nrm core.*\n')
+    scriptFile.write('cp * %s/\n'%(outDir))
+    scriptFile.write('echo "All done"\n')
+    scriptFile.close()
+
+    #submit
+    os.system('chmod u+rwx %s/runGEN%s.sh'%(outDir,suffix))
+    if opt.nosubmit : os.system('LSB_JOB_REPORT_MAIL=N echo bsub -q %s -N %s/runGEN%s.sh'%(myqueue,outDir,suffix))
+    else: os.system("LSB_JOB_REPORT_MAIL=N bsub -q %s -N \'%s/runGEN%s.sh\'"%(myqueue,outDir,suffix))
 
 
 
