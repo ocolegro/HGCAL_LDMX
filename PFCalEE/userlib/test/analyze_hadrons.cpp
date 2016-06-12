@@ -90,7 +90,7 @@ int main(int argc, char** argv) {
 
 
 	Float_t layerAvgEGFluxEcal,target_time[500],target_xpos[500],target_ypos[500],target_zpos[500],
-	target_mass[500],target_px[500],target_py[500],target_pz[500],
+	target_mass[500],target_px[500],target_py[500],target_pz[500],maxAng,
 	target_pdgid[500],target_charge[500],target_trackid[500],target_KE[500],
 	layerHFlux[500],layerNFlux[500],summedTotalHcal,summedSenHcal,layerHShowerSizeAvg,layerAvgEGFluxHcal;
 
@@ -120,6 +120,8 @@ int main(int argc, char** argv) {
 	t1.Branch("layerHShowerSizeAvg", &layerHShowerSizeAvg, "layerHShowerSizeAvg/F");
 	t1.Branch("layerHShowerSizeAvgHcal", &layerHShowerSizeAvgHcal, "layerHShowerSizeAvgHcal/F");
 	t1.Branch("layerAvgEGFluxHcal", &layerAvgEGFluxHcal, "layerAvgEGFluxHcal/F");
+	t1.Branch("maxAng", &maxAng, "maxAng/F");
+
 
 
 	t1.Branch("layerEGFlux", &layerEGFlux, "layerEGFlux[nLayers]/F");
@@ -142,7 +144,7 @@ int main(int argc, char** argv) {
 		thickness = evt_->steelThick();
 		nTargetParticles = 0, nHadrons = 0;
 		goodEvt = 0;
-
+		maxAng = -1e6;
 		for (Int_t j = 0; j < targetVec->size(); j++) {
 			nTargetParticles = nTargetParticles + 1;
 			HGCSSGenParticle& target = (*targetVec)[j];
@@ -156,7 +158,12 @@ int main(int argc, char** argv) {
 			target_px[j]   		= momVec[0];
 			target_py[j]   		= momVec[1];
 			target_pz[j]   		= momVec[2];
-			if (target_pz[j] > 0) goodEvt = 1;
+			Double_t targAng	= TMath::ATan2(target_pz[j],sqrt(target_px[j] * target_px[j] +target_py[j] * target_py[j]))*180/3.14;
+			if (targAng > 30)
+				goodEvt = 1;
+			if(targAng > maxAng)
+				maxAng = targAng;
+
 			target_pdgid[j]   	= target.pdgid();
 			target_charge[j]   	= target.charge();
 			target_trackid[j]   = target.trackID();
