@@ -158,11 +158,7 @@ int main(int argc, char** argv) {
 			target_px[j]   		= momVec[0];
 			target_py[j]   		= momVec[1];
 			target_pz[j]   		= momVec[2];
-			Double_t targAng	= TMath::ATan2(target_pz[j],sqrt(target_px[j] * target_px[j] +target_py[j] * target_py[j]))*180/3.14;
-			if (targAng > 30)
-				goodEvt = 1;
-			if(targAng > maxAng)
-				maxAng = targAng;
+
 
 			target_pdgid[j]   	= target.pdgid();
 			target_charge[j]   	= target.charge();
@@ -184,6 +180,13 @@ int main(int argc, char** argv) {
 			hadron_px[j]   		= momVec[0];
 			hadron_py[j]   		= momVec[1];
 			hadron_pz[j]   		= momVec[2];
+
+			Double_t hadronAng	= TMath::ATan2(hadron_pz[j],sqrt(hadron_px[j] * hadron_px[j] +hadron_py[j] * hadron_py[j]))*180/3.14;
+			if (hadronAng > 30)
+				goodEvt = 1;
+			if(hadronAng > maxAng)
+				maxAng = hadronAng;
+
 			hadron_pdgid[j]   	= hadron.pdgid();
 			hadron_charge[j]   	= hadron.charge();
 			hadron_trackid[j]   = hadron.trackID();
