@@ -55,11 +55,12 @@ int main(int argc, char** argv) {
 
 	TFile hfile("analyzed_tuple.root", "RECREATE");
 	TTree t1("sampling", "Sampling Study");
-	Int_t nHadrons,nTargetParticles,nLayers=samplingVec->size();
+	Int_t nHadrons,nTargetParticles,nLayers=samplingVec->size(),goodEvt;
 
 	t1.Branch("nHadrons", &nHadrons, "nHadrons/I");
 	t1.Branch("nTargetParticles", &nTargetParticles, "nTargetParticles/I");
 	t1.Branch("nLayers", &nLayers, "nLayers/I");
+	t1.Branch("goodEvt", &goodEvt, "goodEvt/I");
 
 	Float_t summedSen,summedTotal,summedTotalEcal,layerAvgEGFlux,summedSenEcal,layerHShowerSizeAvgHcal,layerEGFlux[500],layerHShowerSize[500],
 	hadron_time[500],hadron_xpos[500],hadron_ypos[500],hadron_zpos[500],
@@ -85,6 +86,7 @@ int main(int argc, char** argv) {
 	target_mass[500],target_px[500],target_py[500],target_pz[500],
 	target_pdgid[500],target_charge[500],target_trackid[500],target_KE[500],
 	layerHFlux[500],layerNFlux[500],summedTotalHcal,summedSenHcal,layerHShowerSizeAvg;
+
 
 	t1.Branch("target_time", &target_time, "target_time[nTargetParticles]/F");
 	t1.Branch("target_xpos", &target_xpos, "target_xpos[nTargetParticles]/F");
@@ -135,7 +137,7 @@ int main(int argc, char** argv) {
 			HGCSSGenParticle& target = (*targetVec)[j];
 			TVector3 momVec = target.vertexMom();
 			TVector3 posVec = target.vertexPos();
-
+			goodEvt = false;
 			target_time[j]      = target.time();
 			target_xpos[j] 	    = posVec[0];
 			target_ypos[j] 		= posVec[1];
@@ -144,6 +146,7 @@ int main(int argc, char** argv) {
 			target_px[j]   		= momVec[0];
 			target_py[j]   		= momVec[1];
 			target_pz[j]   		= momVec[2];
+			if (target_pz[j]) goodEvt = true;
 			target_pdgid[j]   	= target.pdgid();
 			target_charge[j]   	= target.charge();
 			target_trackid[j]   = target.trackID();
