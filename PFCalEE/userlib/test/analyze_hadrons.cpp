@@ -125,7 +125,7 @@ int main(int argc, char** argv) {
 
 	unsigned nEvts = tree->GetEntries();
 
-	for (unsigned ievt(0); ievt < 500; ++ievt) { //loop on entries
+	for (unsigned ievt(0); ievt < nEvts; ++ievt) { //loop on entries
 		tree->GetEntry(ievt);
 
 		nTargetParticles = 0, nHadrons = 0;
