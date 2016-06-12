@@ -61,7 +61,7 @@ int main(int argc, char** argv) {
 	t1.Branch("nTargetParticles", &nTargetParticles, "nTargetParticles/I");
 	t1.Branch("nLayers", &nLayers, "nLayers/I");
 
-	Float_t summedSen,summedTotal,summedTotal26,layerAvgEGFlux,summedSen26,layerHShowerSizeAvg,layerEGFlux[500],layerHShowerSize[500],
+	Float_t summedSen,summedTotal,summedTotalEcal,layerAvgEGFlux,summedSenEcal,layerHShowerSizeAvgHcal,layerEGFlux[500],layerHShowerSize[500],
 	hadron_time[500],hadron_xpos[500],hadron_ypos[500],hadron_zpos[500],
 	hadron_mass[500],hadron_px[500],hadron_py[500],hadron_pz[500],
 	hadron_pdgid[500],hadron_layer[500],hadron_charge[500],hadron_trackid[500],hadron_KE[500];
@@ -81,10 +81,10 @@ int main(int argc, char** argv) {
 	t1.Branch("hadron_KE", &hadron_KE, "hadron_KE[nHadrons]/F");
 
 
-	Float_t layerAvgEGFlux26,target_time[500],target_xpos[500],target_ypos[500],target_zpos[500],
+	Float_t layerAvgEGFluxEcal,target_time[500],target_xpos[500],target_ypos[500],target_zpos[500],
 	target_mass[500],target_px[500],target_py[500],target_pz[500],
 	target_pdgid[500],target_charge[500],target_trackid[500],target_KE[500],
-	layerHFlux[500],layerNFlux[500];
+	layerHFlux[500],layerNFlux[500],summedTotalHcal,summedSenHcal,layerHShowerSizeAvg;
 
 	t1.Branch("target_time", &target_time, "target_time[nTargetParticles]/F");
 	t1.Branch("target_xpos", &target_xpos, "target_xpos[nTargetParticles]/F");
@@ -100,12 +100,16 @@ int main(int argc, char** argv) {
 	t1.Branch("target_KE", &target_KE, "target_KE[nHadrons]/F");
 
 	t1.Branch("layerAvgEGFlux", &layerAvgEGFlux, "layerAvgEGFlux/F");
-	t1.Branch("layerAvgEGFlux26", &layerAvgEGFlux26, "layerAvgEGFlux26/F");
+	t1.Branch("layerAvgEGFluxEcal", &layerAvgEGFluxEcal, "layerAvgEGFluxEcal/F");
 	t1.Branch("summedSen", &summedSen, "summedSen/F");
-	t1.Branch("summedSen26", &summedSen26, "summedSen26/F");
+	t1.Branch("summedSenEcal", &summedSenEcal, "summedSenEcal/F");
+	t1.Branch("summedSenHcal", &summedSenHcal, "summedSenHcal/F");
+
 	t1.Branch("summedTotal", &summedTotal, "summedTotal/F");
-	t1.Branch("summedTotal26", &summedTotal26, "summedTotal26/F");
+	t1.Branch("summedTotalEcal", &summedTotalEcal, "summedTotalEcal/F");
+	t1.Branch("summedTotalHcal", &summedTotalHcal, "summedTotalHcal/F");
 	t1.Branch("layerHShowerSizeAvg", &layerHShowerSizeAvg, "layerHShowerSizeAvg/F");
+	t1.Branch("layerHShowerSizeAvgHcal", &layerHShowerSizeAvgHcal, "layerHShowerSizeAvgHcal/F");
 
 	t1.Branch("layerEGFlux", &layerEGFlux, "layerEGFlux[nLayers]/F");
 	t1.Branch("layerHFlux", &layerHFlux, "layerHFlux[nLayers]/F");
@@ -113,15 +117,15 @@ int main(int argc, char** argv) {
 	t1.Branch("layerHShowerSize", &layerHShowerSize, "layerHShowerSize[nLayers]/F");
 
 
-	summedSen = 0,summedTotal = 0,summedTotal26 = 0,
-			summedSen26=0,layerAvgEGFlux26=0,layerHShowerSizeAvg=0;
+	summedSen = 0,summedTotal = 0,summedTotalEcal = 0,
+			summedSenEcal=0,layerAvgEGFluxEcal=0,layerHShowerSizeAvgHcal=0;
 
 
 	Float_t nSens = 3.0,nLayersECal = 26.0,nLayersHCal = 15.0;
 
 	unsigned nEvts = tree->GetEntries();
 
-	for (unsigned ievt(0); ievt < nEvts; ++ievt) { //loop on entries
+	for (unsigned ievt(0); ievt < 500; ++ievt) { //loop on entries
 		tree->GetEntry(ievt);
 
 		nTargetParticles = 0, nHadrons = 0;
@@ -167,21 +171,24 @@ int main(int argc, char** argv) {
 			hadron_KE[j]		= hadron.vertexKE();
 
 		}
-		summedSen = 0,summedTotal = 0,summedTotal26 = 0,
-				summedSen26=0,layerAvgEGFlux26=0,layerHShowerSizeAvg=0;
+		summedSen = 0,summedTotal = 0,summedTotalEcal = 0,
+				summedSenEcal=0,layerAvgEGFluxEcal=0,layerHShowerSizeAvgHcal=0,
+				summedTotalHcal=0,summedSenHcal=0,layerHShowerSizeAvg=0;
 		for (Int_t j = firstLayer; j < samplingVec->size(); j++) {
 					HGCSSSamplingSection& sec = (*samplingVec)[j];
 					summedSen += sec.sensDep();
 					summedTotal += sec.totalDep();
-
+					layerHShowerSizeAvg += sec.hadronShowerSize()/nLayersHCal;
 					layerAvgEGFlux += (sec.eleKinFlux()+sec.gamKinFlux())/(nSens * nLayersECal + nLayersHCal);
-					if (j < 26){
-						summedTotal26 += sec.totalDep();
-						summedSen26 += sec.sensDep();
-						layerAvgEGFlux26 += (sec.eleKinFlux()+sec.gamKinFlux())/(nSens * nLayersECal);
+					if (j < nLayersECal){
+						summedSenEcal += sec.sensDep();
+						summedTotalEcal += sec.totalDep();
+						layerAvgEGFluxEcal += (sec.eleKinFlux()+sec.gamKinFlux())/(nSens * nLayersECal);
 					}
-					if (j >= 26){
-						layerHShowerSizeAvg += sec.hadronShowerSize()/nLayersHCal;
+					if (j >= nLayersECal){
+						summedTotalHcal += sec.totalDep();
+						summedSenHcal += sec.sensDep();
+						layerHShowerSizeAvgHcal += sec.hadronShowerSize()/nLayersHCal;
 					}
 					layerEGFlux[j] = (sec.eleKinFlux()+sec.gamKinFlux())/nSens;
 					layerHShowerSize[j] = sec.hadronShowerSize();
