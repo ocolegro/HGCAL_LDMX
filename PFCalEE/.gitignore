@@ -11,3 +11,9 @@ obj
 *.history
 *.rndm
 *.sh
+condorSubmit
+events/
+macros/
+../PFCalEE.log
+G4History.macro
+g4steer.mac
