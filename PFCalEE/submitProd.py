@@ -33,7 +33,8 @@ label=''
 nevents=opt.nevts
 myqueue=opt.queue
 
-thickness_ = [5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100,105,110,115,120,125]
+#thickness_ = [5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100,105,110,115,120,125]
+thickness_ = [1,2,3,4,5,6,7,8,9,10,12,14,16,18,20]
 for thickness in thickness_:
     outDir='%s/git_%s/version_%d/model_%d'%(opt.out,opt.gittag,opt.version,opt.model)
     outDir='%s/%s'%(outDir,label)
