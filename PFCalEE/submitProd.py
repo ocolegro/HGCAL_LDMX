@@ -74,19 +74,19 @@ for thickness in thickness_:
     scriptFile.write('echo "All done"\n')
     scriptFile.close()
 
-#write geant 4 macro
-g4Macro = open('%s/g4steer.mac'%(outDir), 'w')
-g4Macro.write('/control/verbose 0\n')
-g4Macro.write('/control/saveHistory\n')
-g4Macro.write('/run/verbose 0\n')
-g4Macro.write('/event/verbose 0\n')
-g4Macro.write('/tracking/verbose 0\n')
-g4Macro.write('/N03/det/setModel %d\n'%opt.model)
-g4Macro.write('/random/setSeeds %d %d\n'%( random.uniform(0,100000), random.uniform(0,100000) ) )
-g4Macro.write('/run/beamOn %d\n'%(nevents))
-g4Macro.close()
+    #write geant 4 macro
+    g4Macro = open('%s/g4steer.mac'%(outDir), 'w')
+    g4Macro.write('/control/verbose 0\n')
+    g4Macro.write('/control/saveHistory\n')
+    g4Macro.write('/run/verbose 0\n')
+    g4Macro.write('/event/verbose 0\n')
+    g4Macro.write('/tracking/verbose 0\n')
+    g4Macro.write('/N03/det/setModel %d\n'%opt.model)
+    g4Macro.write('/random/setSeeds %d %d\n'%( random.uniform(0,100000), random.uniform(0,100000) ) )
+    g4Macro.write('/run/beamOn %d\n'%(nevents))
+    g4Macro.close()
 
-#submit
-os.system('chmod u+rwx %s/runJob.sh'%outDir)
-if opt.nosubmit : os.system('LSB_JOB_REPORT_MAIL=N echo bsub -q %s -N %s/runJob.sh'%(myqueue,outDir))
-else: os.system("LSB_JOB_REPORT_MAIL=N bsub -q %s -N \'%s/runJob.sh\'"%(myqueue,outDir))
+    #submit
+    os.system('chmod u+rwx %s/runJob.sh'%outDir)
+    if opt.nosubmit : os.system('LSB_JOB_REPORT_MAIL=N echo bsub -q %s -N %s/runJob.sh'%(myqueue,outDir))
+    else: os.system("LSB_JOB_REPORT_MAIL=N bsub -q %s -N \'%s/runJob.sh\'"%(myqueue,outDir))

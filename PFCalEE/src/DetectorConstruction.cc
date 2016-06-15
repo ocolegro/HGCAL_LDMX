@@ -115,9 +115,14 @@ DetectorConstruction::DetectorConstruction(G4int ver, G4int mod,G4double steelTh
 	iEleL.push_back(make_pair(1*mm,"Pb"));
 	iEleL.push_back(make_pair(steelThick*mm,"SSteel"));
 	iEleL.push_back(make_pair(0.5*mm,"Cu"));
-	iEleL.push_back(make_pair(0.1*mm,"Si"));
-	iEleL.push_back(make_pair(0.1*mm,"Si"));
-	iEleL.push_back(make_pair(0.1*mm,"Si"));
+	if (version_ == v_HGCALEE_v6){
+		iEleL.push_back(make_pair(0.1*mm,"Si"));
+		iEleL.push_back(make_pair(0.1*mm,"Si"));
+		iEleL.push_back(make_pair(0.1*mm,"Si"));
+	}
+	else{
+		iEleL.push_back(make_pair(9*mm,"Scintillator"));
+	}
 
 	Nmodule=15;
 
