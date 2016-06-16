@@ -80,7 +80,7 @@ def main():
 		fs.write("/event/verbose 0 \n");
 		fs.write("/tracking/verbose 0 \n");
 		fs.write("/N03/det/setModel 2 \n");
-		fs.write("/filemode/inputFilename events.lhe \n");
+		fs.write("/filemode/inputFilename {0}_{1}GeV_phi0_theta0_x0_y0_z-50_events.lhe \n".format(opt.nevtsperjob,int(parenergy)));
 		fs.write("/random/setSeeds %i %i \n" % (seed1+i,seed2+i));
 		fs.write("/run/initialize \n");
 		fs.write("/run/beamOn %i \n" % opt.nevtsperjob);
