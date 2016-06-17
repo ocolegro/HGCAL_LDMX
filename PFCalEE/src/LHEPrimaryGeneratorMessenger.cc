@@ -46,7 +46,6 @@ LHEPrimaryGeneratorMessenger::LHEPrimaryGeneratorMessenger(LHEPrimaryGeneratorAc
    fInputFile(0)
 
 {
-  G4cout << "WE SHOULD BE GETTING HERER!!!!!!!!!!!!!!!!!!!!!!!!" << G4endl;
   fDir = new G4UIdirectory("/filemode/");
   fDir->SetGuidance("Primary generator control for neutron events");
 
