@@ -183,20 +183,20 @@ public:
 private:
 
 	double energy_;
-	double parentEng_;
-	double time_;
+    double time_;
 	double zpos_;
-	double trackID_;
-	unsigned layer_;
-	unsigned cellid_;
+    unsigned layer_;
+    unsigned cellid_;
 	unsigned nGammas_;
 	unsigned nElectrons_;
-	unsigned nMuons_;
+    unsigned nMuons_;
 	unsigned nNeutrons_;
 	unsigned nProtons_;
-	unsigned nHadrons_;
+    unsigned nHadrons_;
 	int trackIDMainParent_;
-	double energyMainParent_;
+    double energyMainParent_;
+	double trackID_;
+    double parentEng_;
 
 ClassDef(HGCSSSimHit,1)
 	;
