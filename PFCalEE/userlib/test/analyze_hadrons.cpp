@@ -159,6 +159,7 @@ int main(int argc, char** argv) {
 		tree->GetEntry(ievt);
 		nLayers = samplingVec->size();
 		nTargetParticles = 0, nHadrons = 0;
+		thickness = evt_->steelThick();
 		goodEvt = 0;
 		maxAng = -1e6;
 		for (Int_t j = 0; j < targetVec->size(); j++) {
