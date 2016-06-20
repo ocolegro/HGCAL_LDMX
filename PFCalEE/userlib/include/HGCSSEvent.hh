@@ -5,7 +5,7 @@
 #include "Rtypes.h"
 #include <sstream>
 #include <map>
-
+#include "TVector3.h"
 class HGCSSEvent {
 
 public:
