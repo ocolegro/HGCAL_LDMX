@@ -71,7 +71,7 @@ void EventAction::Detect(G4double eDepRaw, G4VPhysicalVolume *volume) {
 	std::pair<G4bool,G4bool> stopIter = std::make_pair(false,false);
 	//double sens = 0;
 
-	for (size_t i = 0; i < detector_->size(); i++)
+	for (size_t i = 1; i < detector_->size(); i++)
 	{
 		if (stopIter.first) break;
 		stopIter = (*detector_)[i].add( eDepRaw, volume);
@@ -142,7 +142,7 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 	}
 	event_.dep(totalSens);
 
-	G4cout << "The dep cut is " << depCut << " The totalSens is " << totalSens << "The summedDep is " << summedDep << G4endl;
+	G4cout << "The dep cut is " << depCut << " The totalSens is " << totalSens << " The summedDep is " << summedDep << G4endl;
 	tree_->Fill();
 	summedDep = 0;
 
