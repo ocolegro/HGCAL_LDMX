@@ -81,7 +81,7 @@ void EventAction::Detect(G4double eDepRaw, G4VPhysicalVolume *volume) {
 		//G4cout <<"Aborting an event" << G4endl;
 		//CancelledEvent(G4RunManager::GetRunManager()->GetCurrentEvent());
 		storeSeeds = false;
-		G4RunManager::GetRunManager()->AbortRun();
+		G4RunManager::GetRunManager()->AbortRun(true);
 	}
 }
 
