@@ -34,15 +34,3 @@ G4double SamplingSection::getMeasuredEnergy(bool weighted) {
 	return getTotalSensE();
 
 }
-void SamplingSection::trackParticleHistory(const unsigned & idx,
-		const G4SiHitVec & incoming) {
-	for (unsigned iP(0); iP < sens_HitVec[idx].size(); ++iP) { //loop on g4hits
-		G4int parId = sens_HitVec[idx][iP].parentId;
-		for (unsigned iI(0); iI < incoming.size(); ++iI) { //loop on previous layer
-			G4int trId = incoming[iI].trackId;
-			if (trId == parId)
-				sens_HitVec[idx][iP].parentId = incoming[iI].parentId;
-		} //loop on previous layer
-	} //loop on g4hits
-
-}

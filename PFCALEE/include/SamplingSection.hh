@@ -125,8 +125,14 @@ public:
 			G4double getMeasuredEnergy(bool weighted=true);
 
 
-			void trackParticleHistory(const unsigned & idx,const G4SiHitVec & incoming);
-
+			G4double SamplingSection::getTotalSensE() {
+				double etot = 0;
+				for (unsigned ie(0); ie < n_elements; ++ie) {
+					if (isSensitiveElement(ie))
+						etot += sublayer_RawDep[ie];
+				}
+				return etot;
+			}
 			//
 			void report(bool header=false);
 
