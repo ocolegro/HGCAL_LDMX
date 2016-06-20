@@ -85,7 +85,7 @@ public:
 		status_ = status;
 	}
 	;
-	inline void dep(G4double dep) {
+	inline void dep(double dep) {
 		dep_ = dep;
 	}
 	;

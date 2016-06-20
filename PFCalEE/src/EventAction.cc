@@ -134,7 +134,7 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 	ssvec_.clear();
 	ssvec_.reserve(detector_->size());
 	//Changing initLayer because initial layers contain tracking sections.
-	G4double totalSens = 0;
+	double totalSens = 0;
 	for (size_t i = initLayer; i < detector_->size(); i++) {
 		HGCSSSamplingSection lSec;
 		lSec.volNb(i);
