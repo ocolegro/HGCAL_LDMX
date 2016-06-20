@@ -77,6 +77,7 @@ void EventAction::Detect(G4double eDepRaw, G4VPhysicalVolume *volume) {
 		totalSens += (*detector_)[i].getTotalSensE();
 	}
 	if (totalSens > 25) {
+		EndOfEventAction(G4RunManager::GetRunManager()->GetCurrentEvent());
 		G4RunManager::GetRunManager()->AbortEvent();
 	}
 }
