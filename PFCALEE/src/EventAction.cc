@@ -77,6 +77,7 @@ void EventAction::Detect(G4double eDepRaw, G4VPhysicalVolume *volume) {
 			sens += (*detector_)[i].getTotalSensE();
 	}
 	if (sens > 30) {
+		G4cout <<"Aborting an event" << G4endl;
 		CancelledEvent(G4RunManager::GetRunManager()->GetCurrentEvent());
 		G4RunManager::GetRunManager()->AbortEvent();
 	}
@@ -96,9 +97,6 @@ void EventAction::CancelledEvent(const G4Event* g4evt) {
 		(*detector_)[i].resetCounters();
 	}
 	event_.dep(totalSens);
-
-
-
 	tree_->Fill();
 	//reset vectors
 	genvec_.clear();
