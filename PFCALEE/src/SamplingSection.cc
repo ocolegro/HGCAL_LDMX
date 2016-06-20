@@ -30,8 +30,8 @@ void SamplingSection::report(bool header) {
 	}
 
 G4double SamplingSection::getMeasuredEnergy(bool weighted) {
-	G4double weight = (weighted ? getAbsorberX0() : 1.0);
-	return weight * getTotalSensE();
+
+	return getTotalSensE();
 
 }
 void SamplingSection::trackParticleHistory(const unsigned & idx,
