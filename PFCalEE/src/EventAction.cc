@@ -129,7 +129,7 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
     TVector3 status(stat_x,stat_y,0);
     TVector3 seeds(seed_x,seed_y,0);
 
-    G4cout << "Seeds reads " << seeds.x() << seeds.y() << G4endl;
+    G4cout << "Seeds reads " << seeds.X() << seeds.Y() << G4endl;
     event_.seeds(seeds);
     event_.status(status);
 
