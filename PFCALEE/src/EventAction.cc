@@ -20,7 +20,8 @@ EventAction::EventAction() {
 	eventMessenger = new EventActionMessenger(this);
 	printModulo = 100;
 	outF_ = TFile::Open("PFcal.root", "RECREATE");
-	storeSeeds = true;
+	summedDep = 0;
+	depCut = 28;
 	outF_->cd();
 	double xysize =
 			((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->GetCalorSizeXY();
@@ -67,43 +68,27 @@ void EventAction::BeginOfEventAction(const G4Event* evt) {
 
 //
 void EventAction::Detect(G4double eDepRaw, G4VPhysicalVolume *volume) {
-	//G4bool stopIter = false;
+	G4bool stopIter = false;
 	//double sens = 0;
 
 	for (size_t i = 0; i < detector_->size(); i++)
 	{
-		//if (stopIter) break;
-		(*detector_)[i].add( eDepRaw, volume);
+		if (stopIter) break;
+		stopIter = (*detector_)[i].add( eDepRaw, volume);
 		//if (i > ((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->initLayer())
 			//sens += (*detector_)[i].getTotalSensE();
 	}
-	/*if (sens > 28) {
+	if (stopIter)
+		summedDep += eDepRaw;
+	if (summedDep > depCut) {
 		//G4cout <<"Aborting an event" << G4endl;
-		//CancelledEvent(G4RunManager::GetRunManager()->GetCurrentEvent());
-		storeSeeds = false;
-		//G4RunManager::GetRunManager()->AbortRun(true);
-	}*/
+		//storeSeeds = false;
+		G4RunManager::GetRunManager()->AbortRun(true);
+	}
 }
 
 //
-void EventAction::CancelledEvent(const G4Event* g4evt) {
 
-	//TVector3 null;
-	//event_.seeds(null);
-	//event_.status(null);
-	double totalSens = 0;
-	for (size_t i = ((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->initLayer()
-			; i < detector_->size(); i++) {
-
-		totalSens += (*detector_)[i].getTotalSensE();
-		(*detector_)[i].resetCounters();
-	}
-	event_.dep(totalSens);
-	tree_->Fill();
-	//reset vectors
-	genvec_.clear();
-
-}
 
 void EventAction::EndOfEventAction(const G4Event* g4evt) {
 	//return;
@@ -111,7 +96,9 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 
 	event_.eventNumber(evtNb_);
 	event_.steelThick(((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->GetSteelThick());
-	if (storeSeeds){
+	double totalSens = 0;
+
+	if (summedDep < depCut){
 		G4String fileN = "currentEvent.rndm";
 		CLHEP::HepRandom::saveEngineStatus(fileN);
 		std::ifstream input(fileN);
@@ -144,10 +131,8 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 			} //loop on sensitive layers
 		//G4cout << "This was a good event, the totalSens was " << totalSens << G4endl;
 
-		event_.dep(totalSens);
 	}
 	else{
-		double totalSens = 0;
 		for (size_t i = ((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->initLayer()
 				; i < detector_->size(); i++) {
 
@@ -155,10 +140,12 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 			(*detector_)[i].resetCounters();
 			} //loop on sensitive layers
 		//G4cout << "This was a good event, the totalSens was " << totalSens << G4endl;
-		event_.dep(totalSens);
 	}
+	event_.dep(totalSens);
+
+	G4cout << "The dep cut is " << depCut << " The totalSens is " << totalSens << "The summedDep is " << summedDep << G4endl;
 	tree_->Fill();
-	storeSeeds = true;
+	summedDep = 0;
 
 	//reset vectors
 	genvec_.clear();

@@ -30,7 +30,6 @@ public:
 	virtual ~EventAction();
 	void BeginOfEventAction(const G4Event*);
 	void EndOfEventAction(const G4Event*);
-	void CancelledEvent(const G4Event*);
 
 	void Detect(G4double eRawDep,G4VPhysicalVolume *volume);
 
@@ -47,7 +46,8 @@ private:
 	RunAction* runAct;
 	std::vector<SamplingSection> *detector_;
 	G4int evtNb_, printModulo;
-	G4bool storeSeeds;
+	G4double depCut;
+	G4double summedDep;
 	HGCSSGeometryConversion* geomConv_;
 
 	TFile *outF_;
