@@ -134,6 +134,7 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 	ssvec_.clear();
 	ssvec_.reserve(detector_->size());
 	//Changing initLayer because initial layers contain tracking sections.
+	G4double totalSens = 0;
 	for (size_t i = initLayer; i < detector_->size(); i++) {
 		HGCSSSamplingSection lSec;
 		lSec.volNb(i);
@@ -145,6 +146,7 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 		//Measurements now follow
 
 		lSec.absorberDep((*detector_)[i].getAbsorbedEnergy());
+		totalSens += (*detector_)[i].getMeasuredEnergy(false);
 		lSec.sensDep((*detector_)[i].getMeasuredEnergy(false));
 		lSec.totalDep((*detector_)[i].getTotalEnergy());
 		lSec.totalNonIonDep((*detector_)[i].getTotalEnergy(false));
@@ -278,6 +280,8 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 		}
 
 		(*detector_)[i].resetCounters();
+	    event_.dep(totalSens);
+
 	}
 	if (debug) {
 		G4cout << " -- Number of truth particles = " << targetvec_.size() << G4endl<< " -- Number of simhits = " << hitvec_.size() << G4endl

@@ -55,6 +55,10 @@ public:
 		return status_;
 	}
 	;
+	inline double dep() const {
+		return dep_;
+	}
+	;
 	inline void vtx_y(const double y) {
 		yvtx_ = y;
 	}
@@ -81,6 +85,10 @@ public:
 		status_ = status;
 	}
 	;
+	inline void dep(G4double dep) {
+		dep_ = dep;
+	}
+	;
 private:
 
 	unsigned event_;
@@ -88,6 +96,7 @@ private:
 	double yvtx_;
 	double zvtx_;
 	double steelThick_;
+	double dep_;
 	TVector3 seeds_,status_;
 
 ClassDef(HGCSSEvent,1)
