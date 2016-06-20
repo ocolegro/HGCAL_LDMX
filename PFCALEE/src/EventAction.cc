@@ -68,7 +68,7 @@ void EventAction::BeginOfEventAction(const G4Event* evt) {
 
 //
 void EventAction::Detect(G4double eDepRaw, G4VPhysicalVolume *volume) {
-	std::pair<G4bool,G4bool> stopIter = false;
+	std::pair<G4bool,G4bool> stopIter ;
 	//double sens = 0;
 
 	for (size_t i = 0; i < detector_->size(); i++)
