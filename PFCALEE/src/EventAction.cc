@@ -96,48 +96,54 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 	event_.vtx_z(g4evt->GetPrimaryVertex(0)->GetZ0());
 	event_.steelThick(((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->GetSteelThick());
 	if (storeSeeds_){
+		G4String fileN = "currentEvent.rndm";
+		CLHEP::HepRandom::saveEngineStatus(fileN);
+		std::ifstream input(fileN);
+		std::string currentLine;
+		Double_t stat_x = 0,stat_y = 0,seed_x = 0,seed_y = 0;
+		for(int count = 0; count < 5; count++ ){
+			getline( input, currentLine );
+			if (count == 1)
+				stat_x = std::atoi(currentLine.c_str());
+			if (count == 2)
+				stat_y = std::atoi(currentLine.c_str());
+
+			if (count == 3)
+				seed_x = std::atoi(currentLine.c_str());
+			if (count == 4)
+				seed_y = std::atoi(currentLine.c_str());
+		}
+		TVector3 status(stat_x,stat_y,0);
+		TVector3 seeds(seed_x,seed_y,0);
+
+		event_.seeds(seeds);
+		event_.status(status);
+		//Changing initLayer because initial layers contain tracking sections.
+		double totalSens = 0;
+		for (size_t i = ((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->initLayer()
+				; i < detector_->size(); i++) {
+
+			totalSens += (*detector_)[i].getTotalSensE();
+			(*detector_)[i].resetCounters();
+			G4cout << "This was a good event, the totalSens was " << totalSens << G4endl;
 
 
-	G4String fileN = "currentEvent.rndm";
-	CLHEP::HepRandom::saveEngineStatus(fileN);
-	std::ifstream input(fileN);
-	std::string currentLine;
-	Double_t stat_x = 0,stat_y = 0,seed_x = 0,seed_y = 0;
-    for(int count = 0; count < 5; count++ ){
-    	getline( input, currentLine );
-    	if (count == 1)
-    		stat_x = std::atoi(currentLine.c_str());
-    	if (count == 2)
-    		stat_y = std::atoi(currentLine.c_str());
-
-        if (count == 3)
-        	seed_x = std::atoi(currentLine.c_str());
-        if (count == 4)
-        	seed_y = std::atoi(currentLine.c_str());
-    }
-    TVector3 status(stat_x,stat_y,0);
-    TVector3 seeds(seed_x,seed_y,0);
-
-    event_.seeds(seeds);
-    event_.status(status);
-	//Changing initLayer because initial layers contain tracking sections.
-	double totalSens = 0;
-	for (size_t i = ((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->initLayer()
-			; i < detector_->size(); i++) {
-
-		totalSens += (*detector_)[i].getTotalSensE();
-		(*detector_)[i].resetCounters();
-	    G4cout << "This was a good event, the totalSens was " << totalSens << G4endl;
-
-
-		} //loop on sensitive layers
-    event_.dep(totalSens);
+			} //loop on sensitive layers
+		event_.dep(totalSens);
 	}
 	else{
 		//TVector3 null;
 	    //event_.seeds(null);
 	    //event_.status(null);
-	    event_.dep(30);
+		double totalSens = 0;
+		for (size_t i = ((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->initLayer()
+				; i < detector_->size(); i++) {
+
+			totalSens += (*detector_)[i].getTotalSensE();
+			(*detector_)[i].resetCounters();
+		}
+	    event_.dep(totalSens);
+
 	}
 
 
