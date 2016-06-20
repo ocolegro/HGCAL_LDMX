@@ -81,8 +81,7 @@ void EventAction::Detect(G4double eDepRaw, G4VPhysicalVolume *volume) {
 		//G4cout <<"Aborting an event" << G4endl;
 		//CancelledEvent(G4RunManager::GetRunManager()->GetCurrentEvent());
 		storeSeeds = false;
-		G4RunManager::GetRunManager()->AbortEvent();
-		storeSeeds = true;
+		G4RunManager::GetRunManager()->AbortRun();
 	}
 }
 
@@ -159,6 +158,7 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 		event_.dep(totalSens);
 	}
 	tree_->Fill();
+	storeSeeds = true;
 
 	//reset vectors
 	genvec_.clear();
