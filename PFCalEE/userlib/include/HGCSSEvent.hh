@@ -47,6 +47,11 @@ public:
 	}
 	;
 
+	inline int seeds() const {
+		return seeds_;
+	}
+	;
+
 	inline void vtx_y(const double y) {
 		yvtx_ = y;
 	}
@@ -65,6 +70,10 @@ public:
 		steelThick_ = thick;
 	}
 	;
+	inline void seeds(const int* seeds) {
+		seeds_ = seeds;
+	}
+	;
 private:
 
 	unsigned event_;
@@ -72,6 +81,7 @@ private:
 	double yvtx_;
 	double zvtx_;
 	double steelThick_;
+	int seeds_[4];
 
 ClassDef(HGCSSEvent,1)
 	;

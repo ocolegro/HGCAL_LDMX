@@ -107,6 +107,19 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 	event_.vtx_y(g4evt->GetPrimaryVertex(0)->GetY0());
 	event_.vtx_z(g4evt->GetPrimaryVertex(0)->GetZ0());
 	event_.steelThick(((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->GetSteelThick());
+
+	G4String fileN = "currentEvent.rndm";
+	CLHEP::HepRandom::saveEngineStatus(fileN);
+	std::ifstream input(fileN);
+	std::string currentLine;
+    int seed[4];
+
+    for(int count = 0; count < 5; count++ ){
+    	getline( input, currentLine );
+        if (count > 0)
+        	seed[count - 1] = std::atoi(currentLine.c_str());
+    }
+    event_.seeds(seed);
 	ssvec_.clear();
 	ssvec_.reserve(detector_->size());
 	//Changing initLayer because initial layers contain tracking sections.
