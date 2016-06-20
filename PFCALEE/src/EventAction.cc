@@ -114,6 +114,8 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 			; i < detector_->size(); i++) {
 
 		totalSens += (*detector_)[i].getTotalSensE();
+		(*detector_)[i].resetCounters();
+
 
 		} //loop on sensitive layers
     event_.dep(totalSens);
