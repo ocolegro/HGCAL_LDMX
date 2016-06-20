@@ -74,9 +74,11 @@ void EventAction::Detect(G4double eDepRaw, G4VPhysicalVolume *volume) {
 	{
 		//if (stopIter) break;
 		(*detector_)[i].add( eDepRaw, volume);
-		totalSens += (*detector_)[i].getTotalSensE();
+		if (i > ((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->initLayer());
+			totalSens += (*detector_)[i].getTotalSensE();
 	}
 	if (totalSens > 100) {
+		std::cout << "Breaker switch triggered, the total sens is " << totalSens << std::endl;
 		EndOfEventAction(G4RunManager::GetRunManager()->GetCurrentEvent());
 		G4RunManager::GetRunManager()->AbortEvent();
 	}
