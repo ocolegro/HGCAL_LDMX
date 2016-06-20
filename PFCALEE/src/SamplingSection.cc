@@ -25,10 +25,7 @@ void SamplingSection::report(bool header) {
 		G4cout
 				<< "E/[MeV]\t  Si\tAbsorber\tTotal\tSi g frac\tSi e frac\tSi mu frac\tSi had frac\tSi <t> \t nG4SiHits"
 				<< G4endl;
-		G4cout << std::setprecision(3) << "\t  " << getMeasuredEnergy(false) << "\t" << getAbsorbedEnergy() << "\t\t" << getTotalEnergy() << "\t"
-		<< getPhotonFraction() << "\t" << getElectronFraction() << "\t" << getMuonFraction() << "\t" << getHadronicFraction() << "\t"
-		<< getAverageTime() << "\t"
-		<< getTotalSensHits() << "\t"
+		G4cout << std::setprecision(3) << "\t  " << getMeasuredEnergy(false)
 		<< G4endl;
 	}
 
