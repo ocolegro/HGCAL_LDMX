@@ -68,21 +68,21 @@ void EventAction::BeginOfEventAction(const G4Event* evt) {
 //
 void EventAction::Detect(G4double eDepRaw, G4VPhysicalVolume *volume) {
 	//G4bool stopIter = false;
-	double sens = 0;
+	//double sens = 0;
 
 	for (size_t i = 0; i < detector_->size(); i++)
 	{
 		//if (stopIter) break;
 		(*detector_)[i].add( eDepRaw, volume);
-		if (i > ((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->initLayer())
-			sens += (*detector_)[i].getTotalSensE();
+		//if (i > ((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->initLayer())
+			//sens += (*detector_)[i].getTotalSensE();
 	}
-	if (sens > 28) {
+	/*if (sens > 28) {
 		//G4cout <<"Aborting an event" << G4endl;
 		//CancelledEvent(G4RunManager::GetRunManager()->GetCurrentEvent());
 		storeSeeds = false;
 		//G4RunManager::GetRunManager()->AbortRun(true);
-	}
+	}*/
 }
 
 //
