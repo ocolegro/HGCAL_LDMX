@@ -119,6 +119,7 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
         if (count > 0)
         	seed[count - 1] = std::atoi(currentLine.c_str());
     }
+    G4cout << "The first seed is " << seed[0] << ", The second seed is " << seed[1] << " ... " << std::endl;
     event_.seeds(seed);
 	ssvec_.clear();
 	ssvec_.reserve(detector_->size());
