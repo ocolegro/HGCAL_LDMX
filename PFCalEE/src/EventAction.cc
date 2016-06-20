@@ -112,7 +112,7 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 	CLHEP::HepRandom::saveEngineStatus(fileN);
 	std::ifstream input(fileN);
 	std::string currentLine;
-    TVector3 status,seeds;
+    TVector3 status(0,0,0),seeds(0,0,0);
 
     for(int count = 0; count < 5; count++ ){
     	getline( input, currentLine );
