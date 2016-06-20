@@ -111,7 +111,6 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 
 	event_.eventNumber(evtNb_);
 	event_.steelThick(((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->GetSteelThick());
-	std::cout << "The state of storeSeeds_ is " << storeSeeds_ << std::endl;
 		G4String fileN = "currentEvent.rndm";
 		CLHEP::HepRandom::saveEngineStatus(fileN);
 		std::ifstream input(fileN);
@@ -141,10 +140,8 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 
 			totalSens += (*detector_)[i].getTotalSensE();
 			(*detector_)[i].resetCounters();
-			G4cout << "This was a good event, the totalSens was " << totalSens << G4endl;
-
-
 			} //loop on sensitive layers
+		G4cout << "This was a good event, the totalSens was " << totalSens << G4endl;
 		event_.dep(totalSens);
 
 	tree_->Fill();
