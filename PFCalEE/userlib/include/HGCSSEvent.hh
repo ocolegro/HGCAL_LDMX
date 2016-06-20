@@ -70,7 +70,7 @@ public:
 		steelThick_ = thick;
 	}
 	;
-	inline void seeds(const int* seeds) {
+	inline void seeds(const int seeds) {
 		seeds_ = seeds;
 	}
 	;
@@ -81,7 +81,7 @@ private:
 	double yvtx_;
 	double zvtx_;
 	double steelThick_;
-	int seeds_[4];
+	int seeds_;
 
 ClassDef(HGCSSEvent,1)
 	;
