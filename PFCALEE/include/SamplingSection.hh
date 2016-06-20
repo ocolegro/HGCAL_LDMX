@@ -71,7 +71,7 @@ public:
 			};
 
 			//
-			G4bool add(G4double depositRawE,G4VPhysicalVolume* vol);
+			std::pair<G4bool,G4bool> add(G4double depositRawE,G4VPhysicalVolume* vol);
 
 			inline bool isSensitiveElement(const unsigned & aEle) {
 				if (aEle < n_elements &&
