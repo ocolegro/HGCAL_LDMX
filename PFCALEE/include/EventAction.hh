@@ -30,6 +30,7 @@ public:
 	virtual ~EventAction();
 	void BeginOfEventAction(const G4Event*);
 	void EndOfEventAction(const G4Event*);
+	void CancelledEvent(const G4Event*);
 
 	void Detect(G4double eRawDep,G4VPhysicalVolume *volume);
 

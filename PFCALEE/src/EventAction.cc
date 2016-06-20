@@ -21,7 +21,6 @@ EventAction::EventAction() {
 	printModulo = 100;
 	outF_ = TFile::Open("PFcal.root", "RECREATE");
 	outF_->cd();
-	storeSeeds_ = true;
 	double xysize =
 			((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->GetCalorSizeXY();
 
@@ -78,25 +77,41 @@ void EventAction::Detect(G4double eDepRaw, G4VPhysicalVolume *volume) {
 			sens += (*detector_)[i].getTotalSensE();
 	}
 	if (sens > 30) {
-		storeSeeds_ = false;
-		EndOfEventAction(G4RunManager::GetRunManager()->GetCurrentEvent());
-		storeSeeds_ = true;
+		CancelledEvent(G4RunManager::GetRunManager()->GetCurrentEvent());
 		G4RunManager::GetRunManager()->AbortEvent();
 	}
 }
 
 //
+void EventAction::CancelledEvent(const G4Event* g4evt) {
+
+	//TVector3 null;
+	//event_.seeds(null);
+	//event_.status(null);
+	double totalSens = 0;
+	for (size_t i = ((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->initLayer()
+			; i < detector_->size(); i++) {
+
+		totalSens += (*detector_)[i].getTotalSensE();
+		(*detector_)[i].resetCounters();
+	}
+	event_.dep(totalSens);
+
+
+
+	tree_->Fill();
+	//reset vectors
+	genvec_.clear();
+
+}
+
 void EventAction::EndOfEventAction(const G4Event* g4evt) {
 	//return;
 	bool debug(evtNb_ % printModulo == 0);
 
 	event_.eventNumber(evtNb_);
-	event_.vtx_x(g4evt->GetPrimaryVertex(0)->GetX0());
-	event_.vtx_y(g4evt->GetPrimaryVertex(0)->GetY0());
-	event_.vtx_z(g4evt->GetPrimaryVertex(0)->GetZ0());
 	event_.steelThick(((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->GetSteelThick());
 	std::cout << "The state of storeSeeds_ is " << storeSeeds_ << std::endl;
-	if (storeSeeds_){
 		G4String fileN = "currentEvent.rndm";
 		CLHEP::HepRandom::saveEngineStatus(fileN);
 		std::ifstream input(fileN);
@@ -131,22 +146,6 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 
 			} //loop on sensitive layers
 		event_.dep(totalSens);
-	}
-	else{
-		//TVector3 null;
-	    //event_.seeds(null);
-	    //event_.status(null);
-		double totalSens = 0;
-		for (size_t i = ((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->initLayer()
-				; i < detector_->size(); i++) {
-
-			totalSens += (*detector_)[i].getTotalSensE();
-			(*detector_)[i].resetCounters();
-		}
-	    event_.dep(totalSens);
-
-	}
-
 
 	tree_->Fill();
 
