@@ -142,7 +142,7 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 	}
 	event_.dep(totalSens);
 
-	G4cout << "The dep cut is " << depCut << " The totalSens is " << totalSens << " The summedDep is " << summedDep << G4endl;
+	//G4cout << "The dep cut is " << depCut << " The totalSens is " << totalSens << " The summedDep is " << summedDep << G4endl;
 	tree_->Fill();
 	summedDep = 0;
 
