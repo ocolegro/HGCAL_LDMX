@@ -126,7 +126,8 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
         if (count == 4)
         	seed_y = std::atoi(currentLine.c_str());
     }
-    TVector3 status(stat_x,stat_y,0),seeds(seed_x,seed_y,0);
+    TVector3 status(stat_x,stat_y,0);
+    TVector3 seeds(seed_x,seed_y,0);
 
     G4cout << "Seeds reads " << seeds.x() << seeds.y() << G4endl;
     event_.seeds(seeds);
