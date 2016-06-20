@@ -126,7 +126,7 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
         if (count == 4)
         	seeds.SetY(std::atoi(currentLine.c_str()));
     }
-    //G4cout << "The first seed is " << seed[0] << ", The second seed is " << seed[1] << " ... " << std::endl;
+    G4cout << "Seeds reads " << seeds << G4endl;
     event_.seeds(seeds);
     event_.status(status);
 
