@@ -70,8 +70,8 @@ public:
 		steelThick_ = thick;
 	}
 	;
-	inline void seeds(const int seeds) {
-		seeds_ = seeds;
+	inline void seeds(const int* seeds) {
+		seeds_ = *seeds;
 	}
 	;
 private:
