@@ -117,6 +117,7 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 
 		} //loop on sensitive layers
     event_.dep(totalSens);
+    G4cout << "The totalSens was " << totalSens << G4endl;
 
 
 	tree_->Fill();
