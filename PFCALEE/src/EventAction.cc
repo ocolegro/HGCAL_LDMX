@@ -69,8 +69,10 @@ void EventAction::BeginOfEventAction(const G4Event* evt) {
 void EventAction::Detect(G4double eDepRaw, G4VPhysicalVolume *volume) {
 	G4bool stopIter = false;
 	for (size_t i = 0; i < detector_->size(); i++)
+	{
 		if (stopIter) break;
 		(*detector_)[i].add( eDepRaw, volume);
+	}
 }
 
 //
@@ -108,7 +110,8 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
     event_.status(status);
 	//Changing initLayer because initial layers contain tracking sections.
 	double totalSens = 0;
-	for (size_t i = initLayer; i < detector_->size(); i++) {
+	for (size_t i = ((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->initLayer()
+			; i < detector_->size(); i++) {
 
 		totalSens += (*detector_)[i].getMeasuredEnergy(false);
 
