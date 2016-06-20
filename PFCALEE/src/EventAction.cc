@@ -74,7 +74,7 @@ void EventAction::Detect(G4double eDepRaw, G4VPhysicalVolume *volume) {
 	{
 		//if (stopIter) break;
 		(*detector_)[i].add( eDepRaw, volume);
-		if (i > ((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->initLayer());
+		if (i > ((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->initLayer())
 			sens += (*detector_)[i].getTotalSensE();
 	}
 	if (sens > 100) {
