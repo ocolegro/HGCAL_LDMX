@@ -78,7 +78,7 @@ void EventAction::Detect(G4double eDepRaw, G4VPhysicalVolume *volume) {
 	}
 	if (sens > 30) {
 		G4cout <<"Aborting an event" << G4endl;
-		CancelledEvent(G4RunManager::GetRunManager()->GetCurrentEvent());
+		//CancelledEvent(G4RunManager::GetRunManager()->GetCurrentEvent());
 		G4RunManager::GetRunManager()->AbortEvent();
 	}
 }
