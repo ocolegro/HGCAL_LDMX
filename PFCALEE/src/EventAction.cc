@@ -21,7 +21,7 @@ EventAction::EventAction() {
 	printModulo = 100;
 	outF_ = TFile::Open("PFcal.root", "RECREATE");
 	summedDep = 0;
-	depCut = 26;
+	depCut = 10;
 	outF_->cd();
 	double xysize =
 			((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->GetCalorSizeXY();
