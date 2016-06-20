@@ -68,10 +68,16 @@ void EventAction::BeginOfEventAction(const G4Event* evt) {
 //
 void EventAction::Detect(G4double eDepRaw, G4VPhysicalVolume *volume) {
 	G4bool stopIter = false;
+	double totalSens = 0;
+
 	for (size_t i = 0; i < detector_->size(); i++)
 	{
-		if (stopIter) break;
+		//if (stopIter) break;
 		(*detector_)[i].add( eDepRaw, volume);
+		totalSens += (*detector_)[i].getTotalSensE();
+	}
+	if (totalSens > 25) {
+		G4RunManager::GetRunManager()->AbortEvent();
 	}
 }
 
