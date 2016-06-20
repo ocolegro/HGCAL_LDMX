@@ -122,6 +122,7 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
     		status.SetY(std::atoi(currentLine.c_str()));
 
         if (count == 3)
+        	std::cout << "Filling x with " << std::atoi(currentLine.c_str()) << std::endl;
         	seeds.SetX(std::atoi(currentLine.c_str()));
         if (count == 4)
         	seeds.SetY(std::atoi(currentLine.c_str()));
