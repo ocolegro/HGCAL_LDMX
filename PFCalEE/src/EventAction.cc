@@ -120,14 +120,14 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
     	if (count == 2)
     		stat_y = std::atoi(currentLine.c_str());
 
-        if (count == 3)
+        if (count == 3){
         	std::cout << "Filling seed_x with " << std::atoi(currentLine.c_str()) << std::endl;
         	seed_x = std::atoi(currentLine.c_str());
-        	std::cout << "seed_x reads now " << seed_y << std::endl;
-        if (count == 4)
+        	std::cout << "seed_x reads now " << seed_y << std::endl;}
+        if (count == 4){
         	std::cout << "Filling seed_y with " << std::atoi(currentLine.c_str()) << std::endl;
         	seed_y = std::atoi(currentLine.c_str());
-        	std::cout << "seed_y reads now " << seed_y << std::endl;
+        	std::cout << "seed_y reads now " << seed_y << std::endl;}
     }
     TVector3 status(stat_x,stat_y,0);
     TVector3 seeds(seed_x,seed_y,0);
