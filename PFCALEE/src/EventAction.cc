@@ -95,6 +95,7 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 	event_.vtx_y(g4evt->GetPrimaryVertex(0)->GetY0());
 	event_.vtx_z(g4evt->GetPrimaryVertex(0)->GetZ0());
 	event_.steelThick(((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->GetSteelThick());
+	std::cout << "The state of storeSeeds_ is " << storeSeeds_ << std::endl;
 	if (storeSeeds_){
 		G4String fileN = "currentEvent.rndm";
 		CLHEP::HepRandom::saveEngineStatus(fileN);
