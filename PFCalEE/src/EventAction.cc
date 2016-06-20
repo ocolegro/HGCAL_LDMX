@@ -112,15 +112,24 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 	CLHEP::HepRandom::saveEngineStatus(fileN);
 	std::ifstream input(fileN);
 	std::string currentLine;
-    int seed[4];
+    TVector3 status,seeds;
 
     for(int count = 0; count < 5; count++ ){
     	getline( input, currentLine );
-        if (count > 0)
-        	seed[count - 1] = std::atoi(currentLine.c_str());
+    	if (count == 1)
+    		status.SetX(std::atoi(currentLine.c_str()));
+    	if (count == 2)
+    		status.SetY(std::atoi(currentLine.c_str()));
+
+        if (count == 3)
+        	seeds.SetX(std::atoi(currentLine.c_str()));
+        if (count == 4)
+        	seeds.SetY(std::atoi(currentLine.c_str()));
     }
-    G4cout << "The first seed is " << seed[0] << ", The second seed is " << seed[1] << " ... " << std::endl;
-    event_.seeds(seed);
+    //G4cout << "The first seed is " << seed[0] << ", The second seed is " << seed[1] << " ... " << std::endl;
+    event_.seeds(seeds);
+    event_.status(status);
+
 	ssvec_.clear();
 	ssvec_.reserve(detector_->size());
 	//Changing initLayer because initial layers contain tracking sections.

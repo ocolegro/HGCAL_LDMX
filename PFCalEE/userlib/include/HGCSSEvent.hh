@@ -47,11 +47,14 @@ public:
 	}
 	;
 
-	inline int seeds() const {
+	inline TVector3 seeds() const {
 		return seeds_;
 	}
 	;
-
+	inline TVector3 status() const {
+		return status_;
+	}
+	;
 	inline void vtx_y(const double y) {
 		yvtx_ = y;
 	}
@@ -70,8 +73,12 @@ public:
 		steelThick_ = thick;
 	}
 	;
-	inline void seeds(const int* seeds) {
-		seeds_ = *seeds;
+	inline void seeds(TVector3 seeds) {
+		seeds_ = seeds;
+	}
+	;
+	inline void status(TVector3 status) {
+		status_ = status;
 	}
 	;
 private:
@@ -81,7 +88,7 @@ private:
 	double yvtx_;
 	double zvtx_;
 	double steelThick_;
-	int seeds_;
+	TVector3 seeds_,status_;
 
 ClassDef(HGCSSEvent,1)
 	;
