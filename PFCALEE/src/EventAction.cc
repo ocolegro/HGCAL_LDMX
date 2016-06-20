@@ -76,8 +76,8 @@ void EventAction::Detect(G4double eDepRaw, G4VPhysicalVolume *volume) {
 		if (i > ((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->initLayer())
 			sens += (*detector_)[i].getTotalSensE();
 	}
-	if (sens > 30) {
-		G4cout <<"Aborting an event" << G4endl;
+	if (sens > 28) {
+		//G4cout <<"Aborting an event" << G4endl;
 		//CancelledEvent(G4RunManager::GetRunManager()->GetCurrentEvent());
 		G4RunManager::GetRunManager()->AbortEvent();
 	}
@@ -139,7 +139,7 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 			totalSens += (*detector_)[i].getTotalSensE();
 			(*detector_)[i].resetCounters();
 			} //loop on sensitive layers
-		G4cout << "This was a good event, the totalSens was " << totalSens << G4endl;
+		//G4cout << "This was a good event, the totalSens was " << totalSens << G4endl;
 		event_.dep(totalSens);
 
 	tree_->Fill();
