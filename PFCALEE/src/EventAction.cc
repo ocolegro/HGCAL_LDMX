@@ -21,7 +21,7 @@ EventAction::EventAction() {
 	printModulo = 100;
 	outF_ = TFile::Open("PFcal.root", "RECREATE");
 	outF_->cd();
-
+	storeSeeds_ = true;
 	double xysize =
 			((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->GetCalorSizeXY();
 
@@ -77,9 +77,10 @@ void EventAction::Detect(G4double eDepRaw, G4VPhysicalVolume *volume) {
 		if (i > ((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->initLayer())
 			sens += (*detector_)[i].getTotalSensE();
 	}
-	if (sens > 35) {
-		std::cout << "Breaker switch triggered, the total sens is " << sens << std::endl;
+	if (sens > 30) {
+		storeSeeds_ = false;
 		EndOfEventAction(G4RunManager::GetRunManager()->GetCurrentEvent());
+		storeSeeds_ = true;
 		G4RunManager::GetRunManager()->AbortEvent();
 	}
 }
@@ -94,6 +95,8 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 	event_.vtx_y(g4evt->GetPrimaryVertex(0)->GetY0());
 	event_.vtx_z(g4evt->GetPrimaryVertex(0)->GetZ0());
 	event_.steelThick(((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->GetSteelThick());
+	if (storeSeeds_){
+
 
 	G4String fileN = "currentEvent.rndm";
 	CLHEP::HepRandom::saveEngineStatus(fileN);
@@ -124,11 +127,18 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 
 		totalSens += (*detector_)[i].getTotalSensE();
 		(*detector_)[i].resetCounters();
+	    G4cout << "This was a good event, the totalSens was " << totalSens << G4endl;
 
 
 		} //loop on sensitive layers
     event_.dep(totalSens);
-    G4cout << "The totalSens was " << totalSens << G4endl;
+	}
+	else{
+		//TVector3 null;
+	    //event_.seeds(null);
+	    //event_.status(null);
+	    event_.dep(30);
+	}
 
 
 	tree_->Fill();
