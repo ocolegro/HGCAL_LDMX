@@ -68,17 +68,17 @@ void EventAction::BeginOfEventAction(const G4Event* evt) {
 
 //
 void EventAction::Detect(G4double eDepRaw, G4VPhysicalVolume *volume) {
-	G4bool stopIter = false;
+	std::pair<G4bool,G4bool> stopIter = false;
 	//double sens = 0;
 
 	for (size_t i = 0; i < detector_->size(); i++)
 	{
-		if (stopIter) break;
+		if (stopIter.first) break;
 		stopIter = (*detector_)[i].add( eDepRaw, volume);
 		//if (i > ((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->initLayer())
 			//sens += (*detector_)[i].getTotalSensE();
 	}
-	if (stopIter)
+	if (stopIter.second)
 		summedDep += eDepRaw;
 	if (summedDep > depCut) {
 		//G4cout <<"Aborting an event" << G4endl;
@@ -92,7 +92,6 @@ void EventAction::Detect(G4double eDepRaw, G4VPhysicalVolume *volume) {
 
 void EventAction::EndOfEventAction(const G4Event* g4evt) {
 	//return;
-	bool debug(evtNb_ % printModulo == 0);
 
 	event_.eventNumber(evtNb_);
 	event_.steelThick(((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->GetSteelThick());

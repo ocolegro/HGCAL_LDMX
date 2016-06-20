@@ -3,20 +3,22 @@
 #include "SamplingSection.hh"
 
 //
-G4bool SamplingSection::add(G4double depositRawE,  G4VPhysicalVolume* vol) {
+std::pair<G4bool,G4bool> SamplingSection::add(G4double depositRawE,  G4VPhysicalVolume* vol) {
 	std::string lstr = vol->GetName();
 	bool breakSwitch = false;
+	bool isSens = false;
 	for (unsigned ie(0); ie < n_elements * n_sectors; ++ie) {
-			if (breakSwitch) return true;
+			if (breakSwitch) return std::make_pair(breakSwitch,isSens);
 		if (sublayer_vol[ie] && lstr == sublayer_vol[ie]->GetName()) {
 			breakSwitch = true;
 			unsigned idx = getSensitiveLayerIndex(lstr);
 			unsigned eleidx = ie % n_elements;
+			isSens = isSensitiveElement(eleidx);
 			sublayer_RawDep[eleidx] += depositRawE;
 
 			} //if in right material
 		} //loop on available materials
-	return false;
+	return std::make_pair(breakSwitch,isSens);
 	}
 
 //
