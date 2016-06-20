@@ -47,6 +47,7 @@ private:
 	RunAction* runAct;
 	std::vector<SamplingSection> *detector_;
 	G4int evtNb_, printModulo;
+	G4bool storeSeeds;
 	HGCSSGeometryConversion* geomConv_;
 
 	TFile *outF_;
