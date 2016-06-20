@@ -123,15 +123,8 @@ public:
 
 
 
+			G4double getTotalSensE();
 
-			G4double SamplingSection::getTotalSensE() {
-				double etot = 0;
-				for (unsigned ie(0); ie < n_elements; ++ie) {
-					if (isSensitiveElement(ie))
-						etot += sublayer_RawDep[ie];
-				}
-				return etot;
-			}
 			//
 			void report(bool header=false);
 
