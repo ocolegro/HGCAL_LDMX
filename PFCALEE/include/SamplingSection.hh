@@ -122,7 +122,6 @@ public:
 			}
 
 
-			G4double getMeasuredEnergy(bool weighted=true);
 
 
 			G4double SamplingSection::getTotalSensE() {

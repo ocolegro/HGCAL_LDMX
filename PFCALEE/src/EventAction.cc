@@ -113,7 +113,7 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 	for (size_t i = ((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->initLayer()
 			; i < detector_->size(); i++) {
 
-		totalSens += (*detector_)[i].getMeasuredEnergy(false);
+		totalSens += (*detector_)[i].getTotalSensE();
 
 		} //loop on sensitive layers
     event_.dep(totalSens);

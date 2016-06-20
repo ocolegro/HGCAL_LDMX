@@ -25,12 +25,7 @@ void SamplingSection::report(bool header) {
 		G4cout
 				<< "E/[MeV]\t  Si\tAbsorber\tTotal\tSi g frac\tSi e frac\tSi mu frac\tSi had frac\tSi <t> \t nG4SiHits"
 				<< G4endl;
-		G4cout << std::setprecision(3) << "\t  " << getMeasuredEnergy(false)
+		G4cout << std::setprecision(3) << "\t  " << getTotalSensE()
 		<< G4endl;
 	}
 
-G4double SamplingSection::getMeasuredEnergy(bool weighted) {
-
-	return getTotalSensE();
-
-}
