@@ -83,7 +83,7 @@ void EventAction::Detect(G4double eDepRaw, G4VPhysicalVolume *volume) {
 	if (summedDep > depCut) {
 		//G4cout <<"Aborting an event" << G4endl;
 		//storeSeeds = false;
-		G4RunManager::GetRunManager()->AbortRun(true);
+		G4RunManager::GetRunManager()->AbortEvent();
 	}
 }
 
