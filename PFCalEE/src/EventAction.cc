@@ -112,21 +112,22 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 	CLHEP::HepRandom::saveEngineStatus(fileN);
 	std::ifstream input(fileN);
 	std::string currentLine;
-    TVector3 status(0,0,0),seeds(0,0,0);
-
+	int stat_x = 0,stat_y = 0,seed_x = 0,seed_y = 0;
     for(int count = 0; count < 5; count++ ){
     	getline( input, currentLine );
     	if (count == 1)
-    		status.SetX(std::atoi(currentLine.c_str()));
+    		stat_x = std::atoi(currentLine.c_str());
     	if (count == 2)
-    		status.SetY(std::atoi(currentLine.c_str()));
+    		stat_y = std::atoi(currentLine.c_str());
 
         if (count == 3)
-        	std::cout << "Filling x with " << std::atoi(currentLine.c_str()) << std::endl;
-        	seeds.SetX(std::atoi(currentLine.c_str()));
+        	std::cout << "Filling seed_x with " << std::atoi(currentLine.c_str()) << std::endl;
+        	seed_x = std::atoi(currentLine.c_str());
         if (count == 4)
-        	seeds.SetY(std::atoi(currentLine.c_str()));
+        	seed_y = std::atoi(currentLine.c_str());
     }
+    TVector3 status(stat_x,stat_y,0),seeds(seed_x,seed_y,0);
+
     G4cout << "Seeds reads " << seeds.x() << seeds.y() << G4endl;
     event_.seeds(seeds);
     event_.status(status);
