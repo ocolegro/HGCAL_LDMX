@@ -36,38 +36,19 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 
 	const G4Track* lTrack = aStep->GetTrack();
 	G4int trackID = lTrack->GetTrackID();
-	G4int parentID = lTrack->GetParentID();
+	G4double kinEng = lTrack->GetKineticEnergy();
 
 	G4VPhysicalVolume* volume = thePreStepPoint->GetPhysicalVolume();
-	std::string thePrePVname("null");
-	if (volume == 0) {
-	} else {
-		thePrePVname = volume->GetName();
-	}
 
-	G4VPhysicalVolume* postvolume = thePostStepPoint->GetPhysicalVolume();
-	std::string thePostPVname("null");
-	if (postvolume == 0) {
-	} else {
-		thePostPVname = postvolume->GetName();
-	}
+
 
 	G4double eRawDep = aStep->GetTotalEnergyDeposit();
 
-	G4double stepl = 0.;
-	if (lTrack->GetDefinition()->GetPDGCharge() != 0.)
-		stepl = aStep->GetStepLength();
-
-	G4int pdgId = lTrack->GetDefinition()->GetPDGEncoding();
-	G4double globalTime = lTrack->GetGlobalTime();
-	G4double kineng = lTrack->GetKineticEnergy();
 
 	const G4ThreeVector & position = thePreStepPoint->GetPosition();
 	HGCSSGenParticle genPart;
-	G4bool isTargetParticle = false;
-
-	const G4ThreeVector &p = lTrack->GetMomentum();
 
 
-	eventAction_->Detect(eRawDep, volume);
+
+	eventAction_->Detect(eRawDep,trackID,kinEng, volume);
 }

@@ -21,13 +21,13 @@ EventAction::EventAction() {
 	printModulo = 100;
 	outF_ = TFile::Open("PFcal.root", "RECREATE");
 	summedDep = 0;nSteps = 0;
-	depCut = 30;
+	depCut = 35;
 	for (Int_t i = 0; i < 1000000;  i++)
 		step[i] = i;
 	outF_->cd();
 	double xysize =
 			((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->GetCalorSizeXY();
-
+	initLayer = ((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->initLayer();
 	//save some info
 	HGCSSInfo *info = new HGCSSInfo();
 	info->calorSizeXY(xysize);
@@ -75,25 +75,21 @@ void EventAction::BeginOfEventAction(const G4Event* evt) {
 }
 
 //
-void EventAction::Detect(G4double eDepRaw, G4VPhysicalVolume *volume) {
+void EventAction::Detect(G4double eDepRaw, G4int trackID,G4double kinEng, G4VPhysicalVolume *volume) {
 	std::pair<G4bool,G4bool> stopIter = std::make_pair(false,false);
-	//double sens = 0;
 
-	for (size_t i = 1; i < detector_->size(); i++)
-	{
+	for (size_t i = initLayer; i < detector_->size(); i++){
 		if (stopIter.first) break;
 		stopIter = (*detector_)[i].add( eDepRaw, volume);
-		//if (i > ((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->initLayer())
-			//sens += (*detector_)[i].getTotalSensE();
 	}
 	nSteps = nSteps + 1;
 	if (stopIter.second)
 		summedDep += eDepRaw;
 	stepDep[nSteps] = summedDep;
-
+	if (trackID == 1)
+		G4cout << "The main track Kinetic Energy is " << kinEng << G4endl;
 	if (summedDep > depCut) {
-		//G4cout <<"Aborting an event" << G4endl;
-		//storeSeeds = false;
+		nSteps = 0;
 		G4RunManager::GetRunManager()->AbortEvent();
 	}
 }
