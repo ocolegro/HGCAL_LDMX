@@ -50,7 +50,8 @@ private:
 	G4double depCut;
 	G4double summedDep;
 	HGCSSGeometryConversion* geomConv_;
-	Float_t step[1000000],stepDep[1000000];
+	Int_t step[1000000];
+	Float_t stepDep[1000000];
 
 	TFile *outF_;
 	TTree *tree_;

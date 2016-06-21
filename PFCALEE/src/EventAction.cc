@@ -22,7 +22,7 @@ EventAction::EventAction() {
 	outF_ = TFile::Open("PFcal.root", "RECREATE");
 	summedDep = 0;nSteps = 0;
 	depCut = 26;
-	for (int i = 0; i < 1000000;  i++)
+	for (Int_t i = 0; i < 1000000;  i++)
 		step[i] = i;
 	outF_->cd();
 	double xysize =
