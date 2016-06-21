@@ -46,9 +46,11 @@ private:
 	RunAction* runAct;
 	std::vector<SamplingSection> *detector_;
 	G4int evtNb_, printModulo;
+	int nSteps;
 	G4double depCut;
 	G4double summedDep;
 	HGCSSGeometryConversion* geomConv_;
+	Float_t step[1000000],stepDep[1000000];
 
 	TFile *outF_;
 	TTree *tree_;

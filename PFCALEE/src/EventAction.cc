@@ -20,8 +20,10 @@ EventAction::EventAction() {
 	eventMessenger = new EventActionMessenger(this);
 	printModulo = 100;
 	outF_ = TFile::Open("PFcal.root", "RECREATE");
-	summedDep = 0;
+	summedDep = 0;nSteps = 0;
 	depCut = 26;
+	for (int i = 0; i < 1000000;  i++)
+		step[i] = i;
 	outF_->cd();
 	double xysize =
 			((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->GetCalorSizeXY();
@@ -43,7 +45,13 @@ EventAction::EventAction() {
 	tree_->Branch("HGCSSEvent", "HGCSSEvent", &event_);
 	tree_->Branch("HGCSSGenAction", "std::vector<HGCSSGenParticle>",
 			&genvec_);
+	tree_->Branch("nSteps",&nSteps,"nSteps/I");
 
+	tree_->Branch("step",&step,"step[nSteps]/I");
+	tree_->Branch("stepDep",&stepDep,"stepDep[nSteps]/I");
+
+	tree_->Branch("HGCSSGenAction", "std::vector<HGCSSGenParticle>",
+			&genvec_);
 	// }
 }
 
@@ -78,6 +86,8 @@ void EventAction::Detect(G4double eDepRaw, G4VPhysicalVolume *volume) {
 		//if (i > ((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->initLayer())
 			//sens += (*detector_)[i].getTotalSensE();
 	}
+	stepDep[nSteps] = eDepRaw;
+	nSteps = nSteps + 1;
 	if (stopIter.second)
 		summedDep += eDepRaw;
 	if (summedDep > depCut) {
@@ -145,7 +155,7 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 	//G4cout << "The dep cut is " << depCut << " The totalSens is " << totalSens << " The summedDep is " << summedDep << G4endl;
 	tree_->Fill();
 	summedDep = 0;
-
+	nSteps = 0;
 	//reset vectors
 	genvec_.clear();
 }
