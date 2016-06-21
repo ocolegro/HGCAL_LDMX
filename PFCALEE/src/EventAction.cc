@@ -139,7 +139,6 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 		event_.seeds(seeds);
 		event_.status(status);
 		//Changing initLayer because initial layers contain tracking sections.
-		double totalSens = 0;
 		for (size_t i = ((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->initLayer()
 				; i < detector_->size(); i++) {
 
@@ -164,6 +163,7 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 	tree_->Fill();
 	summedDep = 0;
 	nSteps = 0;
+	nMainSteps = 0;
 	//reset vectors
 	genvec_.clear();
 }
