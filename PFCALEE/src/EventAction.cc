@@ -91,7 +91,7 @@ void EventAction::Detect(G4double eDepRaw, G4int trackID,G4double kinEng, G4VPhy
 	if (stopIter.second)
 		summedDep += eDepRaw;
 	stepDep[nSteps] = summedDep;
-	if (trackID == 1){
+	if (trackID == 1 && mainKinEng > 500){
 		stepMain [nMainSteps] = nSteps ;
 		mainKinEng [nMainSteps] = kinEng ;
 		nMainSteps = nMainSteps + 1;
