@@ -21,7 +21,7 @@ EventAction::EventAction() {
 	printModulo = 100;
 	outF_ = TFile::Open("PFcal.root", "RECREATE");
 	summedDep = 0;nSteps = 0;
-	depCut = 26;
+	depCut = 30;
 	for (Int_t i = 0; i < 1000000;  i++)
 		step[i] = i;
 	outF_->cd();
@@ -48,7 +48,7 @@ EventAction::EventAction() {
 	tree_->Branch("nSteps",&nSteps,"nSteps/I");
 
 	tree_->Branch("step",&step,"step[nSteps]/I");
-	tree_->Branch("stepDep",&stepDep,"stepDep[nSteps]/I");
+	tree_->Branch("stepDep",&stepDep,"stepDep[nSteps]/F");
 
 	tree_->Branch("HGCSSGenAction", "std::vector<HGCSSGenParticle>",
 			&genvec_);
