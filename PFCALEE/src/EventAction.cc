@@ -86,10 +86,11 @@ void EventAction::Detect(G4double eDepRaw, G4VPhysicalVolume *volume) {
 		//if (i > ((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->initLayer())
 			//sens += (*detector_)[i].getTotalSensE();
 	}
-	stepDep[nSteps] = eDepRaw;
 	nSteps = nSteps + 1;
 	if (stopIter.second)
 		summedDep += eDepRaw;
+	stepDep[nSteps] = summedDep;
+
 	if (summedDep > depCut) {
 		//G4cout <<"Aborting an event" << G4endl;
 		//storeSeeds = false;
