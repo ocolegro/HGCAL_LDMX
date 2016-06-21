@@ -20,10 +20,12 @@ EventAction::EventAction() {
 	eventMessenger = new EventActionMessenger(this);
 	printModulo = 100;
 	outF_ = TFile::Open("PFcal.root", "RECREATE");
-	summedDep = 0;nSteps = 0;
+	summedDep = 0;nSteps = 0;nMainSteps = 0;
 	depCut = 35;
-	for (Int_t i = 0; i < 1000000;  i++)
+	for (Int_t i = 0; i < 1000000;  i++){
 		step[i] = i;
+		stepMain[i] = i;
+	}
 	outF_->cd();
 	double xysize =
 			((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->GetCalorSizeXY();
@@ -46,9 +48,13 @@ EventAction::EventAction() {
 	tree_->Branch("HGCSSGenAction", "std::vector<HGCSSGenParticle>",
 			&genvec_);
 	tree_->Branch("nSteps",&nSteps,"nSteps/I");
+	tree_->Branch("nMainSteps",&nMainSteps,"nMainSteps/I");
 
 	tree_->Branch("step",&step,"step[nSteps]/I");
 	tree_->Branch("stepDep",&stepDep,"stepDep[nSteps]/F");
+
+	tree_->Branch("stepMain",&stepMain,"stepMain[nMainSteps]/I");
+	tree_->Branch("mainKinEng",&mainKinEng,"mainKinEng[nMainSteps]/F");
 
 	tree_->Branch("HGCSSGenAction", "std::vector<HGCSSGenParticle>",
 			&genvec_);
@@ -82,16 +88,21 @@ void EventAction::Detect(G4double eDepRaw, G4int trackID,G4double kinEng, G4VPhy
 		if (stopIter.first) break;
 		stopIter = (*detector_)[i].add( eDepRaw, volume);
 	}
-	nSteps = nSteps + 1;
 	if (stopIter.second)
 		summedDep += eDepRaw;
 	stepDep[nSteps] = summedDep;
-	if (trackID == 1)
-		G4cout << "The main track Kinetic Energy is " << kinEng << G4endl;
+	if (trackID == 1){
+		stepMain [nMainSteps] = nSteps ;
+		mainKinEng [nMainSteps] = kinEng ;
+		nMainSteps = nMainSteps + 1;
+	}
 	if (summedDep > depCut) {
 		nSteps = 0;
+		nMainSteps = 0;
 		G4RunManager::GetRunManager()->AbortEvent();
 	}
+	nSteps = nSteps + 1;
+
 }
 
 //
