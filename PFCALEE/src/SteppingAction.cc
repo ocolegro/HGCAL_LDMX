@@ -52,7 +52,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 	const G4TrackVector* secondaries= aStep->GetSecondary();
 	if(secondaries->size() > 0){
 	G4String theProcessName=secondaries->at(0)->GetCreatorProcess()->GetProcessName();
-	if (theProcessName == "photoNuclear" || theProcessName == "electroNuclear"){
+	if (theProcessName != "eIoni"){ //(theProcessName == "photoNuclear" || theProcessName == "electroNuclear"){
 		bool trackSurvives=(lTrack->GetTrackStatus()==fAlive);
 		int nFinalState=secondaries->size() + (trackSurvives?1:0);
 
