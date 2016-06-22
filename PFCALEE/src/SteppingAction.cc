@@ -52,7 +52,8 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 	const G4TrackVector* secondaries= aStep->GetSecondary();
 	if(secondaries->size() > 0){
 	G4String theProcessName=secondaries->at(0)->GetCreatorProcess()->GetProcessName();
-	if (theProcessName != "eIoni" && theProcessName != "eBrem" ){ //(theProcessName == "photoNuclear" || theProcessName == "electroNuclear"){
+	if (theProcessName != "eIoni" && theProcessName != "eBrem" && theProcessName!="hadElastic"
+			&& theProcessName!="neutronElastic" && theProcessName!="conv" && theProcessName != "ionIoni"){ //(theProcessName == "photoNuclear" || theProcessName == "electroNuclear"){
 		bool trackSurvives=(lTrack->GetTrackStatus()==fAlive);
 		int nFinalState=secondaries->size() + (trackSurvives?1:0);
 
