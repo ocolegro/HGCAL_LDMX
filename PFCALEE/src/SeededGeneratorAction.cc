@@ -132,7 +132,7 @@ void SeededGeneratorAction::GeneratePrimaries(G4Event* anEvent) {
 	particleGun->SetParticleDefinition(particle);
 	int currentEvt = anEvent->GetEventID();
 	tree_->GetEntry(currentEvt);
-	G4double et = 0.0;
+	G4double et = 4.0;
 
 	if (hadrons_->size() != 0){
 		//G4RunManager::GetRunManager()->AbortEvent();
