@@ -8,8 +8,7 @@
 #include "DetectorConstruction.hh"
 
 #include "HGCSSGenParticle.hh"
-#include "DetectorConstruction.hh"
-#include "TVector3.h"
+
 //
 SteppingAction::SteppingAction() {
 	eventAction_ =
@@ -35,7 +34,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 	const G4StepPoint *thePreStepPoint = aStep->GetPreStepPoint();
 	const G4StepPoint *thePostStepPoint = aStep->GetPostStepPoint();
 
-	const G4Track* lTrack = aStep->GetTrack();
+	G4Track* lTrack = aStep->GetTrack();
 	//G4int trackID = lTrack->GetTrackID();
 	G4double kinEng = lTrack->GetKineticEnergy();
 	G4int pdgID = lTrack->GetDefinition()->GetPDGEncoding();
