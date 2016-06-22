@@ -56,8 +56,8 @@ int main(int argc, char** argv) {
 		signal = atoi(argv[4]);
 	if (argc > 5)
 		steelThick = std::stof(argv[5]);
-	//if (argc > 6)
-	//	data = argv[6];
+	if (argc > 6)
+		data = argv[6];
 	std::cout << "-- Running version " << version << " model " << model
 			<< std::endl;
 
