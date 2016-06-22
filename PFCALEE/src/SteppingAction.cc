@@ -52,15 +52,17 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 	const G4TrackVector* secondaries= aStep->GetSecondary();
 	if(secondaries->size() > 0){
 	G4String theProcessName=secondaries->at(0)->GetCreatorProcess()->GetProcessName();
-	bool trackSurvives=(lTrack->GetTrackStatus()==fAlive);
-	int nFinalState=secondaries->size() + (trackSurvives?1:0);
+	if (theProcessName == "photoNuclear" || theProcessName == "electroNuclear"){
+		bool trackSurvives=(lTrack->GetTrackStatus()==fAlive);
+		int nFinalState=secondaries->size() + (trackSurvives?1:0);
 
-    G4cout << "Process " << theProcessName << " " << nFinalState << G4endl;
-    if(trackSurvives) printParticle(lTrack);
-    for(G4TrackVector::const_iterator i=secondaries->begin(); i!=secondaries->end(); ++i)
-      printParticle(*i);
+		G4cout << "Process " << theProcessName << " " << nFinalState << G4endl;
+		if(trackSurvives) printParticle(lTrack);
+		for(G4TrackVector::const_iterator i=secondaries->begin(); i!=secondaries->end(); ++i)
+		  printParticle(*i);
 
-	eventAction_->Detect(eRawDep,pdgID,kinEng, volume);
+		eventAction_->Detect(eRawDep,pdgID,kinEng, volume);
+		}
 	}
 }
 
