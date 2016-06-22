@@ -37,7 +37,7 @@
 #include "G4UImessenger.hh"
 #include "globals.hh"
 
-class PrimaryGeneratorAction;
+class SeededGeneratorAction;
 class G4UIdirectory;
 class G4UIcmdWithAString;
 
@@ -45,14 +45,14 @@ class G4UIcmdWithAString;
 
 class SeededGeneratorMessenger: public G4UImessenger {
 public:
-	SeededGeneratorMessenger(PrimaryGeneratorAction*);
+	SeededGeneratorMessenger(SeededGeneratorAction*);
 	virtual ~SeededGeneratorMessenger();
 
 	void SetNewValue(G4UIcommand*, G4String);
 	G4String GetCurrentValue(G4UIcommand* command);
 
 private:
-	PrimaryGeneratorAction* Action;
+	SeededGeneratorAction* Action;
 	G4UIdirectory* dir;
 	G4UIcmdWithAString* RndmCmd;
 	G4UIcmdWithAString* select;

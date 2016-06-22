@@ -55,7 +55,8 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-SeededGeneratorAction::SeededGeneratorAction(G4int mod,std::string data) {
+SeededGeneratorAction::SeededGeneratorAction(G4int mod ,
+		std::string data) {
 	model_ = mod;
 	data_ = data;
 	G4int n_particle = 1;
