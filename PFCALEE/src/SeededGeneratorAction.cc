@@ -158,11 +158,11 @@ void SeededGeneratorAction::GeneratePrimaries(G4Event* anEvent) {
 	int currentEvt = anEvent->GetEventID();
 	tree_->GetEntry(currentEvt);
 	if (hadrons_->size() == 0){
-		std::cout << "Hadrons Empty " << std::endl;//G4RunManager::GetRunManager()->AbortEvent();
+		G4RunManager::GetRunManager()->AbortEvent();
 	}
-	//else{
-	//	continue;
-	//}
+	else{
+		std::cout << "Processing an event" << std::endl;
+	}
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
