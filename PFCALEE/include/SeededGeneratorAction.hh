@@ -41,7 +41,7 @@
 
 class G4Event;
 class DetectorConstruction;
-class PrimaryGeneratorMessenger;
+class SeededGeneratorMessenger;
 class G4VPrimaryGenerator;
 class G4ParticleGun;
 class HepMCG4AsciiReader;
@@ -78,6 +78,7 @@ private:
 	G4ParticleGun* particleGun;
 	HepMCG4AsciiReader* hepmcAscii;
 	HepMCG4PythiaInterface* pythiaGen;
+	SeededGeneratorMessenger* gunMessenger; //messenger of this class
 
 	G4VPrimaryGenerator* currentGenerator;
 	G4String currentGeneratorName;
