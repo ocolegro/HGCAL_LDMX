@@ -57,10 +57,13 @@ StackingAction::ClassifyNewTrack(const G4Track* lTrack)
 
 
 	if ( ((abs(pdgID) == 11) ||  (abs(pdgID) == 22)) && kinEng < 100) {
-		if (data_ == "")
+		if (data_ == ""){
 			return fKill;
-		else
+		}
+		else{
+			G4cout << "Setting a track to waiting" << G4endl;
 			return fWaiting;
+		}
 	}
 	else{
 		  return fUrgent;
