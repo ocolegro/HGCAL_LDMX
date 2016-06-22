@@ -158,7 +158,7 @@ void SeededGeneratorAction::GeneratePrimaries(G4Event* anEvent) {
 		std::cout << "Hadrons " << std::endl;//G4RunManager::GetRunManager()->AbortEvent();
 	}
 	else{
-		//sow the seed
+		continue;
 	}
 }
 
