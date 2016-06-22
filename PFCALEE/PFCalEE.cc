@@ -33,7 +33,7 @@ int main(int argc, char** argv) {
 
 	// Choose the Random engine
 	CLHEP::HepRandom::setTheEngine(new CLHEP::RanecuEngine);
-	CLHEP::HepRandom::saveFullState ("currentEvent.rndm");
+	CLHEP::HepRandom::saveEngineStatus ("currentEvent.rndm");
 	// User Verbose output class
 	G4VSteppingVerbose::SetInstance(new SteppingVerbose);
 
