@@ -78,7 +78,9 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 void SteppingAction::printParticle(G4Track* aTrack)
 {
   G4cout << aTrack->GetParticleDefinition()->GetParticleName() << "  "
+	<< aTrack->GetDefinition()->GetPDGEncoding() << "  "
 	<< aTrack->GetTotalEnergy() << "  "
+	<< aTrack->GetKineticEnergy() << "  "
 	<< aTrack->GetMomentum().x() << "  "
 	<< aTrack->GetMomentum().y() << "  "
 	<< aTrack->GetMomentum().z() << "  "
