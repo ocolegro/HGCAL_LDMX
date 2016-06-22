@@ -64,7 +64,7 @@ SeededGeneratorAction::SeededGeneratorAction(G4int mod,
 	evt_ = 0; hadrons_ = 0;
 	file_ = TFile::Open(data.c_str());
 	tree_  = (TTree*) file_->Get("HGCSSTree");
-	tree_->SetBranchAddress("HGCSSHadronVec",&hadrons_);
+	tree_->SetBranchAddress("HGCSSHadronAction",&hadrons_);
 	tree_->SetBranchAddress("HGCSSEvent",&evt_);
 
 	eventAction_ =
