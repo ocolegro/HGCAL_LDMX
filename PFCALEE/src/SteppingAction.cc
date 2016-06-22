@@ -48,6 +48,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 
 	const G4ThreeVector & position = thePreStepPoint->GetPosition();
 	HGCSSGenParticle genPart;
+	eventAction_->Detect(eRawDep,pdgID,kinEng, volume);
 
 	const G4TrackVector* secondaries= aStep->GetSecondary();
 	if(secondaries->size() > 0){
@@ -55,22 +56,49 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 	//if (theProcessName != "eIoni" && theProcessName != "eBrem" && theProcessName!="hadElastic"
 		//	&& theProcessName!="neutronElastic" && theProcessName!="conv" && theProcessName != "ionIoni"){ //(theProcessName == "photoNuclear" || theProcessName == "electroNuclear"){
 		if (theProcessName == "PhotonInelastic" || theProcessName == "ElectroNuclear" || theProcessName == "PositronNuclear" ){
-		bool trackSurvives=(lTrack->GetTrackStatus()==fAlive);
-		int nFinalState=secondaries->size() + (trackSurvives?1:0);
+			eventAction_->hadronicInts = eventAction_->hadronicInts  + 1;
+			HGCSSGenParticle targPart;
 
-		G4cout << "Process " << theProcessName << " The Number of final particles is " << nFinalState << G4endl;
-		if(trackSurvives) {
-			G4cout << "The primary track is : " ;
-			printParticle(lTrack);
-		}
-		for(G4TrackVector::const_iterator i=secondaries->begin(); i!=secondaries->end(); ++i){
-			G4Track* aTrack = *i;
-			G4int secID = aTrack->GetDefinition()->GetPDGEncoding();
-			if (secID != 11 && secID != 22)
-				printParticle(*i);
-		}
+			targPart.vertexKE(kinEng);
+			const G4ThreeVector &p = lTrack->GetVertexMomentumDirection();
+			const G4ThreeVector &pos = lTrack->GetVertexPosition();
+			TVector3 momVec(p[0], p[1], p[2]);
+			targPart.vertexMom(momVec);
+			TVector3 posVec(pos[0], pos[1], pos[2] - zOff);
+			targPart.vertexPos(posVec);
+			targPart.pdgid(pdgID);
 
-		eventAction_->Detect(eRawDep,pdgID,kinEng, volume);
+			eventAction_->hadvec_.push_back(targPart);
+			for(G4TrackVector::const_iterator i=secondaries->begin(); i!=secondaries->end(); ++i){
+				G4Track* iTrack = *i;
+				HGCSSGenParticle genPart;
+				genPart.vertexKE(kinEng);
+				const G4ThreeVector &p = iTrack->GetVertexMomentumDirection();
+				const G4ThreeVector &pos = iTrack->GetVertexPosition();
+				TVector3 momVec(p[0], p[1], p[2]);
+				genPart.vertexMom(momVec);
+				TVector3 posVec(pos[0], pos[1], pos[2] - zOff);
+				genPart.vertexPos(posVec);
+				genPart.pdgid(pdgID);
+				eventAction_->hadvec_.push_back(genPart);
+
+			}
+			/*
+			bool trackSurvives=(lTrack->GetTrackStatus()==fAlive);
+			int nFinalState=secondaries->size() + (trackSurvives?1:0);
+
+			G4cout << "Process " << theProcessName << " The Number of final particles is " << nFinalState << G4endl;
+			if(trackSurvives) {
+				G4cout << "The primary track is : " ;
+				printParticle(lTrack);
+			}
+			for(G4TrackVector::const_iterator i=secondaries->begin(); i!=secondaries->end(); ++i){
+				G4Track* aTrack = *i;
+				G4int secID = aTrack->GetDefinition()->GetPDGEncoding();
+				if (secID != 11 && secID != 22)
+					printParticle(*i);
+				}
+			 */
 		}
 	}
 }

@@ -24,6 +24,7 @@ EventAction::EventAction() {
 		step[i] = i;
 		stepMain[i] = i;
 	}
+	hadronicInts = 0;
 	outF_->cd();
 	double xysize =
 			((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->GetCalorSizeXY();
@@ -45,17 +46,18 @@ EventAction::EventAction() {
 	tree_->Branch("HGCSSEvent", "HGCSSEvent", &event_);
 	tree_->Branch("HGCSSGenAction", "std::vector<HGCSSGenParticle>",
 			&genvec_);
-	tree_->Branch("nSteps",&nSteps,"nSteps/I");
-	tree_->Branch("nMainSteps",&nMainSteps,"nMainSteps/I");
+	tree_->Branch("HGCSSHadAction", "std::vector<HGCSSGenParticle>",
+			&hadvec_);
+	//tree_->Branch("nSteps",&nSteps,"nSteps/I");
+	//tree_->Branch("nMainSteps",&nMainSteps,"nMainSteps/I");
 
-	tree_->Branch("step",&step,"step[nSteps]/I");
-	tree_->Branch("stepDep",&stepDep,"stepDep[nSteps]/F");
+	//tree_->Branch("step",&step,"step[nSteps]/I");
+	//tree_->Branch("stepDep",&stepDep,"stepDep[nSteps]/F");
 
-	tree_->Branch("stepMain",&stepMain,"stepMain[nMainSteps]/I");
-	tree_->Branch("mainKinEng",&mainKinEng,"mainKinEng[nMainSteps]/F");
+	//tree_->Branch("stepMain",&stepMain,"stepMain[nMainSteps]/I");
+	//tree_->Branch("mainKinEng",&mainKinEng,"mainKinEng[nMainSteps]/F");
 
-	tree_->Branch("HGCSSGenAction", "std::vector<HGCSSGenParticle>",
-			&genvec_);
+
 	// }
 }
 
@@ -162,6 +164,8 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 	summedDep = 0;
 	nSteps = 0;
 	nMainSteps = 0;
+	hadronicInts = 0;
 	//reset vectors
 	genvec_.clear();
+	hadvec_.clear();
 }

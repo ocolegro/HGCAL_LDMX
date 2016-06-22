@@ -39,8 +39,8 @@ public:
 	void Add(std::vector<SamplingSection> *newDetector) {
 		detector_ = newDetector;
 	}
-	HGCSSGenParticleVec genvec_;
-
+	HGCSSGenParticleVec genvec_,hadvec_;
+	G4int hadronicInts;
 private:
 	std::vector<SamplingSection> *detector_;
 	G4int evtNb_, printModulo,initLayer;
