@@ -58,8 +58,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 		if (theProcessName == "PhotonInelastic" || theProcessName == "ElectroNuclear" || theProcessName == "PositronNuclear" ){
 			eventAction_->hadronicInts = eventAction_->hadronicInts  + 1;
 			HGCSSGenParticle targPart;
-
-			targPart.vertexKE(kinEng);
+			targPart.vertexKE(lTrack->GetKineticEnergy());
 			const G4ThreeVector &p = lTrack->GetVertexMomentumDirection();
 			const G4ThreeVector &pos = lTrack->GetVertexPosition();
 			TVector3 momVec(p[0], p[1], p[2]);
@@ -67,8 +66,8 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 			TVector3 posVec(pos[0], pos[1], pos[2] - zOff);
 			targPart.vertexPos(posVec);
 			targPart.pdgid(pdgID);
-
 			eventAction_->hadvec_.push_back(targPart);
+
 			for(G4TrackVector::const_iterator i=secondaries->begin(); i!=secondaries->end(); ++i){
 				G4Track* iTrack = *i;
 
@@ -78,7 +77,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 				if ((hadronTrackLoc == eventAction_->novelTrackIds.size())) {
 
 					HGCSSGenParticle genPart;
-					genPart.vertexKE(kinEng);
+					genPart.vertexKE(iTrack->GetKineticEnergy());
 					const G4ThreeVector &p = iTrack->GetVertexMomentumDirection();
 					const G4ThreeVector &pos = iTrack->GetVertexPosition();
 					TVector3 momVec(p[0], p[1], p[2]);
@@ -88,6 +87,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 					genPart.pdgid(iTrack->GetDefinition()->GetPDGEncoding());
 					eventAction_->hadvec_.push_back(genPart);
 					eventAction_->novelTrackIds.push_back(iTrack->GetTrackID());
+
 				}
 
 			}
