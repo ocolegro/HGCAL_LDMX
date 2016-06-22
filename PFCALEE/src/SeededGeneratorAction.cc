@@ -55,15 +55,6 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-std::vector<std::string> split(const std::string &s, char delim) {
-	std::stringstream ss(s);
-	std::string item;
-	std::vector<std::string> tokens;
-	while (std::getline(ss, item, delim)) {
-		tokens.push_back(item);
-	}
-	return tokens;
-}
 
 SeededGeneratorAction::SeededGeneratorAction(G4int mod,
 		std::string data) {
