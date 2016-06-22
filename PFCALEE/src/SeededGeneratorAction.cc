@@ -130,7 +130,16 @@ void SeededGeneratorAction::GeneratePrimaries(G4Event* anEvent) {
 	G4ParticleDefinition* particle = particleTable->FindParticle(particleName =
 			"e-");
 	particleGun->SetParticleDefinition(particle);
-	G4double et = 4.0;
+	int currentEvt = anEvent->GetEventID();
+	tree_->GetEntry(currentEvt);
+	if (hadrons_->size() == 0){
+		//G4RunManager::GetRunManager()->AbortEvent();
+		G4double et = 0.0;
+
+	}
+	else{
+		G4double et = 4.0;
+	}
 	particleGun->SetParticleEnergy(et * GeV);
 	particleGun->SetParticleMomentumDirection(G4ThreeVector(0., 0., 1.));
 
@@ -155,14 +164,7 @@ void SeededGeneratorAction::GeneratePrimaries(G4Event* anEvent) {
 				"PrimaryGeneratorAction001", FatalException,
 				"generator is not instanciated.");
 
-	int currentEvt = anEvent->GetEventID();
-	tree_->GetEntry(currentEvt);
-	if (hadrons_->size() == 0){
-		G4RunManager::GetRunManager()->AbortEvent();
-	}
-	else{
-		std::cout << "Processing an event" << std::endl;
-	}
+
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
