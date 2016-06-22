@@ -71,16 +71,24 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 			eventAction_->hadvec_.push_back(targPart);
 			for(G4TrackVector::const_iterator i=secondaries->begin(); i!=secondaries->end(); ++i){
 				G4Track* iTrack = *i;
-				HGCSSGenParticle genPart;
-				genPart.vertexKE(kinEng);
-				const G4ThreeVector &p = iTrack->GetVertexMomentumDirection();
-				const G4ThreeVector &pos = iTrack->GetVertexPosition();
-				TVector3 momVec(p[0], p[1], p[2]);
-				genPart.vertexMom(momVec);
-				TVector3 posVec(pos[0], pos[1], pos[2] - zOff);
-				genPart.vertexPos(posVec);
-				genPart.pdgid(pdgID);
-				eventAction_->hadvec_.push_back(genPart);
+
+				unsigned int hadronTrackLoc = std::find(eventAction_->novelTrackIds.begin(),
+						eventAction_->novelTrackIds.end(),  iTrack->GetTrackID())
+						- eventAction_->novelTrackIds.begin();
+				if ((hadronTrackLoc == eventAction_->novelTrackIds.size())) {
+
+					HGCSSGenParticle genPart;
+					genPart.vertexKE(kinEng);
+					const G4ThreeVector &p = iTrack->GetVertexMomentumDirection();
+					const G4ThreeVector &pos = iTrack->GetVertexPosition();
+					TVector3 momVec(p[0], p[1], p[2]);
+					genPart.vertexMom(momVec);
+					TVector3 posVec(pos[0], pos[1], pos[2] - zOff);
+					genPart.vertexPos(posVec);
+					genPart.pdgid(pdgID);
+					eventAction_->hadvec_.push_back(genPart);
+					eventAction_->novelTrackIds.push_back(iTrack->GetTrackID());
+				}
 
 			}
 			/*

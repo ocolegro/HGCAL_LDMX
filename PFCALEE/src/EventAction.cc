@@ -168,4 +168,5 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 	//reset vectors
 	genvec_.clear();
 	hadvec_.clear();
+	novelTrackIds.clear();
 }
