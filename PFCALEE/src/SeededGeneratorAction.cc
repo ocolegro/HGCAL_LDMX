@@ -35,6 +35,7 @@
 
 #include "DetectorConstruction.hh"
 #include "SeededGeneratorMessenger.hh"
+#include "StackingAction.hh"
 
 #include "G4RunManager.hh"
 #include "G4Event.hh"
@@ -71,7 +72,7 @@ SeededGeneratorAction::SeededGeneratorAction(G4int mod,
 			(EventAction*) G4RunManager::GetRunManager()->GetUserEventAction();
 	eventAction_->Add(
 			((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->getStructure());
-
+	stacker_ = (StackingAction*) G4RunManager::GetRunManager()->GetUserStackingAction();
 
 	// default generator is particle gun.
 	currentGenerator = particleGun = new G4ParticleGun(n_particle);
@@ -133,15 +134,14 @@ void SeededGeneratorAction::GeneratePrimaries(G4Event* anEvent) {
 	int currentEvt = anEvent->GetEventID();
 	tree_->GetEntry(currentEvt);
 	G4double et = 4.0;
-	G4RunManager::GetRunManager()->AbortEvent();
 	PipeData();
 	CLHEP::HepRandom::restoreEngineStatus ("temp.rndm");
-	/*
-	if (hadrons_->size() != 0){
+	stacker_->SetWait(false);
 
-		et = 4.0;
+	if (hadrons_->size() != 0){
+		stacker_->SetWait(true);
 	}
-	*/
+
 	particleGun->SetParticleEnergy(et * GeV);
 	particleGun->SetParticleMomentumDirection(G4ThreeVector(0., 0., 1.));
 

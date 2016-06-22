@@ -41,6 +41,7 @@
 
 class G4Event;
 class DetectorConstruction;
+class StackingAction;
 class SeededGeneratorMessenger;
 class G4VPrimaryGenerator;
 class G4ParticleGun;
@@ -85,7 +86,7 @@ private:
 	G4VPrimaryGenerator* currentGenerator;
 	G4String currentGeneratorName;
 	std::map<G4String, G4VPrimaryGenerator*> gentypeMap;
-
+	StackingAction* stacker_;
 	DetectorConstruction* Detector;     //pointer to the geometry
 	G4String rndmFlag;     //flag for a rndm impact point
 };
