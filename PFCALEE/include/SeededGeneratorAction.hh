@@ -70,15 +70,16 @@ private:
 	EventAction *eventAction_;
 	int model_;
 
-
+	TFile* file_;
+	TTree * tree_;
 	HGCSSGenParticleVec* hadrons_ ;
 	HGCSSEvent* evt_;
+	SeededGeneratorMessenger* gunMessenger; //messenger of this class
 
 	std::string data_;
 	G4ParticleGun* particleGun;
 	HepMCG4AsciiReader* hepmcAscii;
 	HepMCG4PythiaInterface* pythiaGen;
-	SeededGeneratorMessenger* gunMessenger; //messenger of this class
 
 	G4VPrimaryGenerator* currentGenerator;
 	G4String currentGeneratorName;

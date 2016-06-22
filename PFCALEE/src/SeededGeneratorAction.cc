@@ -55,11 +55,17 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-SeededGeneratorAction::SeededGeneratorAction(G4int mod,std::string data) {
+
+SeededGeneratorAction::SeededGeneratorAction(G4int mod,
+		std::string data) {
 	model_ = mod;
 	data_ = data;
 	G4int n_particle = 1;
-
+	evt_ = 0; hadrons_ = 0;
+	file_ = TFile::Open(data.c_str());
+	tree_  = (TTree*) file_->Get("HGCSSTree");
+	tree_->SetBranchAddress("HGCSSHadAction",&hadrons_);
+	tree_->SetBranchAddress("HGCSSEvent",&evt_);
 
 	eventAction_ =
 			(EventAction*) G4RunManager::GetRunManager()->GetUserEventAction();
@@ -84,14 +90,16 @@ SeededGeneratorAction::SeededGeneratorAction(G4int mod,std::string data) {
 			(DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction();
 
 	//create a messenger for this class
-	gunMessenger = new SeededGeneratorMessenger(this);
 
 	// default particle kinematic
+
+	gunMessenger = new SeededGeneratorMessenger(this);
 
 	G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
 	G4String particleName;
 	G4ParticleDefinition* particle = particleTable->FindParticle(particleName =
 			"e-");
+
 	particleGun->SetParticleDefinition(particle);
 	particleGun->SetParticleMomentumDirection(G4ThreeVector(0., 0., 1.));
 	particleGun->SetParticleEnergy(4. * GeV);
@@ -110,12 +118,12 @@ SeededGeneratorAction::~SeededGeneratorAction() {
 	delete particleGun;
 	delete hepmcAscii;
 	delete pythiaGen;
-	delete gunMessenger;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void SeededGeneratorAction::GeneratePrimaries(G4Event* anEvent) {
+
 	G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
 	G4String particleName;
 
@@ -144,9 +152,17 @@ void SeededGeneratorAction::GeneratePrimaries(G4Event* anEvent) {
 		eventAction_->genvec_.push_back(genPart);
 	} else
 		G4Exception("SeededGeneratorAction::GeneratePrimaries",
-				"SeededGeneratorAction001", FatalException,
+				"PrimaryGeneratorAction001", FatalException,
 				"generator is not instanciated.");
 
+	//int currentEvt = anEvent->GetEventID();
+	//tree_->GetEntry(currentEvt);
+	//if (hadrons_->size() == 0){
+	//	std::cout << "Hadrons Empty " << std::endl;//G4RunManager::GetRunManager()->AbortEvent();
+	//}
+	//else{
+	//	continue;
+	//}
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
