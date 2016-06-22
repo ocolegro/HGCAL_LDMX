@@ -155,11 +155,11 @@ void SeededGeneratorAction::GeneratePrimaries(G4Event* anEvent) {
 				"PrimaryGeneratorAction001", FatalException,
 				"generator is not instanciated.");
 
-	//int currentEvt = anEvent->GetEventID();
-	//tree_->GetEntry(currentEvt);
-	//if (hadrons_->size() == 0){
-	//	std::cout << "Hadrons Empty " << std::endl;//G4RunManager::GetRunManager()->AbortEvent();
-	//}
+	int currentEvt = anEvent->GetEventID();
+	tree_->GetEntry(currentEvt);
+	if (hadrons_->size() == 0){
+		std::cout << "Hadrons Empty " << std::endl;//G4RunManager::GetRunManager()->AbortEvent();
+	}
 	//else{
 	//	continue;
 	//}

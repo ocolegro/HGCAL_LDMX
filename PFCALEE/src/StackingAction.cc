@@ -61,7 +61,6 @@ StackingAction::ClassifyNewTrack(const G4Track* lTrack)
 			return fKill;
 		}
 		else{
-			G4cout << "Setting a track to waiting" << G4endl;
 			return fWaiting;
 		}
 	}
