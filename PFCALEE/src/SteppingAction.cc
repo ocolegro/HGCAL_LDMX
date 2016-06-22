@@ -55,7 +55,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 	int nFinalState=secondaries->size() + (trackSurvives?1:0);
 
     G4cout << "Process " << theProcessName << " " << nFinalState << G4endl;
-    if(trackSurvives) printParticle(theTrack);
+    if(trackSurvives) printParticle(lTrack);
     for(G4TrackVector::const_iterator i=secondaries->begin(); i!=secondaries->end(); ++i)
       printParticle(*i);
 
