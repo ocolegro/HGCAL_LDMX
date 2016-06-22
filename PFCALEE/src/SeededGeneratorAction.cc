@@ -55,10 +55,8 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-PrimaryGeneratorAction::PrimaryGeneratorAction(G4int mod, bool signal,
-		std::string data) {
+SeededGeneratorAction::SeededGeneratorAction(G4int mod,std::string data) {
 	model_ = mod;
-	signal_ = signal;
 	data_ = data;
 	G4int n_particle = 1;
 
@@ -108,7 +106,7 @@ PrimaryGeneratorAction::PrimaryGeneratorAction(G4int mod, bool signal,
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-PrimaryGeneratorAction::~PrimaryGeneratorAction() {
+SeededGeneratorAction::~SeededGeneratorAction() {
 	delete particleGun;
 	delete hepmcAscii;
 	delete pythiaGen;
@@ -117,7 +115,7 @@ PrimaryGeneratorAction::~PrimaryGeneratorAction() {
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent) {
+void SeededGeneratorAction::GeneratePrimaries(G4Event* anEvent) {
 	G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
 	G4String particleName;
 
@@ -145,8 +143,8 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent) {
 		currentGenerator->GeneratePrimaryVertex(anEvent);
 		eventAction_->genvec_.push_back(genPart);
 	} else
-		G4Exception("PrimaryGeneratorAction::GeneratePrimaries",
-				"PrimaryGeneratorAction001", FatalException,
+		G4Exception("SeededGeneratorAction::GeneratePrimaries",
+				"SeededGeneratorAction001", FatalException,
 				"generator is not instanciated.");
 
 }
