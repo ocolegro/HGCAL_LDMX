@@ -61,7 +61,7 @@ StackingAction::ClassifyNewTrack(const G4Track* lTrack)
 			return fKill;
 		}
 		else{
-			return fWaiting;
+			return fKill;//fWaiting;
 		}
 	}
 	else{
