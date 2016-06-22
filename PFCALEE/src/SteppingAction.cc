@@ -64,8 +64,8 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 			printParticle(lTrack);
 		}
 		for(G4TrackVector::const_iterator i=secondaries->begin(); i!=secondaries->end(); ++i){
-			G4Track* secPart = (G4Track) i;
-			G4int secID = secPart->GetDefinition()->GetPDGEncoding();
+			G4Track* aTrack = *i;
+			G4int secID = aTrack->GetDefinition()->GetPDGEncoding();
 			if (secID != 11 && secID != 22)
 				printParticle(*i);
 		}
