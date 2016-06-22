@@ -58,8 +58,8 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 		if (theProcessName == "PhotonInelastic" || theProcessName == "ElectroNuclear" || theProcessName == "PositronNuclear" ){
 			eventAction_->hadronicInts = eventAction_->hadronicInts  + 1;
 			HGCSSGenParticle targPart;
-			targPart.vertexKE(lTrack->GetKineticEnergy()+aStep->GetDeltaEnergy());
-			const G4ThreeVector &p = lTrack->GetVertexMomentumDirection() + aStep->GetDeltaMomentum();
+			targPart.vertexKE(lTrack->GetKineticEnergy() - aStep->GetDeltaEnergy());
+			const G4ThreeVector &p = lTrack->GetVertexMomentumDirection() - aStep->GetDeltaMomentum();
 			const G4ThreeVector &pos = lTrack->GetVertexPosition();
 			TVector3 momVec(p[0], p[1], p[2]);
 			targPart.vertexMom(momVec);
