@@ -36,6 +36,7 @@ public:
 		HGCAL_E40    = 8,
 		T			 = 9,
 		H			 = 10,
+		DUMMY 		 = 11,
 
 	};
 

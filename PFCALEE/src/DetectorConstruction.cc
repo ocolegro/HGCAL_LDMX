@@ -145,7 +145,7 @@ void DetectorConstruction::buildECal(){
 					m_caloStruct.push_back( SamplingSection(iEleR) );
 				}
 		}
-		else if (version_ == HGCAL_E40_TH || version_ == HGCAL_E40_T || version_ == HGCAL_E40_H || version_ == HGCAL_E40){
+		else if (version_ == HGCAL_E40_TH || version_ == HGCAL_E40_T || version_ == HGCAL_E40_H || version_ == HGCAL_E40 || version_ == DUMMY ){
 			G4double airThick = 2*mm,
 					pcbThick = 2*mm,
 					wThick = 2.5*mm,

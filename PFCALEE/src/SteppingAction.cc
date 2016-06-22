@@ -35,8 +35,9 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 	const G4StepPoint *thePostStepPoint = aStep->GetPostStepPoint();
 
 	const G4Track* lTrack = aStep->GetTrack();
-	G4int trackID = lTrack->GetTrackID();
+	//G4int trackID = lTrack->GetTrackID();
 	G4double kinEng = lTrack->GetKineticEnergy();
+	G4int pdgID = lTrack->GetDefinition()->GetPDGEncoding();
 
 	G4VPhysicalVolume* volume = thePreStepPoint->GetPhysicalVolume();
 
@@ -49,6 +50,9 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 	HGCSSGenParticle genPart;
 
 
+	if ( (abs(pdgID) == 11) ||  (abs(pdgID) == 22) && kinEng < 100) {
+		lTrack->SetTrackStatus(fStopAndKill);
+	}
 
-	eventAction_->Detect(eRawDep,trackID,kinEng, volume);
+	eventAction_->Detect(eRawDep,pdgID,kinEng, volume);
 }

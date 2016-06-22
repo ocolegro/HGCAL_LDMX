@@ -16,7 +16,6 @@
 #include "TMath.h"
 //
 EventAction::EventAction() {
-	runAct = (RunAction*) G4RunManager::GetRunManager()->GetUserRunAction();
 	eventMessenger = new EventActionMessenger(this);
 	printModulo = 100;
 	outF_ = TFile::Open("PFcal.root", "RECREATE");
@@ -88,7 +87,7 @@ void EventAction::Detect(G4double eDepRaw, G4int trackID,G4double kinEng, G4VPhy
 		if (stopIter.first) break;
 		stopIter = (*detector_)[i].add( eDepRaw, volume);
 	}
-	if (stopIter.second)
+	/*if (stopIter.second)
 		summedDep += eDepRaw;
 	stepDep[nSteps] = summedDep;
 	if (trackID == 1 && kinEng > 500){
@@ -102,7 +101,7 @@ void EventAction::Detect(G4double eDepRaw, G4int trackID,G4double kinEng, G4VPhy
 		G4RunManager::GetRunManager()->AbortEvent();
 	}
 	nSteps = nSteps + 1;
-
+*/
 }
 
 //
