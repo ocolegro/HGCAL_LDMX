@@ -66,6 +66,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 			TVector3 posVec(pos[0], pos[1], pos[2] - zOff);
 			targPart.vertexPos(posVec);
 			targPart.pdgid(pdgID);
+			targPart.layer(eventAction_->hadronicInts);
 			eventAction_->hadvec_.push_back(targPart);
 
 			for(G4TrackVector::const_iterator i=secondaries->begin(); i!=secondaries->end(); ++i){
@@ -85,6 +86,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 					TVector3 posVec(pos[0], pos[1], pos[2] - zOff);
 					genPart.vertexPos(posVec);
 					genPart.pdgid(iTrack->GetDefinition()->GetPDGEncoding());
+					genPart.layer(eventAction_->hadronicInts);
 					eventAction_->hadvec_.push_back(genPart);
 					eventAction_->novelTrackIds.push_back(iTrack->GetTrackID());
 
