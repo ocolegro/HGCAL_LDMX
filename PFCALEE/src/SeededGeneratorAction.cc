@@ -34,7 +34,7 @@
 #include "SeededGeneratorAction.hh"
 
 #include "DetectorConstruction.hh"
-#include "PrimaryGeneratorMessenger.hh"
+#include "SeededGeneratorMessenger.hh"
 
 #include "G4RunManager.hh"
 #include "G4Event.hh"
@@ -84,7 +84,7 @@ SeededGeneratorAction::SeededGeneratorAction(G4int mod,std::string data) {
 			(DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction();
 
 	//create a messenger for this class
-	gunMessenger = new PrimaryGeneratorMessenger(this);
+	gunMessenger = new SeededGeneratorMessenger(this);
 
 	// default particle kinematic
 
