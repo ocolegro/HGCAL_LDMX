@@ -40,7 +40,7 @@
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 SeededGeneratorMessenger::SeededGeneratorMessenger(
-		PrimaryGeneratorAction* Gun) :
+		SeededGeneratorAction* Gun) :
 		Action(Gun) {
 	dir = new G4UIdirectory("/generator/");
 	dir->SetGuidance("Control commands for primary generator");
