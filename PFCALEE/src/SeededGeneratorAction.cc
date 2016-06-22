@@ -68,7 +68,6 @@ std::vector<std::string> split(const std::string &s, char delim) {
 SeededGeneratorAction::SeededGeneratorAction(G4int mod,
 		std::string data) {
 	model_ = mod;
-	signal_ = signal;
 	data_ = data;
 	G4int n_particle = 1;
 	evt_ = 0; hadrons_ = 0;

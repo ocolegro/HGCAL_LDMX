@@ -69,7 +69,6 @@ public:
 private:
 	EventAction *eventAction_;
 	int model_;
-	bool signal_;
 
 	TFile* file_;
 	TTree * tree_;
