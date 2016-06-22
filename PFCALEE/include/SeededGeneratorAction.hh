@@ -31,7 +31,7 @@
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-#ifndef PrimaryGeneratorAction_h
+#ifndef SeededGeneratorAction_h
 #define SeededGeneratorAction_h 1
 
 #include "G4VUserPrimaryGeneratorAction.hh"
