@@ -12,6 +12,7 @@
 #include "EventAction.hh"
 #include "SteppingAction.hh"
 #include "SteppingVerbose.hh"
+#include "StackingAction.hh"
 
 #ifdef G4VIS_USE
 #include "G4VisExecutive.hh"
@@ -64,6 +65,7 @@ int main(int argc, char** argv) {
 	// Set user action classes
 	runManager->SetUserAction(new EventAction);
 	runManager->SetUserAction(new SteppingAction);
+	runManager->SetUserAction(new StackingAction);
 
         if (signal) {
             runManager->SetUserAction(new LHEPrimaryGeneratorAction(model));
