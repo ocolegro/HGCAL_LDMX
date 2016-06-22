@@ -32,6 +32,7 @@ public:
 
 	};
 private:
+	void printParticle(G4Track* aTrack);
 	EventAction *eventAction_;
 	//to correct the energy in the scintillator
 	G4EmSaturation* saturationEngine;
