@@ -133,13 +133,15 @@ void SeededGeneratorAction::GeneratePrimaries(G4Event* anEvent) {
 	int currentEvt = anEvent->GetEventID();
 	tree_->GetEntry(currentEvt);
 	G4double et = 4.0;
-
+	G4RunManager::GetRunManager()->AbortEvent();
+	PipeData();
+	CLHEP::HepRandom::restoreEngineStatus ("temp.rndm");
+	/*
 	if (hadrons_->size() != 0){
-		//G4RunManager::GetRunManager()->AbortEvent();
-		//PipeData();
-		//CLHEP::HepRandom::restoreEngineStatus ("temp.rndm");
+
 		et = 4.0;
 	}
+	*/
 	particleGun->SetParticleEnergy(et * GeV);
 	particleGun->SetParticleMomentumDirection(G4ThreeVector(0., 0., 1.));
 
