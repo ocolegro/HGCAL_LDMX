@@ -50,7 +50,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 	HGCSSGenParticle genPart;
 
 
-	if ( (abs(pdgID) == 11) ||  (abs(pdgID) == 22) && kinEng < 100) {
+	if ( ((abs(pdgID) == 11) ||  (abs(pdgID) == 22)) && kinEng < 100) {
 		lTrack->SetTrackStatus(fStopAndKill);
 	}
 
