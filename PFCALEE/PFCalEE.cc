@@ -75,9 +75,9 @@ int main(int argc, char** argv) {
         }
         else {
             runManager->SetUserAction(new PrimaryGeneratorAction(model, signal, data));
-            runManager->Initialize(); 
         }
-	
+        runManager->Initialize();
+
 	// Initialize visualization
 #ifdef G4VIS_USE
 	G4VisManager* visManager = new G4VisExecutive;
