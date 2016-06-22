@@ -99,7 +99,6 @@ SeededGeneratorAction::SeededGeneratorAction(G4int mod,
 			(DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction();
 
 	//create a messenger for this class
-	gunMessenger = new PrimaryGeneratorMessenger(this);
 
 	// default particle kinematic
 
@@ -125,7 +124,6 @@ SeededGeneratorAction::~SeededGeneratorAction() {
 	delete particleGun;
 	delete hepmcAscii;
 	delete pythiaGen;
-	delete gunMessenger;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
