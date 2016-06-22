@@ -85,7 +85,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 					genPart.vertexMom(momVec);
 					TVector3 posVec(pos[0], pos[1], pos[2] - zOff);
 					genPart.vertexPos(posVec);
-					genPart.pdgid(pdgID);
+					genPart.pdgid(iTrack->GetDefinition()->GetPDGEncoding());
 					eventAction_->hadvec_.push_back(genPart);
 					eventAction_->novelTrackIds.push_back(iTrack->GetTrackID());
 				}
