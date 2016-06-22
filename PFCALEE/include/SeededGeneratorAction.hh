@@ -70,8 +70,7 @@ private:
 	EventAction *eventAction_;
 	int model_;
 
-	TFile* file_;
-	TTree * tree_;
+
 	HGCSSGenParticleVec* hadrons_ ;
 	HGCSSEvent* evt_;
 
