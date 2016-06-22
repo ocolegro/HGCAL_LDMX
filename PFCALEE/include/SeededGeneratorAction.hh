@@ -59,6 +59,7 @@ public:
 	void SetRndmFlag(G4String val) {
 		rndmFlag = val;
 	}
+	void PipeData();
 
 	void SetGenerator(G4VPrimaryGenerator* gen);
 	void SetGenerator(G4String genname);
@@ -98,6 +99,11 @@ inline void SeededGeneratorAction::SetGenerator(G4VPrimaryGenerator* gen) {
 	currentGenerator = gen;
 }
 
+inline void SeededGeneratorAction::PipeData(){
+	ofstream outputFile("temp.rndm");
+	outputFile << "Uvec\n" << evt_-> status().x() << "\n" << evt_->status().y() << "\n"
+			<< evt_->seeds().x() << "\n" << evt_->seeds().y();
+}
 inline void SeededGeneratorAction::SetGenerator(G4String genname) {
 	std::map<G4String, G4VPrimaryGenerator*>::iterator pos = gentypeMap.find(
 			genname);

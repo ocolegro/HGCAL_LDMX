@@ -136,7 +136,8 @@ void SeededGeneratorAction::GeneratePrimaries(G4Event* anEvent) {
 
 	if (hadrons_->size() != 0){
 		//G4RunManager::GetRunManager()->AbortEvent();
-		G4cout << "Actually processing an event " << G4endl;
+		PipeData();
+		CLHEP::HepRandom::restoreEngineStatus ("temp.rndm");
 		G4double et = 4.0;
 	}
 	particleGun->SetParticleEnergy(et * GeV);
