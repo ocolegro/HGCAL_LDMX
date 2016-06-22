@@ -36,9 +36,11 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-StackingAction::StackingAction()
+StackingAction::StackingAction(std::string data)
  : G4UserStackingAction()
-{ }
+{
+	data_ = data;
+}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -55,7 +57,10 @@ StackingAction::ClassifyNewTrack(const G4Track* lTrack)
 
 
 	if ( ((abs(pdgID) == 11) ||  (abs(pdgID) == 22)) && kinEng < 100) {
-		  return fKill;
+		if (data_ == "")
+			return fKill;
+		else
+			return fWaiting;
 	}
 	else{
 		  return fUrgent;

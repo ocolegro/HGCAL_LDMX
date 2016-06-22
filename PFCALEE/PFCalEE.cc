@@ -9,6 +9,8 @@
 
 #include "PrimaryGeneratorAction.hh"
 #include "LHEPrimaryGeneratorAction.hh"
+#include "SeededGeneratorAction.hh"
+
 #include "EventAction.hh"
 #include "SteppingAction.hh"
 #include "SteppingVerbose.hh"
@@ -43,7 +45,7 @@ int main(int argc, char** argv) {
 
 	int model = DetectorConstruction::m_FULLSECTION;
 
-        bool signal = true;
+	bool signal = true;
 	std::string data = "";
 	double steelThick= 0;
 	if (argc > 2)
@@ -54,7 +56,8 @@ int main(int argc, char** argv) {
 		signal = atoi(argv[4]);
 	if (argc > 5)
 		steelThick = std::stof(argv[5]);
-
+	if (argc > 6)
+		data = argv[6];
 	std::cout << "-- Running version " << version << " model " << model
 			<< std::endl;
 
@@ -65,10 +68,10 @@ int main(int argc, char** argv) {
 	// Set user action classes
 	runManager->SetUserAction(new EventAction);
 	runManager->SetUserAction(new SteppingAction);
-	runManager->SetUserAction(new StackingAction);
+	runManager->SetUserAction(new StackingAction(data));
 
-        if (signal) {
-            runManager->SetUserAction(new LHEPrimaryGeneratorAction(model));
+        if (data!="") {
+            runManager->SetUserAction(new SeededGeneratorAction(model, data));
         }
         else {
             runManager->SetUserAction(new PrimaryGeneratorAction(model, signal, data));

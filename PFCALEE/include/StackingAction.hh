@@ -42,11 +42,12 @@
 class StackingAction : public G4UserStackingAction
 {
   public:
-    StackingAction();
+    StackingAction(std::string data = "");
    ~StackingAction();
 
     virtual G4ClassificationOfNewTrack ClassifyNewTrack(const G4Track*);
-
+  private:
+    std::string data_;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
