@@ -1,6 +1,5 @@
 #include "EventAction.hh"
 
-#include "RunAction.hh"
 #include "EventActionMessenger.hh"
 #include "DetectorConstruction.hh"
 

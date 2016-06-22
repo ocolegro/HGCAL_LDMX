@@ -21,7 +21,6 @@
 #include <map>
 #include "fstream"
 
-class RunAction;
 class EventActionMessenger;
 
 class EventAction: public G4UserEventAction {
@@ -43,7 +42,6 @@ public:
 	HGCSSGenParticleVec genvec_;
 
 private:
-	RunAction* runAct;
 	std::vector<SamplingSection> *detector_;
 	G4int evtNb_, printModulo,initLayer;
 	int nSteps,nMainSteps;
