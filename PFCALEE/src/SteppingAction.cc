@@ -58,10 +58,16 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 		bool trackSurvives=(lTrack->GetTrackStatus()==fAlive);
 		int nFinalState=secondaries->size() + (trackSurvives?1:0);
 
-		G4cout << "Process " << theProcessName << " " << nFinalState << G4endl;
-		if(trackSurvives) printParticle(lTrack);
-		for(G4TrackVector::const_iterator i=secondaries->begin(); i!=secondaries->end(); ++i)
-		  printParticle(*i);
+		G4cout << "Process " << theProcessName << " The Number of final particles is " << nFinalState << G4endl;
+		if(trackSurvives) {
+			G4cout << "The primary track is : " ;
+			printParticle(lTrack);
+		}
+		for(G4TrackVector::const_iterator i=secondaries->begin(); i!=secondaries->end(); ++i){
+			G4int secID = lTrack->GetDefinition()->GetPDGEncoding();
+			if (secID != 11 && secID != 22)
+				printParticle(*i);
+		}
 
 		eventAction_->Detect(eRawDep,pdgID,kinEng, volume);
 		}
