@@ -26,16 +26,11 @@ class DetectorConstruction: public G4VUserDetectorConstruction {
 public:
 
 	enum DetectorVersion {
-		HGCAL_E26_TH = 1,
-		HGCAL_E26_T  = 2,
-		HGCAL_E26_H  = 3,
-		HGCAL_E26    = 4,
-		HGCAL_E40_TH = 5,
-		HGCAL_E40_T  = 6,
-		HGCAL_E40_H  = 7,
-		HGCAL_E40    = 8,
-		T			 = 9,
-		H			 = 10,
+		v_HGCALEE_v6 = 1,
+		v_HGCALEE_Tv6 = 2,
+		v_HGCALEE_v6_s05 = 3,
+		v_HGCALEE_v6_s10 = 4,
+		v_HGCALEE_v6_s20 = 5,
 
 	};
 
@@ -47,8 +42,8 @@ public:
 	/**
 	 @short CTOR
 	 */
-	DetectorConstruction(G4int ver = DetectorConstruction::HGCAL_E26_TH,
-			G4int mod = DetectorConstruction::m_SIMPLE_20, G4double steelThick = 0);
+	DetectorConstruction(G4int ver = DetectorConstruction::v_HGCALEE_v6,
+			G4int mod = DetectorConstruction::m_SIMPLE_20, bool signal = false);
 
 	void buildHGCALFHE(const unsigned aVersion);
 	void buildHGCALBHE(const unsigned aVersion);
@@ -110,9 +105,7 @@ public:
 	G4double GetWorldSizeZ() {
 		return m_WorldSizeZ;
 	}
-	G4double GetSteelThick() {
-		return steelThick_;
-	}
+
 	unsigned initLayer() {
 		return initLayer_;
 	}
@@ -136,9 +129,6 @@ private:
 	 @short compute the calor dimensions
 	 */
 	void UpdateCalorSize();
-	void buildTracker();
-	void buildECal();
-	void buildHCal(double steelThick);
 
 	/**
 	 @short build the calorimeter
@@ -163,7 +153,7 @@ private:
 	G4double m_z0pos;
 	G4double m_WorldSizeXY, m_WorldSizeZ;
 	G4double m_nSectors, m_sectorWidth, m_interSectorWidth;
-	G4double steelThick_;
+
 	G4VSolid* m_solidWorld;    //pointer to the solid World 
 	G4LogicalVolume* m_logicWorld;    //pointer to the logical World
 	G4VPhysicalVolume* m_physWorld;     //pointer to the physical World  

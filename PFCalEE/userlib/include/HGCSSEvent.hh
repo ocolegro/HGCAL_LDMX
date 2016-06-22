@@ -5,7 +5,7 @@
 #include "Rtypes.h"
 #include <sstream>
 #include <map>
-#include "TVector3.h"
+
 class HGCSSEvent {
 
 public:
@@ -33,10 +33,7 @@ public:
 		return xvtx_;
 	}
 	;
-	inline double steelThick() const {
-		return steelThick_;
-	}
-	;
+
 	inline void vtx_x(const double x) {
 		xvtx_ = x;
 	}
@@ -47,18 +44,6 @@ public:
 	}
 	;
 
-	inline TVector3 seeds() const {
-		return seeds_;
-	}
-	;
-	inline TVector3 status() const {
-		return status_;
-	}
-	;
-	inline double dep() const {
-		return dep_;
-	}
-	;
 	inline void vtx_y(const double y) {
 		yvtx_ = y;
 	}
@@ -73,31 +58,13 @@ public:
 		zvtx_ = z;
 	}
 	;
-	inline void steelThick(const double thick) {
-		steelThick_ = thick;
-	}
-	;
-	inline void seeds(TVector3 seeds) {
-		seeds_ = seeds;
-	}
-	;
-	inline void status(TVector3 status) {
-		status_ = status;
-	}
-	;
-	inline void dep(double dep) {
-		dep_ = dep;
-	}
-	;
+
 private:
 
 	unsigned event_;
 	double xvtx_;
 	double yvtx_;
 	double zvtx_;
-	double steelThick_;
-	double dep_;
-	TVector3 seeds_,status_;
 
 ClassDef(HGCSSEvent,1)
 	;

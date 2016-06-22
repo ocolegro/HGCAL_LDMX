@@ -39,13 +39,12 @@ int main(int argc, char** argv) {
 	G4RunManager * runManager = new G4RunManager;
 
 	// Set mandatory initialization classes
-	int version = DetectorConstruction::HGCAL_E26_TH;
+	int version = DetectorConstruction::v_HGCALEE_v6;
 
 	int model = DetectorConstruction::m_FULLSECTION;
 
         bool signal = true;
 	std::string data = "";
-	double steelThick= 0;
 	if (argc > 2)
 		version = atoi(argv[2]);
 	if (argc > 3)
@@ -53,13 +52,12 @@ int main(int argc, char** argv) {
 	if (argc > 4)
 		signal = atoi(argv[4]);
 	if (argc > 5)
-		steelThick = std::stof(argv[5]);
-
+		data = argv[5];
 	std::cout << "-- Running version " << version << " model " << model
 			<< std::endl;
 
 	runManager->SetUserInitialization(
-			new DetectorConstruction(version, model, steelThick));
+			new DetectorConstruction(version, model, signal));
 	runManager->SetUserInitialization(new PhysicsList);
 
 	// Set user action classes

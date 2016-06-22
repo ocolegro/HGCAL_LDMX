@@ -8,14 +8,13 @@
 #include <map>
 #include <cmath>
 #include "TMath.h"
-#include "TVector3.h"
 
 class HGCSSGenParticle {
 
 public:
 	HGCSSGenParticle() :
 			time_(0), xpos_(0), ypos_(0), zpos_(0), mass_(0), px_(0), py_(0), pz_(
-					0), pdgid_(0), charge_(0), trackID_(0),vertexKE_(0),parentKE_(0),parentPdgId_(0) {
+					0), pdgid_(0), charge_(0), trackID_(0) {
 
 	}
 	;
@@ -86,14 +85,7 @@ public:
 		return sqrt(mass_ * mass_ + p() * p());
 	}
 	;
-	inline double parentPdgId() {
-		return parentPdgId_;
-	}
-	;
-	inline double parentKE() {
-		return parentKE_;
-	}
-	;
+
 	inline double eta() const {
 		double theta = acos(
 				fabs(pz_) / sqrt(pz_ * pz_ + px_ * px_ + py_ * py_));
@@ -156,45 +148,12 @@ public:
 		charge_ = val;
 	}
 	;
-	inline void vertexKE(const double & val) {
-		vertexKE_ = val;
-	}
-	;
-	inline void vertexPos(TVector3  & val) {
-		vertexPos_ = val;
-	}
-	;
-	inline void vertexMom(TVector3  & val) {
-		vertexMom_ = val;
-	}
-	;
 	inline void trackID(const int & val) {
 		trackID_ = val;
 	}
 	;
 	inline void layer(const int & val) {
 		 layer_ = val;
-	}
-	;
-	inline void parentPdgId(const int & val) {
-		parentPdgId_ = val;
-	}
-	;
-	inline void parentKE(const int & val) {
-		parentKE_ = val;
-	}
-	;
-	inline double vertexKE() const {
-		//do not want back-scattered particles,
-		return vertexKE_;
-	}
-	;
-	inline TVector3 vertexPos() {
-		return vertexPos_;
-	}
-	;
-	inline TVector3 vertexMom() {
-		return vertexMom_;
 	}
 	;
 	inline bool isIncoming() const {
@@ -219,12 +178,8 @@ private:
 	int pdgid_;
 	int layer_;
 	double charge_;
-	int parentPdgId_;
 	int trackID_;
-	double vertexKE_;
-	double parentKE_;
-	TVector3 vertexPos_;
-	TVector3 vertexMom_;
+
 ClassDef(HGCSSGenParticle,1)
 	;
 

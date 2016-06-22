@@ -21,6 +21,7 @@ parser.add_option('-n', '--nevts'       ,    dest='nevts'              , help='n
 parser.add_option('-o', '--out'         ,    dest='out'                , help='output directory'             , default=os.getcwd() )
 parser.add_option('-e', '--eos'         ,    dest='eos'                , help='eos path to save root file to EOS',         default='')
 ##Location to a txt file containing a csv [particle_energy,dir_x,dir_y,dir_z]
+parser.add_option('-d', '--data_file'   ,    dest='data_file'          , help='data file'                        , default=  "/afs/cern.ch/user/o/ocolegro/HGCAL_LDMX/PFCalEE/data/mom.txt")
 parser.add_option('-S', '--no-submit'   ,    action="store_true",  dest='nosubmit'           , help='Do not submit batch job.')
 
 (opt, args) = parser.parse_args()
@@ -31,60 +32,59 @@ label=''
 nevents=opt.nevts
 myqueue=opt.queue
 
-thickness_ = [1,2,3,4,5,6,7,8,9,10,12,14,16,18,20]
-for thickness in thickness_:
-    outDir='%s/git_%s/version_%d/model_%d'%(opt.out,opt.gittag,opt.version,opt.model)
-    outDir='%s/%s'%(outDir,label)
-    eosDir='%s/git%s'%(opt.eos,opt.gittag)
-    if opt.signal>0 : outDir='%s/signal_%3.3f/'%(outDir,opt.signal)
-    if (opt.run>=0) : outDir='%s/run_%d/'%(outDir,opt.run)
 
-    os.system('mkdir -p %s'%outDir)
+outDir='%s/git_%s/version_%d/model_%d'%(opt.out,opt.gittag,opt.version,opt.model)
+outDir='%s/%s'%(outDir,label)
+eosDir='%s/git%s'%(opt.eos,opt.gittag)
+if opt.signal>0 : outDir='%s/signal_%3.3f/'%(outDir,opt.signal)
+if (opt.run>=0) : outDir='%s/run_%d/'%(outDir,opt.run)
 
-    #wrapper
-    scriptFile = open('%s/runJob.sh'%(outDir), 'w')
-    scriptFile.write('#!/bin/bash\n')
-    scriptFile.write('source %s/g4env.sh\n'%(os.getcwd()))
-    scriptFile.write('cp %s/g4steer.mac .\n'%(outDir))
-    scriptFile.write('PFCalEE g4steer.mac %d %d %f %s| tee g4.log\n'%(opt.version,opt.model,opt.signal,thickness))
-    outTag='%s_version%d_model%d_thick%s'%(label,opt.version,opt.model,thickness)
-    if (opt.run>=0) : outTag='%s_run%d'%(outTag,opt.run)
-    scriptFile.write('mv PFcal.root HGcal_%s.root\n'%(outTag))
-    scriptFile.write('localdir=`pwd`\n')
-    scriptFile.write('echo "--Local directory is " $localdir >> g4.log\n')
-    scriptFile.write('ls * >> g4.log\n')
-    if len(opt.eos)>0:
-        scriptFile.write('grep "alias eos=" /afs/cern.ch/project/eos/installation/cms/etc/setup.sh | sed "s/alias /export my/" > eosenv.sh\n')
-        scriptFile.write('source eosenv.sh\n')
-        scriptFile.write('$myeos mkdir -p %s\n'%eosDir)
-        scriptFile.write('$myeos cp HGcal_%s.root /eos/cms%s/HGcal_%s.root\n'%(outTag,eosDir,outTag))
-        scriptFile.write('if (( "$?" != "0" )); then\n')
-        scriptFile.write('echo " --- Problem with copy of file PFcal.root to EOS. Keeping locally." >> g4.log\n')
-        scriptFile.write('fi\n')
-        scriptFile.write('rm HGcal_%s.root\n'%(outTag))
+os.system('mkdir -p %s'%outDir)
 
+#wrapper
+scriptFile = open('%s/runJob.sh'%(outDir), 'w')
+scriptFile.write('#!/bin/bash\n')
+scriptFile.write('source %s/g4env.sh\n'%(os.getcwd()))
+scriptFile.write('cp %s/g4steer.mac .\n'%(outDir))
+scriptFile.write('PFCalEE g4steer.mac %d %d %f %s| tee g4.log\n'%(opt.version,opt.model,opt.signal,opt.data_file))
+outTag='%s_version%d_model%d'%(label,opt.version,opt.model)
+if (opt.run>=0) : outTag='%s_run%d'%(outTag,opt.run)
+scriptFile.write('mv PFcal.root HGcal_%s.root\n'%(outTag))
+scriptFile.write('localdir=`pwd`\n')
+scriptFile.write('echo "--Local directory is " $localdir >> g4.log\n')
+scriptFile.write('ls * >> g4.log\n')
+if len(opt.eos)>0:
+    scriptFile.write('grep "alias eos=" /afs/cern.ch/project/eos/installation/cms/etc/setup.sh | sed "s/alias /export my/" > eosenv.sh\n')
+    scriptFile.write('source eosenv.sh\n')
+    scriptFile.write('$myeos mkdir -p %s\n'%eosDir)
+    scriptFile.write('$myeos cp HGcal_%s.root /eos/cms%s/HGcal_%s.root\n'%(outTag,eosDir,outTag))
+    scriptFile.write('if (( "$?" != "0" )); then\n')
+    scriptFile.write('echo " --- Problem with copy of file PFcal.root to EOS. Keeping locally." >> g4.log\n')
+    scriptFile.write('fi\n')
+    scriptFile.write('rm HGcal_%s.root\n'%(outTag))
 
 
-    scriptFile.write('echo "--deleting core files: too heavy!!"\n')
-    scriptFile.write('rm core.*\n')
-    scriptFile.write('cp * %s/\n'%(outDir))
-    scriptFile.write('echo "All done"\n')
-    scriptFile.close()
 
-    #write geant 4 macro
-    g4Macro = open('%s/g4steer.mac'%(outDir), 'w')
-    g4Macro.write('/control/verbose 0\n')
-    g4Macro.write('/control/saveHistory\n')
-    g4Macro.write('/run/verbose 0\n')
-    g4Macro.write('/event/verbose 0\n')
-    g4Macro.write('/tracking/verbose 0\n')
-    g4Macro.write('/N03/det/setModel %d\n'%opt.model)
-    g4Macro.write('/random/setSeeds %d %d\n'%( random.uniform(0,100000), random.uniform(0,100000) ) )
-    g4Macro.write('/run/beamOn %d\n'%(nevents))
-    g4Macro.close()
+scriptFile.write('echo "--deleting core files: too heavy!!"\n')
+scriptFile.write('rm core.*\n')
+scriptFile.write('cp * %s/\n'%(outDir))
+scriptFile.write('echo "All done"\n')
+scriptFile.close()
 
-    #submit
-    os.system('chmod u+rwx %s/runJob.sh'%outDir)
-    if opt.nosubmit : os.system('LSB_JOB_REPORT_MAIL=N echo bsub -q %s -N %s/runJob.sh'%(myqueue,outDir))
-    else: os.system("LSB_JOB_REPORT_MAIL=N bsub -q %s -N \'%s/runJob.sh\'"%(myqueue,outDir))
+#write geant 4 macro
+g4Macro = open('%s/g4steer.mac'%(outDir), 'w')
+g4Macro.write('/control/verbose 0\n')
+g4Macro.write('/control/saveHistory\n')
+g4Macro.write('/run/verbose 0\n')
+g4Macro.write('/event/verbose 0\n')
+g4Macro.write('/tracking/verbose 0\n')
+g4Macro.write('/N03/det/setModel %d\n'%opt.model)
+g4Macro.write('/random/setSeeds %d %d\n'%( random.uniform(0,100000), random.uniform(0,100000) ) )
+g4Macro.write('/run/beamOn %d\n'%(nevents))
+g4Macro.close()
+
+#submit
+os.system('chmod u+rwx %s/runJob.sh'%outDir)
+if opt.nosubmit : os.system('LSB_JOB_REPORT_MAIL=N echo bsub -q %s -N %s/runJob.sh'%(myqueue,outDir))
+else: os.system("LSB_JOB_REPORT_MAIL=N bsub -q %s -N \'%s/runJob.sh\'"%(myqueue,outDir))
 
