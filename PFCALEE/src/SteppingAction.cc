@@ -50,6 +50,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 	HGCSSGenParticle genPart;
 
 	const G4TrackVector* secondaries= aStep->GetSecondary();
+	if(secondaries->size() > 0){
 	G4String theProcessName=secondaries->at(0)->GetCreatorProcess()->GetProcessName();
 	bool trackSurvives=(lTrack->GetTrackStatus()==fAlive);
 	int nFinalState=secondaries->size() + (trackSurvives?1:0);
@@ -60,6 +61,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
       printParticle(*i);
 
 	eventAction_->Detect(eRawDep,pdgID,kinEng, volume);
+	}
 }
 
 void SteppingAction::printParticle(G4Track* aTrack)
