@@ -71,8 +71,8 @@ for thickness in thickness_:
     scriptFile.write('echo "All done"\n')
     scriptFile.close()
 
-#write geant 4 macro
-g4Macro = open('%s/g4steer.mac'%(outDir), 'w')
+	#write geant 4 macro
+	g4Macro = open('%s/g4steer.mac'%(outDir), 'w')
     g4Macro.write('/control/verbose 0\n')
     g4Macro.write('/control/saveHistory\n')
     g4Macro.write('/run/verbose 0\n')
