@@ -31,25 +31,25 @@ label=''
 nevents=opt.nevts
 myqueue=opt.queue
 
-thickness_ = [1,2,3,4,5,6,7,8,9,10,12,14,16,18,20]
+thickness_ = [1]#,2,3,4,5,6,7,8,9,10,12,14,16,18,20]
 for thickness in thickness_:
     outDir='%s/git_%s/version_%d/model_%d'%(opt.out,opt.gittag,opt.version,opt.model)
     outDir='%s/%s'%(outDir,label)
     eosDir='%s/git%s'%(opt.eos,opt.gittag)
     if opt.signal>0 : outDir='%s/signal_%3.3f/'%(outDir,opt.signal)
     if (opt.run>=0) : outDir='%s/run_%d/'%(outDir,opt.run)
-
+    
     os.system('mkdir -p %s'%outDir)
-
+    
     #wrapper
     scriptFile = open('%s/runJob.sh'%(outDir), 'w')
     scriptFile.write('#!/bin/bash\n')
     scriptFile.write('source %s/g4env.sh\n'%(os.getcwd()))
     scriptFile.write('cp %s/g4steer.mac .\n'%(outDir))
-    scriptFile.write('PFCalEE g4steer.mac %d %d %f %s| tee g4.log\n'%(opt.version,opt.model,opt.signal,thickness))
+    scriptFile.write('PFCalEE g4steer.mac %d %d %f %s HGcal_%s.root| tee g4.log\n'%(opt.version,opt.model,opt.signal,thickness,outTag))
     outTag='%s_version%d_model%d_thick%s'%(label,opt.version,opt.model,thickness)
     if (opt.run>=0) : outTag='%s_run%d'%(outTag,opt.run)
-    scriptFile.write('mv PFcal.root HGcal_%s.root\n'%(outTag))
+    scriptFile.write('mv PFcal.root HGcal_%s_second.root\n'%(outTag))
     scriptFile.write('localdir=`pwd`\n')
     scriptFile.write('echo "--Local directory is " $localdir >> g4.log\n')
     scriptFile.write('ls * >> g4.log\n')
@@ -71,8 +71,8 @@ for thickness in thickness_:
     scriptFile.write('echo "All done"\n')
     scriptFile.close()
 
-    #write geant 4 macro
-    g4Macro = open('%s/g4steer.mac'%(outDir), 'w')
+#write geant 4 macro
+g4Macro = open('%s/g4steer.mac'%(outDir), 'w')
     g4Macro.write('/control/verbose 0\n')
     g4Macro.write('/control/saveHistory\n')
     g4Macro.write('/run/verbose 0\n')
@@ -82,7 +82,7 @@ for thickness in thickness_:
     g4Macro.write('/random/setSeeds %d %d\n'%( random.uniform(0,100000), random.uniform(0,100000) ) )
     g4Macro.write('/run/beamOn %d\n'%(nevents))
     g4Macro.close()
-
+    
     #submit
     os.system('chmod u+rwx %s/runJob.sh'%outDir)
     if opt.nosubmit : os.system('LSB_JOB_REPORT_MAIL=N echo bsub -q %s -N %s/runJob.sh'%(myqueue,outDir))
