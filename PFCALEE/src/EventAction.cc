@@ -170,7 +170,7 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 	}*/
 	event_.dep(totalSens);
 	event_.wgtDep(wgtTotalSens);
-	//stacker_->SetWait(false);
+	stacker_->SetWait(false);
 	//G4cout << "The dep cut is " << depCut << " The totalSens is " << totalSens << " The summedDep is " << summedDep << G4endl;
 	tree_->Fill();
 	//summedDep = 0;
