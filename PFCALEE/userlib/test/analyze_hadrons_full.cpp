@@ -150,7 +150,7 @@ int main(int argc, char** argv) {
 				hadron_KE[j]		= hadron.vertexKE();
 
 				nSecondaries[nInteractions - 1] += 1;
-				G4bool acc = false;
+				bool acc = false;
 				if (hadron_theta < 30){
 					nContainedSecondaries[nInteractions - 1] += 1;
 					acc = true;
