@@ -58,7 +58,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 		G4cout << "The track volume " << volume->GetName() << G4endl;
 		G4cout << "The track pdgID " << pdgID << G4endl;
 		G4cout << "The track kinEng " << lTrack->GetKineticEnergy() << G4endl;
-	}
+	}/*
 	if (volume->GetName() == "expHall"){
 		G4cout << "A track has strangely survived" << G4endl;
 		G4cout << "The track pdgID " << pdgID << G4endl;
@@ -67,7 +67,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 
 		//G4cout << "The track volume " << volume->GetName() << G4endl;
 	}
-
+*/
 	const G4TrackVector* secondaries= aStep->GetSecondary();
 	if(secondaries->size() > 0){
 	G4String theProcessName=secondaries->at(0)->GetCreatorProcess()->GetProcessName();
@@ -105,7 +105,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 			}
 
 
-			/*
+			G4bool trackSurvives = true;
 			int nFinalState=secondaries->size() + (trackSurvives?1:0);
 
 			G4cout << "Process " << theProcessName << " The Number of final particles is " << nFinalState << G4endl;
@@ -119,7 +119,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 				if (secID != 11 && secID != 22)
 					printParticle(*i);
 				}
-			 */
+
 		}
 	}
 }
@@ -128,6 +128,8 @@ void SteppingAction::printParticle(G4Track* aTrack)
 {
   G4cout << aTrack->GetParticleDefinition()->GetParticleName() << "  "
 	<< aTrack->GetDefinition()->GetPDGEncoding() << "  "
+	<< aTrack->GetTrackID()<< "  "
+
 	<< aTrack->GetTotalEnergy() << "  "
 	<< aTrack->GetKineticEnergy() << "  "
 	<< aTrack->GetMomentum().x() << "  "
