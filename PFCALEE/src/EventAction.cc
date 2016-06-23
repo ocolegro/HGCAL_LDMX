@@ -18,8 +18,8 @@ EventAction::EventAction() {
 	eventMessenger = new EventActionMessenger(this);
 	printModulo = 100;
 	outF_ = TFile::Open("PFcal.root", "RECREATE");
-	summedDep = 0;nSteps = 0;nMainSteps = 0;
-	depCut = 150;
+	//summedDep = 0;nSteps = 0;nMainSteps = 0;
+	//depCut = 150;
 	/*for (Int_t i = 0; i < 1000000;  i++){
 		step[i] = i;
 		stepMain[i] = i;
