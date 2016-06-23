@@ -66,35 +66,35 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 			TVector3 posVec(pos[0], pos[1], pos[2] - zOff);
 			targPart.vertexPos(posVec);
 			targPart.pdgid(pdgID);
-			targPart.layer(eventAction_->hadronicInts);
+			targPart.layer(-eventAction_->hadronicInts);
 			eventAction_->hadvec_.push_back(targPart);
 
 			for(G4TrackVector::const_iterator i=secondaries->begin(); i!=secondaries->end(); ++i){
 				G4Track* iTrack = *i;
+				HGCSSGenParticle genPart;
+				genPart.vertexKE(iTrack->GetKineticEnergy());
+				const G4ThreeVector &p = iTrack->GetVertexMomentumDirection();
+				const G4ThreeVector &pos = iTrack->GetVertexPosition();
+				TVector3 momVec(p[0], p[1], p[2]);
+				genPart.vertexMom(momVec);
+				TVector3 posVec(pos[0], pos[1], pos[2] - zOff);
+				genPart.vertexPos(posVec);
+				genPart.pdgid(iTrack->GetDefinition()->GetPDGEncoding());
+				genPart.layer(eventAction_->hadronicInts);
+				eventAction_->hadvec_.push_back(genPart);
+				eventAction_->novelTrackIds.push_back(iTrack->GetTrackID());
 
-				unsigned int hadronTrackLoc = std::find(eventAction_->novelTrackIds.begin(),
-						eventAction_->novelTrackIds.end(),  iTrack->GetTrackID())
-						- eventAction_->novelTrackIds.begin();
-				if ((hadronTrackLoc == eventAction_->novelTrackIds.size())) {
+			}
+			bool trackSurvives=(lTrack->GetTrackStatus()==fAlive && lTrack->GetKineticEnergy() > 100);
+			if (!trackSurvives){
+				G4cout << "A track has strangely survived" << G4endl;
+				G4cout << "The track pdgID " << pdgID;
+				G4cout << "The track kinEng " << kinEng;
+				G4cout << "The track volume " << volume;
 
-					HGCSSGenParticle genPart;
-					genPart.vertexKE(iTrack->GetKineticEnergy());
-					const G4ThreeVector &p = iTrack->GetVertexMomentumDirection();
-					const G4ThreeVector &pos = iTrack->GetVertexPosition();
-					TVector3 momVec(p[0], p[1], p[2]);
-					genPart.vertexMom(momVec);
-					TVector3 posVec(pos[0], pos[1], pos[2] - zOff);
-					genPart.vertexPos(posVec);
-					genPart.pdgid(iTrack->GetDefinition()->GetPDGEncoding());
-					genPart.layer(eventAction_->hadronicInts);
-					eventAction_->hadvec_.push_back(genPart);
-					eventAction_->novelTrackIds.push_back(iTrack->GetTrackID());
-
-				}
 
 			}
 			/*
-			bool trackSurvives=(lTrack->GetTrackStatus()==fAlive);
 			int nFinalState=secondaries->size() + (trackSurvives?1:0);
 
 			G4cout << "Process " << theProcessName << " The Number of final particles is " << nFinalState << G4endl;
