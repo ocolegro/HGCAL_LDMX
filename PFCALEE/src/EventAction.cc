@@ -30,7 +30,6 @@ EventAction::EventAction() {
 	double xysize =
 			((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->GetCalorSizeXY();
 	initLayer = ((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->initLayer();
-	stacker_  = (StackingAction*) G4RunManager::GetRunManager()->GetUserStackingAction();
 
 	//save some info
 	HGCSSInfo *info = new HGCSSInfo();
@@ -170,6 +169,8 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 	}*/
 	event_.dep(totalSens);
 	event_.wgtDep(wgtTotalSens);
+	stacker_  = (StackingAction*) G4RunManager::GetRunManager()->GetUserStackingAction();
+
 	if (stacker_ != nullptr)
 		stacker_->SetWait(false);
 	//G4cout << "The dep cut is " << depCut << " The totalSens is " << totalSens << " The summedDep is " << summedDep << G4endl;
