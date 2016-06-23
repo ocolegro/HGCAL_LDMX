@@ -231,7 +231,7 @@ int main(int argc, char** argv) {
 
 			escape_pdgid[j]   	= escape.pdgid();
 			escape_VKE[j]		= escape.vertexKE();
-			escape_FKE			= escape.finalKE();
+			escape_FKE[j]			= escape.finalKE();
 
 			if (escape_pdgid[j] == -2112 || escape_pdgid[j]  == -2212){
 				lostEnergy += 2* escape.mass();
