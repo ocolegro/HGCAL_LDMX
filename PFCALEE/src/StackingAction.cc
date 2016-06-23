@@ -39,7 +39,9 @@
 StackingAction::StackingAction(std::string data)
  : G4UserStackingAction()
 {
-	wait_ = false;
+	//wait_ = false;
+	eventAction_ =
+			(EventAction*) G4RunManager::GetRunManager()->GetUserEventAction();
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -57,7 +59,7 @@ StackingAction::ClassifyNewTrack(const G4Track* lTrack)
 
 
 	if ( ((abs(pdgID) == 11) ||  (abs(pdgID) == 22)) && kinEng < 100) {
-		if (!wait_){
+		if (!eventAction_->GetWait()){
 			return fKill;
 		}
 		else{

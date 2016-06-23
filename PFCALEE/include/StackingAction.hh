@@ -36,6 +36,7 @@
 
 #include "G4UserStackingAction.hh"
 #include "globals.hh"
+#include "EventAction.hh"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -46,13 +47,14 @@ class StackingAction : public G4UserStackingAction
    ~StackingAction();
 
     virtual G4ClassificationOfNewTrack ClassifyNewTrack(const G4Track*);
-    inline void SetWait(bool wait){
+    /*inline void SetWait(bool wait){
     	wait_ = wait;
     }
-    ;
+    ;*/
   private:
+	EventAction *eventAction_;
     std::string data_;
-    G4bool wait_;
+   // G4bool wait_;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

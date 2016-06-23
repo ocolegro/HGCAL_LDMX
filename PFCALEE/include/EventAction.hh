@@ -40,6 +40,14 @@ public:
 	void Add(std::vector<SamplingSection> *newDetector) {
 		detector_ = newDetector;
 	}
+	inline void SetWait(G4bool wait) {
+		wait_ = wait;
+	}
+	;
+	inline G4bool GetWait() {
+		return wait_;
+	}
+	;
 	HGCSSGenParticleVec genvec_,hadvec_,escapevec_;
 	G4int hadronicInts;
 	std::vector<int> novelTrackIds;
@@ -47,13 +55,14 @@ public:
 private:
 	std::vector<SamplingSection> *detector_;
 	G4int printModulo,initLayer;
+	G4bool wait_;
 	//int nSteps,nMainSteps;
 	//G4double depCut;
 	//G4double summedDep;
 	HGCSSGeometryConversion* geomConv_;
 	//Int_t step[1000000],stepMain[1000000];
 	//Float_t stepDep[1000000],mainKinEng[1000000];
-	StackingAction* stacker_;
+	//StackingAction* stacker_;
 	TFile *outF_;
 	TTree *tree_;
 	HGCSSEvent event_;

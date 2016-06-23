@@ -86,7 +86,7 @@ private:
 	G4VPrimaryGenerator* currentGenerator;
 	G4String currentGeneratorName;
 	std::map<G4String, G4VPrimaryGenerator*> gentypeMap;
-	StackingAction* stacker_;
+	//StackingAction* stacker_;
 	DetectorConstruction* Detector;     //pointer to the geometry
 	G4String rndmFlag;     //flag for a rndm impact point
 };
