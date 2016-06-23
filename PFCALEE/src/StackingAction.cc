@@ -33,6 +33,7 @@
 
 #include "StackingAction.hh"
 #include "G4Track.hh"
+#include "G4RunManager.hh"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
