@@ -22,7 +22,7 @@
 #include "fstream"
 
 class EventActionMessenger;
-//class StackingAction;
+class StackingAction;
 
 class EventAction: public G4UserEventAction {
 public:
