@@ -103,7 +103,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 			}
 
 			int nFinalState=secondaries->size() ;
-
+			if (nFinalState > 0){
 			G4cout << "Process " << theProcessName << " The Number of final particles is " << nFinalState << G4endl;
 			G4cout << "The parent kinetic energy was " << lTrack->GetKineticEnergy() << G4endl;
 			G4cout << "The parent kinetic energy minus step loss was  " << lTrack->GetVertexKineticEnergy() - aStep->GetDeltaEnergy() << G4endl;
@@ -116,7 +116,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 					printParticle(*i);
 				}
 			G4cout << "The sum of secondary KE was " << lostEng << G4endl;
-			G4cout << "The step change was  " << aStep->GetDeltaEnergy() << G4endl;
+			G4cout << "The step change was  " << aStep->GetDeltaEnergy() << G4endl;}
 
 		}
 	}
