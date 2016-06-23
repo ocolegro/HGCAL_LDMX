@@ -77,16 +77,11 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 			eventAction_->hadronicInts = eventAction_->hadronicInts  + 1;
 			HGCSSGenParticle targPart;
 			targPart.vertexKE(lTrack->GetVertexKineticEnergy() - aStep->GetDeltaEnergy());
-			std::cout << " The three elements of the track momentum direction are " << lTrack->GetMomentum()[0]
-													<< " " << lTrack->GetMomentum()[1]
-													 << " " << lTrack->GetMomentum()[2];
 
-			std::cout << " The three elements of the track delta momentum direction are " << -1.*aStep->GetDeltaMomentum()[0]
-													<< " " << -1.*aStep->GetDeltaMomentum()[1]
-													 << " " << -1.*aStep->GetDeltaMomentum()[2];
-			const G4ThreeVector &p = lTrack->GetMomentumDirection() - aStep->GetDeltaMomentum();
+
+			const G4ThreeVector &p = lTrack->GetMomentum() - aStep->GetDeltaMomentum();
 			const G4ThreeVector &pos = lTrack->GetPosition();
-			TVector3 momVec(p[0], p[1], p[2]);
+			TVector3 momVec(p[0]/p.mag(), p[1]/p.mag(), p[2]/p.mag());
 			targPart.vertexMom(momVec);
 			TVector3 posVec(pos[0], pos[1], pos[2] - zOff);
 			targPart.vertexPos(posVec);
