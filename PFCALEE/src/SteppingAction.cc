@@ -56,15 +56,16 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 	bool trackEscapes = (lTrack->GetTrackStatus()!=fAlive && lTrack->GetKineticEnergy() > 10 && secondPass);
 	if (trackEscapes){
 		HGCSSGenParticle escapePart;
-		escapePart.vertexKE(lTrack->GetKineticEnergy() - aStep->GetDeltaEnergy());
-		const G4ThreeVector &p = lTrack->GetVertexMomentumDirection() - aStep->GetDeltaMomentum();
+		escapePart.vertexKE(lTrack->GetVertexKineticEnergy()); //- aStep->GetDeltaEnergy());
+		escapePart.finalKE(lTrack->GetKineticEnergy()); //- aStep->GetDeltaEnergy());
+
+		const G4ThreeVector &p = lTrack->GetVertexMomentumDirection() ;//- aStep->GetDeltaMomentum();
 		const G4ThreeVector &pos = lTrack->GetVertexPosition();
 		TVector3 momVec(p[0], p[1], p[2]);
 		escapePart.vertexMom(momVec);
 		TVector3 posVec(pos[0], pos[1], pos[2] - zOff);
 		escapePart.vertexPos(posVec);
 		escapePart.pdgid(pdgID);
-		escapePart.layer(-eventAction_->hadronicInts);
 		eventAction_->escapevec_.push_back(escapePart);
 	}
 	const G4TrackVector* secondaries= aStep->GetSecondary();
@@ -75,9 +76,9 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 		if (theProcessName == "PhotonInelastic" || theProcessName == "ElectroNuclear" || theProcessName == "PositronNuclear" ){
 			eventAction_->hadronicInts = eventAction_->hadronicInts  + 1;
 			HGCSSGenParticle targPart;
-			targPart.vertexKE(lTrack->GetKineticEnergy() - aStep->GetDeltaEnergy());
-			const G4ThreeVector &p = lTrack->GetVertexMomentumDirection() - aStep->GetDeltaMomentum();
-			const G4ThreeVector &pos = lTrack->GetVertexPosition();
+			targPart.vertexKE(lTrack->GetVertexKineticEnergy() - aStep->GetDeltaEnergy());
+			const G4ThreeVector &p = lTrack->GetMomentumDirection() - aStep->GetDeltaMomentum();
+			const G4ThreeVector &pos = lTrack->GetPosition();
 			TVector3 momVec(p[0], p[1], p[2]);
 			targPart.vertexMom(momVec);
 			TVector3 posVec(pos[0], pos[1], pos[2] - zOff);
@@ -89,7 +90,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 			for(G4TrackVector::const_iterator i=secondaries->begin(); i!=secondaries->end(); ++i){
 				G4Track* iTrack = *i;
 				HGCSSGenParticle genPart;
-				genPart.vertexKE(iTrack->GetKineticEnergy());
+				genPart.vertexKE(iTrack->GetVertexKineticEnergy());
 				const G4ThreeVector &p = iTrack->GetVertexMomentumDirection();
 				const G4ThreeVector &pos = iTrack->GetVertexPosition();
 				TVector3 momVec(p[0], p[1], p[2]);
@@ -99,26 +100,24 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 				genPart.pdgid(iTrack->GetDefinition()->GetPDGEncoding());
 				genPart.layer(eventAction_->hadronicInts);
 				eventAction_->hadvec_.push_back(genPart);
-				//eventAction_->novelTrackIds.push_back(iTrack->GetTrackID());
-
 			}
 
-			/*
-			G4bool trackSurvives = true;
-			int nFinalState=secondaries->size() + (trackSurvives?1:0);
+			int nFinalState=secondaries->size() ;
 
 			G4cout << "Process " << theProcessName << " The Number of final particles is " << nFinalState << G4endl;
-			if(trackSurvives) {
-				G4cout << "The primary track is : " ;
-				printParticle(lTrack);
-			}
+			G4cout << "The parent kinetic energy was " << lTrack->GetKineticEnergy() << G4endl;
+			G4cout << "The parent kinetic energy minus step loss was  " << lTrack->GetVertexKineticEnergy() - aStep->GetDeltaEnergy() << G4endl;
+			G4double lostEng = 0;
 			for(G4TrackVector::const_iterator i=secondaries->begin(); i!=secondaries->end(); ++i){
 				G4Track* aTrack = *i;
 				G4int secID = aTrack->GetDefinition()->GetPDGEncoding();
+				lostEng += aTrack->GetKineticEnergy();
 				if (secID != 11 && secID != 22 && aTrack->GetKineticEnergy() > 100)
 					printParticle(*i);
 				}
-		*/
+			G4cout << "The sum of secondary KE was " << lostEng << G4endl;
+			G4cout << "The step change was  " << aStep->GetDeltaEnergy() << G4endl;
+
 		}
 	}
 }
