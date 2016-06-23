@@ -106,7 +106,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 			if (nFinalState > 0){
 			G4cout << "Process " << theProcessName << " The Number of final particles is " << nFinalState << G4endl;
 			G4cout << "The parent kinetic energy was " << lTrack->GetKineticEnergy() << G4endl;
-			G4cout << "The parent kinetic energy minus step loss was  " << lTrack->GetVertexKineticEnergy() - aStep->GetDeltaEnergy() << G4endl;
+			G4cout << "The parent kinetic energy minus step loss was  " << lTrack->GetKineticEnergy() - aStep->GetDeltaEnergy() << G4endl;
 			G4double lostEng = 0;
 			for(G4TrackVector::const_iterator i=secondaries->begin(); i!=secondaries->end(); ++i){
 				G4Track* aTrack = *i;
