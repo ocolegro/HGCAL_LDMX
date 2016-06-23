@@ -114,6 +114,7 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 	event_.eventNumber(evtNb_);
 	event_.steelThick(((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->GetSteelThick());
 	double totalSens = 0;
+	double wgtTotalSens = 0;
 
 	if (summedDep < depCut){
 		G4String fileN = "currentEvent.rndm";
@@ -141,8 +142,10 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 		//Changing initLayer because initial layers contain tracking sections.
 		for (size_t i = ((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->initLayer()
 				; i < detector_->size(); i++) {
-
+			Double_t weight = (i < 8) ? .8 : 1. ;
 			totalSens += (*detector_)[i].getTotalSensE();
+			wgtTotalSens += weight*(*detector_)[i].getTotalSensE();
+
 			(*detector_)[i].resetCounters();
 			} //loop on sensitive layers
 		//G4cout << "This was a good event, the totalSens was " << totalSens << G4endl;
@@ -151,14 +154,16 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 	else{
 		for (size_t i = ((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->initLayer()
 				; i < detector_->size(); i++) {
-
+			Double_t weight = (i < 8) ? .8 : 1. ;
 			totalSens += (*detector_)[i].getTotalSensE();
+			wgtTotalSens += weight*(*detector_)[i].getTotalSensE();
+
 			(*detector_)[i].resetCounters();
 			} //loop on sensitive layers
 		//G4cout << "This was a good event, the totalSens was " << totalSens << G4endl;
 	}
 	event_.dep(totalSens);
-
+	event_.wgtDep(wgtTotalSens);
 	//G4cout << "The dep cut is " << depCut << " The totalSens is " << totalSens << " The summedDep is " << summedDep << G4endl;
 	tree_->Fill();
 	summedDep = 0;
