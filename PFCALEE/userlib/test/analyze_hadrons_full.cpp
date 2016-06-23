@@ -87,12 +87,13 @@ int main(int argc, char** argv) {
 	Int_t nHadrons,hadron_pdgid[50000];
 
 	t1.Branch("nHadrons", &nHadrons, "nHadrons/I");
-	t1.Branch("hadron_zpos", &hadron_zpos, "hadron_zpos[nHadrons]/I");
+	t1.Branch("hadron_pdgid", &hadron_pdgid, "hadron_pdgid[nHadrons]/I");
+
+	t1.Branch("hadron_zpos", &hadron_zpos, "hadron_zpos[nHadrons]/F");
 	t1.Branch("hadron_px", &hadron_px, "hadron_px[nHadrons]/F");
 	t1.Branch("hadron_py", &hadron_py, "hadron_py[nHadrons]/F");
 	t1.Branch("hadron_pz", &hadron_pz, "hadron_pz[nHadrons]/F");
 	t1.Branch("hadron_theta", &hadron_theta, "hadron_theta[nHadrons]/F");
-	t1.Branch("hadron_pdgid", &hadron_pdgid, "hadron_pdgid[nHadrons]/F");
 	t1.Branch("hadron_KE", &hadron_KE, "hadron_KE[nHadrons]/F");
 
 	Float_t escape_zpos[50000],escape_xpos[50000],escape_ypos[50000],
