@@ -88,9 +88,9 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 			bool trackSurvives=(lTrack->GetTrackStatus()==fAlive && lTrack->GetKineticEnergy() > 100);
 			if (!trackSurvives){
 				G4cout << "A track has strangely survived" << G4endl;
-				G4cout << "The track pdgID " << pdgID;
-				G4cout << "The track kinEng " << kinEng;
-				G4cout << "The track volume " << volume;
+				G4cout << "The track pdgID " << pdgID << G4endl;
+				G4cout << "The track kinEng " << lTrack->GetKineticEnergy() << G4endl;
+				G4cout << "The track volume " << volume->GetName(); << G4endl;
 
 
 			}
