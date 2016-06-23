@@ -58,12 +58,12 @@ int main(int argc, char** argv) {
 	nOtherSecondaries[50000],nContainedSecondaries[50000],nUncontainedSecondaries[50000];
 
 	t1.Branch("nInteractions", &nInteractions, "nInteractions/I");
-	t1.Branch("nSecondaries[nInteractions]", &nSecondaries[nInteractions], "nSecondaries[nInteractions]/I");
-	t1.Branch("nProtonSecondaries[nInteractions]", &nProtonSecondaries[nInteractions], "nProtonSecondaries[nInteractions]/I");
-	t1.Branch("nNeutronSecondaries[nInteractions]", &nNeutronSecondaries[nInteractions], "nNeutronSecondaries[nInteractions]/I");
-	t1.Branch("nOtherSecondaries[nInteractions]", &nOtherSecondaries[nInteractions], "nOtherSecondaries[nInteractions]/I");
-	t1.Branch("nContainedSecondaries[nInteractions]", &nContainedSecondaries[nInteractions], "nContainedSecondaries[nInteractions]/I");
-	t1.Branch("nUncontainedSecondaries[nInteractions]", &nUncontainedSecondaries[nInteractions], "nUncontainedSecondaries[nInteractions]/I");
+	t1.Branch("nSecondaries", &nSecondaries[nInteractions], "nSecondaries[nInteractions]/I");
+	t1.Branch("nProtonSecondaries", &nProtonSecondaries[nInteractions], "nProtonSecondaries[nInteractions]/I");
+	t1.Branch("nNeutronSecondaries", &nNeutronSecondaries[nInteractions], "nNeutronSecondaries[nInteractions]/I");
+	t1.Branch("nOtherSecondaries", &nOtherSecondaries[nInteractions], "nOtherSecondaries[nInteractions]/I");
+	t1.Branch("nContainedSecondaries", &nContainedSecondaries[nInteractions], "nContainedSecondaries[nInteractions]/I");
+	t1.Branch("nUncontainedSecondaries", &nUncontainedSecondaries[nInteractions], "nUncontainedSecondaries[nInteractions]/I");
 
 	Float_t inc_KE[50000],inc_zpos[50000],inc_theta[50000];
 	Int_t   inc_pdgid[50000];
@@ -132,6 +132,7 @@ int main(int argc, char** argv) {
 
 		lostEnergy = 0;
 		convEng = 0;
+		accConvEng = 0;
 		nInteractions = 0;
 		nHadrons = 0;
 		nEscapes = 0;
@@ -148,7 +149,7 @@ int main(int argc, char** argv) {
 				hadron_px[j]   		= momVec[0];
 				hadron_py[j]   		= momVec[1];
 				hadron_pz[j]   		= momVec[2];
-				hadron_theta[j]   	= acos(momVec[2]);
+				hadron_theta[j]   	= acos(momVec[2]) * 180/3.14;
 				hadron_pdgid[j]   	= hadron.pdgid();
 				hadron_KE[j]		= hadron.vertexKE();
 
@@ -198,6 +199,7 @@ int main(int argc, char** argv) {
 						&& hadron_pdgid[j] != 0){
 					convEng += hadron_KE[j]+hadron.mass();
 					if (acc) accConvEng += hadron_KE[j]+hadron.mass();
+
 					out_OE[nInteractions - 1] += hadron_KE[j]+hadron.mass();
 					out_Eff[nInteractions - 1] +=  hadron.mass();
 					nOtherSecondaries[nInteractions - 1] += 1;
@@ -213,8 +215,18 @@ int main(int argc, char** argv) {
 				inc_zpos[nInteractions] = posVec[2];
 				inc_theta[nInteractions] = acos(momVec[2]);
 				inc_pdgid[nInteractions] = hadron.pdgid();
-				nInteractions = nInteractions + 1;
 
+
+				nInteractions = nInteractions + 1;
+				nSecondaries[nInteractions - 1] = 0;
+				nNeutronSecondaries[nInteractions - 1] = 0;
+				nOtherSecondaries[nInteractions - 1] = 0;
+
+				out_PE[nInteractions - 1] = 0;
+				out_NE[nInteractions - 1] = 0;
+				out_OE[nInteractions - 1] = 0;
+				out_Eff[nInteractions - 1] = 0;
+				out_KE[nInteractions - 1] = 0;
 
 			}
 		}
