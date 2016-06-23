@@ -10,7 +10,7 @@
 #include "HGCSSGenParticle.hh"
 
 //
-SteppingAction::SteppingAction() {
+SteppingAction::SteppingAction(std::string data) {
 	eventAction_ =
 			(EventAction*) G4RunManager::GetRunManager()->GetUserEventAction();
 	eventAction_->Add(
@@ -21,6 +21,7 @@ SteppingAction::SteppingAction() {
 	DetectorConstruction*  Detector =
 			(DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction();
 	zOff = -0.5 * (Detector->GetCalorSizeZ());
+	secondPass = (data == "") ? false : true;
 
 }
 
@@ -51,23 +52,20 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 	eventAction_->Detect(eRawDep,pdgID,kinEng, volume);
 
 
-	bool trackEscapes = (lTrack->GetTrackStatus()!=fAlive && lTrack->GetKineticEnergy() > 100);
+	bool trackEscapes = (lTrack->GetTrackStatus()!=fAlive && lTrack->GetKineticEnergy() > 10 && secondPass);
 	if (trackEscapes){
-		G4cout << "The track volume " << volume->GetName() << G4endl;
-		G4cout << "The track id " << lTrack->GetTrackID() << G4endl;
-		G4cout << "The track pdgID " << pdgID << G4endl;
-		G4cout << "The track kinEng " << lTrack->GetKineticEnergy() << G4endl;
-		G4cout << "The event is " << eventAction_->evtNb_ << G4endl;
-	}/*
-	if (volume->GetName() == "expHall"){
-		G4cout << "A track has strangely survived" << G4endl;
-		G4cout << "The track pdgID " << pdgID << G4endl;
-		G4cout << "The track kinEng " << lTrack->GetKineticEnergy() << G4endl;
-		G4cout << "The trackId " << lTrack->GetTrackID() << G4endl;
-
-		//G4cout << "The track volume " << volume->GetName() << G4endl;
+		HGCSSGenParticle escapePart;
+		escapePart.vertexKE(lTrack->GetKineticEnergy() - aStep->GetDeltaEnergy());
+		const G4ThreeVector &p = lTrack->GetVertexMomentumDirection() - aStep->GetDeltaMomentum();
+		const G4ThreeVector &pos = lTrack->GetVertexPosition();
+		TVector3 momVec(p[0], p[1], p[2]);
+		escapePart.vertexMom(momVec);
+		TVector3 posVec(pos[0], pos[1], pos[2] - zOff);
+		escapePart.vertexPos(posVec);
+		escapePart.pdgid(pdgID);
+		escapePart.layer(-eventAction_->hadronicInts);
+		eventAction_->hadvec_.push_back(escapePart);
 	}
-*/
 	const G4TrackVector* secondaries= aStep->GetSecondary();
 	if(secondaries->size() > 0){
 	G4String theProcessName=secondaries->at(0)->GetCreatorProcess()->GetProcessName();
@@ -104,7 +102,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 
 			}
 
-
+			/*
 			G4bool trackSurvives = true;
 			int nFinalState=secondaries->size() + (trackSurvives?1:0);
 
@@ -119,7 +117,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 				if (secID != 11 && secID != 22 && aTrack->GetKineticEnergy() > 100)
 					printParticle(*i);
 				}
-
+		*/
 		}
 	}
 }
@@ -135,8 +133,6 @@ void SteppingAction::printParticle(G4Track* aTrack)
 	<< aTrack->GetMomentum().x() << "  "
 	<< aTrack->GetMomentum().y() << "  "
 	<< aTrack->GetMomentum().z() << "  "
-	<< aTrack->GetParticleDefinition()->GetPDGMass() << "  "
-	<< "The event is " << eventAction_->evtNb_ << G4endl;
-
+	<< aTrack->GetParticleDefinition()->GetPDGMass() << G4endl;
   return;
 }

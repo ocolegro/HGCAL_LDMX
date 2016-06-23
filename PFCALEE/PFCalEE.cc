@@ -67,7 +67,7 @@ int main(int argc, char** argv) {
 
 	// Set user action classes
 	runManager->SetUserAction(new EventAction);
-	runManager->SetUserAction(new SteppingAction);
+	runManager->SetUserAction(new SteppingAction(data));
 	runManager->SetUserAction(new StackingAction(data));
 
         if (data!="") {

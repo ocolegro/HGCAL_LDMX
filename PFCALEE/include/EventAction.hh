@@ -39,19 +39,19 @@ public:
 	void Add(std::vector<SamplingSection> *newDetector) {
 		detector_ = newDetector;
 	}
-	HGCSSGenParticleVec genvec_,hadvec_;
+	HGCSSGenParticleVec genvec_,hadvec_,escapevec_;
 	G4int hadronicInts;
 	std::vector<int> novelTrackIds;
 	G4int evtNb_;
 private:
 	std::vector<SamplingSection> *detector_;
 	G4int printModulo,initLayer;
-	int nSteps,nMainSteps;
-	G4double depCut;
-	G4double summedDep;
+	//int nSteps,nMainSteps;
+	//G4double depCut;
+	//G4double summedDep;
 	HGCSSGeometryConversion* geomConv_;
-	Int_t step[1000000],stepMain[1000000];
-	Float_t stepDep[1000000],mainKinEng[1000000];
+	//Int_t step[1000000],stepMain[1000000];
+	//Float_t stepDep[1000000],mainKinEng[1000000];
 
 	TFile *outF_;
 	TTree *tree_;

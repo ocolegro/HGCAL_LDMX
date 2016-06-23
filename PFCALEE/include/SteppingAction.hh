@@ -8,7 +8,7 @@ class EventAction;
 
 class SteppingAction: public G4UserSteppingAction {
 public:
-	SteppingAction();
+	SteppingAction(std::string data = "");
 	virtual ~SteppingAction();
 
 	void UserSteppingAction(const G4Step*);
@@ -37,6 +37,7 @@ private:
 	//to correct the energy in the scintillator
 	G4EmSaturation* saturationEngine;
 	G4double timeLimit_;
+	G4bool secondPass;
 	G4int version_;
 	G4double zOff;
 

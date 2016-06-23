@@ -20,10 +20,10 @@ EventAction::EventAction() {
 	outF_ = TFile::Open("PFcal.root", "RECREATE");
 	summedDep = 0;nSteps = 0;nMainSteps = 0;
 	depCut = 150;
-	for (Int_t i = 0; i < 1000000;  i++){
+	/*for (Int_t i = 0; i < 1000000;  i++){
 		step[i] = i;
 		stepMain[i] = i;
-	}
+	}*/
 	hadronicInts = 0;
 	outF_->cd();
 	double xysize =
@@ -48,6 +48,8 @@ EventAction::EventAction() {
 			&genvec_);
 	tree_->Branch("HGCSSHadAction", "std::vector<HGCSSGenParticle>",
 			&hadvec_);
+	tree_->Branch("HGCSSEscapeAction", "std::vector<HGCSSGenParticle>",
+			&escapevec_);
 	//tree_->Branch("nSteps",&nSteps,"nSteps/I");
 	//tree_->Branch("nMainSteps",&nMainSteps,"nMainSteps/I");
 
@@ -116,24 +118,24 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 	double totalSens = 0;
 	double wgtTotalSens = 0;
 
-	if (summedDep < depCut){
-		G4String fileN = "currentEvent.rndm";
-		CLHEP::HepRandom::saveEngineStatus(fileN);
-		std::ifstream input(fileN);
-		std::string currentLine;
-		Double_t stat_x = 0,stat_y = 0,seed_x = 0,seed_y = 0;
-		for(int count = 0; count < 5; count++ ){
-			getline( input, currentLine );
-			if (count == 1)
-				stat_x = std::atoi(currentLine.c_str());
-			if (count == 2)
-				stat_y = std::atoi(currentLine.c_str());
+	//if (summedDep < depCut){
+	G4String fileN = "currentEvent.rndm";
+	CLHEP::HepRandom::saveEngineStatus(fileN);
+	std::ifstream input(fileN);
+	std::string currentLine;
+	Double_t stat_x = 0,stat_y = 0,seed_x = 0,seed_y = 0;
+	for(int count = 0; count < 5; count++ ){
+		getline( input, currentLine );
+		if (count == 1)
+			stat_x = std::atoi(currentLine.c_str());
+		if (count == 2)
+			stat_y = std::atoi(currentLine.c_str());
 
-			if (count == 3)
-				seed_x = std::atoi(currentLine.c_str());
-			if (count == 4)
-				seed_y = std::atoi(currentLine.c_str());
-		}
+		if (count == 3)
+			seed_x = std::atoi(currentLine.c_str());
+		if (count == 4)
+			seed_y = std::atoi(currentLine.c_str());
+		//}
 		TVector3 status(stat_x,stat_y,0);
 		TVector3 seeds(seed_x,seed_y,0);
 
@@ -151,6 +153,7 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 		//G4cout << "This was a good event, the totalSens was " << totalSens << G4endl;
 
 	}
+	/*
 	else{
 		for (size_t i = ((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->initLayer()
 				; i < detector_->size(); i++) {
@@ -161,14 +164,14 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 			(*detector_)[i].resetCounters();
 			} //loop on sensitive layers
 		//G4cout << "This was a good event, the totalSens was " << totalSens << G4endl;
-	}
+	}*/
 	event_.dep(totalSens);
 	event_.wgtDep(wgtTotalSens);
 	//G4cout << "The dep cut is " << depCut << " The totalSens is " << totalSens << " The summedDep is " << summedDep << G4endl;
 	tree_->Fill();
-	summedDep = 0;
-	nSteps = 0;
-	nMainSteps = 0;
+	//summedDep = 0;
+	//nSteps = 0;
+	//nMainSteps = 0;
 	hadronicInts = 0;
 	//reset vectors
 	genvec_.clear();
