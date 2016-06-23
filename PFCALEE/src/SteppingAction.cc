@@ -77,6 +77,13 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 			eventAction_->hadronicInts = eventAction_->hadronicInts  + 1;
 			HGCSSGenParticle targPart;
 			targPart.vertexKE(lTrack->GetVertexKineticEnergy() - aStep->GetDeltaEnergy());
+			std::cout << "The three elements of the track momentum direction are " << lTrack->GetMomentumDirection()[0]
+													<< " " << lTrack->GetMomentumDirection()[1]
+													 << " " << lTrack->GetMomentumDirection()[2];
+
+			std::cout << "The three elements of the track delta momentum direction are " << -1.*aStep->GetDeltaMomentum()[0]
+													<< " " << -1.*aStep->GetDeltaMomentum()[1]
+													 << " " << -1.*aStep->GetDeltaMomentum()[2];
 			const G4ThreeVector &p = lTrack->GetMomentumDirection() - aStep->GetDeltaMomentum();
 			const G4ThreeVector &pos = lTrack->GetPosition();
 			TVector3 momVec(p[0], p[1], p[2]);
@@ -102,24 +109,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 				eventAction_->hadvec_.push_back(genPart);
 			}
 
-			int nFinalState=secondaries->size() ;
-			if (nFinalState > 0){
-			G4cout << "Process " << theProcessName << " The Number of final particles is " << nFinalState << G4endl;
-			G4cout << "The parent kinetic energy was " << lTrack->GetKineticEnergy() << G4endl;
-			G4cout << "The parent kinetic energy minus step loss was  " << lTrack->GetKineticEnergy() - aStep->GetDeltaEnergy() << G4endl;
-			G4cout << "The parent kinetic energy minus step loss + eng dep was  " << lTrack->GetKineticEnergy() - aStep->GetDeltaEnergy() + aStep->GetTotalEnergyDeposit() << G4endl;
 
-
-			G4double lostEng = 0;
-			for(G4TrackVector::const_iterator i=secondaries->begin(); i!=secondaries->end(); ++i){
-				G4Track* aTrack = *i;
-				G4int secID = aTrack->GetDefinition()->GetPDGEncoding();
-				lostEng += aTrack->GetKineticEnergy();
-				if (secID != 11 && secID != 22 && aTrack->GetKineticEnergy() > 100)
-					printParticle(*i);
-				}
-			G4cout << "The sum of secondary KE was " << lostEng << G4endl;
-			G4cout << "The step change was  " << aStep->GetDeltaEnergy() << G4endl;}
 
 		}
 	}
