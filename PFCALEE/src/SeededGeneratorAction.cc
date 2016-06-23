@@ -140,6 +140,9 @@ void SeededGeneratorAction::GeneratePrimaries(G4Event* anEvent) {
 		eventAction_->SetWait(true);
 		G4double et = 4.0;
 	}
+	else{
+		eventAction_->SetWait(false);
+	}
 
 	particleGun->SetParticleEnergy(et * GeV);
 	particleGun->SetParticleMomentumDirection(G4ThreeVector(0., 0., 1.));
