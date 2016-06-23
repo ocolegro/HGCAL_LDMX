@@ -152,7 +152,9 @@ int main(int argc, char** argv) {
 				hadron_theta[j]   	= acos(momVec[2]) * 180/3.14;
 				hadron_pdgid[j]   	= hadron.pdgid();
 				hadron_KE[j]		= hadron.vertexKE();
+				std::cout << "The hadron_KE[j] at j = " << j << " is " << hadron_KE[j] << std::endl;
 
+				out_KE[nInteractions - 1] += hadron_KE[j];
 				nSecondaries[nInteractions - 1] += 1;
 				bool acc = false;
 				if (hadron_theta[j] < 30){
@@ -162,7 +164,6 @@ int main(int argc, char** argv) {
 				else
 					nUncontainedSecondaries[nInteractions - 1] += 1;
 
-				out_KE[nInteractions - 1] += hadron_KE[j];
 
 				if (abs(hadron_pdgid[j]) == 2112 || abs(hadron_pdgid[j])  == 2212){
 					convEng += hadron_KE[j];
@@ -213,7 +214,7 @@ int main(int argc, char** argv) {
 
 				inc_KE[nInteractions] = hadron.vertexKE();
 				inc_zpos[nInteractions] = posVec[2];
-				inc_theta[nInteractions] = acos(momVec[2]);
+				inc_theta[nInteractions] = acos(momVec[2])*180/3.14;
 				inc_pdgid[nInteractions] = hadron.pdgid();
 
 
@@ -221,7 +222,8 @@ int main(int argc, char** argv) {
 				nSecondaries[nInteractions - 1] = 0;
 				nNeutronSecondaries[nInteractions - 1] = 0;
 				nOtherSecondaries[nInteractions - 1] = 0;
-
+				nContainedSecondaries[nInteractions - 1] = 0;
+				nUncontainedSecondaries[nInteractions - 1] = 0;
 				out_PE[nInteractions - 1] = 0;
 				out_NE[nInteractions - 1] = 0;
 				out_OE[nInteractions - 1] = 0;
@@ -242,7 +244,7 @@ int main(int argc, char** argv) {
 			escape_px[j]   		= momVec[0];
 			escape_py[j]   		= momVec[1];
 			escape_pz[j]   		= momVec[2];
-			escape_theta[j]   	= acos(momVec[2]);
+			escape_theta[j]   	= acos(momVec[2]) * 180/3.14;
 
 			escape_pdgid[j]   	= escape.pdgid();
 			escape_VKE[j]		= escape.vertexKE();
@@ -255,7 +257,7 @@ int main(int argc, char** argv) {
 			else if (escape_pdgid[j] == 2112 || escape_pdgid[j]  == 2212){
 				lostEnergy += escape_FKE[j];
 			}
-			else if (abs(hadron_pdgid[j]) < 10000 && hadron_pdgid[j] != 0){
+			else if (abs(escape_pdgid[j]) < 10000 && escape_pdgid[j] != 0){
 				lostEnergy += escape_FKE[j]+escape.mass();
 			}
 		}
