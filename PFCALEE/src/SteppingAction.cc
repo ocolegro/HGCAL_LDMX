@@ -50,6 +50,15 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 	HGCSSGenParticle genPart;
 	eventAction_->Detect(eRawDep,pdgID,kinEng, volume);
 
+
+	bool trackEscapes = (lTrack->GetTrackStatus()!=fAlive && lTrack->GetKineticEnergy() > 100);
+	if (trackEscapes){
+		G4cout << "A track has strangely survived" << G4endl;
+		G4cout << "The track pdgID " << pdgID << G4endl;
+		G4cout << "The track kinEng " << lTrack->GetKineticEnergy() << G4endl;
+		G4cout << "The track volume " << volume->GetName() << G4endl;
+	}
+
 	const G4TrackVector* secondaries= aStep->GetSecondary();
 	if(secondaries->size() > 0){
 	G4String theProcessName=secondaries->at(0)->GetCreatorProcess()->GetProcessName();
@@ -85,14 +94,6 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 				eventAction_->novelTrackIds.push_back(iTrack->GetTrackID());
 
 			}
-			G4cout << "The track volume " << volume->GetName() << G4endl;
-
-			bool trackEscapes = (lTrack->GetTrackStatus()!=fAlive && lTrack->GetKineticEnergy() > 100);
-			if (trackEscapes){
-				G4cout << "A track has strangely survived" << G4endl;
-				G4cout << "The track pdgID " << pdgID << G4endl;
-				G4cout << "The track kinEng " << lTrack->GetKineticEnergy() << G4endl;
-				G4cout << "The track volume " << volume->GetName() << G4endl;
 
 
 			}
