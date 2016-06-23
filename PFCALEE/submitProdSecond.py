@@ -54,8 +54,8 @@ for thickness in thickness_:
     if len(opt.eos) == 0:
         scriptFile.write('PFCalEE g4steer.mac %d %d %f %s %s/HGcal_%s.root| tee g4.log\n'%(opt.version,opt.model,opt.signal,thickness,outDir,outTag))
 
-    if (opt.run>=0) : outTag='%s_run%d'%(outTag,opt.run)
-    scriptFile.write('mv PFcal.root HGcal_%s_second.root\n'%(outTag))
+    if (opt.run>=0) : outTag='%s_second'%(outTag)
+    scriptFile.write('mv PFcal.root HGcal_%s.root\n'%(outTag))
     scriptFile.write('localdir=`pwd`\n')
     scriptFile.write('echo "--Local directory is " $localdir >> g4.log\n')
     scriptFile.write('ls * >> g4.log\n')
