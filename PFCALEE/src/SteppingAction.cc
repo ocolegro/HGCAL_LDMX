@@ -96,7 +96,6 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 			}
 
 
-			}
 			/*
 			int nFinalState=secondaries->size() + (trackSurvives?1:0);
 
