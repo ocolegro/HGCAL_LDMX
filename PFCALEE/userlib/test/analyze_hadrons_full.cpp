@@ -190,7 +190,7 @@ int main(int argc, char** argv) {
 							out_PE[nInteractions - 1] += hadron_KE[j];
 						else{
 							out_PE[nInteractions - 1] += hadron_KE[j] +  hadron.mass() ;
-							convEng +=  hadron.mass();
+							//convEng +=  hadron.mass();
 							if (acc) accConvEng += hadron_KE[j];
 							out_Eff[nInteractions - 1] +=  hadron.mass();
 						}
@@ -200,7 +200,7 @@ int main(int argc, char** argv) {
 				}
 				else if (abs(hadron_pdgid[j]) <10000  && abs(hadron_pdgid[j]) != 22 && abs(hadron_pdgid[j]) != 11
 						&& hadron_pdgid[j] != 0){
-					convEng += hadron_KE[j]+hadron.mass();
+					convEng += hadron_KE[j];//+hadron.mass();
 					if (acc) accConvEng += hadron_KE[j]+hadron.mass();
 
 					out_OE[nInteractions - 1] += hadron_KE[j]+hadron.mass();
