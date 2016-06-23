@@ -30,7 +30,7 @@ EventAction::EventAction() {
 	double xysize =
 			((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->GetCalorSizeXY();
 	initLayer = ((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->initLayer();
-	//stacker_  = (StackingAction*) G4RunManager::GetRunManager()->GetUserStackingAction();
+	stacker_  = (StackingAction*) G4RunManager::GetRunManager()->GetUserStackingAction();
 
 	//save some info
 	HGCSSInfo *info = new HGCSSInfo();
