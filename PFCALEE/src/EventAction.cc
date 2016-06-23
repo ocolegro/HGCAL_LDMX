@@ -170,6 +170,8 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 	}*/
 	event_.dep(totalSens);
 	event_.wgtDep(wgtTotalSens);
+	if (stacker_ != nullptr)
+		G4cout << "The stacker seems ok" << G4endl;
 	stacker_->SetWait(false);
 	//G4cout << "The dep cut is " << depCut << " The totalSens is " << totalSens << " The summedDep is " << summedDep << G4endl;
 	tree_->Fill();
