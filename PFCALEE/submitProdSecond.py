@@ -50,7 +50,7 @@ for thickness in thickness_:
     if (opt.run>=0) : outTag='%s_run%d'%(outTag,opt.run)
 
     if len(opt.eos)>0:
-        scriptFile.write('PFCalEE g4steer.mac %d %d %f %s root://eoscms.cern.ch/eos/cms%s/HGcal_%s.root| tee g4.log\n'%(opt.version,opt.model,opt.signal,thickness,eosDir,outTag))
+        scriptFile.write('PFCalEE g4steer.mac %d %d %f %s root://eoscms.cern.ch//eos/cms%s/HGcal_%s.root| tee g4.log\n'%(opt.version,opt.model,opt.signal,thickness,eosDir,outTag))
     if len(opt.eos) == 0:
         scriptFile.write('PFCalEE g4steer.mac %d %d %f %s %s/HGcal_%s.root| tee g4.log\n'%(opt.version,opt.model,opt.signal,thickness,outDir,outTag))
 
