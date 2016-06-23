@@ -126,13 +126,16 @@ int main(int argc, char** argv) {
 	unsigned nEvts = tree->GetEntries();
 	for (unsigned ievt(0); ievt < nEvts; ++ievt) { //loop on entries
 		tree->GetEntry(ievt);
+		summedSen = evt_->dep();
+		summedSenWgt = evt_->wgtDep();
+		if (summedSen == 0) continue;
+
 		lostEnergy = 0;
 		convEng = 0;
 		nInteractions = 0;
 		nHadrons = 0;
 		nEscapes = 0;
-		summedSen = evt_->dep();
-		summedSen = evt_->wgtDep();
+
 
 		for (Int_t j = 0; j < hadVec->size(); j++) {
 			HGCSSGenParticle& hadron = (*hadVec)[j];
