@@ -135,6 +135,8 @@ void SteppingAction::printParticle(G4Track* aTrack)
 	<< aTrack->GetMomentum().x() << "  "
 	<< aTrack->GetMomentum().y() << "  "
 	<< aTrack->GetMomentum().z() << "  "
-	<< aTrack->GetParticleDefinition()->GetPDGMass() << G4endl;
+	<< aTrack->GetParticleDefinition()->GetPDGMass() << "  "
+	<< "The event is " << eventAction_->evtNb_ << G4endl;
+
   return;
 }
