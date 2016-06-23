@@ -57,6 +57,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 		G4cout << "The track id " << lTrack->GetTrackID() << G4endl;
 		G4cout << "The track pdgID " << pdgID << G4endl;
 		G4cout << "The track kinEng " << lTrack->GetKineticEnergy() << G4endl;
+		G4cout << "The event is " << eventAction_->evtNb_ << G4endl;
 	}/*
 	if (volume->GetName() == "expHall"){
 		G4cout << "A track has strangely survived" << G4endl;

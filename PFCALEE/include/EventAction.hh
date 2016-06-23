@@ -42,9 +42,10 @@ public:
 	HGCSSGenParticleVec genvec_,hadvec_;
 	G4int hadronicInts;
 	std::vector<int> novelTrackIds;
+	G4int evtNb_;
 private:
 	std::vector<SamplingSection> *detector_;
-	G4int evtNb_, printModulo,initLayer;
+	G4int printModulo,initLayer;
 	int nSteps,nMainSteps;
 	G4double depCut;
 	G4double summedDep;
