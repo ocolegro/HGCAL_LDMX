@@ -151,7 +151,7 @@ int main(int argc, char** argv) {
 
 				nSecondaries[nInteractions - 1] += 1;
 				bool acc = false;
-				if (hadron_theta < 30){
+				if (hadron_theta[j] < 30){
 					nContainedSecondaries[nInteractions - 1] += 1;
 					acc = true;
 				}
