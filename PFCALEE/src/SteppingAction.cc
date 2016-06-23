@@ -85,6 +85,8 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 				eventAction_->novelTrackIds.push_back(iTrack->GetTrackID());
 
 			}
+			G4cout << "The track volume " << volume->GetName() << G4endl;
+
 			bool trackEscapes = (lTrack->GetTrackStatus()!=fAlive && lTrack->GetKineticEnergy() > 100);
 			if (trackEscapes){
 				G4cout << "A track has strangely survived" << G4endl;
