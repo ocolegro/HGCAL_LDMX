@@ -51,12 +51,12 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 	eventAction_->Detect(eRawDep,pdgID,kinEng, volume);
 
 
-	bool trackEscapes = (lTrack->GetTrackStatus()!=fAlive && lTrack->GetKineticEnergy() > 100);
-	if (trackEscapes){
+	//bool trackEscapes = (lTrack->GetTrackStatus()!=fAlive && lTrack->GetKineticEnergy() > 100);
+	if (volume->GetName() == "expHall"){
 		G4cout << "A track has strangely survived" << G4endl;
 		G4cout << "The track pdgID " << pdgID << G4endl;
 		G4cout << "The track kinEng " << lTrack->GetKineticEnergy() << G4endl;
-		G4cout << "The track volume " << volume->GetName() << G4endl;
+		//G4cout << "The track volume " << volume->GetName() << G4endl;
 	}
 
 	const G4TrackVector* secondaries= aStep->GetSecondary();
