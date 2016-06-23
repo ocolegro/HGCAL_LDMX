@@ -54,8 +54,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 	bool trackEscapes = (lTrack->GetTrackStatus()!=fAlive && lTrack->GetKineticEnergy() > 100);
 	if (trackEscapes){
 		G4cout << "The track volume " << volume->GetName() << G4endl;
-		G4cout << "The track volume " << volume->GetName() << G4endl;
-		G4cout << "The track volume " << volume->GetName() << G4endl;
+		G4cout << "The track id " << lTrack->GetTrackID() << G4endl;
 		G4cout << "The track pdgID " << pdgID << G4endl;
 		G4cout << "The track kinEng " << lTrack->GetKineticEnergy() << G4endl;
 	}/*
