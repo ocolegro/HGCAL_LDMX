@@ -132,6 +132,7 @@ void SeededGeneratorAction::GeneratePrimaries(G4Event* anEvent) {
 			"e-");
 	particleGun->SetParticleDefinition(particle);
 	int currentEvt = anEvent->GetEventID();
+	G4cout << "The current event is " << currentEvt << G4endl;
 	tree_->GetEntry(currentEvt-1);
 	G4double et = 0.0;
 	PipeData();
