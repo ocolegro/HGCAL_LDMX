@@ -173,11 +173,11 @@ int main(int argc, char** argv) {
 					out_Eff[nInteractions - 1] += hadron_KE[j];
 					if (abs(hadron_pdgid[j]) == 2112){
 						nNeutronSecondaries[nInteractions - 1] += 1;
-						if (hadron_pdgid[j] < 0)
+						if (hadron_pdgid[j] > 0)
 							out_NE[nInteractions - 1] += hadron_KE[j];
 						else{
 							out_NE[nInteractions - 1] += hadron_KE[j] +  hadron.mass() ;
-							convEng +=  hadron.mass();
+							//convEng +=  hadron.mass();
 							if (acc) accConvEng += hadron_KE[j];
 							out_Eff[nInteractions - 1]+=  hadron.mass();
 						}
@@ -253,7 +253,7 @@ int main(int argc, char** argv) {
 			escape_FKE[j]			= escape.finalKE();
 
 			if (escape_pdgid[j] == -2112 || escape_pdgid[j]  == -2212){
-				lostEnergy += 2* escape.mass();
+				//lostEnergy += 2* escape.mass();
 				lostEnergy += escape_FKE[j];
 			}
 			else if (escape_pdgid[j] == 2112 || escape_pdgid[j]  == 2212){
