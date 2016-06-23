@@ -136,7 +136,7 @@ void SeededGeneratorAction::GeneratePrimaries(G4Event* anEvent) {
 	G4double et = 4.0;
 	PipeData();
 	CLHEP::HepRandom::restoreEngineStatus ("temp.rndm");
-
+	G4cout << "The wait status is " << eventAction_->GetWait() << G4endl;
 	if (hadrons_->size() != 0){
 		eventAction_->SetWait(true);
 		G4double et = 4.0;
