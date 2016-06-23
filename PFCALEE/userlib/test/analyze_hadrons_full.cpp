@@ -152,6 +152,8 @@ int main(int argc, char** argv) {
 				hadron_theta[j]   	= acos(momVec[2]) * 180/3.14;
 				hadron_pdgid[j]   	= hadron.pdgid();
 				hadron_KE[j]		= hadron.vertexKE();
+				std::cout << "The hadron_KE[j] at j =  " << j << " is being filled with " << hadron.vertexKE()<< std::endl;
+
 				std::cout << "The hadron_KE[j] at j = " << j << " is " << hadron_KE[j] << std::endl;
 
 				out_KE[nInteractions - 1] += hadron_KE[j];
