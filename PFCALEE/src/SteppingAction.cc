@@ -23,6 +23,7 @@ SteppingAction::SteppingAction(std::string data) {
 	zOff = -0.5 * (Detector->GetCalorSizeZ());
 	secondPass = (data == "") ? false : true;
 
+
 }
 
 //
@@ -64,7 +65,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 		escapePart.vertexPos(posVec);
 		escapePart.pdgid(pdgID);
 		escapePart.layer(-eventAction_->hadronicInts);
-		eventAction_->hadvec_.push_back(escapePart);
+		eventAction_->escapevec_.push_back(escapePart);
 	}
 	const G4TrackVector* secondaries= aStep->GetSecondary();
 	if(secondaries->size() > 0){
@@ -98,7 +99,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 				genPart.pdgid(iTrack->GetDefinition()->GetPDGEncoding());
 				genPart.layer(eventAction_->hadronicInts);
 				eventAction_->hadvec_.push_back(genPart);
-				eventAction_->novelTrackIds.push_back(iTrack->GetTrackID());
+				//eventAction_->novelTrackIds.push_back(iTrack->GetTrackID());
 
 			}
 
