@@ -22,6 +22,7 @@
 #include "fstream"
 
 class EventActionMessenger;
+class StackingAction;
 
 class EventAction: public G4UserEventAction {
 public:
@@ -53,7 +54,6 @@ private:
 	//Int_t step[1000000],stepMain[1000000];
 	//Float_t stepDep[1000000],mainKinEng[1000000];
 	StackingAction* stacker_;
-
 	TFile *outF_;
 	TTree *tree_;
 	HGCSSEvent event_;
