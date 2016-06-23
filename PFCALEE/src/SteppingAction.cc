@@ -53,7 +53,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 	eventAction_->Detect(eRawDep,pdgID,kinEng, volume);
 
 
-	bool trackEscapes = (lTrack->GetTrackStatus()!=fAlive && lTrack->GetKineticEnergy() > 100 && secondPass);
+	bool trackEscapes = (lTrack->GetTrackStatus()!=fAlive && lTrack->GetKineticEnergy() > 10 && secondPass);
 	if (trackEscapes){
 		HGCSSGenParticle escapePart;
 		escapePart.vertexKE(lTrack->GetKineticEnergy() - aStep->GetDeltaEnergy());
