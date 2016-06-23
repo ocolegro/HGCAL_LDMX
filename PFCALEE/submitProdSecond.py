@@ -47,7 +47,11 @@ for thickness in thickness_:
     scriptFile.write('source %s/g4env.sh\n'%(os.getcwd()))
     scriptFile.write('cp %s/g4steer.mac .\n'%(outDir))
     outTag='%s_version%d_model%d_thick%s'%(label,opt.version,opt.model,thickness)
-    scriptFile.write('PFCalEE g4steer.mac %d %d %f %s root://eoscms.cern.ch/%s/HGcal_%s.root| tee g4.log\n'%(opt.version,opt.model,opt.signal,thickness,outDir,outTag))
+    if len(opt.eos)>0:
+        scriptFile.write('PFCalEE g4steer.mac %d %d %f %s root://eoscms.cern.ch/%s/HGcal_%s.root| tee g4.log\n'%(opt.version,opt.model,opt.signal,thickness,eosDir,outTag))
+    if len(opt.eos) == 0:
+        scriptFile.write('PFCalEE g4steer.mac %d %d %f %s %s/HGcal_%s.root| tee g4.log\n'%(opt.version,opt.model,opt.signal,thickness,outDir,outTag))
+
     if (opt.run>=0) : outTag='%s_run%d'%(outTag,opt.run)
     scriptFile.write('mv PFcal.root HGcal_%s_second.root\n'%(outTag))
     scriptFile.write('localdir=`pwd`\n')
