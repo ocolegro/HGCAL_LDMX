@@ -94,6 +94,9 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 			for(G4TrackVector::const_iterator i=secondaries->begin(); i!=secondaries->end(); ++i){
 				G4Track* iTrack = *i;
 				HGCSSGenParticle genPart;
+				G4cout << "A hadronic secondary had the vertex kinetic energy " << iTrack->GetVertexKineticEnergy() << G4endl;
+				G4cout << "A hadronic secondary had the  kinetic energy " << iTrack->GetKineticEnergy() << G4endl;
+
 				genPart.vertexKE(iTrack->GetVertexKineticEnergy());
 				const G4ThreeVector &p = iTrack->GetVertexMomentumDirection();
 				const G4ThreeVector &pos = iTrack->GetVertexPosition();
