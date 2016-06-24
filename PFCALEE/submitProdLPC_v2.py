@@ -32,6 +32,8 @@ nevents=opt.nevts
 myqueue=opt.queue
 
 thickness_ = [1]#,2,3,4,5,6,7,8,9,10,12,14,16,18,20]
+print 'creating the job'
+
 for thickness in thickness_:
     outDir='%s/git_%s/version_%d/model_%d'%(opt.out,opt.gittag,opt.version,opt.model)
     outDir='%s/%s'%(outDir,label)
@@ -74,7 +76,7 @@ for thickness in thickness_:
     scriptFile.write('cp HGcal_%s.root %s/\n'%(outTag,outDir))
     scriptFile.write('echo "All done"\n')
     scriptFile.close()
-
+    print 'submitting to the cluster'
 #write geant 4 macro
     g4Macro = open('%s/g4steer.mac'%(outDir), 'w')
     g4Macro.write('/control/verbose 0\n')
