@@ -53,8 +53,13 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 	eventAction_->Detect(eRawDep,pdgID,kinEng, volume);
 
 
-	bool trackEscapes = (lTrack->GetTrackStatus()!=fAlive && lTrack->GetKineticEnergy() > 10 && secondPass);
+	bool trackEscapes = (lTrack->GetTrackStatus()!=fAlive
+			&& lTrack->GetKineticEnergy() > 10
+			&& secondPass);
 	if (trackEscapes){
+		G4cout << "The volume is " << volume->GetName() << G4endl;
+		G4cout << "The trackID " << lTrack->GetTrackID() << G4endl;
+
 		HGCSSGenParticle escapePart;
 		escapePart.vertexKE(lTrack->GetVertexKineticEnergy()); //- aStep->GetDeltaEnergy());
 		escapePart.finalKE(lTrack->GetKineticEnergy()); //- aStep->GetDeltaEnergy());
@@ -94,18 +99,20 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 			for(G4TrackVector::const_iterator i=secondaries->begin(); i!=secondaries->end(); ++i){
 				G4Track* iTrack = *i;
 				HGCSSGenParticle genPart;
-
-				genPart.vertexKE(iTrack->GetKineticEnergy());
-				const G4ThreeVector &p = iTrack->GetMomentumDirection();
-				const G4ThreeVector &pos = iTrack->GetPosition();
-				TVector3 momVec(p[0], p[1], p[2]);
-				genPart.vertexMom(momVec);
-				TVector3 posVec(pos[0], pos[1], pos[2] - zOff);
-				genPart.vertexPos(posVec);
-				genPart.mass(iTrack->GetDefinition()->GetPDGMass());
-				genPart.pdgid(iTrack->GetDefinition()->GetPDGEncoding());
-				genPart.layer(eventAction_->hadronicInts);
-				eventAction_->hadvec_.push_back(genPart);
+				if (abs(iTrack->GetDefinition()->GetPDGEncoding()) != 11 &&
+						abs(iTrack->GetDefinition()->GetPDGEncoding()) != 22){
+					genPart.vertexKE(iTrack->GetKineticEnergy());
+					const G4ThreeVector &p = iTrack->GetMomentumDirection();
+					const G4ThreeVector &pos = iTrack->GetPosition();
+					TVector3 momVec(p[0], p[1], p[2]);
+					genPart.vertexMom(momVec);
+					TVector3 posVec(pos[0], pos[1], pos[2] - zOff);
+					genPart.vertexPos(posVec);
+					genPart.mass(iTrack->GetDefinition()->GetPDGMass());
+					genPart.pdgid(iTrack->GetDefinition()->GetPDGEncoding());
+					genPart.layer(eventAction_->hadronicInts);
+					eventAction_->hadvec_.push_back(genPart);
+				}
 			}
 
 
