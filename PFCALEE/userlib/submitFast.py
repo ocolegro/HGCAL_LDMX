@@ -39,7 +39,7 @@ if len(opt.eos)>0:
 else:
     eosDir='%s/'%(outDir)
     eosDirIn = '%s/'%(outDir)
-outTag='%s_version%d_model%d'%(label,opt.version,opt.model)
+outTag='%s_version%d_model%d_v3'%(label,opt.version,opt.model)
 if (opt.run>=0) : outTag='%s_run%d'%(outTag,opt.run)
 
 print 'The eosdir is ' + str(eosDir)
