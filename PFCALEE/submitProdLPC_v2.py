@@ -93,7 +93,7 @@ for thickness in thickness_:
     else:
         #os.system("LSB_JOB_REPORT_MAIL=N bsub -q %s -N \'%s/runJob.sh\'"%(myqueue,outDir))
         name = "submitRun%s" % (opt.run)
-        f2n = "tmp_%s.jdl" % (outDir);
+        f2n = "%s/submit.jdl" % (outDir);
         outtag = "out_%s_$(Cluster)" % (name)
         f2=open(f2n, 'w')
         f2.write("universe = vanilla \n");
@@ -111,4 +111,4 @@ for thickness in thickness_:
         f2.write("x509userproxy = $ENV(X509_USER_PROXY) \n")
         f2.write("Queue 1 \n");
         f2.close();
-        #os.system("condor_submit %s" % (f2n));
+        os.system("condor_submit %s" % (f2n));

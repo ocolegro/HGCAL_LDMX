@@ -86,24 +86,5 @@ for thickness in thickness_:
     #submit
     os.system('chmod u+rwx %s/runJob.sh'%outDir)
     if opt.nosubmit : os.system('LSB_JOB_REPORT_MAIL=N echo bsub -q %s -N %s/runJob.sh'%(myqueue,outDir))
-    else:
-#os.system("LSB_JOB_REPORT_MAIL=N bsub -q %s -N \'%s/runJob.sh\'"%(myqueue,outDir))
-name = "submitRun%s" % (opt.run)
-f2n = "tmp_%s.jdl" % (name);
-outtag = "out_%s_$(Cluster)" % (name)
-f2=open(f2n, 'w')
-f2.write("universe = vanilla \n");
-f2.write("Executable = %s \n" % (f1n) );
-f2.write('Requirements = OpSys == "LINUX" && (Arch != "DUMMY" )\n');
-f2.write("request_disk = 10000000\n");
-f2.write("request_memory = 10000\n");
-f2.write("Should_Transfer_Files = YES \n");
-f2.write("Transfer_Input_Files = inputs.tar.gz,g4steer_%s.mac \n" % (tag));
-f2.write("WhenToTransferOutput  = ON_EXIT_OR_EVICT \n");
-f2.write("Output = "+outtag+".stdout \n");
-f2.write("Error = "+outtag+".stderr \n");
-f2.write("Log = "+outtag+".log \n");
-f2.write("Notification    = Error \n");
-f2.write("x509userproxy = $ENV(X509_USER_PROXY) \n")
-f2.write("Queue 1 \n");
-f2.close();
+    else: os.system("LSB_JOB_REPORT_MAIL=N bsub -q %s -N \'%s/runJob.sh\'"%(myqueue,outDir))
+
