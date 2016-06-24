@@ -79,7 +79,7 @@ scriptFile.close()
 
 #submit
 os.system('chmod u+rwx %s/runGEN%s.sh'%(outDir,suffix))
-if opt.nosubmit : os.system('%s/runGEN%s.sh'%(myqueue,outDir,suffix))
+if opt.nosubmit : os.system('%s/runGEN%s.sh'%(suffix))
 else: os.system("LSB_JOB_REPORT_MAIL=N bsub -q %s -N \'%s/runGEN%s.sh\'"%(myqueue,outDir,suffix))
 
 
