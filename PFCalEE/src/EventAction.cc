@@ -52,8 +52,10 @@ EventAction::EventAction() {
 	//Branch containing incident particle and secondaries from the initial W target
 	tree_->Branch("HGCSSTargetVec", "std::vector<HGCSSGenParticle>",
 			&targetvec_);
+	tree_->Branch("HGCSSGenAction", "std::vector<HGCSSGenParticle>",
+			&genvec_);
 	//Branch containing (''long lasting'') hadronic tracks
-	tree_->Branch("HGCSSHadronVec", "std::vector<HGCSSGenParticle>", &hadronvec_);
+	tree_->Branch("HGCSSNovelVec", "std::vector<HGCSSGenParticle>", &novelvec_);
 	// }
 }
 
@@ -83,7 +85,7 @@ void EventAction::Detect(G4double eng, G4double eDepRaw,G4double eNonIonDep, G4d
 		const HGCSSGenParticle & genPart, G4bool isInitHadron, G4bool isTargetParticle,G4bool isForward, G4bool isPrimaryTrack) {
 
 	if (isInitHadron)
-		hadronvec_.push_back(genPart);
+		novelvec_.push_back(genPart);
 
 	if (isTargetParticle)
 		targetvec_.push_back(genPart);
@@ -104,10 +106,35 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 	event_.vtx_x(g4evt->GetPrimaryVertex(0)->GetX0());
 	event_.vtx_y(g4evt->GetPrimaryVertex(0)->GetY0());
 	event_.vtx_z(g4evt->GetPrimaryVertex(0)->GetZ0());
+	event_.steelThick(((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->GetSteelThick());
+
+	G4String fileN = "currentEvent.rndm";
+	CLHEP::HepRandom::saveEngineStatus(fileN);
+	std::ifstream input(fileN);
+	std::string currentLine;
+	Double_t stat_x = 0,stat_y = 0,seed_x = 0,seed_y = 0;
+    for(int count = 0; count < 5; count++ ){
+    	getline( input, currentLine );
+    	if (count == 1)
+    		stat_x = std::atoi(currentLine.c_str());
+    	if (count == 2)
+    		stat_y = std::atoi(currentLine.c_str());
+
+        if (count == 3)
+        	seed_x = std::atoi(currentLine.c_str());
+        if (count == 4)
+        	seed_y = std::atoi(currentLine.c_str());
+    }
+    TVector3 status(stat_x,stat_y,0);
+    TVector3 seeds(seed_x,seed_y,0);
+
+    event_.seeds(seeds);
+    event_.status(status);
 
 	ssvec_.clear();
 	ssvec_.reserve(detector_->size());
 	//Changing initLayer because initial layers contain tracking sections.
+	double totalSens = 0;
 	for (size_t i = initLayer; i < detector_->size(); i++) {
 		HGCSSSamplingSection lSec;
 		lSec.volNb(i);
@@ -119,6 +146,7 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 		//Measurements now follow
 
 		lSec.absorberDep((*detector_)[i].getAbsorbedEnergy());
+		totalSens += (*detector_)[i].getMeasuredEnergy(false);
 		lSec.sensDep((*detector_)[i].getMeasuredEnergy(false));
 		lSec.totalDep((*detector_)[i].getTotalEnergy());
 		lSec.totalNonIonDep((*detector_)[i].getTotalEnergy(false));
@@ -252,6 +280,8 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 		}
 
 		(*detector_)[i].resetCounters();
+	    event_.dep(totalSens);
+
 	}
 	if (debug) {
 		G4cout << " -- Number of truth particles = " << targetvec_.size() << G4endl<< " -- Number of simhits = " << hitvec_.size() << G4endl
@@ -265,7 +295,8 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 	targetvec_.clear();
 	hitvec_.clear();
 	ssvec_.clear();
-	hadronvec_.clear();
+	novelvec_.clear();
 	targetTrackIds.clear();
-	hadronTrackIds.clear();
+	novelTrackIds.clear();
+	genvec_.clear();
 }
