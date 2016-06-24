@@ -27,27 +27,35 @@ particleID = -1
 if opt.particle == '11' or opt.particle == 'electron':
     particleID = 11
     filename = 'electrons'
+    KE = opt.energy - 0.000510999
 elif opt.particle == '13' or opt.particle == 'muon':
     particleID = 13
     filename = 'muons'
+    KE = opt.energy - 0.10565837
 elif opt.particle == '111' or opt.particle == 'pi0':
     particleID = 111
     filename = 'pi0s'
+    KE = opt.energy - 0.1349766
 elif opt.particle == '211' or opt.particle == 'pi+':
     particleID = 211
     filename = 'pis'
+    KE = opt.energy - 0.1395702
 elif opt.particle == '2112' or opt.particle == 'neutron':
     particleID = 2112
     filename = 'neutrons'
+    KE = opt.energy - 0.9395654
 elif opt.particle == '-2112' or opt.particle == 'antineutron':
     particleID = -2112
     filename = 'antineutrons'
+    KE = opt.energy - 0.9395654
 elif opt.particle == '130' or opt.particle == 'KL':
     particleID = 130
     filename = 'KLs'
+    KE = opt.energy - 0.497648
 elif opt.particle == '22' or opt.particle == 'photon':
     particleID = 22
     filename = 'photons'
+    KE = opt.energy
 
 # Check to see that particle has changed
 if particleID == -1:
@@ -78,7 +86,7 @@ for i in range(0,opt.nevts):
 
     lhefile.write('<event>\n')
 
-    lhefile.write('%s %g %g %g %g %g %g %g\n'%(particleID,opt.x,opt.y,opt.z,px,py,pz,opt.energy))
+    lhefile.write('%s %g %g %g %g %g %g %g\n'%(particleID,opt.x,opt.y,opt.z,px,py,pz,KE))
 
     lhefile.write('</event>\n')
 
