@@ -40,6 +40,11 @@ for thickness in thickness_:
     if (opt.run>=0) : outDir='%s/run_%d/'%(outDir,opt.run)
 
     os.system('mkdir -p %s'%outDir)
+    os.system('cp ~/geant4_workdir/bin/Linux-g++/PFCalEE %s/PFCalEE' % outDir)
+    os.system('cp g4env4lpc.sh %s/PFCalEE' % outDir)
+    os.system('cp ~/geant4_workdir/tmp/Linux-g++/PFCalEE/libPFCalEE.so %s/PFCalEE' % outDir)
+    os.system('cp userlib/lib/libPFCalEEuserlib.so %s/PFCalEE' % outDir)
+
 
     #wrapper
     scriptFile = open('%s/runJob.sh'%(outDir), 'w')
@@ -89,7 +94,7 @@ for thickness in thickness_:
     else:
         #os.system("LSB_JOB_REPORT_MAIL=N bsub -q %s -N \'%s/runJob.sh\'"%(myqueue,outDir))
         name = "submitRun%s" % (opt.run)
-        f2n = "/sub/tmp_%s.jdl" % (name);
+        f2n = "tmp_%s.jdl" % (outDir);
         outtag = "out_%s_$(Cluster)" % (name)
         f2=open(f2n, 'w')
         f2.write("universe = vanilla \n");
@@ -98,7 +103,7 @@ for thickness in thickness_:
         f2.write("request_disk = 10000000\n");
         f2.write("request_memory = 10000\n");
         f2.write("Should_Transfer_Files = YES \n");
-        f2.write("Transfer_Input_Files = inputs.tar.gz,g4steer_%s.mac \n" % (tag));
+        f2.write("Transfer_Input_Files = g4env4lpc.sh,libPFCalEE.so,libPFCalEEuserlib.so,PFCalEE,g4steer.mac \n" );
         f2.write("WhenToTransferOutput  = ON_EXIT_OR_EVICT \n");
         f2.write("Output = "+outtag+".stdout \n");
         f2.write("Error = "+outtag+".stderr \n");
@@ -107,4 +112,4 @@ for thickness in thickness_:
         f2.write("x509userproxy = $ENV(X509_USER_PROXY) \n")
         f2.write("Queue 1 \n");
         f2.close();
-        os.system("condor_submit %s" % (f2n));
+        #os.system("condor_submit %s" % (f2n));
