@@ -40,10 +40,10 @@ for thickness in thickness_:
     if (opt.run>=0) : outDir='%s/run_%d/'%(outDir,opt.run)
 
     os.system('mkdir -p %s'%outDir)
-    os.system('cp ~/geant4_workdir/bin/Linux-g++/PFCalEE %s/PFCalEE' % outDir)
-    os.system('cp g4env4lpc.sh %s/PFCalEE' % outDir)
-    os.system('cp ~/geant4_workdir/tmp/Linux-g++/PFCalEE/libPFCalEE.so %s/PFCalEE' % outDir)
-    os.system('cp userlib/lib/libPFCalEEuserlib.so %s/PFCalEE' % outDir)
+    os.system('cp ~/geant4_workdir/bin/Linux-g++/PFCalEE %s/' % outDir)
+    os.system('cp g4env4lpc.sh %s/' % outDir)
+    os.system('cp ~/geant4_workdir/tmp/Linux-g++/PFCalEE/libPFCalEE.so %s/' % outDir)
+    os.system('cp userlib/lib/libPFCalEEuserlib.so %s/' % outDir)
 
 
     #wrapper
