@@ -40,7 +40,7 @@ else:
     eosDir='%s/'%(outDir)
     eosDirIn = '%s/'%(outDir)
 outTag='%s_version%d_model%d'%(label,opt.version,opt.model)
-if (opt.run>=0) : outTag='%s_run%d_second_v3'%(outTag,opt.run)
+if (opt.run>=0) : outTag='%s_thick_1_run%d_second_v3'%(outTag,opt.run)
 
 print 'The eosdir is ' + str(eosDir)
 print 'The eosdirIn is ' + str(eosDirIn)
