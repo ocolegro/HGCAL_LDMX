@@ -111,4 +111,5 @@ for thickness in thickness_:
         f2.write("x509userproxy = $ENV(X509_USER_PROXY) \n")
         f2.write("Queue 1 \n");
         f2.close();
-        os.system("condor_submit %s" % (f2n));
+        os.system("cd %s" % (outDir));
+        os.system("condor_submit submit.jdl");# % (submit.jdl));
