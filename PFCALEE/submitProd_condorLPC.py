@@ -65,7 +65,7 @@ def main():
 		f1.write("source g4env4lpc.sh \n");
 		f1.write("python %s -n %s -f \"events\" -e %f \n" % (genfile, opt.nevtsperjob, float(parenergy)) )
 		f1.write("ls -lrt \n");
-		f1.write("./PFCalEE g4steer_%s.mac 1 2 1 \n" % tag)
+		f1.write("PFCalEE g4steer_%s.mac 1 2 1 \n" % tag)
 		f1.write("mv PFcal.root PFcal_%s.root \n" % tag)
 		f1.write("xrdcp -f PFcal_%s.root root://cmseos.fnal.gov/%s/PFcal_%s.root \n" % (tag,opt.out,tag))
 		f1.close();

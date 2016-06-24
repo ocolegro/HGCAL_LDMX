@@ -38,9 +38,9 @@ for thickness in thickness_:
     eosDir='%s/git%s'%(opt.eos,opt.gittag)
     if opt.signal>0 : outDir='%s/signal_%3.3f/'%(outDir,opt.signal)
     if (opt.run>=0) : outDir='%s/run_%d/'%(outDir,opt.run)
-    
+
     os.system('mkdir -p %s'%outDir)
-    
+
     #wrapper
     scriptFile = open('%s/runJob.sh'%(outDir), 'w')
     scriptFile.write('#!/bin/bash\n')
@@ -82,28 +82,29 @@ for thickness in thickness_:
     g4Macro.write('/random/setSeeds %d %d\n'%( random.uniform(0,100000), random.uniform(0,100000) ) )
     g4Macro.write('/run/beamOn %d\n'%(nevents))
     g4Macro.close()
-    
+
     #submit
     os.system('chmod u+rwx %s/runJob.sh'%outDir)
     if opt.nosubmit : os.system('LSB_JOB_REPORT_MAIL=N echo bsub -q %s -N %s/runJob.sh'%(myqueue,outDir))
     else:
-#os.system("LSB_JOB_REPORT_MAIL=N bsub -q %s -N \'%s/runJob.sh\'"%(myqueue,outDir))
-name = "submitRun%s" % (opt.run)
-f2n = "tmp_%s.jdl" % (name);
-outtag = "out_%s_$(Cluster)" % (name)
-f2=open(f2n, 'w')
-f2.write("universe = vanilla \n");
-f2.write("Executable = %s \n" % (f1n) );
-f2.write('Requirements = OpSys == "LINUX" && (Arch != "DUMMY" )\n');
-f2.write("request_disk = 10000000\n");
-f2.write("request_memory = 10000\n");
-f2.write("Should_Transfer_Files = YES \n");
-f2.write("Transfer_Input_Files = inputs.tar.gz,g4steer_%s.mac \n" % (tag));
-f2.write("WhenToTransferOutput  = ON_EXIT_OR_EVICT \n");
-f2.write("Output = "+outtag+".stdout \n");
-f2.write("Error = "+outtag+".stderr \n");
-f2.write("Log = "+outtag+".log \n");
-f2.write("Notification    = Error \n");
-f2.write("x509userproxy = $ENV(X509_USER_PROXY) \n")
-f2.write("Queue 1 \n");
-f2.close();
+        #os.system("LSB_JOB_REPORT_MAIL=N bsub -q %s -N \'%s/runJob.sh\'"%(myqueue,outDir))
+        name = "submitRun%s" % (opt.run)
+        f2n = "/sub/tmp_%s.jdl" % (name);
+        outtag = "out_%s_$(Cluster)" % (name)
+        f2=open(f2n, 'w')
+        f2.write("universe = vanilla \n");
+        f2.write("Executable = %s \n" % ('%s/runJob.sh'%(outDir)) );
+        f2.write('Requirements = OpSys == "LINUX" && (Arch != "DUMMY" )\n');
+        f2.write("request_disk = 10000000\n");
+        f2.write("request_memory = 10000\n");
+        f2.write("Should_Transfer_Files = YES \n");
+        f2.write("Transfer_Input_Files = inputs.tar.gz,g4steer_%s.mac \n" % (tag));
+        f2.write("WhenToTransferOutput  = ON_EXIT_OR_EVICT \n");
+        f2.write("Output = "+outtag+".stdout \n");
+        f2.write("Error = "+outtag+".stderr \n");
+        f2.write("Log = "+outtag+".log \n");
+        f2.write("Notification    = Error \n");
+        f2.write("x509userproxy = $ENV(X509_USER_PROXY) \n")
+        f2.write("Queue 1 \n");
+        f2.close();
+        os.system("condor_submit %s" % (f2n));
