@@ -50,7 +50,6 @@ for thickness in thickness_:
     scriptFile = open('%s/runJob.sh'%(outDir), 'w')
     scriptFile.write('#!/bin/bash\n')
     scriptFile.write('source %s/g4env.sh\n'%(os.getcwd()))
-    scriptFile.write('cp %s/g4steer.mac .\n'%(outDir))
     scriptFile.write('PFCalEE g4steer.mac %d %d %f %s | tee g4.log\n'%(opt.version,opt.model,opt.signal,thickness))
     outTag='%s_version%d_model%d_thick%s'%(label,opt.version,opt.model,thickness)
     if (opt.run>=0) : outTag='%s_run%d'%(outTag,opt.run)
@@ -72,7 +71,7 @@ for thickness in thickness_:
 
     scriptFile.write('echo "--deleting core files: too heavy!!"\n')
     scriptFile.write('rm core.*\n')
-    scriptFile.write('cp * %s/\n'%(outDir))
+    scriptFile.write('cp HGcal_%s.root %s/\n'%(outTag,outDir))
     scriptFile.write('echo "All done"\n')
     scriptFile.close()
 
