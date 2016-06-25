@@ -48,7 +48,7 @@ public:
 		return wait_;
 	}
 	;
-	HGCSSGenParticleVec genvec_,hadvec_,escapevec_;
+	HGCSSGenParticleVec genvec_,hadvec_,incvec_,escapevec_;
 	G4int hadronicInts;
 	std::vector<int> novelTrackIds;
 	G4int evtNb_;

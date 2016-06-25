@@ -51,6 +51,8 @@ EventAction::EventAction() {
 			&genvec_);
 	tree_->Branch("HGCSSHadAction", "std::vector<HGCSSGenParticle>",
 			&hadvec_);
+	tree_->Branch("HGCSSIncAction", "std::vector<HGCSSGenParticle>",
+			&incvec_);
 	tree_->Branch("HGCSSEscapeAction", "std::vector<HGCSSGenParticle>",
 			&escapevec_);
 	//tree_->Branch("nSteps",&nSteps,"nSteps/I");
@@ -180,5 +182,7 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 	//reset vectors
 	genvec_.clear();
 	hadvec_.clear();
+	incvec_.clear();
+	escapevec_.clear();
 	novelTrackIds.clear();
 }

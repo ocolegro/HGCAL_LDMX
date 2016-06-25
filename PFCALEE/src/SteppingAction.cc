@@ -98,7 +98,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 			targPart.vertexPos(posVec);
 			targPart.pdgid(pdgID);
 			targPart.layer(-eventAction_->hadronicInts);
-			eventAction_->hadvec_.push_back(targPart);
+			eventAction_->incvec_.push_back(targPart);
 
 			for(G4TrackVector::const_iterator i=secondaries->begin(); i!=secondaries->end(); ++i){
 				G4Track* iTrack = *i;
