@@ -86,7 +86,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 			targPart.vertexKE(lTrack->GetKineticEnergy() - aStep->GetDeltaEnergy());
 
 
-			const G4ThreeVector &p = lTrack->GetMomentum() + -1.*aStep->GetDeltaMomentum();
+			G4ThreeVector &p = lTrack->GetMomentum() + -1.*aStep->GetDeltaMomentum();
 			const G4ThreeVector &pos = lTrack->GetPosition();
 			if (p.mag() > 0){
 				p = p * 1.0/p.mag();
