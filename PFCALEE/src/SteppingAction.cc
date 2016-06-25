@@ -86,13 +86,13 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 			targPart.vertexKE(lTrack->GetKineticEnergy() - aStep->GetDeltaEnergy());
 
 
-			G4ThreeVector &p = lTrack->GetMomentum() + -1.*aStep->GetDeltaMomentum();
+			const G4ThreeVector &p = lTrack->GetMomentum() + -1.*aStep->GetDeltaMomentum();
 			const G4ThreeVector &pos = lTrack->GetPosition();
 			if (p.mag() > 0){
-				p = p * 1.0/p.mag();
+				TVector3 momVec(p[0]/p.mag(), p[1]/p.mag(), p[2]/p.mag());
+				targPart.vertexMom(momVec);
+				G4cout << "This vertex momentum was broken" << G4endl;
 			}
-			TVector3 momVec(p[0], p[1], p[2]);
-			targPart.vertexMom(momVec);
 			TVector3 posVec(pos[0], pos[1], pos[2] - zOff);
 			targPart.vertexPos(posVec);
 			targPart.pdgid(pdgID);
