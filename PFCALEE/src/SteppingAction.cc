@@ -91,6 +91,8 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 			if (p.mag() > 0){
 				TVector3 momVec(p[0]/p.mag(), p[1]/p.mag(), p[2]/p.mag());
 				targPart.vertexMom(momVec);
+			}
+			else{
 				G4cout << "This vertex momentum was broken" << G4endl;
 			}
 			TVector3 posVec(pos[0], pos[1], pos[2] - zOff);
