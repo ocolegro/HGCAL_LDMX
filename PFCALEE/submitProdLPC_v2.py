@@ -62,8 +62,11 @@ for thickness in thickness_:
     else:
         scriptFile.write('./PFCalEE g4steer.mac %d %d %f %s root://cmseos.fnal.gov/%s/HGcal_%s.root | tee g4.log\n'%(opt.version,opt.model,opt.signal,thickness,outDir,outTag))
 
+    if (opt.pass_ == 0):
+        scriptFile.write('xrdcp -f PFcal.root root://cmseos.fnal.gov/%s/HGcal_%s.root\n'%(outDir,outTag))
+    else:
+        scriptFile.write('xrdcp -f PFcal.root root://cmseos.fnal.gov/%s/HGcal_%s_second.root\n'%(outDir,outTag))
 
-    scriptFile.write('xrdcp -f PFcal.root root://cmseos.fnal.gov/%s/HGcal_%s.root\n'%(outDir,outTag))
     scriptFile.write('localdir=`pwd`\n')
     scriptFile.write('echo "--Local directory is " $localdir >> g4.log\n')
     scriptFile.write('ls * >> g4.log\n')
