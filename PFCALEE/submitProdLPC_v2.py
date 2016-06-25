@@ -89,6 +89,7 @@ for thickness in thickness_:
     g4Macro.close()
 
     #submit
+    os.system('echo %s ' %('chmod 777 %s/runJob.sh'%outDir))
     os.system('chmod 777 %s/runJob.sh'%outDir)
     if opt.nosubmit : os.system('LSB_JOB_REPORT_MAIL=N echo bsub -q %s -N %s/runJob.sh'%(myqueue,outDir))
     else:
