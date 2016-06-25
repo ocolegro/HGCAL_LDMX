@@ -55,10 +55,8 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 
 	bool trackEscapes = (lTrack->GetTrackStatus()!=fAlive
 			&& lTrack->GetKineticEnergy() > 10
-			&& secondPass);
+			&& secondPass && volume->GetName() = "expHall" );
 	if (trackEscapes){
-		G4cout << "The volume is " << volume->GetName() << G4endl;
-		G4cout << "The trackID " << lTrack->GetTrackID() << G4endl;
 
 		HGCSSGenParticle escapePart;
 		escapePart.vertexKE(lTrack->GetVertexKineticEnergy()); //- aStep->GetDeltaEnergy());
@@ -104,6 +102,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 			for(G4TrackVector::const_iterator i=secondaries->begin(); i!=secondaries->end(); ++i){
 				G4Track* iTrack = *i;
 				HGCSSGenParticle genPart;
+				if (iTrack->GetKineticEnergy() < 10) continue;
 				if (abs(iTrack->GetDefinition()->GetPDGEncoding()) != 11 &&
 						abs(iTrack->GetDefinition()->GetPDGEncoding()) != 22){
 					genPart.vertexKE(iTrack->GetKineticEnergy());
