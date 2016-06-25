@@ -88,7 +88,11 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 
 			const G4ThreeVector &p = lTrack->GetMomentum() + -1.*aStep->GetDeltaMomentum();
 			const G4ThreeVector &pos = lTrack->GetPosition();
-			TVector3 momVec(p[0]/p.mag(), p[1]/p.mag(), p[2]/p.mag());
+			TVector3 momVec(0,0,0);
+
+			if (p.mag() > 0){
+				momVec(p[0]/p.mag(), p[1]/p.mag(), p[2]/p.mag());
+			}
 			targPart.vertexMom(momVec);
 			TVector3 posVec(pos[0], pos[1], pos[2] - zOff);
 			targPart.vertexPos(posVec);

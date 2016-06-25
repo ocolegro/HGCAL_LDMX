@@ -224,6 +224,7 @@ int main(int argc, char** argv) {
 				nInteractions = nInteractions + 1;
 				nSecondaries[nInteractions - 1] = 0;
 				nNeutronSecondaries[nInteractions - 1] = 0;
+				nProtonSecondaries[nInteractions - 1] = 0;
 				nOtherSecondaries[nInteractions - 1] = 0;
 				nContainedSecondaries[nInteractions - 1] = 0;
 				nUncontainedSecondaries[nInteractions - 1] = 0;
