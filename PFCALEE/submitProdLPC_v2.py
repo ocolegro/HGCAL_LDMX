@@ -20,7 +20,7 @@ parser.add_option('-s', '--signal'      ,    dest='signal'             , help='s
 parser.add_option('-n', '--nevts'       ,    dest='nevts'              , help='number of events to generate' , default=1000,    type=int)
 parser.add_option('-o', '--out'         ,    dest='out'                , help='output directory'             , default=os.getcwd() )
 parser.add_option('-e', '--eos'         ,    dest='eos'                , help='eos path to save root file to EOS',         default='')
-parser.add_option('-p', '--pass'         ,    dest='pass'                , help='stat pass'                     , default=0,      type=int)
+parser.add_option('-p', '--pass'         ,    dest='pass_'                , help='stat pass'                     , default=0,      type=int)
 
 ##Location to a txt file containing a csv [particle_energy,dir_x,dir_y,dir_z]
 parser.add_option('-S', '--no-submit'   ,    action="store_true",  dest='nosubmit'           , help='Do not submit batch job.')
