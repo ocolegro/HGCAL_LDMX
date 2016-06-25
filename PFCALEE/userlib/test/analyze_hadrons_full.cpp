@@ -113,11 +113,17 @@ int main(int argc, char** argv) {
 	t1.Branch("escape_VKE", &escape_VKE, "escape_VKE[nEscapes]/F");
 	t1.Branch("escape_FKE", &escape_FKE, "escape_FKE[nEscapes]/F");
 
-	Float_t summedSen,summedSenWgt,convEng,accConvEng,lostEnergy;
+	Float_t summedSen,summedSenWgt,convEng_1,accconvEng_1,lostEng_1,convEng_2,accconvEng_2,lostEng_2;
 
-	t1.Branch("convEng", &convEng, "convEng/F");
-	t1.Branch("accConvEng", &accConvEng, "accConvEng/F");
-	t1.Branch("lostEnergy", &lostEnergy, "lostEnergy/F");
+	t1.Branch("convEng_1", &convEng_1, "convEng_1/F");
+	t1.Branch("accconvEng_1", &accconvEng_1, "accconvEng_1/F");
+	t1.Branch("lostEng_1", &lostEng_1, "lostEng_1/F");
+
+	t1.Branch("convEng_2", &convEng_2, "convEng_2/F");
+	t1.Branch("accconvEng_2", &accconvEng_2, "accconvEng_2/F");
+	t1.Branch("lostEng_2", &lostEng_2, "lostEng_2/F");
+
+
 	t1.Branch("summedSen", &summedSen, "summedSen/F");
 	t1.Branch("summedSenWgt", &summedSenWgt, "summedSenWgt/F");
 
@@ -131,9 +137,16 @@ int main(int argc, char** argv) {
 		summedSenWgt = evt_->wgtDep();
 		if (summedSen == 0) continue;
 
-		lostEnergy = 0;
-		convEng = 0;
-		accConvEng = 0;
+		lostEng_1 = 0;
+		convEng_1 = 0;
+		accconvEng_1 = 0;
+
+
+		lostEng_2 = 0;
+		convEng_2 = 0;
+		accconvEng_2 = 0;
+
+
 		nInteractions = 0;
 		nHadrons = 0;
 		nEscapes = 0;
@@ -167,33 +180,45 @@ int main(int argc, char** argv) {
 				else
 					nUncontainedSecondaries[nInteractions - 1] += 1;
 
-
+				//Do hadron stuff
 				if (abs(hadron_pdgid[j]) == 2112 || abs(hadron_pdgid[j])  == 2212){
-					convEng += hadron_KE[j];
-					if (acc) accConvEng += hadron_KE[j];
+					convEng_1 += hadron_KE[j];
+					convEng_2 += hadron_KE[j];
+					if (acc) {
+						accconvEng_1 += hadron_KE[j];
+						accconvEng_2 += hadron_KE[j];
+					}
 					out_Eff[nInteractions - 1] += hadron_KE[j];
+
+
+					// Do neutron stuff
 					if (abs(hadron_pdgid[j]) == 2112){
 						nNeutronSecondaries[nInteractions - 1] += 1;
 						if (hadron_pdgid[j] > 0)
 							out_NE[nInteractions - 1] += hadron_KE[j];
 						else{
-							out_NE[nInteractions - 1] += hadron_KE[j] +  hadron.mass() ;
-							//convEng +=  hadron.mass();
-							if (acc) accConvEng += hadron_KE[j];
-							out_Eff[nInteractions - 1]+=  hadron.mass();
+							out_NE[nInteractions - 1] += hadron_KE[j] +  2*hadron.mass() ;
+							convEng_1 +=  2*hadron.mass();
+
+							out_Eff[nInteractions - 1]+=  2*hadron.mass();
+
+							if (acc) accconvEng_1 += 2*hadron.mass();
+
 						}
 
 					}
-
+					//Do Proton stuff
 					if (abs(hadron_pdgid[j]) == 2212){
 						nProtonSecondaries[nInteractions - 1] += 1;
 						if (hadron_pdgid[j] > 0)
 							out_PE[nInteractions - 1] += hadron_KE[j];
 						else{
 							out_PE[nInteractions - 1] += hadron_KE[j] +  hadron.mass() ;
-							//convEng +=  hadron.mass();
-							if (acc) accConvEng += hadron_KE[j];
-							out_Eff[nInteractions - 1] +=  hadron.mass();
+							convEng_1 +=  2*hadron.mass();
+
+							out_Eff[nInteractions - 1] +=  2*hadron.mass();
+
+							if (acc) accconvEng_1 += 2*hadron.mass();
 						}
 
 					}
@@ -201,8 +226,13 @@ int main(int argc, char** argv) {
 				}
 				else if (abs(hadron_pdgid[j]) <10000  && abs(hadron_pdgid[j]) != 22 && abs(hadron_pdgid[j]) != 11
 						&& hadron_pdgid[j] != 0){
-					convEng += hadron_KE[j];//+hadron.mass();
-					if (acc) accConvEng += hadron_KE[j]+hadron.mass();
+					convEng_1 += hadron_KE[j];
+					convEng_2 += hadron_KE[j] + hadron.mass();
+
+					if (acc) {
+						accconvEng_1 += hadron_KE[j]+hadron.mass();
+						accconvEng_2 += hadron_KE[j];
+					}
 
 					out_OE[nInteractions - 1] += hadron_KE[j]+hadron.mass();
 					out_Eff[nInteractions - 1] +=  hadron.mass();
@@ -255,14 +285,20 @@ int main(int argc, char** argv) {
 			escape_FKE[j]			= escape.finalKE();
 
 			if (escape_pdgid[j] == -2112 || escape_pdgid[j]  == -2212){
-				//lostEnergy += 2* escape.mass();
-				lostEnergy += escape_FKE[j];
+				lostEng_1 += 2* escape.mass();
+				lostEng_1 += escape_FKE[j];
+				lostEng_2 += escape_FKE[j];
+
 			}
 			else if (escape_pdgid[j] == 2112 || escape_pdgid[j]  == 2212){
-				lostEnergy += escape_FKE[j];
+				lostEng_1 += escape_FKE[j];
+				lostEng_2 += escape_FKE[j];
+
 			}
 			else if (abs(escape_pdgid[j]) < 10000 && escape_pdgid[j] != 0){
-				lostEnergy += escape_FKE[j]+escape.mass();
+				lostEng_1 += escape_FKE[j]+escape.mass();
+				lostEng_2 += escape_FKE[j];
+
 			}
 		}
 		t1.Fill();

@@ -87,40 +87,40 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 				G4Track* iTrack = *i;
 				HGCSSGenParticle genPart;
 				if (iTrack->GetKineticEnergy() < 10) continue;
-				if (targPart.vertexKE() == 0){
-					targPart.vertexKE(lTrack->GetKineticEnergy() - aStep->GetDeltaEnergy());
+					if (targPart.vertexKE() == 0){
+						targPart.vertexKE(lTrack->GetKineticEnergy() - aStep->GetDeltaEnergy());
 
 
-					const G4ThreeVector &p = lTrack->GetMomentum() + -1.*aStep->GetDeltaMomentum();
-					const G4ThreeVector &pos = lTrack->GetPosition();
-					if (p.mag() > 0){
-						TVector3 momVec(p[0]/p.mag(), p[1]/p.mag(), p[2]/p.mag());
-						targPart.vertexMom(momVec);
+						const G4ThreeVector &p = lTrack->GetMomentum() + -1.*aStep->GetDeltaMomentum();
+						const G4ThreeVector &pos = lTrack->GetPosition();
+						if (p.mag() > 0){
+							TVector3 momVec(p[0]/p.mag(), p[1]/p.mag(), p[2]/p.mag());
+							targPart.vertexMom(momVec);
+						}
+						else{
+							G4cout << "This vertex momentum was broken" << G4endl;
+						}
+						TVector3 posVec(pos[0], pos[1], pos[2] - zOff);
+						targPart.vertexPos(posVec);
+						targPart.pdgid(pdgID);
+						targPart.layer(-eventAction_->hadronicInts);
+						eventAction_->incvec_.push_back(targPart);
+
 					}
-					else{
-						G4cout << "This vertex momentum was broken" << G4endl;
+					if (abs(iTrack->GetDefinition()->GetPDGEncoding()) != 11 &&
+							abs(iTrack->GetDefinition()->GetPDGEncoding()) != 22){
+						genPart.vertexKE(iTrack->GetKineticEnergy());
+						const G4ThreeVector &p = iTrack->GetMomentumDirection();
+						const G4ThreeVector &pos = iTrack->GetPosition();
+						TVector3 momVec(p[0], p[1], p[2]);
+						genPart.vertexMom(momVec);
+						TVector3 posVec(pos[0], pos[1], pos[2] - zOff);
+						genPart.vertexPos(posVec);
+						genPart.mass(iTrack->GetDefinition()->GetPDGMass());
+						genPart.pdgid(iTrack->GetDefinition()->GetPDGEncoding());
+						genPart.layer(eventAction_->hadronicInts);
+						eventAction_->hadvec_.push_back(genPart);
 					}
-					TVector3 posVec(pos[0], pos[1], pos[2] - zOff);
-					targPart.vertexPos(posVec);
-					targPart.pdgid(pdgID);
-					targPart.layer(-eventAction_->hadronicInts);
-					eventAction_->incvec_.push_back(targPart);
-
-				}
-				if (abs(iTrack->GetDefinition()->GetPDGEncoding()) != 11 &&
-						abs(iTrack->GetDefinition()->GetPDGEncoding()) != 22){
-					genPart.vertexKE(iTrack->GetKineticEnergy());
-					const G4ThreeVector &p = iTrack->GetMomentumDirection();
-					const G4ThreeVector &pos = iTrack->GetPosition();
-					TVector3 momVec(p[0], p[1], p[2]);
-					genPart.vertexMom(momVec);
-					TVector3 posVec(pos[0], pos[1], pos[2] - zOff);
-					genPart.vertexPos(posVec);
-					genPart.mass(iTrack->GetDefinition()->GetPDGMass());
-					genPart.pdgid(iTrack->GetDefinition()->GetPDGEncoding());
-					genPart.layer(eventAction_->hadronicInts);
-					eventAction_->hadvec_.push_back(genPart);
-				}
 			}
 
 

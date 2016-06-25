@@ -20,6 +20,8 @@ parser.add_option('-s', '--signal'      ,    dest='signal'             , help='s
 parser.add_option('-n', '--nevts'       ,    dest='nevts'              , help='number of events to generate' , default=1000,    type=int)
 parser.add_option('-o', '--out'         ,    dest='out'                , help='output directory'             , default=os.getcwd() )
 parser.add_option('-e', '--eos'         ,    dest='eos'                , help='eos path to save root file to EOS',         default='')
+parser.add_option('-p', '--pass'         ,    dest='pass'                , help='stat pass'                     , default=0,      type=int)
+
 ##Location to a txt file containing a csv [particle_energy,dir_x,dir_y,dir_z]
 parser.add_option('-S', '--no-submit'   ,    action="store_true",  dest='nosubmit'           , help='Do not submit batch job.')
 
@@ -52,22 +54,17 @@ for thickness in thickness_:
     scriptFile = open('%s/runJob.sh'%(outDir), 'w')
     scriptFile.write('#!/bin/bash\n')
     scriptFile.write('source g4env4lpc.sh\n')#%(os.getcwd()))
-    scriptFile.write('./PFCalEE g4steer.mac %d %d %f %s | tee g4.log\n'%(opt.version,opt.model,opt.signal,thickness))
+    if (opt.pass_ == 0):
+        scriptFile.write('./PFCalEE g4steer.mac %d %d %f %s | tee g4.log\n'%(opt.version,opt.model,opt.signal,thickness))
+    else:
+        scriptFile.write('./PFCalEE g4steer.mac %d %d %f %s root://cmseos.fnal.gov/%s/HGcal_%s.root | tee g4.log\n'%(opt.version,opt.model,opt.signal,thickness,outDir,outTag))
+
     outTag='%s_version%d_model%d_thick%s'%(label,opt.version,opt.model,thickness)
     if (opt.run>=0) : outTag='%s_run%d'%(outTag,opt.run)
     scriptFile.write('xrdcp -f PFcal.root root://cmseos.fnal.gov/%s/HGcal_%s.root\n'%(outDir,outTag))
     scriptFile.write('localdir=`pwd`\n')
     scriptFile.write('echo "--Local directory is " $localdir >> g4.log\n')
     scriptFile.write('ls * >> g4.log\n')
-    if len(opt.eos)>0:
-        scriptFile.write('grep "alias eos=" /afs/cern.ch/project/eos/installation/cms/etc/setup.sh | sed "s/alias /export my/" > eosenv.sh\n')
-        scriptFile.write('source eosenv.sh\n')
-        scriptFile.write('$myeos mkdir -p %s\n'%eosDir)
-        scriptFile.write('$myeos cp HGcal_%s.root /eos/cms%s/HGcal_%s.root\n'%(outTag,eosDir,outTag))
-        scriptFile.write('if (( "$?" != "0" )); then\n')
-        scriptFile.write('echo " --- Problem with copy of file PFcal.root to EOS. Keeping locally." >> g4.log\n')
-        scriptFile.write('fi\n')
-        scriptFile.write('rm HGcal_%s.root\n'%(outTag))
 
 
 
