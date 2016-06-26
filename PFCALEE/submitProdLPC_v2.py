@@ -60,7 +60,7 @@ for thickness in thickness_:
     if (opt.pass_ == 0):
         scriptFile.write('./PFCalEE g4steer.mac %d %d %f %s | tee g4.log\n'%(opt.version,opt.model,opt.signal,thickness))
     else:
-        scriptFile.write('./PFCalEE g4steer.mac %d %d %f %s HGcal_%s.root | tee g4.log\n'%(opt.version,opt.model,opt.signal,thickness,outDir,outTag))
+        scriptFile.write('./PFCalEE g4steer.mac %d %d %f %s HGcal_%s.root | tee g4.log\n'%(opt.version,opt.model,opt.signal,thickness,outTag))
 
     if (opt.pass_ == 0):
         scriptFile.write('xrdcp -f PFcal.root root://cmseos.fnal.gov/%s/HGcal_%s.root\n'%(outDir,outTag))
