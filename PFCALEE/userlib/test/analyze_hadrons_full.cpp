@@ -170,7 +170,7 @@ int main(int argc, char** argv) {
 			TVector3 posVec = incPart.vertexPos();
 			std::cout << "quering interaction = " << j << std::endl;
 
-			unsigned iLoc		=	incPart.layer() - 1;
+			unsigned iLoc		=	-incPart.layer() - 1;
 
 			std::cout << "iLoc is " << iLoc << std::endl;
 			if (iLoc > 50000) iLoc = 0;
