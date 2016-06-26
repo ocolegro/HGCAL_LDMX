@@ -160,7 +160,8 @@ int main(int argc, char** argv) {
 
 			std::cout << "Looping over inc part = " << j << std::endl;
 
-			HGCSSGenParticle& incPart = (*hadVec)[j];
+
+			HGCSSGenParticle& incPart = (*incVec)[j];
 			TVector3 momVec = incPart.vertexMom();
 			TVector3 posVec = incPart.vertexPos();
 			unsigned iLoc		=	incPart.layer() - 1;
