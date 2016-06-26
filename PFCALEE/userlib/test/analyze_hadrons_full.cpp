@@ -44,6 +44,8 @@ int main(int argc, char** argv) {
 	HGCSSEvent* evt_ = 0;
 	tree->SetBranchAddress("HGCSSEvent", &evt_);
 
+	std::vector<HGCSSGenParticle> * incVec = 0;
+	tree->SetBranchAddress("HGCSSIncAction", &incVec);
 
 	std::vector<HGCSSGenParticle> * hadVec = 0;
 	tree->SetBranchAddress("HGCSSHadAction", &hadVec);
@@ -166,9 +168,8 @@ int main(int argc, char** argv) {
 				hadron_theta[j]   	= acos(momVec[2]) * 180/3.14;
 				hadron_pdgid[j]   	= hadron.pdgid();
 				hadron_KE[j]		= hadron.vertexKE();
-				std::cout << "The hadron_KE[j] at j =  " << j << " is being filled with " << hadron.vertexKE()<< std::endl;
 
-				std::cout << "The hadron_KE[j] at j = " << j << " is " << hadron_KE[j] << std::endl;
+				std::cout << "The layer is " << hadron.layer() << std::endl;
 
 				out_KE[nInteractions - 1] += hadron_KE[j];
 				nSecondaries[nInteractions - 1] += 1;
