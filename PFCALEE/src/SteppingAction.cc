@@ -109,11 +109,13 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 						eventAction_->incvec_.push_back(targPart);
 
 					}
-					std::cout << "The trackID is " << iTrack->GetTrackID() << std::endl;
+					std::cout << "The trackKE is " << iTrack->GetKineticEnergy() << std::endl;
+					std::cout << "The parent ID is is " << lTrack->GetDefinition()->GetPDGEncoding() << std::endl;
+
 					if (abs(iTrack->GetDefinition()->GetPDGEncoding()) != 11 &&
 							abs(iTrack->GetDefinition()->GetPDGEncoding()) != 22){
 						unsigned int hadronTrackLoc = std::find(eventAction_->novelTrackIds.begin(),
-								eventAction_->novelTrackIds.end(), iTrack->GetTrackID())
+								eventAction_->novelTrackIds.end(), iTrack->GetKineticEnergy())
 								- eventAction_->novelTrackIds.begin();
 						if (hadronTrackLoc == eventAction_->novelTrackIds.size()){
 							genPart.vertexKE(iTrack->GetKineticEnergy());
@@ -127,7 +129,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 							genPart.pdgid(iTrack->GetDefinition()->GetPDGEncoding());
 							genPart.layer(eventAction_->hadronicInts);
 							eventAction_->hadvec_.push_back(genPart);
-							eventAction_->novelTrackIds.push_back(iTrack->GetTrackID());
+							eventAction_->novelTrackIds.push_back(iTrack->GetKineticEnergy());
 
 						}
 					}
