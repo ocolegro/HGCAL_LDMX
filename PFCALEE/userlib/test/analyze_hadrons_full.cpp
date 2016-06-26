@@ -162,15 +162,24 @@ int main(int argc, char** argv) {
 
 
 			HGCSSGenParticle& incPart = (*incVec)[j];
+			std::cout << "quering vertex mom = " << j << std::endl;
+
 			TVector3 momVec = incPart.vertexMom();
+			std::cout << "quering vertex pos = " << j << std::endl;
+
 			TVector3 posVec = incPart.vertexPos();
+			std::cout << "quering interaction = " << j << std::endl;
+
 			unsigned iLoc		=	incPart.layer() - 1;
+
+			std::cout << "storing ke = " << j << std::endl;
 
 			inc_KE[iLoc] = incPart.vertexKE();
 			inc_zpos[iLoc] = posVec[2];
 			inc_theta[iLoc] = acos(momVec[2])*180/3.14;
 			inc_pdgid[iLoc] = incPart.pdgid();
 
+			std::cout << "resetting counters  " << j << std::endl;
 
 			nInteractions = nInteractions + 1;
 			nSecondaries[iLoc] = 0;
