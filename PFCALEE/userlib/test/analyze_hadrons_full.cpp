@@ -131,6 +131,7 @@ int main(int argc, char** argv) {
 
 
 
+	std::vector<float> hadronKEs;
 
 	unsigned nEvts = tree->GetEntries();
 	for (unsigned ievt(0); ievt < nEvts; ++ievt) { //loop on entries
@@ -207,8 +208,14 @@ int main(int argc, char** argv) {
 		//std::cout << "The hadronvec size is = " << hadVec->size() << std::endl;
 
 		for (Int_t j = 0; j < hadVec->size(); j++) {
-			//std::cout << "Looping over hadron part = " << j << std::endl;
 			HGCSSGenParticle& hadron = (*hadVec)[j];
+
+			unsigned int hadronTrackLoc = std::find(hadronKEs.begin(),
+					hadronKEs.end(), hadron.vertexKE())
+					- hadronKEs.begin();
+			if (hadronTrackLoc != hadronKEs.size()) continue;
+			hadronKEs.push_back(hadron.vertexKE());
+			//std::cout << "Looping over hadron part = " << j << std::endl;
 			nHadrons = nHadrons + 1;
 			TVector3 momVec = hadron.vertexMom();
 			TVector3 posVec = hadron.vertexPos();
@@ -331,6 +338,7 @@ int main(int argc, char** argv) {
 			}
 		}
 		t1.Fill();
+		hadronKEs.clear();
 	}
 	t1.Write();
 
