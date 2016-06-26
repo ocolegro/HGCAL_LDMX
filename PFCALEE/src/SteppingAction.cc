@@ -82,60 +82,62 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 		//	&& theProcessName!="neutronElastic" && theProcessName!="conv" && theProcessName != "ionIoni"){ //(theProcessName == "photoNuclear" || theProcessName == "electroNuclear"){
 		if ( (theProcessName == "PhotonInelastic" || theProcessName == "ElectroNuclear" || theProcessName == "PositronNuclear")
 				&& (abs(pdgID) == 22 || abs(pdgID) == 11)){
-			eventAction_->hadronicInts = eventAction_->hadronicInts  + 1;
-			HGCSSGenParticle targPart;
+			unsigned int targetTrackLoc = std::find(eventAction_->novelTrackIds.begin(),
+					eventAction_->novelTrackIds.end(), lTrack->GetTrackID());
+					- eventAction_->novelTrackIds.begin();
+			if (targetTrackLoc == eventAction_->novelTrackIds.size()){
+				eventAction_->novelTrackIds.push_back(lTrack->GetTrackID());
+				eventAction_->hadronicInts = eventAction_->hadronicInts  + 1;
+				HGCSSGenParticle targPart;
 
-			for(G4TrackVector::const_iterator i=secondaries->begin(); i!=secondaries->end(); ++i){
-				G4Track* iTrack = *i;
-				HGCSSGenParticle genPart;
-				if (iTrack->GetKineticEnergy() < 10) continue;
-					if (targPart.vertexKE() == 0){
-						targPart.vertexKE(lTrack->GetKineticEnergy() - aStep->GetDeltaEnergy());
+				for(G4TrackVector::const_iterator i=secondaries->begin(); i!=secondaries->end(); ++i){
+					G4Track* iTrack = *i;
+					HGCSSGenParticle genPart;
+					if (iTrack->GetKineticEnergy() < 10) continue;
+						if (targPart.vertexKE() == 0){
+							targPart.vertexKE(lTrack->GetKineticEnergy() - aStep->GetDeltaEnergy());
 
 
-						const G4ThreeVector &p = lTrack->GetMomentum() + -1.*aStep->GetDeltaMomentum();
-						const G4ThreeVector &pos = lTrack->GetPosition();
-						if (p.mag() > 0){
-							TVector3 momVec(p[0]/p.mag(), p[1]/p.mag(), p[2]/p.mag());
-							targPart.vertexMom(momVec);
-						}
-						else{
-							G4cout << "This vertex momentum was broken" << G4endl;
-						}
-						TVector3 posVec(pos[0], pos[1], pos[2] - zOff);
-						targPart.vertexPos(posVec);
-						targPart.pdgid(pdgID);
-						targPart.layer(-eventAction_->hadronicInts);
-						eventAction_->incvec_.push_back(targPart);
-
-					}
-					//std::cout << "The trackKE is " << iTrack->GetKineticEnergy() << std::endl;
-					//std::cout << "The parent ID is is " << lTrack->GetDefinition()->GetPDGEncoding() << std::endl;
-
-					if (abs(iTrack->GetDefinition()->GetPDGEncoding()) != 11 &&
-							abs(iTrack->GetDefinition()->GetPDGEncoding()) != 22){
-						unsigned int hadronTrackLoc = std::find(eventAction_->novelTrackIds.begin(),
-								eventAction_->novelTrackIds.end(), iTrack->GetKineticEnergy())
-								- eventAction_->novelTrackIds.begin();
-						if (hadronTrackLoc == eventAction_->novelTrackIds.size()){
-							genPart.vertexKE(iTrack->GetKineticEnergy());
-							const G4ThreeVector &p = iTrack->GetMomentumDirection();
-							const G4ThreeVector &pos = iTrack->GetPosition();
-							TVector3 momVec(p[0], p[1], p[2]);
-							genPart.vertexMom(momVec);
+							const G4ThreeVector &p = lTrack->GetMomentum() + -1.*aStep->GetDeltaMomentum();
+							const G4ThreeVector &pos = lTrack->GetPosition();
+							if (p.mag() > 0){
+								TVector3 momVec(p[0]/p.mag(), p[1]/p.mag(), p[2]/p.mag());
+								targPart.vertexMom(momVec);
+							}
+							else{
+								G4cout << "This vertex momentum was broken" << G4endl;
+							}
 							TVector3 posVec(pos[0], pos[1], pos[2] - zOff);
-							genPart.vertexPos(posVec);
-							genPart.mass(iTrack->GetDefinition()->GetPDGMass());
-							genPart.pdgid(iTrack->GetDefinition()->GetPDGEncoding());
-							genPart.layer(eventAction_->hadronicInts);
-							eventAction_->hadvec_.push_back(genPart);
-							eventAction_->novelTrackIds.push_back(iTrack->GetKineticEnergy());
+							targPart.vertexPos(posVec);
+							targPart.pdgid(pdgID);
+							targPart.layer(-eventAction_->hadronicInts);
+							eventAction_->incvec_.push_back(targPart);
 
 						}
-					}
+						//std::cout << "The trackKE is " << iTrack->GetKineticEnergy() << std::endl;
+						//std::cout << "The parent ID is is " << lTrack->GetDefinition()->GetPDGEncoding() << std::endl;
+
+						if (abs(iTrack->GetDefinition()->GetPDGEncoding()) != 11 &&
+								abs(iTrack->GetDefinition()->GetPDGEncoding()) != 22){
+
+								genPart.vertexKE(iTrack->GetKineticEnergy());
+								const G4ThreeVector &p = iTrack->GetMomentumDirection();
+								const G4ThreeVector &pos = iTrack->GetPosition();
+								TVector3 momVec(p[0], p[1], p[2]);
+								genPart.vertexMom(momVec);
+								TVector3 posVec(pos[0], pos[1], pos[2] - zOff);
+								genPart.vertexPos(posVec);
+								genPart.mass(iTrack->GetDefinition()->GetPDGMass());
+								genPart.pdgid(iTrack->GetDefinition()->GetPDGEncoding());
+								genPart.layer(eventAction_->hadronicInts);
+								eventAction_->hadvec_.push_back(genPart);
+								eventAction_->novelTrackIds.push_back(iTrack->GetKineticEnergy());
+
+
+						}
+				}
+
 			}
-
-
 
 		}
 	}
