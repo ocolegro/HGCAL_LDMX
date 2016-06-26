@@ -134,7 +134,6 @@ int main(int argc, char** argv) {
 
 	unsigned nEvts = tree->GetEntries();
 	for (unsigned ievt(0); ievt < nEvts; ++ievt) { //loop on entries
-		std::cout << "The event is " << ievt << std::endl;
 		tree->GetEntry(ievt);
 		summedSen = evt_->dep();
 		summedSenWgt = evt_->wgtDep();
@@ -155,116 +154,117 @@ int main(int argc, char** argv) {
 		nEscapes = 0;
 
 
+		for (Int_t j = 0; j < incVec->size(); j++) {
+
+			HGCSSGenParticle& incPart = (*hadVec)[j];
+			TVector3 momVec = incPart.vertexMom();
+			TVector3 posVec = incPart.vertexPos();
+			unsigned iLoc		=	incPart.layer() - 1;
+
+			inc_KE[iLoc] = incPart.vertexKE();
+			inc_zpos[iLoc] = posVec[2];
+			inc_theta[iLoc] = acos(momVec[2])*180/3.14;
+			inc_pdgid[iLoc] = incPart.pdgid();
+
+
+			nInteractions = nInteractions + 1;
+			nSecondaries[iLoc] = 0;
+			nNeutronSecondaries[iLoc] = 0;
+			nProtonSecondaries[iLoc] = 0;
+			nOtherSecondaries[iLoc] = 0;
+			nContainedSecondaries[iLoc] = 0;
+			nUncontainedSecondaries[iLoc] = 0;
+			out_PE[iLoc] = 0;
+			out_NE[iLoc] = 0;
+			out_OE[iLoc] = 0;
+			out_Eff[iLoc] = 0;
+			out_KE[iLoc] = 0;
+
+		}
+
+
 		for (Int_t j = 0; j < hadVec->size(); j++) {
 			HGCSSGenParticle& hadron = (*hadVec)[j];
-			if(hadron.layer() > 0){
-				nHadrons = nHadrons + 1;
-				TVector3 momVec = hadron.vertexMom();
-				TVector3 posVec = hadron.vertexPos();
+			nHadrons = nHadrons + 1;
+			TVector3 momVec = hadron.vertexMom();
+			TVector3 posVec = hadron.vertexPos();
 
-				hadron_zpos[j]   	= posVec[2];
-				hadron_px[j]   		= momVec[0];
-				hadron_py[j]   		= momVec[1];
-				hadron_pz[j]   		= momVec[2];
-				hadron_theta[j]   	= acos(momVec[2]) * 180/3.14;
-				hadron_pdgid[j]   	= hadron.pdgid();
-				hadron_KE[j]		= hadron.vertexKE();
+			hadron_zpos[j]   	= posVec[2];
+			hadron_px[j]   		= momVec[0];
+			hadron_py[j]   		= momVec[1];
+			hadron_pz[j]   		= momVec[2];
+			hadron_theta[j]   	= acos(momVec[2]) * 180/3.14;
+			hadron_pdgid[j]   	= hadron.pdgid();
+			hadron_KE[j]		= hadron.vertexKE();
+			unsigned iLoc		=	hadron.layer() - 1;
 
-				std::cout << "The layer is " << hadron.layer() << std::endl;
+			out_KE[iLoc] += hadron_KE[j];
+			nSecondaries[iLoc] += 1;
+			bool acc = false;
+			if (hadron_theta[j] < 30){
+				nContainedSecondaries[iLoc] += 1;
+				acc = true;
+			}
+			else
+				nUncontainedSecondaries[iLoc] += 1;
 
-				out_KE[nInteractions - 1] += hadron_KE[j];
-				nSecondaries[nInteractions - 1] += 1;
-				bool acc = false;
-				if (hadron_theta[j] < 30){
-					nContainedSecondaries[nInteractions - 1] += 1;
-					acc = true;
+			//Do hadron stuff
+			if (abs(hadron_pdgid[j]) == 2112 || abs(hadron_pdgid[j])  == 2212){
+				convEng_1 += hadron_KE[j];
+				convEng_2 += hadron_KE[j];
+				if (acc) {
+					accconvEng_1 += hadron_KE[j];
+					accconvEng_2 += hadron_KE[j];
 				}
-				else
-					nUncontainedSecondaries[nInteractions - 1] += 1;
-
-				//Do hadron stuff
-				if (abs(hadron_pdgid[j]) == 2112 || abs(hadron_pdgid[j])  == 2212){
-					convEng_1 += hadron_KE[j];
-					convEng_2 += hadron_KE[j];
-					if (acc) {
-						accconvEng_1 += hadron_KE[j];
-						accconvEng_2 += hadron_KE[j];
-					}
-					out_Eff[nInteractions - 1] += hadron_KE[j];
+				out_Eff[iLoc] += hadron_KE[j];
 
 
-					// Do neutron stuff
-					if (abs(hadron_pdgid[j]) == 2112){
-						nNeutronSecondaries[nInteractions - 1] += 1;
-						if (hadron_pdgid[j] > 0)
-							out_NE[nInteractions - 1] += hadron_KE[j];
-						else{
-							out_NE[nInteractions - 1] += hadron_KE[j] +  2*hadron.mass() ;
-							convEng_1 +=  2*hadron.mass();
+				// Do neutron stuff
+				if (abs(hadron_pdgid[j]) == 2112){
+					nNeutronSecondaries[iLoc] += 1;
+					if (hadron_pdgid[j] > 0)
+						out_NE[iLoc] += hadron_KE[j];
+					else{
+						out_NE[iLoc] += hadron_KE[j] +  2*hadron.mass() ;
+						convEng_1 +=  2*hadron.mass();
 
-							out_Eff[nInteractions - 1]+=  2*hadron.mass();
+						out_Eff[iLoc]+=  2*hadron.mass();
 
-							if (acc) accconvEng_1 += 2*hadron.mass();
-
-						}
-
-					}
-					//Do Proton stuff
-					if (abs(hadron_pdgid[j]) == 2212){
-						nProtonSecondaries[nInteractions - 1] += 1;
-						if (hadron_pdgid[j] > 0)
-							out_PE[nInteractions - 1] += hadron_KE[j];
-						else{
-							out_PE[nInteractions - 1] += hadron_KE[j] +  hadron.mass() ;
-							convEng_1 +=  2*hadron.mass();
-
-							out_Eff[nInteractions - 1] +=  2*hadron.mass();
-
-							if (acc) accconvEng_1 += 2*hadron.mass();
-						}
+						if (acc) accconvEng_1 += 2*hadron.mass();
 
 					}
 
 				}
-				else if (abs(hadron_pdgid[j]) <10000  && abs(hadron_pdgid[j]) != 22 && abs(hadron_pdgid[j]) != 11
-						&& hadron_pdgid[j] != 0){
-					convEng_1 += hadron_KE[j];
-					convEng_2 += hadron_KE[j] + hadron.mass();
+				//Do Proton stuff
+				if (abs(hadron_pdgid[j]) == 2212){
+					nProtonSecondaries[iLoc] += 1;
+					if (hadron_pdgid[j] > 0)
+						out_PE[iLoc] += hadron_KE[j];
+					else{
+						out_PE[iLoc] += hadron_KE[j] +  hadron.mass() ;
+						convEng_1 +=  2*hadron.mass();
 
-					if (acc) {
-						accconvEng_1 += hadron_KE[j]+hadron.mass();
-						accconvEng_2 += hadron_KE[j];
+						out_Eff[iLoc] +=  2*hadron.mass();
+
+						if (acc) accconvEng_1 += 2*hadron.mass();
 					}
-
-					out_OE[nInteractions - 1] += hadron_KE[j]+hadron.mass();
-					out_Eff[nInteractions - 1] +=  hadron.mass();
-					nOtherSecondaries[nInteractions - 1] += 1;
 
 				}
 
 			}
-			else{
-				TVector3 momVec = hadron.vertexMom();
-				TVector3 posVec = hadron.vertexPos();
+			else if (abs(hadron_pdgid[j]) <10000  && abs(hadron_pdgid[j]) != 22 && abs(hadron_pdgid[j]) != 11
+					&& hadron_pdgid[j] != 0){
+				convEng_1 += hadron_KE[j];
+				convEng_2 += hadron_KE[j] + hadron.mass();
 
-				inc_KE[nInteractions] = hadron.vertexKE();
-				inc_zpos[nInteractions] = posVec[2];
-				inc_theta[nInteractions] = acos(momVec[2])*180/3.14;
-				inc_pdgid[nInteractions] = hadron.pdgid();
+				if (acc) {
+					accconvEng_1 += hadron_KE[j]+hadron.mass();
+					accconvEng_2 += hadron_KE[j];
+				}
 
-
-				nInteractions = nInteractions + 1;
-				nSecondaries[nInteractions - 1] = 0;
-				nNeutronSecondaries[nInteractions - 1] = 0;
-				nProtonSecondaries[nInteractions - 1] = 0;
-				nOtherSecondaries[nInteractions - 1] = 0;
-				nContainedSecondaries[nInteractions - 1] = 0;
-				nUncontainedSecondaries[nInteractions - 1] = 0;
-				out_PE[nInteractions - 1] = 0;
-				out_NE[nInteractions - 1] = 0;
-				out_OE[nInteractions - 1] = 0;
-				out_Eff[nInteractions - 1] = 0;
-				out_KE[nInteractions - 1] = 0;
+				out_OE[iLoc] += hadron_KE[j]+hadron.mass();
+				out_Eff[iLoc] +=  hadron.mass();
+				nOtherSecondaries[iLoc] += 1;
 
 			}
 		}
