@@ -221,7 +221,7 @@ int main(int argc, char** argv) {
 
 				// Do neutron stuff
 				if (abs(hadron_pdgid[j]) == 2112){
-					nNeutronSecondaries[iLoc] += 1;
+					nNeutronSecondaries[iLoc] = nNeutronSecondaries[iLoc] + 1;
 					if (hadron_pdgid[j] > 0)
 						out_NE[iLoc] += hadron_KE[j];
 					else{
