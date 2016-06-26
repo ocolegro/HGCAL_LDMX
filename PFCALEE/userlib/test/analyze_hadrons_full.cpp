@@ -134,6 +134,7 @@ int main(int argc, char** argv) {
 
 	unsigned nEvts = tree->GetEntries();
 	for (unsigned ievt(0); ievt < nEvts; ++ievt) { //loop on entries
+		std::cout << "The event is " << ievt << std::endl;
 		tree->GetEntry(ievt);
 		summedSen = evt_->dep();
 		summedSenWgt = evt_->wgtDep();
