@@ -278,8 +278,8 @@ int main(int argc, char** argv) {
 			}
 			else if (abs(hadron_pdgid[j]) <10000  && abs(hadron_pdgid[j]) != 22 && abs(hadron_pdgid[j]) != 11
 					&& hadron_pdgid[j] != 0){
-				convEng_1 += hadron_KE[j];
-				convEng_2 += hadron_KE[j] + hadron.mass();
+				convEng_1 += hadron_KE[j] + hadron.mass();
+				convEng_2 += hadron_KE[j];
 
 				if (acc) {
 					accconvEng_1 += hadron_KE[j]+hadron.mass();

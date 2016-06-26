@@ -51,12 +51,14 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 	const G4ThreeVector & position = thePreStepPoint->GetPosition();
 	HGCSSGenParticle genPart;
 	eventAction_->Detect(eRawDep,pdgID,kinEng, volume);
+	const G4TrackVector* secondaries= aStep->GetSecondary();
 
 
 	bool trackEscapes = (lTrack->GetTrackStatus()!=fAlive
 			&& (lTrack->GetKineticEnergy() > 10)
 			&& secondPass
-			&& (volume->GetName() == "expHall") );
+			&& (volume->GetName() == "expHall")
+			&& secondaries->size() == 0);
 	if (trackEscapes){
 
 		HGCSSGenParticle escapePart;
@@ -74,12 +76,12 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 
 		eventAction_->escapevec_.push_back(escapePart);
 	}
-	const G4TrackVector* secondaries= aStep->GetSecondary();
 	if(secondaries->size() > 0){
 	G4String theProcessName=secondaries->at(0)->GetCreatorProcess()->GetProcessName();
 	//if (theProcessName != "eIoni" && theProcessName != "eBrem" && theProcessName!="hadElastic"
 		//	&& theProcessName!="neutronElastic" && theProcessName!="conv" && theProcessName != "ionIoni"){ //(theProcessName == "photoNuclear" || theProcessName == "electroNuclear"){
-		if (theProcessName == "PhotonInelastic" || theProcessName == "ElectroNuclear" || theProcessName == "PositronNuclear" ){
+		if ( (theProcessName == "PhotonInelastic" || theProcessName == "ElectroNuclear" || theProcessName == "PositronNuclear")
+				&& (abs(pdgID) == 22 || abs(pdgID) == 11)){
 			eventAction_->hadronicInts = eventAction_->hadronicInts  + 1;
 			HGCSSGenParticle targPart;
 
@@ -107,19 +109,27 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 						eventAction_->incvec_.push_back(targPart);
 
 					}
+					std::cout << "The trackID is " << iTrack->GetTrackID() << std::endl;
 					if (abs(iTrack->GetDefinition()->GetPDGEncoding()) != 11 &&
 							abs(iTrack->GetDefinition()->GetPDGEncoding()) != 22){
-						genPart.vertexKE(iTrack->GetKineticEnergy());
-						const G4ThreeVector &p = iTrack->GetMomentumDirection();
-						const G4ThreeVector &pos = iTrack->GetPosition();
-						TVector3 momVec(p[0], p[1], p[2]);
-						genPart.vertexMom(momVec);
-						TVector3 posVec(pos[0], pos[1], pos[2] - zOff);
-						genPart.vertexPos(posVec);
-						genPart.mass(iTrack->GetDefinition()->GetPDGMass());
-						genPart.pdgid(iTrack->GetDefinition()->GetPDGEncoding());
-						genPart.layer(eventAction_->hadronicInts);
-						eventAction_->hadvec_.push_back(genPart);
+						unsigned int hadronTrackLoc = std::find(eventAction_->novelTrackIds.begin(),
+								eventAction_->novelTrackIds.end(), iTrack->GetTrackID())
+								- eventAction_->novelTrackIds.begin();
+						if (hadronTrackLoc == eventAction_->novelTrackIds.size()){
+							genPart.vertexKE(iTrack->GetKineticEnergy());
+							const G4ThreeVector &p = iTrack->GetMomentumDirection();
+							const G4ThreeVector &pos = iTrack->GetPosition();
+							TVector3 momVec(p[0], p[1], p[2]);
+							genPart.vertexMom(momVec);
+							TVector3 posVec(pos[0], pos[1], pos[2] - zOff);
+							genPart.vertexPos(posVec);
+							genPart.mass(iTrack->GetDefinition()->GetPDGMass());
+							genPart.pdgid(iTrack->GetDefinition()->GetPDGEncoding());
+							genPart.layer(eventAction_->hadronicInts);
+							eventAction_->hadvec_.push_back(genPart);
+							eventAction_->novelTrackIds.push_back(iTrack->GetTrackID());
+
+						}
 					}
 			}
 
