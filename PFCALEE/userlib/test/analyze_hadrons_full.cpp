@@ -134,6 +134,7 @@ int main(int argc, char** argv) {
 
 	unsigned nEvts = tree->GetEntries();
 	for (unsigned ievt(0); ievt < nEvts; ++ievt) { //loop on entries
+		std::cout << "The event is ievt = " << ievt << std::endl;
 		tree->GetEntry(ievt);
 		summedSen = evt_->dep();
 		summedSenWgt = evt_->wgtDep();
@@ -153,8 +154,11 @@ int main(int argc, char** argv) {
 		nHadrons = 0;
 		nEscapes = 0;
 
+		std::cout << "The incVec size is = " << incVec->size() << std::endl;
 
 		for (Int_t j = 0; j < incVec->size(); j++) {
+
+			std::cout << "Looping over inc part = " << j << std::endl;
 
 			HGCSSGenParticle& incPart = (*hadVec)[j];
 			TVector3 momVec = incPart.vertexMom();
@@ -182,8 +186,10 @@ int main(int argc, char** argv) {
 
 		}
 
+		std::cout << "The hadronvec size is = " << hadVec->size() << std::endl;
 
 		for (Int_t j = 0; j < hadVec->size(); j++) {
+			std::cout << "Looping over hadron part = " << j << std::endl;
 			HGCSSGenParticle& hadron = (*hadVec)[j];
 			nHadrons = nHadrons + 1;
 			TVector3 momVec = hadron.vertexMom();
@@ -268,8 +274,11 @@ int main(int argc, char** argv) {
 
 			}
 		}
+		std::cout << "The escapeVec size is = " << incVec->size() << std::endl;
 
 		for (Int_t j = 0; j < escapeVec->size(); j++) {
+			std::cout << "Looping over escape part = " << j << std::endl;
+
 			HGCSSGenParticle& escape = (*escapeVec)[j];
 			nEscapes = nEscapes + 1;
 			TVector3 momVec = escape.vertexMom();
