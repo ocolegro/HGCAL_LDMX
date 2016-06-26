@@ -47,6 +47,8 @@ class G4VPrimaryGenerator;
 class G4ParticleGun;
 class HepMCG4AsciiReader;
 class HepMCG4PythiaInterface;
+class TFile;
+class TTree;
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 

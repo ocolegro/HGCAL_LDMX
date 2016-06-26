@@ -48,6 +48,8 @@
 #include "HepMCG4AsciiReader.hh"
 #include "HepMCG4PythiaInterface.hh"
 #include "HGCSSGenParticle.hh"
+#include "TTree.h"
+#include "TFile.h"
 
 #include <fstream>
 #include <string>
