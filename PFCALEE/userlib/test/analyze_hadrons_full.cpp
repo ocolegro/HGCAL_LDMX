@@ -185,7 +185,7 @@ int main(int argc, char** argv) {
 			std::cout << "storing pdgid = " << j << std::endl;
 
 			inc_pdgid[iLoc] = incPart.pdgid();
-
+			if (iLoc > 50000) iLoc = 0;
 			std::cout << "resetting counters  " << j << std::endl;
 
 			nInteractions = nInteractions + 1;
