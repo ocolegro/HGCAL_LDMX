@@ -36,7 +36,7 @@
 
 int main(int argc, char** argv) {
 
-	std::cout << "Opening the file " << argv[1] << std::endl;
+	//std::cout << "Opening the file " << argv[1] << std::endl;
 	TFile *infile = TFile::Open(argv[1]);
 	TTree *tree = (TTree*) infile->Get("HGCSSTree");
 	freopen("log.txt", "w", stdout);
@@ -134,7 +134,7 @@ int main(int argc, char** argv) {
 
 	unsigned nEvts = tree->GetEntries();
 	for (unsigned ievt(0); ievt < nEvts; ++ievt) { //loop on entries
-		std::cout << "The event is ievt = " << ievt << std::endl;
+		//std::cout << "The event is ievt = " << ievt << std::endl;
 		tree->GetEntry(ievt);
 		summedSen = evt_->dep();
 		summedSenWgt = evt_->wgtDep();
@@ -154,44 +154,42 @@ int main(int argc, char** argv) {
 		nHadrons = 0;
 		nEscapes = 0;
 
-		std::cout << "The incVec size is = " << incVec->size() << std::endl;
+		//std::cout << "The incVec size is = " << incVec->size() << std::endl;
 
 		for (Int_t j = 0; j < incVec->size(); j++) {
 
-			std::cout << "Looping over inc part = " << j << std::endl;
+			//std::cout << "Looping over inc part = " << j << std::endl;
 
 
 			HGCSSGenParticle& incPart = (*incVec)[j];
-			std::cout << "quering vertex mom = " << j << std::endl;
+			//std::cout << "quering vertex mom = " << j << std::endl;
 
 			TVector3 momVec = incPart.vertexMom();
-			std::cout << "quering vertex pos = " << j << std::endl;
+			//std::cout << "quering vertex pos = " << j << std::endl;
 
 			TVector3 posVec = incPart.vertexPos();
-			std::cout << "quering interaction = " << j << std::endl;
+			//std::cout << "quering interaction = " << j << std::endl;
 
-			std::cout << "incPart.layer() is " << incPart.layer() << std::endl;
+			//std::cout << "incPart.layer() is " << incPart.layer() << std::endl;
 
 			unsigned iLoc		=	-incPart.layer() - 1;
 
-			std::cout << "iLoc is " << iLoc << std::endl;
-			if (iLoc > 50000) iLoc = 0;
 
-			std::cout << "storing ke = " << j << std::endl;
+			//std::cout << "storing ke = " << j << std::endl;
 
 			inc_KE[iLoc] = incPart.vertexKE();
-			std::cout << "storing zpos = " << j << std::endl;
+			//std::cout << "storing zpos = " << j << std::endl;
 
 			inc_zpos[iLoc] = posVec[2];
-			std::cout << "storing momvec = " << j << std::endl;
+			//std::cout << "storing momvec = " << j << std::endl;
 
 			inc_theta[iLoc] = acos(momVec[2])*180/3.14;
-			std::cout << "storing pdgid = " << j << std::endl;
+			//std::cout << "storing pdgid = " << j << std::endl;
 
 			inc_pdgid[iLoc] = incPart.pdgid();
-			std::cout << "resetting counters  " << j << std::endl;
+			//std::cout << "resetting counters  " << j << std::endl;
 
-			nInteractions = nInteractions + 1;
+			nInteractions = iLoc + 1;
 			nSecondaries[iLoc] = 0;
 			nNeutronSecondaries[iLoc] = 0;
 			nProtonSecondaries[iLoc] = 0;
@@ -206,10 +204,10 @@ int main(int argc, char** argv) {
 
 		}
 
-		std::cout << "The hadronvec size is = " << hadVec->size() << std::endl;
+		//std::cout << "The hadronvec size is = " << hadVec->size() << std::endl;
 
 		for (Int_t j = 0; j < hadVec->size(); j++) {
-			std::cout << "Looping over hadron part = " << j << std::endl;
+			//std::cout << "Looping over hadron part = " << j << std::endl;
 			HGCSSGenParticle& hadron = (*hadVec)[j];
 			nHadrons = nHadrons + 1;
 			TVector3 momVec = hadron.vertexMom();
@@ -294,10 +292,10 @@ int main(int argc, char** argv) {
 
 			}
 		}
-		std::cout << "The escapeVec size is = " << incVec->size() << std::endl;
+		//std::cout << "The escapeVec size is = " << incVec->size() << std::endl;
 
 		for (Int_t j = 0; j < escapeVec->size(); j++) {
-			std::cout << "Looping over escape part = " << j << std::endl;
+			//std::cout << "Looping over escape part = " << j << std::endl;
 
 			HGCSSGenParticle& escape = (*escapeVec)[j];
 			nEscapes = nEscapes + 1;
