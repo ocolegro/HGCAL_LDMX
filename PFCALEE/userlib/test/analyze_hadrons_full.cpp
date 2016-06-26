@@ -171,12 +171,19 @@ int main(int argc, char** argv) {
 			std::cout << "quering interaction = " << j << std::endl;
 
 			unsigned iLoc		=	incPart.layer() - 1;
+			std::cout << "iLoc is " << iLoc << std::endl;
 
 			std::cout << "storing ke = " << j << std::endl;
 
 			inc_KE[iLoc] = incPart.vertexKE();
+			std::cout << "storing zpos = " << j << std::endl;
+
 			inc_zpos[iLoc] = posVec[2];
+			std::cout << "storing momvec = " << j << std::endl;
+
 			inc_theta[iLoc] = acos(momVec[2])*180/3.14;
+			std::cout << "storing pdgid = " << j << std::endl;
+
 			inc_pdgid[iLoc] = incPart.pdgid();
 
 			std::cout << "resetting counters  " << j << std::endl;
