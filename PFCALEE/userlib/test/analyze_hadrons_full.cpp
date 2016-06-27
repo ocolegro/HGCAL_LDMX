@@ -196,7 +196,7 @@ int main(int argc, char** argv) {
 			inc_pdgid[iLoc] = incPart.pdgid();
 			//std::cout << "resetting counters  " << j << std::endl;
 
-			//nInteractions = iLoc + 1;
+			nInteractions = iLoc + 1;
 			nSecondaries[iLoc] = 0;
 			nNeutronSecondaries[iLoc] = 0;
 			nProtonSecondaries[iLoc] = 0;
