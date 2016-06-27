@@ -216,6 +216,8 @@ int main(int argc, char** argv) {
 			if (hadronTrackLoc != hadronKEs.size()) continue;
 			hadronKEs.push_back(hadron.vertexKE());
 			//std::cout << "Looping over hadron part = " << j << std::endl;
+			if (hadron.layer() > 100)
+					std::cout << "The hadron KE is " << hadron.vertexKE();
 			nHadrons = nHadrons + 1;
 			TVector3 momVec = hadron.vertexMom();
 			TVector3 posVec = hadron.vertexPos();
