@@ -34,7 +34,7 @@
 #pragma link C++ class vector<float>+;
 #endif
 
-bool checkDuplicate(std::vector<double> oldEng,newEng){
+bool checkDuplicate(std::vector<double> oldEng,double newEng){
 	for (unsigned i = 0; i < oldEng.size(); i++){
 		if ( (oldEng.at(i) - newEng) < .01) return false;
 	}
