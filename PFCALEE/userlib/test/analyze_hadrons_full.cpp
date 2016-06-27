@@ -236,7 +236,7 @@ int main(int argc, char** argv) {
 			hadron_pdgid[j]   	= hadron.pdgid();
 			hadron_KE[j]		= hadron.vertexKE();
 			unsigned iLoc		=	hadron.layer() - 1;
-			if (iLoc > nInteractions) nInteractions = iLoc;
+			if (iLoc > nInteractions) nInteractions = iLoc +1;
 
 			out_KE[iLoc] += hadron_KE[j];
 			nSecondaries[iLoc] += 1;
