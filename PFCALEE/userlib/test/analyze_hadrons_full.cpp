@@ -34,6 +34,11 @@
 #pragma link C++ class vector<float>+;
 #endif
 
+bool checkDuplicate(std::vector<double> oldEng,newEng){
+	for (unsigned i = 0; i < oldEng.size(); i++){
+		if ( (oldEng.at(i) - newEng) < .01) return false;
+	}
+}
 int main(int argc, char** argv) {
 
 	//std::cout << "Opening the file " << argv[1] << std::endl;
@@ -131,7 +136,7 @@ int main(int argc, char** argv) {
 
 
 
-	std::vector<float> hadronKEs;
+	std::vector<double> hadronKEs;
 
 	unsigned nEvts = tree->GetEntries();
 	for (unsigned ievt(0); ievt < nEvts; ++ievt) { //loop on entries
@@ -206,18 +211,18 @@ int main(int argc, char** argv) {
 		}
 
 		//std::cout << "The hadronvec size is = " << hadVec->size() << std::endl;
-
 		for (Int_t j = 0; j < hadVec->size(); j++) {
 			HGCSSGenParticle& hadron = (*hadVec)[j];
 
-			unsigned int hadronTrackLoc = std::find(hadronKEs.begin(),
-					hadronKEs.end(), hadron.vertexKE())
-					- hadronKEs.begin();
-			if (hadronTrackLoc != hadronKEs.size()) continue;
-			hadronKEs.push_back(hadron.vertexKE());
+			//unsigned int hadronTrackLoc = std::find(hadronKEs.begin(),
+			//			hadronKEs.end(), hadron.vertexKE())
+			//		- hadronKEs.begin();
+			//if (hadronTrackLoc != hadronKEs.size()) continue;
 			//std::cout << "Looping over hadron part = " << j << std::endl;
-			if (hadron.layer() > 100)
-					std::cout << "The hadron KE is " << hadron.vertexKE();
+			//if (hadron.layer() > 100)
+			//		std::cout << "The hadron KE is " << hadron.vertexKE();
+			if (checkDuplicate(hadronKEs,hadron.vertexKE()) == false) continue;
+			hadronKEs.push_back(hadron.vertexKE());
 			nHadrons = nHadrons + 1;
 			TVector3 momVec = hadron.vertexMom();
 			TVector3 posVec = hadron.vertexPos();
