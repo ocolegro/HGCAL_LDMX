@@ -31,9 +31,9 @@ public:
 		return num;
 
 	};
-	inline bool checkDuplicate(std::vector<double> oldEng,double newEng){
-		for (unsigned i = 0; i < oldEng.size(); i++){
-			if ( (oldEng.at(i) - newEng) < .01) return false;
+	inline bool checkDuplicate(std::vector<double> engVec,double currentEng){
+		for (unsigned i = 0; i < engVec.size(); i++){
+			if ( (engVec.at(i) - currentEng) < .01) return false;
 		}
 		return true;
 	};

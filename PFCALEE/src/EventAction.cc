@@ -184,5 +184,5 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 	hadvec_.clear();
 	incvec_.clear();
 	escapevec_.clear();
-	novelTrackIds.clear();
+	targetPartEngs.clear();
 }

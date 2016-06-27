@@ -50,7 +50,7 @@ public:
 	;
 	HGCSSGenParticleVec genvec_,hadvec_,incvec_,escapevec_;
 	G4int hadronicInts;
-	std::vector<double> novelTrackIds;
+	std::vector<double> targetPartEngs;
 	G4int evtNb_;
 private:
 	std::vector<SamplingSection> *detector_;

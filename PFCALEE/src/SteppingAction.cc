@@ -83,9 +83,9 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 		if ( (theProcessName == "PhotonInelastic" || theProcessName == "ElectroNuclear" || theProcessName == "PositronNuclear")
 				&& (abs(pdgID) == 22 || abs(pdgID) == 11)){
 			//sloppy fix for strange geant4 stepping action
-			bool checkSecEngs = checkDuplicate(eventAction_->novelTrackIds,lTrack->GetKineticEnergy());
+			bool checkSecEngs = checkDuplicate(eventAction_->targetPartEngs,lTrack->GetKineticEnergy());
 			if (checkSecEngs){
-				eventAction_->novelTrackIds.push_back(lTrack->GetTrackID());
+				eventAction_->targetPartEngs.push_back(lTrack->GetTrackID());
 				eventAction_->hadronicInts = eventAction_->hadronicInts  + 1;
 				HGCSSGenParticle targPart;
 
@@ -130,7 +130,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 								genPart.pdgid(iTrack->GetDefinition()->GetPDGEncoding());
 								genPart.layer(eventAction_->hadronicInts);
 								eventAction_->hadvec_.push_back(genPart);
-								eventAction_->novelTrackIds.push_back(iTrack->GetKineticEnergy());
+								eventAction_->targetPartEngs.push_back(iTrack->GetKineticEnergy());
 
 
 						}
