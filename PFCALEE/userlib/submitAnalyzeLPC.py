@@ -5,7 +5,7 @@ import optparse
 import commands
 import math
 import random
-
+import time
 random.seed()
 
 usage = 'usage: %prog [options]'
@@ -90,7 +90,7 @@ for thickness in thickness_:
     if opt.nosubmit   :
         os.chdir("%s" % (outDir));
         os.system('echo %s'%(outDir))
-
+        time.sleep(5)
         os.system('./runJob.sh')
 
     else:
