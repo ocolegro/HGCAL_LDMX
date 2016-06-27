@@ -57,10 +57,10 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 	bool trackEscapes = (lTrack->GetTrackStatus()!=fAlive
 			&& (lTrack->GetKineticEnergy() > 10)
 			&& secondPass
-			&& (volume->GetName() == "expHall")
-			&& secondaries->size() == 0);
+			&& (volume->GetName() == "expHall"));
+			//&&);
 	if (trackEscapes){
-
+		std::cout << "The number of secondaries = " <<  secondaries->size() << std::endl;
 		HGCSSGenParticle escapePart;
 		escapePart.vertexKE(lTrack->GetVertexKineticEnergy()); //- aStep->GetDeltaEnergy());
 		escapePart.finalKE(lTrack->GetKineticEnergy()); //- aStep->GetDeltaEnergy());
