@@ -83,10 +83,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 		if ( (theProcessName == "PhotonInelastic" || theProcessName == "ElectroNuclear" || theProcessName == "PositronNuclear")
 				&& (abs(pdgID) == 22 || abs(pdgID) == 11)){
 			//sloppy fix for strange geant4 stepping action
-			unsigned targetTrackLoc = std::find(eventAction_->novelTrackIds.begin(),
-					eventAction_->novelTrackIds.end(), lTrack->GetTrackID())
-					- eventAction_->novelTrackIds.begin();
-			if (targetTrackLoc == eventAction_->novelTrackIds.size()){
+
 				eventAction_->novelTrackIds.push_back(lTrack->GetTrackID());
 				eventAction_->hadronicInts = eventAction_->hadronicInts  + 1;
 				HGCSSGenParticle targPart;
@@ -140,7 +137,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 
 			}
 
-		}
+
 	}
 }
 
