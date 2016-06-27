@@ -61,7 +61,12 @@ StackingAction::ClassifyNewTrack(const G4Track* lTrack)
 
 	if ( ((abs(pdgID) == 11) ||  (abs(pdgID) == 22)) && kinEng < 100) {
 		if (!eventAction_->GetWait()){
-			return fKill;
+			if (eventAction_->GetSpeed()){
+				return fKill;
+			}
+			else{
+				return fUrgent;
+			}
 		}
 		else{
 			return fWaiting;

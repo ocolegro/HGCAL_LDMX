@@ -142,7 +142,6 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent) {
 	G4double x0 = G4RandFlat::shoot(-10.,10);
 	G4double z0 = -0.5 * (Detector->GetWorldSizeZ());
 
-
 	particleGun->SetParticlePosition(G4ThreeVector(x0, y0, z0));
 	HGCSSGenParticle genPart;
 	genPart.vertexKE(et);

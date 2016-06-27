@@ -15,9 +15,10 @@
 #include "TVector3.h"
 #include "TMath.h"
 //
-EventAction::EventAction() {
+EventAction::EventAction(G4bool doFast) {
 	eventMessenger = new EventActionMessenger(this);
 	printModulo = 100;
+	doFast_ = doFast;
 	outF_ = TFile::Open("PFcal.root", "RECREATE");
 	//summedDep = 0;nSteps = 0;nMainSteps = 0;
 	//depCut = 150;

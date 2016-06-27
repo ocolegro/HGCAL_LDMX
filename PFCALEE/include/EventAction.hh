@@ -26,7 +26,7 @@ class StackingAction;
 
 class EventAction: public G4UserEventAction {
 public:
-	EventAction();
+	EventAction(G4bool doFast);
 	virtual ~EventAction();
 	void BeginOfEventAction(const G4Event*);
 	void EndOfEventAction(const G4Event*);
@@ -48,6 +48,10 @@ public:
 		return wait_;
 	}
 	;
+	inline G4bool GetSpeed() {
+		return doFast_;
+	}
+	;
 	HGCSSGenParticleVec genvec_,hadvec_,incvec_,escapevec_;
 	G4int hadronicInts;
 	std::vector<double> targetPartEngs;
@@ -56,6 +60,7 @@ private:
 	std::vector<SamplingSection> *detector_;
 	G4int printModulo,initLayer;
 	G4bool wait_;
+	G4bool doFast_;
 	//int nSteps,nMainSteps;
 	//G4double depCut;
 	//G4double summedDep;
