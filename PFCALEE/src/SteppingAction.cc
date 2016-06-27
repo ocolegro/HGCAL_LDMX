@@ -84,15 +84,18 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 				&& (abs(pdgID) == 22 || abs(pdgID) == 11)){
 			//sloppy fix for strange geant4 stepping action
 			bool checkSecEngs = true;
+			bool someHadrons = false;
 			for(G4TrackVector::const_iterator i=secondaries->begin(); i!=secondaries->end(); ++i){
 				G4Track* iTrack = *i;
 				if (iTrack->GetKineticEnergy() < 10) continue;
 				if (!checkDuplicate(eventAction_->targetPartEngs,iTrack->GetKineticEnergy()))
 					checkSecEngs = false;
+				if (abs(iTrack->GetDefinition()->GetPDGEncoding()) != 11 ||
+						abs(iTrack->GetDefinition()->GetPDGEncoding()) != 22)
+					someHadrons = true;
 
 			}
-			if (checkSecEngs){
-				eventAction_->targetPartEngs.push_back(lTrack->GetKineticEnergy());
+			if (checkSecEngs && someHadrons){
 				eventAction_->hadronicInts = eventAction_->hadronicInts  + 1;
 				HGCSSGenParticle targPart;
 
@@ -122,6 +125,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 						}
 						//std::cout << "The trackKE is " << iTrack->GetKineticEnergy() << std::endl;
 						//std::cout << "The parent ID is is " << lTrack->GetDefinition()->GetPDGEncoding() << std::endl;
+						eventAction_->targetPartEngs.push_back(iTrack->GetKineticEnergy());
 
 						if (abs(iTrack->GetDefinition()->GetPDGEncoding()) != 11 &&
 								abs(iTrack->GetDefinition()->GetPDGEncoding()) != 22){
@@ -137,7 +141,6 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 								genPart.pdgid(iTrack->GetDefinition()->GetPDGEncoding());
 								genPart.layer(eventAction_->hadronicInts);
 								eventAction_->hadvec_.push_back(genPart);
-								eventAction_->targetPartEngs.push_back(iTrack->GetKineticEnergy());
 
 
 						}
