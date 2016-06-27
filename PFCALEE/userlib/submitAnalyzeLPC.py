@@ -51,11 +51,15 @@ for thickness in thickness_:
     scriptFile = open('%s/runJob.sh'%(outDir), 'w')
     scriptFile.write('#!/bin/bash\n')
     scriptFile.write('source g4env4lpc.sh\n')#%(os.getcwd()))
-
-    outTag='%s_version%d_model%d_thick%s'%(label,opt.version,opt.model,thickness)
     if (opt.run>=0) : outTag='%s_run%d'%(outTag,opt.run)
 
-    scriptFile.write('./%s HGcal_%s_second.root  \n'%(opt.macro,outTag))
+    if opt.signal>0 :
+        outTag='%s_version%d_model%d_thick%s_second'%(label,opt.version,opt.model,thickness)
+    else:
+        outTag='%s_version%d_model%d_thick%s'%(label,opt.version,opt.model,thickness)
+
+
+    scriptFile.write('./%s HGcal_%s.root  \n'%(opt.macro,outTag))
 
     scriptFile.write('xrdcp -f analyzed_tuple.root root://cmseos.fnal.gov/%s/analyzed_%s.root\n'%(outDir,outTag))
 
@@ -99,7 +103,7 @@ for thickness in thickness_:
         f2.write("request_disk = 10000000\n");
         f2.write("request_memory = 10000\n");
         f2.write("Should_Transfer_Files = YES \n");
-        f2.write("Transfer_Input_Files = %s,HGcal_%s_second.root,g4env4lpc.sh,libPFCalEE.so,libPFCalEEuserlib.so,PFCalEE,g4steer.mac \n" % (opt.macro,outTag) );
+        f2.write("Transfer_Input_Files = %s,HGcal_%s.root,g4env4lpc.sh,libPFCalEE.so,libPFCalEEuserlib.so,PFCalEE,g4steer.mac \n" % (opt.macro,outTag) );
         f2.write("WhenToTransferOutput  = ON_EXIT_OR_EVICT \n");
         f2.write("Output = "+outtag+".stdout \n");
         f2.write("Error = "+outtag+".stderr \n");
