@@ -66,7 +66,7 @@ int main(int argc, char** argv) {
 	runManager->SetUserInitialization(new PhysicsList);
 
 	// Set user action classes
-	runManager->SetUserAction(new EventAction);
+	runManager->SetUserAction(new EventAction(signal));
 	runManager->SetUserAction(new SteppingAction(data));
 	runManager->SetUserAction(new StackingAction(data));
 
