@@ -56,10 +56,10 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 
 	bool trackEscapes = ((lTrack->GetTrackStatus()!=fAlive
 			&& (lTrack->GetKineticEnergy() > 10)
-			&& secondPass
+			&& (secondPass || (!eventAction_->GetSpeed()))
 			&& (volume->GetName() == "expHall")
 			&& secondaries->size() == 0)
-			|| (!eventAction_->GetSpeed()) );
+			 );
 	if (trackEscapes){
 
 		HGCSSGenParticle escapePart;
