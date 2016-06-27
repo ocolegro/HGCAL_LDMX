@@ -91,7 +91,7 @@ for thickness in thickness_:
         os.chdir("%s" % (outDir));
         os.system('echo %s'%(outDir))
 
-        os.system('./runJob.sh'%(outDir))
+        os.system('./runJob.sh')
 
     else:
         #os.system("LSB_JOB_REPORT_MAIL=N bsub -q %s -N \'%s/runJob.sh\'"%(myqueue,outDir))
