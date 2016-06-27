@@ -51,12 +51,9 @@ for thickness in thickness_:
     scriptFile = open('%s/runJob.sh'%(outDir), 'w')
     scriptFile.write('#!/bin/bash\n')
     scriptFile.write('source g4env4lpc.sh\n')#%(os.getcwd()))
+    outTag='%s_version%d_model%d_thick%s'%(label,opt.version,opt.model,thickness)
     if (opt.run>=0) : outTag='%s_run%d'%(outTag,opt.run)
-
-    if opt.signal>0 :
-        outTag='%s_version%d_model%d_thick%s_second'%(label,opt.version,opt.model,thickness)
-    else:
-        outTag='%s_version%d_model%d_thick%s'%(label,opt.version,opt.model,thickness)
+    if (opt.signal>0) : outTag = '%s_second' % (outTag)
 
 
     scriptFile.write('./%s HGcal_%s.root  \n'%(opt.macro,outTag))
