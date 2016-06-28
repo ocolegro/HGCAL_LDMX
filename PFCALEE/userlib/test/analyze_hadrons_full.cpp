@@ -53,6 +53,9 @@ int main(int argc, char** argv) {
 	std::vector<HGCSSGenParticle> * incVec = 0;
 	tree->SetBranchAddress("HGCSSIncAction", &incVec);
 
+	std::vector<HGCSSGenParticle> * genVec = 0;
+	tree->SetBranchAddress("HGCSSGenAction", &genVec);
+
 	std::vector<HGCSSGenParticle> * hadVec = 0;
 	tree->SetBranchAddress("HGCSSHadAction", &hadVec);
 
@@ -121,7 +124,9 @@ int main(int argc, char** argv) {
 	t1.Branch("escape_VKE", &escape_VKE, "escape_VKE[nEscapes]/F");
 	t1.Branch("escape_FKE", &escape_FKE, "escape_FKE[nEscapes]/F");
 
-	Float_t summedSen,summedSenWgt,convEng_1,accconvEng_1,lostEng_1,convEng_2,accconvEng_2,lostEng_2;
+	Float_t summedSen,summedSenWgt,convEng_1,accconvEng_1,lostEng_1,convEng_2,accconvEng_2,lostEng_2,incEng;
+
+	t1.Branch("incEng", &incEng, "incEng/F");
 
 	t1.Branch("convEng_1", &convEng_1, "convEng_1/F");
 	t1.Branch("accconvEng_1", &accconvEng_1, "accconvEng_1/F");
@@ -346,6 +351,7 @@ int main(int argc, char** argv) {
 
 			}
 		}
+		incEng = genVec->at(0).vertexKE();
 		t1.Fill();
 		hadronKEs.clear();
 	}
