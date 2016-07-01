@@ -49,7 +49,7 @@ for i in range(len(temp)):
         nevts = int(temp[i])
 
 # Extract output filename from input filename
-outFilename = str(filename.split(".lhe")[0])
+outFilename = str(filename.split(".root")[0])
 
 # Check that the root and output directories exist
 if not os.path.exists(rootDir):
@@ -66,9 +66,9 @@ if not os.path.exists("./temp"): os.mkdir("temp")
 #in %
 interCalibList=[3];
 
-granularity="0-25:4"
-noise="0-25:0.15"
-threshold="0-25:5"
+granularity="0-39:4"
+noise="0-39:0.15"
+threshold="0-39:5"
 
 for interCalib in interCalibList:
     suffix="IC%d"%(interCalib)
@@ -92,7 +92,7 @@ for interCalib in interCalibList:
     scriptFile.write("cd temp\n")
     scriptFile.write("mkdir %s\n"%(outFilename))
     scriptFile.write("cd %s\n"%(outFilename))
-    scriptFile.write("../../bin/digitizer %d %s/%s $PWD %s %s %s %d %d | tee %s\n"%(nevts,rootDir,filename,granularity,noise,threshold,interCalib,nSiLayers,outlog))
+    scriptFile.write("../../bin/digitizer 0 %s/%s $PWD %s %s %s %d %d | tee %s\n"%(rootDir,filename,granularity,noise,threshold,interCalib,nSiLayers,outlog))
     scriptFile.write("echo \"--Local directory is \" %s/%s.root >> %s\n"%(g4log,dataOutDir,outFilename))
     scriptFile.write("ls * >> %s\n"%(g4log))
     scriptFile.write("mv DigiPFcal.root %s/Digi_%s.root\n"%(dataOutDir,outFilename))
@@ -113,9 +113,9 @@ for interCalib in interCalibList:
     condorSubmit.write("Log         =  %s.log\n"%(outDir))
     condorSubmit.write("Queue 1\n")
     condorSubmit.close()
-"""
+
     os.system("chmod u+rwx %s/runDigiJob%s.sh"%(outDir,outFilename))
     command = "condor_submit " + condorSubmit.name + "\n"
     if arg.nosubmit : os.system("echo " + command) 
     else: subprocess.call(command.split())
-        """
+       
