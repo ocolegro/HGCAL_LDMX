@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import os,sys
-import optparse
+import argparse
 import commands
 import math
 import random
@@ -9,83 +9,100 @@ import subprocess
 
 random.seed()
 
-usage = 'usage: %prog [options]'
-parser = optparse.OptionParser(usage)
-parser.add_option('-m', '--model'       ,    dest='model'              , help='set model'                    , default=0,      type=int)
-parser.add_option('-b', '--Bfield'      ,    dest='Bfield'             , help='B field value in Tesla'       , default=0,      type=float)
-parser.add_option('-f', '--datafile'    ,    dest='datafile'           , help='name of files in directory')
-parser.add_option('-d', '--directory'   ,    dest='lheDir'          , help='directory containing lhe files')
-parser.add_option('-o', '--dataOutDir'   ,    dest='dataOutDir'          , help='directory to output root files', default='/data/cmszfs1/user/hiltbran/HGCAL_LDMX/PFCalEE/events/rootFiles')
-parser.add_option('-S', '--no-submit'   ,    action="store_true",  dest='nosubmit'           , help='Do not submit batch job.')
-parser.add_option('-t', '--particle'   ,     dest='type'           , help='type of events')
-(opt, args) = parser.parse_args()
+usage = "usage: %prog [options]"
+parser = argparse.ArgumentParser(usage)
+parser.add_argument("-m", "--model"      , dest="model"      , help="set detector model (0-3)"      , default=0, type=int)
+parser.add_argument("-v", "--version"    , dest="version"    , help="set detector version (1-10)"   , default=8, type=int)
+parser.add_argument("-b", "--Bfield"     , dest="Bfield"     , help="B field value in Tesla"        , default=0, type=float)
+parser.add_argument("-f", "--datafile"   , dest="datafile"   , help="name of files in directory", required=True)
+parser.add_argument("-d", "--directory"  , dest="lheDir"     , help="directory containing lhe files", required=True)
+parser.add_argument("-o", "--dataOutDir" , dest="dataOutDir" , help="directory to output root files", required=True)
+parser.add_argument("-S", "--no-submit"  , action="store_true", dest="nosubmit" , help="Do not submit batch job.")
+arg = parser.parse_args()
+
+lheDir = arg.lheDir
+dataOutDir = arg.dataOutDir
+# Check for trailing slash on lhedir and outdir and delete
+if arg.lheDir.split("/")[-1] == "": lheDir = arg.lheDir[:-1]
+if arg.dataOutDir.split("/")[-1] == "": dataOutDir = arg.dataOutDir[:-1]
+
+# Extract number of events, file name and outfile name from path name
+filename = str(arg.datafile.split("/")[-1])
+if not os.path.isfile(lheDir+"/"+filename):
+    print "Provided file does not exist!"
+    quit()
+
+nevts = int(filename.split("_")[0])
+outFilename = str(filename.split(".lhe")[0])
+
+# Create subdirectory based on particle type
+particle = filename.split("_")[-1].split(".lhe")[0]
+dataOutDir = "%s/%s"%(dataOutDir,particle)
+
+# Check that the lhe and output directories exist
+if not os.path.exists(lheDir):
+    print "Provided lhe directory does not exist!"
+    quit()
+
+if not os.path.exists(dataOutDir):
+    print "Provided output directory does not exist!"
+    quit()
+
+# Check for temp directory and create one if not
+if not os.path.exists("./temp"): os.mkdir("temp")
 
 bval="BOFF"
-if opt.Bfield>0 : bval="BON" 
+if arg.Bfield>0 : bval="BON" 
 
-#Extract number of events and file name from path name
-pathtoFile = opt.datafile.split('/')
-filename = str(pathtoFile[-1])
-temp = filename.split('_')
-nevts = int(temp[0])
-
-temp = filename.split('.lhe')
-outFilename = str(temp[0])
-
-if opt.type=='e':
-    dataOutDir = '%s/electrons'%(opt.dataOutDir)
-if opt.type=='n':
-    dataOutDir = '%s/neutrons'%(opt.dataOutDir)
-if opt.type=='p':
-    dataOutDir = '%s/photons'%(opt.dataOutDir)
 outDir = os.getcwd()
-outTag='model%d_%s'%(opt.model,outFilename)
+outTag="version%d_model%d_%s"%(arg.version,arg.model,outFilename)
 
-#wrapper
-scriptFile = open('%s/runJob%s.sh'%(outDir,outFilename), 'w')
-scriptFile.write('#!/bin/bash\n')
-scriptFile.write('source /data/cmszfs1/sw/HGCAL_SIM_A/setup.sh\n')
-scriptFile.write('cp %s/g4steer.mac .\n'%outDir)
-scriptFile.write('cd events/temp\n')
-scriptFile.write('mkdir %s\n'%(outFilename))
-scriptFile.write('cd %s\n'%(outFilename))
-scriptFile.write('PFCalEE ./../../../g4steer.mac | tee g4.log\n')
-scriptFile.write('mv PFcal.root %s/HGcal_%s.root\n'%(dataOutDir,outTag))
-scriptFile.write('localdir=`pwd`\n')
-scriptFile.write('echo "--Local directory is " $localdir >> g4.log\n')
-scriptFile.write('ls * >> g4.log\n')
-scriptFile.write('cd ..\n')
-scriptFile.write('rm -r %s\n'%(outFilename))
-scriptFile.write('cd ../..\n')
-scriptFile.write('echo "All done"\n')
+# Wrapper
+scriptFile = open("%s/runJob%s.sh"%(outDir,outFilename), "w")
+scriptFile.write("#!/bin/bash\n")
+scriptFile.write("source /data/cmszfs1/sw/HGCAL_SIM_A/setup.sh\n")
+scriptFile.write("cp %s/g4steer.mac .\n"%outDir)
+scriptFile.write("cd temp\n")
+scriptFile.write("mkdir %s\n"%(outFilename))
+scriptFile.write("cd %s\n"%(outFilename))
+scriptFile.write("PFCalEE ./../../g4steer.mac %d %d 1 | tee g4.log\n"%(arg.version,arg.model))
+scriptFile.write("mv PFcal.root %s/HGcal_%s.root\n"%(dataOutDir,outTag))
+scriptFile.write("localdir=`pwd`\n")
+scriptFile.write("echo \"--Local directory is \" $localdir >> g4.log\n")
+scriptFile.write("ls * >> g4.log\n")
+scriptFile.write("cd ..\n")
+scriptFile.write("rm -r %s\n"%(outFilename))
+scriptFile.write("cd ../..\n")
+scriptFile.write("echo \"All done\"\n")
 scriptFile.close()
 
-#write geant 4 macro
-g4Macro = open('%s/g4steer.mac'%(outDir), 'w')
-g4Macro.write('/control/verbose 0\n')
-g4Macro.write('/run/verbose 0\n')
-g4Macro.write('/event/verbose 0\n')
-g4Macro.write('/tracking/verbose 0\n')
-g4Macro.write('/N03/det/setField %1.1f T\n'%opt.Bfield)
-g4Macro.write('/N03/det/setModel %d\n'%opt.model)
-g4Macro.write('/random/setSeeds %d %d\n'%(random.uniform(0,1000000),random.uniform(0,1000000)))
-g4Macro.write('/filemode/inputFilename %s%s\n'%(opt.lheDir,filename))
-g4Macro.write('/run/initialize\n')
-g4Macro.write('/run/beamOn %d\n'%(nevts))
+# Write GEANT4 macro
+g4Macro = open("%s/g4steer.mac"%(outDir), "w")
+g4Macro.write("/control/verbose 0\n")
+g4Macro.write("/run/verbose 0\n")
+g4Macro.write("/event/verbose 0\n")
+g4Macro.write("/tracking/verbose 0\n")
+g4Macro.write("/N03/det/setField %1.1f T\n"%(arg.Bfield))
+g4Macro.write("/random/setSeeds %d %d\n"%(random.uniform(0,1000000),random.uniform(0,1000000)))
+g4Macro.write("/filemode/inputFilename %s/%s\n"%(lheDir,filename))
+g4Macro.write("/run/initialize\n")
+g4Macro.write("/run/beamOn %d\n"%(nevts))
 g4Macro.close()
 
-#submit
-condorSubmit = open('%s/condorSubmit'%(outDir), 'w')
-condorSubmit.write('Executable          =  %s\n' % scriptFile.name)
-condorSubmit.write('Universe            =  vanilla\n')
-condorSubmit.write('Requirements        =  Arch=="X86_64"  &&  (Machine  !=  "zebra01.spa.umn.edu")  &&  (Machine  !=  "zebra02.spa.umn.edu")  &&  (Machine  !=  "zebra03.spa.umn.edu")  &&  (Machine  !=  "zebra04.spa.umn.edu")\n')
-condorSubmit.write('+CondorGroup        =  "cmsfarm"\n')
-condorSubmit.write('getenv              =  True\n')
-condorSubmit.write('Request_Memory      =  4 Gb\n')
-condorSubmit.write('Log         =  %s.log\n' % outDir)
-condorSubmit.write('Queue 1\n')
+# Submit to condor
+condorSubmit = open("%s/condorSubmit"%(outDir), "w")
+condorSubmit.write("Executable          =  %s\n" % scriptFile.name)
+condorSubmit.write("Universe            =  vanilla\n")
+condorSubmit.write("Requirements        =  Arch==\"X86_64\"  &&  (Machine  !=  \"zebra01.spa.umn.edu\")  &&  (Machine  !=  \"zebra02.spa.umn.edu\")  &&  (Machine  !=  \"zebra03.spa.umn.edu\")  &&  (Machine  !=  \"zebra04.spa.umn.edu\")\n")
+condorSubmit.write("+CondorGroup        =  \"cmsfarm\"\n")
+condorSubmit.write("getenv              =  True\n")
+condorSubmit.write("Request_Memory      =  4 Gb\n")
+condorSubmit.write("Log         =  %s.log\n" % outDir)
+condorSubmit.write("Queue 1\n")
 condorSubmit.close()
 
-os.system('chmod u+rwx %s/runJob%s.sh'%(outDir,outFilename))
-command = "condor_submit " + condorSubmit.name + '\n'
+os.system("chmod u+rwx %s/runJob%s.sh"%(outDir,outFilename))
+
+command = "condor_submit " + condorSubmit.name + "\n"
 subprocess.call(command.split())
+
