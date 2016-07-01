@@ -194,7 +194,7 @@ void DetectorConstruction::buildHCal(double steelThick){
 		iEleL.push_back(make_pair(1*mm,"Pb"));
 		iEleL.push_back(make_pair(steelThick*mm,"SSteel"));
 		iEleL.push_back(make_pair(0.5*mm,"Cu"));
-		iEleL.push_back(make_pair(9*mm,"Scintillator"));
+		iEleL.push_back(make_pair(6*mm,"Scintillator"));
 		unsigned Nmodule=15;
 
 		for(unsigned i=0; i<Nmodule; i++) {
