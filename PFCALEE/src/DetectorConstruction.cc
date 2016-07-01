@@ -616,7 +616,7 @@ G4VSolid *DetectorConstruction::constructSolid(std::string baseName,
 			//solid = new G4Tubs(baseName + "box", 0, layerR, thick / 2, minL,
 			//		width);
 			const double pi = 3.14159265359;
-			G4double a = {0,5},b ={0,0},c = {20,20};
+			G4double a[2] = {0,5},b[2] ={0,0},c[2] = {20,20};
 			solid = new G4Polyhedra(baseName + "box",
 					0, 2 * pi,
 					6, 2,
