@@ -82,7 +82,6 @@ StackingAction::ClassifyNewTrack(const G4Track* lTrack)
 			eventAction_->novelPartEngs.push_back(lTrack->GetTrackID());
 			std::cout << stepAction_->stepPDGID << std::endl;
 			std::cout << stepAction_->stepKE << std::endl;
-			std::cout << "Track ID " << lTrack->GetDefinition()->GetPDGEncoding() << std::endl;
 
 
 
