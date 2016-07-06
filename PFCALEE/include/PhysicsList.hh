@@ -43,7 +43,7 @@
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 //class PhysicsList: public QGSP_FTFP_BERT //G4VUserPhysicsList
-class PhysicsList: public QGSP_BERT //G4VUserPhysicsList
+class PhysicsList: public FTFP_BERT //G4VUserPhysicsList
 {
 public:
 	PhysicsList();
