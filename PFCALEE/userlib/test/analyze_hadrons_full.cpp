@@ -42,7 +42,6 @@ bool checkDuplicate(std::vector<double> oldEng,double newEng){
 }
 int main(int argc, char** argv) {
 
-	//std::cout << "Opening the file " << argv[1] << std::endl;
 	TFile *infile = TFile::Open(argv[1]);
 	TTree *tree = (TTree*) infile->Get("HGCSSTree");
 	freopen("log.txt", "w", stdout);
@@ -61,6 +60,9 @@ int main(int argc, char** argv) {
 
 	std::vector<HGCSSGenParticle> * escapeVec = 0;
 	tree->SetBranchAddress("HGCSSEscapeAction", &escapeVec);
+
+	std::vector<HGCSSGenParticle> * novelVec = 0;
+	tree->SetBranchAddress("HGCSSNovelAction", &novelVec);
 
 	TFile hfile("analyzed_tuple.root", "RECREATE");
 	TTree t1("sampling", "Hadronic Study");
@@ -99,13 +101,30 @@ int main(int argc, char** argv) {
 
 	t1.Branch("nHadrons", &nHadrons, "nHadrons/I");
 	t1.Branch("hadron_pdgid", &hadron_pdgid, "hadron_pdgid[nHadrons]/I");
-
 	t1.Branch("hadron_zpos", &hadron_zpos, "hadron_zpos[nHadrons]/F");
 	t1.Branch("hadron_px", &hadron_px, "hadron_px[nHadrons]/F");
 	t1.Branch("hadron_py", &hadron_py, "hadron_py[nHadrons]/F");
 	t1.Branch("hadron_pz", &hadron_pz, "hadron_pz[nHadrons]/F");
 	t1.Branch("hadron_theta", &hadron_theta, "hadron_theta[nHadrons]/F");
 	t1.Branch("hadron_KE", &hadron_KE, "hadron_KE[nHadrons]/F");
+
+
+
+	Float_t novel_zpos[50000],
+	novel_theta[50000],novel_px[50000]  , novel_py[50000]  ,novel_pz[50000],
+	novel_KE[50000],novel_parentKE[50000];
+	Int_t nNovels,novel_pdgid[50000],novel_parentID[50000];
+
+	t1.Branch("nNovels", &nNovels, "nNovels/I");
+	t1.Branch("novel_pdgid", &novel_pdgid, "novel_pdgid[nNovels]/I");
+	t1.Branch("novel_zpos", &novel_zpos, "novel_zpos[nNovels]/F");
+	t1.Branch("novel_px", &novel_px, "novel_px[nNovels]/F");
+	t1.Branch("novel_py", &novel_py, "novel_py[nNovels]/F");
+	t1.Branch("novel_pz", &novel_pz, "novel_pz[nNovels]/F");
+	t1.Branch("novel_theta", &novel_theta, "novel_theta[nNovels]/F");
+	t1.Branch("novel_KE", &novel_KE, "novel_KE[nNovels]/F");
+	t1.Branch("novel_parentID", &novel_parentID, "novel_parentID[nNovels]/I");
+	t1.Branch("novel_parentKE", &novel_parentKE, "novel_parentKE[nNovels]/F");
 
 	Float_t escape_zpos[50000],escape_xpos[50000],escape_ypos[50000],
 	escape_theta[50000],escape_px[50000]  , escape_py[50000]  ,escape_pz[50000],
@@ -142,7 +161,7 @@ int main(int argc, char** argv) {
 
 
 
-	std::vector<double> hadronKEs;
+	std::vector<double> hadronKEs,novelKEs;
 
 	unsigned nEvts = tree->GetEntries();
 	for (unsigned ievt(0); ievt < nEvts; ++ievt) { //loop on entries
@@ -156,7 +175,6 @@ int main(int argc, char** argv) {
 		convEng_1 = 0;
 		accconvEng_1 = 0;
 
-
 		lostEng_2 = 0;
 		convEng_2 = 0;
 		accconvEng_2 = 0;
@@ -165,41 +183,19 @@ int main(int argc, char** argv) {
 		nInteractions = 0;
 		nHadrons = 0;
 		nEscapes = 0;
+		nNovels = 0;
 
-		//std::cout << "The incVec size is = " << incVec->size() << std::endl;
 
 		for (Int_t j = 0; j < incVec->size(); j++) {
 
-			//std::cout << "Looping over inc part = " << j << std::endl;
-
-
 			HGCSSGenParticle& incPart = (*incVec)[j];
-			//std::cout << "quering vertex mom = " << j << std::endl;
-
 			TVector3 momVec = incPart.vertexMom();
-			//std::cout << "quering vertex pos = " << j << std::endl;
-
 			TVector3 posVec = incPart.vertexPos();
-			//std::cout << "quering interaction = " << j << std::endl;
-
-			//std::cout << "incPart.layer() is " << incPart.layer() << std::endl;
-
 			unsigned iLoc		=	-incPart.layer() - 1;
-
-
-			//std::cout << "storing ke = " << j << std::endl;
-
 			inc_KE[iLoc] = incPart.vertexKE();
-			//std::cout << "storing zpos = " << j << std::endl;
-
 			inc_zpos[iLoc] = posVec[2];
-			//std::cout << "storing momvec = " << j << std::endl;
-
 			inc_theta[iLoc] = acos(momVec[2])*180/3.14;
-			//std::cout << "storing pdgid = " << j << std::endl;
-
 			inc_pdgid[iLoc] = incPart.pdgid();
-			//std::cout << "resetting counters  " << j << std::endl;
 
 			nInteractions = iLoc + 1;
 			nSecondaries[iLoc] = 0;
@@ -216,17 +212,30 @@ int main(int argc, char** argv) {
 
 		}
 
-		//std::cout << "The hadronvec size is = " << hadVec->size() << std::endl;
+		for (Int_t j = 0; j < novelVec->size(); j++) {
+			HGCSSGenParticle& novel = (*novelVec)[j];
+
+			if (checkDuplicate(novelKEs,novel.vertexKE()) == false) continue;
+			novelKEs.push_back(novel.vertexKE());
+			nNovels = nNovels + 1;
+			TVector3 momVec = novel.vertexMom();
+			TVector3 posVec = novel.vertexPos();
+
+			novel_zpos[j]   	= posVec[2];
+			novel_px[j]   		= momVec[0];
+			novel_py[j]   		= momVec[1];
+			novel_pz[j]   		= momVec[2];
+			novel_theta[j]   	= acos(momVec[2]) * 180/3.14;
+			novel_pdgid[j]   	= novel.pdgid();
+			novel_KE[j]			= novel.vertexKE();
+			novel_parentID[j]			= novel.parentPdgId();
+			novel_parentKE[j]			= novel.parentKE();
+
+		}
+
 		for (Int_t j = 0; j < hadVec->size(); j++) {
 			HGCSSGenParticle& hadron = (*hadVec)[j];
 
-			//unsigned int hadronTrackLoc = std::find(hadronKEs.begin(),
-			//			hadronKEs.end(), hadron.vertexKE())
-			//		- hadronKEs.begin();
-			//if (hadronTrackLoc != hadronKEs.size()) continue;
-			//std::cout << "Looping over hadron part = " << j << std::endl;
-			//if (hadron.layer() > 100)
-			//		std::cout << "The hadron KE is " << hadron.vertexKE();
 			if (checkDuplicate(hadronKEs,hadron.vertexKE()) == false) continue;
 			hadronKEs.push_back(hadron.vertexKE());
 			nHadrons = nHadrons + 1;
@@ -313,10 +322,8 @@ int main(int argc, char** argv) {
 
 			}
 		}
-		//std::cout << "The escapeVec size is = " << incVec->size() << std::endl;
 
 		for (Int_t j = 0; j < escapeVec->size(); j++) {
-			//std::cout << "Looping over escape part = " << j << std::endl;
 
 			HGCSSGenParticle& escape = (*escapeVec)[j];
 			nEscapes = nEscapes + 1;
@@ -353,7 +360,7 @@ int main(int argc, char** argv) {
 		}
 		incEng = genVec->at(0).vertexKE();
 		t1.Fill();
-		hadronKEs.clear();
+		hadronKEs.clear();novelKEs.clear();
 	}
 	t1.Write();
 
