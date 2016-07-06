@@ -52,8 +52,8 @@ public:
 		return doFast_;
 	}
 	;
-	HGCSSGenParticleVec genvec_,hadvec_,incvec_,escapevec_;
-	G4int hadronicInts;
+	HGCSSGenParticleVec genvec_,hadvec_,incvec_,escapevec_,novelVec_;
+	G4int hadronicInts,novelPartEngs;
 	std::vector<double> targetPartEngs;
 	G4int evtNb_;
 private:
