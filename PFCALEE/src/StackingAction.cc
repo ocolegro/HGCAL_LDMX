@@ -78,6 +78,9 @@ StackingAction::ClassifyNewTrack(const G4Track* lTrack)
 			genPart.vertexPos(posVec);
 			genPart.mass(lTrack->GetDefinition()->GetPDGMass());
 			genPart.pdgid(lTrack->GetDefinition()->GetPDGEncoding());
+			genPart.parentKE(stepAction_->stepKE);
+			genPart.parentPdgId(stepAction_->stepPDGID);
+
 			eventAction_->novelVec_.push_back(genPart);
 			eventAction_->novelPartEngs.push_back(lTrack->GetTrackID());
 
