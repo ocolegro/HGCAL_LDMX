@@ -613,11 +613,8 @@ G4VSolid *DetectorConstruction::constructSolid(std::string baseName,
 		if (model_ == DetectorConstruction::m_FULLSECTION) {
 			double layerR = tan(m_maxTheta) * (zpos - m_z0pos);
 			std::cout << "The radius for this layer is " << layerR << std::endl;
-			//solid = new G4Tubs(baseName + "box", 0, layerR, thick / 2, minL,
-			//		width);
-			const double pi = 3.14159265359;
-			solid = new G4Polyhedra(baseName + "box", 0, 2 * pi, 6, 2, {0,width},{0,0},{20,20}); // width / 2, m_CalorSizeXY / 2,thick / 2);
-
+			solid = new G4Tubs(baseName + "box", 0, layerR, thick / 2, minL,
+					width);
 		}
 
 		else {
