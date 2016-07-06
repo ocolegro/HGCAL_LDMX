@@ -37,6 +37,7 @@ public:
 		}
 		return true;
 	};
+	G4double stepPDGID,stepKE;
 private:
 	void printParticle(G4Track* aTrack);
 	EventAction *eventAction_;
@@ -46,6 +47,7 @@ private:
 	G4bool secondPass;
 	G4int version_;
 	G4double zOff;
+
 
 };
 

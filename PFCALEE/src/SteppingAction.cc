@@ -47,6 +47,8 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 
 	G4double eRawDep = aStep->GetTotalEnergyDeposit();
 
+	stepPDGID = pdgID;
+	stepKE = kinEng;
 
 	const G4ThreeVector & position = thePreStepPoint->GetPosition();
 	HGCSSGenParticle genPart;
@@ -77,12 +79,16 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 
 		eventAction_->escapevec_.push_back(escapePart);
 	}
+
 	if(secondaries->size() > 0){
 	G4String theProcessName=secondaries->at(0)->GetCreatorProcess()->GetProcessName();
 	//if (theProcessName != "eIoni" && theProcessName != "eBrem" && theProcessName!="hadElastic"
 		//	&& theProcessName!="neutronElastic" && theProcessName!="conv" && theProcessName != "ionIoni"){ //(theProcessName == "photoNuclear" || theProcessName == "electroNuclear"){
 		if ( (theProcessName == "PhotonInelastic" || theProcessName == "ElectroNuclear" || theProcessName == "PositronNuclear")
 				&& (abs(pdgID) == 22 || abs(pdgID) == 11)){
+			std::cout << "Step ID " << stepPDGID << std::endl;
+			std::cout << "Step KE " << kinEng << std::endl;
+
 			//sloppy fix for strange geant4 stepping action
 			bool checkSecEngs = true;
 			bool someHadrons = false;
