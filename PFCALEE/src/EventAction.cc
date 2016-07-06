@@ -56,6 +56,8 @@ EventAction::EventAction(G4bool doFast) {
 			&incvec_);
 	tree_->Branch("HGCSSEscapeAction", "std::vector<HGCSSGenParticle>",
 			&escapevec_);
+	tree_->Branch("HGCSSEscapeAction", "std::vector<HGCSSGenParticle>",
+			&novelVec_);
 	//tree_->Branch("nSteps",&nSteps,"nSteps/I");
 	//tree_->Branch("nMainSteps",&nMainSteps,"nMainSteps/I");
 
@@ -186,4 +188,6 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 	incvec_.clear();
 	escapevec_.clear();
 	targetPartEngs.clear();
+	novelVec_.clear();
+	novelPartEngs.clear();
 }

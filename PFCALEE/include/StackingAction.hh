@@ -37,6 +37,7 @@
 #include "G4UserStackingAction.hh"
 #include "globals.hh"
 #include "EventAction.hh"
+#include "SteppingAction.hh"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -53,6 +54,7 @@ class StackingAction : public G4UserStackingAction
     ;*/
   private:
 	EventAction *eventAction_;
+	SteppingAction *stepAction_;
     std::string data_;
    // G4bool wait_;
 };

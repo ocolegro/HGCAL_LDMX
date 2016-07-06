@@ -43,6 +43,8 @@ StackingAction::StackingAction(std::string data)
 	//wait_ = false;
 	eventAction_ =
 			(EventAction*) G4RunManager::GetRunManager()->GetUserEventAction();
+	stepAction_ =
+			(SteppingAction*) G4RunManager::GetRunManager()->GetUserSteppingAction();
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -57,7 +59,29 @@ StackingAction::ClassifyNewTrack(const G4Track* lTrack)
 {
 	G4double kinEng = lTrack->GetKineticEnergy();
 	G4int pdgID = lTrack->GetDefinition()->GetPDGEncoding();
+	/*
+	G4int trackID = lTrack->GetTrackID();
+	unsigned int hadronTrackLoc = std::find(eventAction_->targetPartEngs.begin(),
+			eventAction_->targetPartEngs.end(), trackID)
+			- eventAction_->targetPartEngs.begin();
+	G4double kineng = lTrack->GetKineticEnergy();
+	G4int pdgId = lTrack->GetDefinition()->GetPDGEncoding();
+	 */
+	if (kinEng>10 && (abs(pdgID) != 11) && (abs(pdgID) != 22 )){
+			HGCSSGenParticle genPart;
+			genPart.vertexKE(lTrack->GetKineticEnergy());
+			const G4ThreeVector &p = lTrack->GetMomentumDirection();
+			const G4ThreeVector &pos = lTrack->GetPosition();
+			TVector3 momVec(p[0], p[1], p[2]);
+			genPart.vertexMom(momVec);
+			TVector3 posVec(pos[0], pos[1], pos[2] );
+			genPart.vertexPos(posVec);
+			genPart.mass(lTrack->GetDefinition()->GetPDGMass());
+			genPart.pdgid(lTrack->GetDefinition()->GetPDGEncoding());
+			eventAction_->novelVec_.push_back(genPart);
+			eventAction_->novelPartEngs.push_back(lTrack->GetTrackID());
 
+		}
 
 	if ( ((abs(pdgID) == 11) ||  (abs(pdgID) == 22)) && kinEng < 100) {
 		if (!eventAction_->GetWait()){
