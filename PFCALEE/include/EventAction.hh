@@ -53,9 +53,10 @@ public:
 	}
 	;
 	HGCSSGenParticleVec genvec_,hadvec_,incvec_,escapevec_,novelVec_;
-	G4int hadronicInts,novelPartEngs;
+	G4int hadronicInts;
 	std::vector<double> targetPartEngs;
 	G4int evtNb_;
+	std::vector<int> novelPartEngs;
 private:
 	std::vector<SamplingSection> *detector_;
 	G4int printModulo,initLayer;
