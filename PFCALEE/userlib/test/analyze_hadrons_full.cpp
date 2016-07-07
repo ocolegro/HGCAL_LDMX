@@ -98,6 +98,7 @@ int main(int argc, char** argv) {
 	hadron_theta[50000],hadron_px[50000]  , hadron_py[50000]  ,hadron_pz[50000],
 	hadron_KE[50000];
 	Int_t nHadrons,hadron_pdgid[50000];
+    Int_t hadron_int[50000];
 
 	t1.Branch("nHadrons", &nHadrons, "nHadrons/I");
 	t1.Branch("hadron_pdgid", &hadron_pdgid, "hadron_pdgid[nHadrons]/I");
@@ -107,6 +108,7 @@ int main(int argc, char** argv) {
 	t1.Branch("hadron_pz", &hadron_pz, "hadron_pz[nHadrons]/F");
 	t1.Branch("hadron_theta", &hadron_theta, "hadron_theta[nHadrons]/F");
 	t1.Branch("hadron_KE", &hadron_KE, "hadron_KE[nHadrons]/F");
+    t1.Branch("hadron_int", &hadron_int, "hadron_int[nHadrons]/I")
 
 
 
@@ -130,7 +132,6 @@ int main(int argc, char** argv) {
 	escape_theta[50000],escape_px[50000]  , escape_py[50000]  ,escape_pz[50000],
 	escape_VKE[50000],escape_FKE[50000];
 	Int_t nEscapes,escape_pdgid[50000];
-
 	t1.Branch("nEscapes", &nEscapes, "nEscapes/I");
 	t1.Branch("escape_pdgid", &escape_pdgid, "escape_pdgid[nEscapes]/I");
 	t1.Branch("escape_theta", &escape_theta, "escape_theta[nEscapes]/F");
@@ -142,7 +143,6 @@ int main(int argc, char** argv) {
 	t1.Branch("escape_zpos", &escape_zpos, "escape_zpos[nEscapes]/F");
 	t1.Branch("escape_VKE", &escape_VKE, "escape_VKE[nEscapes]/F");
 	t1.Branch("escape_FKE", &escape_FKE, "escape_FKE[nEscapes]/F");
-
 	Float_t summedSen,summedSenWgt,convEng_1,accconvEng_1,lostEng_1,convEng_2,accconvEng_2,lostEng_2,incEng;
 
 	t1.Branch("incEng", &incEng, "incEng/F");
@@ -250,10 +250,14 @@ int main(int argc, char** argv) {
 			hadron_pdgid[j]   	= hadron.pdgid();
 			hadron_KE[j]		= hadron.vertexKE();
 			unsigned iLoc		=	hadron.layer() - 1;
-			if (iLoc > nInteractions) nInteractions = iLoc +1;
+            if (iLoc > nInteractions) nInteractions = iLoc +1;
 
 			out_KE[iLoc] += hadron_KE[j];
-			nSecondaries[iLoc] += 1;
+            hadron_int[j] = iLoc;
+            /* Don't count photons or anti-electrons*/
+            if((abs(hadron_pdgid[j]) != 22) && (abs(hadron_pdgid[j]) != 11)){
+                nSecondaries[iLoc] += 1;
+            }
 			bool acc = false;
 			if (hadron_theta[j] < 30){
 				nContainedSecondaries[iLoc] += 1;

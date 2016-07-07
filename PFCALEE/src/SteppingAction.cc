@@ -81,9 +81,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 	}
 
 	if(secondaries->size() > 0){
-	G4String theProcessName=secondaries->at(0)->GetCreatorProcess()->GetProcessName();
-	//if (theProcessName != "eIoni" && theProcessName != "eBrem" && theProcessName!="hadElastic"
-		//	&& theProcessName!="neutronElastic" && theProcessName!="conv" && theProcessName != "ionIoni"){ //(theProcessName == "photoNuclear" || theProcessName == "electroNuclear"){
+		G4String theProcessName=secondaries->at(0)->GetCreatorProcess()->GetProcessName();
 		if ( (theProcessName == "PhotonInelastic" || theProcessName == "ElectroNuclear" || theProcessName == "PositronNuclear")
 				&& (abs(pdgID) == 22 || abs(pdgID) == 11)){
 
