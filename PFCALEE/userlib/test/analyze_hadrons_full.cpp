@@ -108,7 +108,7 @@ int main(int argc, char** argv) {
 	t1.Branch("hadron_pz", &hadron_pz, "hadron_pz[nHadrons]/F");
 	t1.Branch("hadron_theta", &hadron_theta, "hadron_theta[nHadrons]/F");
 	t1.Branch("hadron_KE", &hadron_KE, "hadron_KE[nHadrons]/F");
-    t1.Branch("hadron_int", &hadron_int, "hadron_int[nHadrons]/I")
+    t1.Branch("hadron_int", &hadron_int, "hadron_int[nHadrons]/I");
 
 
 
