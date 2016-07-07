@@ -132,8 +132,8 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 						//std::cout << "The parent ID is is " << lTrack->GetDefinition()->GetPDGEncoding() << std::endl;
 						eventAction_->targetPartEngs.push_back(iTrack->GetKineticEnergy());
 
-						if (abs(iTrack->GetDefinition()->GetPDGEncoding()) != 11 &&
-								abs(iTrack->GetDefinition()->GetPDGEncoding()) != 22){
+						//if (abs(iTrack->GetDefinition()->GetPDGEncoding()) != 11 &&
+						//		abs(iTrack->GetDefinition()->GetPDGEncoding()) != 22){
 
 								genPart.vertexKE(iTrack->GetKineticEnergy());
 								const G4ThreeVector &p = iTrack->GetMomentumDirection();
@@ -148,7 +148,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 								eventAction_->hadvec_.push_back(genPart);
 
 
-						}
+						//}
 				}
 
 			}
