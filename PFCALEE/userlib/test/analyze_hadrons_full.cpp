@@ -68,7 +68,7 @@ int main(int argc, char** argv) {
 	TTree t1("sampling", "Hadronic Study");
 
 	Int_t nInteractions,nSecondaries[50000],nProtonSecondaries[50000],nNeutronSecondaries[50000],
-	nOtherSecondaries[50000],nContainedSecondaries[50000],nUncontainedSecondaries[50000];
+	nOtherSecondaries[50000],nContainedSecondaries[50000],nUncontainedSecondaries[50000],seeds[4];
 
 	t1.Branch("nInteractions", &nInteractions, "nInteractions/I");
 	t1.Branch("nSecondaries", &nSecondaries, "nSecondaries[nInteractions]/I");
@@ -77,6 +77,8 @@ int main(int argc, char** argv) {
 	t1.Branch("nOtherSecondaries", &nOtherSecondaries, "nOtherSecondaries[nInteractions]/I");
 	t1.Branch("nContainedSecondaries", &nContainedSecondaries, "nContainedSecondaries[nInteractions]/I");
 	t1.Branch("nUncontainedSecondaries", &nUncontainedSecondaries, "nUncontainedSecondaries[nInteractions]/I");
+
+	t1.Branch("seeds", &seeds, "seeds[4]/I");
 
 	Float_t inc_KE[50000],inc_zpos[50000],inc_theta[50000];
 	Int_t   inc_pdgid[50000];
@@ -170,7 +172,10 @@ int main(int argc, char** argv) {
 		summedSen = evt_->dep();
 		summedSenWgt = evt_->wgtDep();
 		if (summedSen == 0) continue;
-
+		seeds[0] = evt_->status().x();
+		seeds[1] = evt_->status().y();
+		seeds[2] = evt_->seeds().x();
+		seeds[3] = evt_->seeds().y();
 		lostEng_1 = 0;
 		convEng_1 = 0;
 		accconvEng_1 = 0;
