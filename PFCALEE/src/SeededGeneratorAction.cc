@@ -64,10 +64,10 @@ SeededGeneratorAction::SeededGeneratorAction(G4int mod,
 	model_ = mod;
 	data_ = data;
 	G4int n_particle = 1;
-	evt_ = 0; hadrons_ = 0;
+	evt_ = 0; inc_ = 0;
 	file_ = TFile::Open(data.c_str());
 	tree_  = (TTree*) file_->Get("HGCSSTree");
-	tree_->SetBranchAddress("HGCSSHadAction",&hadrons_);
+	tree_->SetBranchAddress("HGCSSIncAction",&inc_);
 	tree_->SetBranchAddress("HGCSSEvent",&evt_);
 
 	eventAction_ =
@@ -137,9 +137,15 @@ void SeededGeneratorAction::GeneratePrimaries(G4Event* anEvent) {
 	tree_->GetEntry(currentEvt);
 	G4double et = 0.0;
 	CLHEP::HepRandom::restoreEngineStatus ("temp.rndm");
-	if (hadrons_->size() != 0){
-		eventAction_->SetWait(true);
-		et = 4.0;
+	if (inc_->size() != 0){
+		for(int i = 0; i < inc_->size(); i++){
+			HGCSSGenParticle& incPart = (*inc_)[i];
+			if (incPart.vertexKE() > 500){
+				eventAction_->SetWait(true);
+				et = 4.0;
+			}
+		}
+
 	}
 	else{
 		PipeData();

@@ -76,7 +76,7 @@ private:
 
 	TFile* file_;
 	TTree * tree_;
-	HGCSSGenParticleVec* hadrons_ ;
+	HGCSSGenParticleVec* inc_ ;
 	HGCSSEvent* evt_;
 	SeededGeneratorMessenger* gunMessenger; //messenger of this class
 
