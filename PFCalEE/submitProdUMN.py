@@ -29,7 +29,7 @@ if arg.dataOutDir.split("/")[-1] == "": dataOutDir = arg.dataOutDir[:-1]
 # Extract number of events, file name and outfile name from path name
 filename = str(arg.datafile.split("/")[-1])
 if not os.path.isfile(lheDir+"/"+filename):
-    print "Provided file does not exist!"
+    print "Provided file \"%s\" does not exist!"%(lheDir+"/"+filename)
     quit()
 
 nevts = int(filename.split("_")[0])
@@ -37,15 +37,20 @@ outFilename = str(filename.split(".lhe")[0])
 
 # Create subdirectory based on particle type
 particle = filename.split("_")[-1].split(".lhe")[0]
-dataOutDir = "%s/%s"%(dataOutDir,particle)
+if particle == "pi0s":
+    dataOutDir = "%s/pions/%s"%(dataOutDir,particle)
+elif particle == "pis":
+    dataOutDir = "%s/pions/%s"%(dataOutDir,particle)
+else:
+    dataOutDir = "%s/%s"%(dataOutDir,particle)
 
 # Check that the lhe and output directories exist
 if not os.path.exists(lheDir):
-    print "Provided lhe directory does not exist!"
+    print "Provided lhe directory \"%s\" does not exist!"%(lheDir)
     quit()
 
 if not os.path.exists(dataOutDir):
-    print "Provided output directory does not exist!"
+    print "Provided output directory \"%s\" does not exist!"%(dataOutDir)
     quit()
 
 # Check for temp directory and create one if not
