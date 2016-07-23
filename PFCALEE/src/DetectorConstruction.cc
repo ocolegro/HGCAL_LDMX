@@ -396,7 +396,8 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
 	G4double pos_x = 0.;
 	G4double pos_y = 0.;
 	G4double pos_z = 0.;
-
+	for (int i = 0; i < 10; i ++)
+		G4cout << "Construct Detector has been called " << G4endl;
 	m_solidWorld = new G4Box("Wbox", m_WorldSizeXY / 2, m_WorldSizeXY / 2,
 			m_WorldSizeZ / 2);
 
