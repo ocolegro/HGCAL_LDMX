@@ -510,7 +510,7 @@ void DetectorConstruction::buildSectorStack(const unsigned sectorNum,
 				m_caloStruct[i].sublayer_vol[nEle * sectorNum + ie] =
 						new G4PVPlacement(0,
 								G4ThreeVector(xpvpos, 0.,
-										zOffset + zOverburden - thick ),
+										zOffset + zOverburden ),
 								logi, baseName + "phys", m_logicWorld, false,
 								0);
 
@@ -562,7 +562,7 @@ void DetectorConstruction::fillInterSectorSpace(const unsigned sectorNum,
 				G4double xpvpos = -m_CalorSizeXY / 2. + minL + width / 2;
 				G4PVPlacement *tmp = new G4PVPlacement(0,
 						G4ThreeVector(xpvpos, 0.,
-								zOffset + zOverburden - thick ), logi,
+								zOffset + zOverburden ), logi,
 						baseName + "phys", m_logicWorld, false, 0);
 
 				G4VisAttributes *simpleBoxVisAtt = new G4VisAttributes(
