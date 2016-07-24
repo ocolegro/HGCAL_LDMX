@@ -556,6 +556,7 @@ void DetectorConstruction::fillInterSectorSpace(const unsigned sectorNum,
 			if (thick > 0) {
 				solid = constructSolid(baseName, thick, zOffset + zOverburden,
 						minL, width, i);
+				std::cout << "Constructing layer " << baseName << "phys" << std::endl;
 				G4LogicalVolume *logi = new G4LogicalVolume(solid,
 						m_materials[eleName], baseName + "log");
 				G4double xpvpos = -m_CalorSizeXY / 2. + minL + width / 2;
