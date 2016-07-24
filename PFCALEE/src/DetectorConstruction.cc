@@ -510,7 +510,7 @@ void DetectorConstruction::buildSectorStack(const unsigned sectorNum,
 				m_caloStruct[i].sublayer_vol[nEle * sectorNum + ie] =
 						new G4PVPlacement(0,
 								G4ThreeVector(xpvpos, 0.,
-										zOffset + zOverburden + thick / 2),
+										zOffset + zOverburden + thick ),
 								logi, baseName + "phys", m_logicWorld, false,
 								0);
 
