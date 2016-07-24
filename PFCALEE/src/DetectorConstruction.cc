@@ -615,12 +615,13 @@ G4VSolid *DetectorConstruction::constructSolid(std::string baseName,
 								6, 2,
 								a,b,c);
 		G4RotationMatrix* rot = new G4RotationMatrix(0,0,0);
-		const G4ThreeVector trans= G4ThreeVector(20,0,0);
-		G4UnionSolid* solid = new G4UnionSolid(baseName + "box",
+		const G4ThreeVector trans= G4ThreeVector(20,20,20);
+		G4UnionSolid* solid3 = new G4UnionSolid(baseName + "box",
 				solid,
 				solid1,
 				rot,
 				trans);
+		solid = solid3;
 		//solid = new G4Box(baseName + "box", width / 2, m_CalorSizeXY / 2,
 		//		thick / 2);
 		//set the offset!
