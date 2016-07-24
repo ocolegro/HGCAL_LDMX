@@ -614,7 +614,7 @@ G4VSolid *DetectorConstruction::constructSolid(std::string baseName,
 		}
 	} else {
 		if (model_ == DetectorConstruction::m_FULLSECTION) {
-			G4double hexaRad = 200.0;
+			G4double hexaRad = 78.0;
 			G4double a[2] = {0,thick},b[2] ={0,0},c[2] = {hexaRad,hexaRad};
 
 			G4VSolid* sHexa = new G4Polyhedra(baseName + "box",
@@ -642,29 +642,9 @@ G4VSolid *DetectorConstruction::constructSolid(std::string baseName,
 					rot,
 					trans.rotate(i*3.14/3,zAxis ));
 			}
-			/*
-			for (int i = 1; i < 4; i ++){
-
-				G4ThreeVector zAxis(0,0,1);
-				trans.rotate(i/4.0*3.14/3,zAxis );
-
-				//transTemp.rotate(i/4.0*3.14/3,zAxis );
-				//const G4ThreeVector trans = transTemp;
-				G4UnionSolid* s1us2 = new G4UnionSolid(baseName + "box",
-						sPrim,
-						sSec,
-						rot,
-						trans);
-			}
-			*/
 
 			solid = sUnion;
-			/*
-			double layerR = tan(m_maxTheta) * (zpos - m_z0pos);
-			std::cout << "The radius for this layer is " << layerR << std::endl;
-			solid = new G4Tubs(baseName + "box", 0, layerR, thick / 2, minL,
-					width);
-					*/
+
 		}
 
 		else {
