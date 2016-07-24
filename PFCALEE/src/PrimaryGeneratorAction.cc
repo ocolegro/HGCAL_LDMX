@@ -137,7 +137,7 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent) {
 	G4double et = 4.0;
 	//double engs3[16] = {.25,.5,.75,1.,1.25,1.5,1.75,2,2.25,2.5,2.75,3.,3.25,3.5,3.75,4.0};
 	//unsigned iSecret = rand() % 16 ;
-	G4double et = engs3[iSecret];
+	//G4double et = engs3[iSecret];
 	particleGun->SetParticleEnergy(et * GeV);
 	particleGun->SetParticleMomentumDirection(G4ThreeVector(0., 0., 1.));
 
