@@ -601,7 +601,7 @@ void DetectorConstruction::SetDetModel(G4int model) {
 G4VSolid *DetectorConstruction::constructSolid(std::string baseName,
 		G4double thick, G4double zpos, const G4double & minL,
 		const G4double & width, size_t which_ele) {
-	G4VSolid *solid;
+	G4VSolid *solid,*solid1;
 
 	if (which_ele == 0) {
 		G4double a[2] = {0,5},b[2] ={0,0},c[2] = {20,20};
@@ -609,6 +609,15 @@ G4VSolid *DetectorConstruction::constructSolid(std::string baseName,
 						0, 2 * pi,
 						6, 2,
 						a,b,c);
+		solid1 = new G4Polyhedra(baseName + "box",
+								0, 2 * pi,
+								6, 2,
+								a,b,c);
+		solid = G4UnionSolid(baseName + "box",
+				solid,
+				solid1,
+				G4RotationMatrix(0,0,0),
+				G4ThreeVector(20,0,0));
 		//solid = new G4Box(baseName + "box", width / 2, m_CalorSizeXY / 2,
 		//		thick / 2);
 		//set the offset!
