@@ -54,7 +54,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 	HGCSSGenParticle genPart;
 	eventAction_->Detect(eRawDep,pdgID,kinEng, volume);
 	const G4TrackVector* secondaries= aStep->GetSecondary();
-
+	std::cout << "The volume name is " << volume->GetName() << " and the step deposited " << eRawDep << std::endl;
 
 	bool trackEscapes = ((lTrack->GetTrackStatus()!=fAlive
 			&& (lTrack->GetKineticEnergy() > 10)
