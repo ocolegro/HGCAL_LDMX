@@ -614,7 +614,7 @@ G4VSolid *DetectorConstruction::constructSolid(std::string baseName,
 		}
 	} else {
 		if (model_ == DetectorConstruction::m_FULLSECTION) {
-			G4double hexaRad = 101.59994;//78.0;
+			/*G4double hexaRad = 101.59994;//78.0;
 			//G4double cos30 = 0.86602540378;
 			G4double a[2] = {0,thick},b[2] ={0,0},c[2] = {hexaRad,hexaRad};
 
@@ -642,8 +642,10 @@ G4VSolid *DetectorConstruction::constructSolid(std::string baseName,
 					trans.rotate(i*3.14/3,zAxis ));
 			}
 
-			solid = sHexa;//sUnion;
-
+			solid = sHexa;
+			*/
+			solid = new G4Box(baseName + "box", width / 2, m_CalorSizeXY / 2,
+					thick / 2);
 		}
 
 		else {
