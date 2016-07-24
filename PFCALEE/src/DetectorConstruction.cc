@@ -614,7 +614,7 @@ G4VSolid *DetectorConstruction::constructSolid(std::string baseName,
 		}
 	} else {
 		if (model_ == DetectorConstruction::m_FULLSECTION) {
-			G4double a[2] = {0,thick},b[2] ={0,0},c[2] = {20,20};
+			G4double a[2] = {0,thick},b[2] ={0,0},c[2] = {200,200};
 			G4VSolid* s1 = new G4Polyhedra(baseName + "box",
 							0, 2 * pi,
 							6, 2,
@@ -624,7 +624,7 @@ G4VSolid *DetectorConstruction::constructSolid(std::string baseName,
 									6, 2,
 									a,b,c);
 			G4RotationMatrix* rot = new G4RotationMatrix(0,0,0);
-			const G4ThreeVector trans= G4ThreeVector(40,0,0);
+			const G4ThreeVector trans= G4ThreeVector(400,0,0);
 			G4UnionSolid* s1us2 = new G4UnionSolid(baseName + "box",
 					s1,
 					s2,
