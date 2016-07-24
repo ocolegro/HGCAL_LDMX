@@ -614,24 +614,31 @@ G4VSolid *DetectorConstruction::constructSolid(std::string baseName,
 		}
 	} else {
 		if (model_ == DetectorConstruction::m_FULLSECTION) {
-			G4double a[2] = {0,thick},b[2] ={0,0},c[2] = {200,200};
-			G4VSolid* s1 = new G4Polyhedra(baseName + "box",
+			G4double hexaRad = 200.0;
+			G4double a[2] = {0,thick},b[2] ={0,0},c[2] = {hexaRad,hexaRad};
+
+			G4VSolid* sPrim = new G4Polyhedra(baseName + "box",
 							0, 2 * pi,
 							6, 2,
 							a,b,c);
-			G4VSolid* s2 = new G4Polyhedra(baseName + "box",
-									0, 2 * pi,
-									6, 2,
-									a,b,c);
-			G4RotationMatrix* rot = new G4RotationMatrix(0,0,0);
-			//const G4ThreeVector trans= G4ThreeVector(.1,400,0);
-			const G4ThreeVector trans= G4ThreeVector(0.86602540378*400,.5*400,0);
-			G4UnionSolid* s1us2 = new G4UnionSolid(baseName + "box",
-					s1,
-					s2,
-					rot,
-					trans);
-			solid = s1us2;
+			G4UnionSolid* sUnion;
+
+			for (int i = 0; i < 4; i ++){
+				G4VSolid* sSec = new G4Polyhedra(baseName + "box",
+										0, 2 * pi,
+										6, 2,
+										a,b,c);
+				G4RotationMatrix* rot = new G4RotationMatrix(0,0,0);
+				const G4ThreeVector trans= G4ThreeVector(0.86602540378*2*hexaRad,.5*2*hexaRad,0);
+				trans.rotate(i/4.0*3.14/3, (0,0,1));
+				G4UnionSolid* s1us2 = new G4UnionSolid(baseName + "box",
+						sPrim,
+						sSec,
+						rot,
+						trans);
+			}
+
+			solid = sUnion;
 			/*
 			double layerR = tan(m_maxTheta) * (zpos - m_z0pos);
 			std::cout << "The radius for this layer is " << layerR << std::endl;
