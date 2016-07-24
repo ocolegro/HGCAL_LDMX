@@ -24,6 +24,7 @@
 #include "G4FieldManager.hh"
 #include "G4TransportationManager.hh"
 #include "G4PhysicalConstants.hh"
+#include "G4UnionSolid.hh"
 
 using namespace std;
 
