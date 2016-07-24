@@ -642,7 +642,7 @@ G4VSolid *DetectorConstruction::constructSolid(std::string baseName,
 					trans.rotate(i*3.14/3,zAxis ));
 			}
 
-			solid = sUnion;
+			solid = sHexa;//sUnion;
 
 		}
 
