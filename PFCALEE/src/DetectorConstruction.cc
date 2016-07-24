@@ -617,12 +617,15 @@ G4VSolid *DetectorConstruction::constructSolid(std::string baseName,
 			G4double hexaRad = 101.59994;//78.0;
 			//G4double cos30 = 0.86602540378;
 			G4double a[2] = {0,thick},b[2] ={0,0},c[2] = {hexaRad,hexaRad};
-			//G4VSolid* sHexa
+
+			G4VSolid* sHexa = new G4Polyhedra(baseName + "box",
+							0, 2 * pi,
+							6, 2,
+							a,b,c);
 			solid = new G4Polyhedra(baseName + "box",
 							0, 2 * pi,
 							6, 2,
 							a,b,c);
-
 			G4ThreeVector trans = G4ThreeVector(0.,2*hexaRad,0);
 			G4ThreeVector zAxis(0,0,1);
 			G4RotationMatrix* rot = new G4RotationMatrix(0,0,0);
@@ -642,7 +645,7 @@ G4VSolid *DetectorConstruction::constructSolid(std::string baseName,
 					trans.rotate(i*3.14/3,zAxis ));
 			}
 
-			solid = sHexa;// (G4VSolid*)sUnion;
+			//solid = sHexa;// (G4VSolid*)sUnion;
 			/*
  			double layerR = tan(m_maxTheta) * (zpos - m_z0pos);
  			solid = new G4Tubs(baseName + "box", 0, layerR, thick / 2, minL,width);*/
