@@ -621,24 +621,25 @@ G4VSolid *DetectorConstruction::constructSolid(std::string baseName,
 							0, 2 * pi,
 							6, 2,
 							a,b,c);
-			G4UnionSolid* sUnion;
+			 sUnion;
 
 
 			G4ThreeVector trans = G4ThreeVector(0.86602540378*2*hexaRad,.5*2*hexaRad,0);
 			G4RotationMatrix* rot = new G4RotationMatrix(0,0,0);
+			G4ThreeVector zAxis(0,0,1);
 
-			sUnion = new G4UnionSolid(baseName + "box",
+			G4UnionSolid* sUnion = new G4UnionSolid(baseName + "box",
 					sHexa,
 					sHexa,
 					rot,
 					trans);
-			G4ThreeVector zAxis(0,0,1);
-
+			for (int i = 1; i < 6; i ++){
 			sUnion = new G4UnionSolid(baseName + "box",
 					sUnion,
 					sHexa,
 					rot,
-					trans.rotate(3.14/3,zAxis ));
+					trans.rotate(i*3.14/3,zAxis ));
+			}
 			/*
 			for (int i = 1; i < 4; i ++){
 
