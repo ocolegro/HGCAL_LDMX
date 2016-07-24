@@ -616,7 +616,7 @@ G4VSolid *DetectorConstruction::constructSolid(std::string baseName,
 								a,b,c);
 		G4RotationMatrix* rot = G4RotationMatrix(0,0,0);
 		const G4ThreeVector trans= G4ThreeVector(20,0,0);
-		solid = G4UnionSolid(baseName + "box",
+		G4UnionSolid* solid = G4UnionSolid(baseName + "box",
 				solid,
 				solid1,
 				rot,
