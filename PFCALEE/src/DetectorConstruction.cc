@@ -617,13 +617,13 @@ G4VSolid *DetectorConstruction::constructSolid(std::string baseName,
 		if (model_ == DetectorConstruction::m_FULLSECTION) {
 			G4double hexaRad = 101.59994;//78.0;
 			//G4double cos30 = 0.86602540378;
-			G4double a[2] = {0,thick},b[2] ={0,0},c[2] = {hexaRad,hexaRad};
+			G4double a[2] = {0,thick/2.0},b[2] ={0,0},c[2] = {hexaRad,hexaRad};
 			/*solid = new G4Polyhedra(baseName + "box",
 							0, 2 * pi,
 							6, 2,
 							a,b,c);*/
-			solid = new G4Box(baseName + "box", width / 2, m_CalorSizeXY / 2,
-					thick / 2);
+			//solid = new G4Box(baseName + "box", width / 2, m_CalorSizeXY / 2,
+			//		thick / 2);
 			/*
 			G4VSolid* sHexa = new G4Polyhedra(baseName + "box",
 							0, 2 * pi,
