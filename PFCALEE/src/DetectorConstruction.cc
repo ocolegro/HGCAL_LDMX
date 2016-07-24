@@ -644,8 +644,8 @@ G4VSolid *DetectorConstruction::constructSolid(std::string baseName,
 
 			solid = sHexa;
 			*/
-			solid = new G4Box(baseName + "box", width / 2, m_CalorSizeXY / 2,
-					thick / 2);
+ 			double layerR = tan(m_maxTheta) * (zpos - m_z0pos);
+ 			solid = new G4Tubs(baseName + "box", 0, layerR, thick / 2, minL,width);
 		}
 
 		else {
