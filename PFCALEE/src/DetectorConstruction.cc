@@ -621,7 +621,6 @@ G4VSolid *DetectorConstruction::constructSolid(std::string baseName,
 							0, 2 * pi,
 							6, 2,
 							a,b,c);
-			 sUnion;
 
 
 			G4ThreeVector trans = G4ThreeVector(0.86602540378*2*hexaRad,.5*2*hexaRad,0);
@@ -634,7 +633,7 @@ G4VSolid *DetectorConstruction::constructSolid(std::string baseName,
 					rot,
 					trans);
 			for (int i = 1; i < 6; i ++){
-			sUnion = new G4UnionSolid(baseName + "box",
+				sUnion = new G4UnionSolid(baseName + "box",
 					sUnion,
 					sHexa,
 					rot,
