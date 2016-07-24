@@ -618,7 +618,7 @@ G4VSolid *DetectorConstruction::constructSolid(std::string baseName,
 			G4double hexaRad = 101.59994;//78.0;
 			//G4double cos30 = 0.86602540378;
 			//G4double a[2] = {0,thick/2.0},b[2] ={0,0},c[2] = {hexaRad,hexaRad};
-			G4double a[2] = {0},b[2] ={0},c[2] = {hexaRad};
+			G4double a[2] = {0,thick/1.01},b[2] ={0,0},c[2] = {hexaRad,hexaRad};
 
 			/*solid = new G4Polyhedra(baseName + "box",
 							0, 2 * pi,
