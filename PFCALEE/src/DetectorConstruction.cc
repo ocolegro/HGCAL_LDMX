@@ -604,8 +604,13 @@ G4VSolid *DetectorConstruction::constructSolid(std::string baseName,
 	G4VSolid *solid;
 
 	if (which_ele == 0) {
-		solid = new G4Box(baseName + "box", width / 2, m_CalorSizeXY / 2,
-				thick / 2);
+		G4double a[2] = {0,5},b[2] ={0,0},c[2] = {20,20};
+		solid = new G4Polyhedra(baseName + "box",
+						0, 2 * pi,
+						6, 2,
+						a,b,c);
+		//solid = new G4Box(baseName + "box", width / 2, m_CalorSizeXY / 2,
+		//		thick / 2);
 		//set the offset!
 		if (baseName == "W1"){
 			m_z0pos = zpos;
