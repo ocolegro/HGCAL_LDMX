@@ -509,9 +509,10 @@ void DetectorConstruction::buildSectorStack(const unsigned sectorNum,
 #endif
 
  				G4RotationMatrix* rot = new G4RotationMatrix(0,0,1);
- 				unsigned iSecret = 0;
+ 				double iSecret = 0;
  				if (i > 0)
- 					iSecret = rand() % 60 ;
+ 					iSecret = (rand() % 6)/10.0;
+
 				rot->rotateZ(iSecret*deg);
 
 				m_caloStruct[i].sublayer_vol[nEle * sectorNum + ie] =
