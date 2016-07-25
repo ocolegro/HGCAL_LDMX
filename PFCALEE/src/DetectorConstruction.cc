@@ -563,7 +563,7 @@ void DetectorConstruction::fillInterSectorSpace(const unsigned sectorNum,
 				G4double xpvpos = -m_CalorSizeXY / 2. + minL + width / 2;
 				G4RotationMatrix* rot = new G4RotationMatrix(0,0,1);
 				rot->rotateZ(15*deg);
-				G4PVPlacement *tmp = new G4PVPlacement(G4Transform3D(0,
+				G4PVPlacement *tmp = new G4PVPlacement(G4Transform3D(*rot,
 						G4ThreeVector(xpvpos, 0.,
 								zOffset + zOverburden )), logi,
 						baseName + "phys", m_logicWorld, false, 0);
