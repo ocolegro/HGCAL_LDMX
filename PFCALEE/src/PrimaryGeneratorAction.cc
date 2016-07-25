@@ -142,10 +142,10 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent) {
 	particleGun->SetParticleMomentumDirection(G4ThreeVector(0., 0., 1.));
 
 	G4double phi = (rand() % 314)/200.;
-	//G4double y0 = G4RandFlat::shoot(-10.,10);
-	//G4double x0 = G4RandFlat::shoot(-10.,10);
-	G4double x0 = 5.0*cos(phi);
-	G4double y0 = 5.0*sin(phi);
+	G4double y0 = G4RandFlat::shoot(-10.,10);
+	G4double x0 = G4RandFlat::shoot(-10.,10);
+	//G4double x0 = 5.0*cos(phi);
+	//G4double y0 = 5.0*sin(phi);
 	G4double z0 = -0.5 * (Detector->GetWorldSizeZ());
 
 	particleGun->SetParticlePosition(G4ThreeVector(x0, y0, z0));
