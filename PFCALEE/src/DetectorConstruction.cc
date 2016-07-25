@@ -507,6 +507,7 @@ void DetectorConstruction::buildSectorStack(const unsigned sectorNum,
 				<< "), logi,"
 				<< baseName+"phys, m_logicWorld, false, 0);" << endl;
 #endif
+
 				m_caloStruct[i].sublayer_vol[nEle * sectorNum + ie] =
 						new G4PVPlacement(0,
 								G4ThreeVector(xpvpos, 0.,
@@ -560,7 +561,9 @@ void DetectorConstruction::fillInterSectorSpace(const unsigned sectorNum,
 				G4LogicalVolume *logi = new G4LogicalVolume(solid,
 						m_materials[eleName], baseName + "log");
 				G4double xpvpos = -m_CalorSizeXY / 2. + minL + width / 2;
-				G4PVPlacement *tmp = new G4PVPlacement(0,
+				G4RotationMatrix* rot = new G4RotationMatrix(0,0,1);
+				rot->rotateZ(15*deg);
+				G4PVPlacement *tmp = new G4PVPlacement(rot,
 						G4ThreeVector(xpvpos, 0.,
 								zOffset + zOverburden ), logi,
 						baseName + "phys", m_logicWorld, false, 0);
@@ -616,15 +619,8 @@ G4VSolid *DetectorConstruction::constructSolid(std::string baseName,
 	} else {
 		if (model_ == DetectorConstruction::m_FULLSECTION) {
 			G4double hexaRad = 101.59994;//78.0;
-			//G4double cos30 = 0.86602540378;
-			//G4double a[2] = {0,thick/2.0},b[2] ={0,0},c[2] = {hexaRad,hexaRad};
-			G4double a[2] = {0,thick/2.0},b[2] ={0,0},c[2] = {hexaRad,hexaRad};
-			/*solid = new G4Polyhedra(baseName + "box",
-							0, 2 * pi,
-							6, 2,
-							a,b,c);*/
-			//solid = new G4Box(baseName + "box", width / 2, m_CalorSizeXY / 2,
-			//		thick / 2);
+			G4double a[2] = {0,thick},b[2] ={0,0},c[2] = {hexaRad,hexaRad};
+
 
 			G4VSolid* sHexa = new G4Polyhedra(baseName + "box",
 							0, 2 * pi,
@@ -650,10 +646,7 @@ G4VSolid *DetectorConstruction::constructSolid(std::string baseName,
 					trans.rotate(i*3.14/3,zAxis ));
 			}
 
-			solid = sUnion;//sHexa;// (G4VSolid*)sUnion; // sUnion;
-			/*
- 			double layerR = tan(m_maxTheta) * (zpos - m_z0pos);
- 			solid = new G4Tubs(baseName + "box", 0, layerR, thick / 2, minL,width);*/
+			solid = sUnion;
 		}
 
 		else {
