@@ -508,10 +508,14 @@ void DetectorConstruction::buildSectorStack(const unsigned sectorNum,
 				<< baseName+"phys, m_logicWorld, false, 0);" << endl;
 #endif
 
+				G4RotationMatrix* rot = new G4RotationMatrix(0,0,1);
+				unsigned iSecret = rand() % 60 ;
+				rot->rotateZ(iSecret*deg);
+
 				m_caloStruct[i].sublayer_vol[nEle * sectorNum + ie] =
-						new G4PVPlacement(0,
+						new G4PVPlacement(G4Transform3D(*rot,
 								G4ThreeVector(xpvpos, 0.,
-										zOffset + zOverburden ),
+										zOffset + zOverburden )),
 								logi, baseName + "phys", m_logicWorld, false,
 								0);
 
