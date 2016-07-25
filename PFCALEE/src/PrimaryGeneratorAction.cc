@@ -147,8 +147,8 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent) {
 	unsigned radId = (rand() % 5);
 	double rads[5] = {0.,5.,10.,15.,20.};
 
-	G4double x0 = rads[radId]*cos(phi);
-	G4double y0 = rads[radId]*sin(phi);
+	G4double x0 = 0.0;//rads[radId]*cos(phi);
+	G4double y0 = 0.0;//rads[radId]*sin(phi);
 	G4double z0 = -0.5 * (Detector->GetWorldSizeZ());
 
 	particleGun->SetParticlePosition(G4ThreeVector(x0, y0, z0));
