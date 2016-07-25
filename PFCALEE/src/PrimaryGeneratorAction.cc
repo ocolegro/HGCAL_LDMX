@@ -144,7 +144,7 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent) {
 	G4double phi = (rand() % 314)/200.;
 	//G4double y0 = G4RandFlat::shoot(-10.,10);
 	//G4double x0 = G4RandFlat::shoot(-10.,10);
-	G4double radId = (rand() % 4);
+	unsigned radId = (rand() % 4);
 	double rads[4] = {5.,10.,15.,20.};
 
 	G4double x0 = rads[radId]*cos(phi);
