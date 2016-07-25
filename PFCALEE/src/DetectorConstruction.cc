@@ -511,7 +511,7 @@ void DetectorConstruction::buildSectorStack(const unsigned sectorNum,
  				G4RotationMatrix* rot = new G4RotationMatrix(0,0,1);
  				double iSecret = 0;
  				if (i > 0)
- 					iSecret = i * 10;//(rand() % 6);
+ 					iSecret =0.;// i * 10;//(rand() % 6);
 
 				rot->rotateZ(iSecret*deg);
 
