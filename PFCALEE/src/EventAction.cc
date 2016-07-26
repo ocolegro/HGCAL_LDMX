@@ -52,7 +52,7 @@ EventAction::EventAction(G4bool doFast) {
 			&escapevec_);
 	tree_->Branch("HGCSSNovelAction", "std::vector<HGCSSGenParticle>",
 			&novelVec_);
-	if (!firstPass)
+	if (firstPass == false)
 	tree_->Branch("HGCSSSamplingSectionVec","std::vector<HGCSSSamplingSection>",
 			&ssvec_);
 
