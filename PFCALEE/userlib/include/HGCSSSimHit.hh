@@ -64,7 +64,7 @@ public:
 
 	//re-encode local layer into det layer + si layer if several sensitive layers (up to 3...)
 	inline void setLayer(const unsigned & layer, const unsigned & silayer) {
-		if (silayer > 2) {
+		if (silayer > 4) {
 			std::cerr << " ERROR! Trying to add silayer " << silayer
 					<< ", should be less than 3..." << std::endl;
 			exit(1);
