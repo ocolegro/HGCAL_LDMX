@@ -76,11 +76,11 @@ void EventAction::BeginOfEventAction(const G4Event* evt) {
 }
 
 //
-void EventAction::Detect(G4double eDepRaw, G4int trackID,G4double kinEng, G4VPhysicalVolume *volume,G4Track* lTrack) {
+void EventAction::Detect(G4double eDepRaw, G4VPhysicalVolume *volume,G4Track* lTrack,G4ThreeVector position) {
 	std::pair<G4bool,G4bool> stopIter = std::make_pair(false,false);
 	for (size_t i = initLayer; i < detector_->size(); i++){
 		if (stopIter.first) break;
-		stopIter = (*detector_)[i].add( eDepRaw, volume);
+		stopIter = (*detector_)[i].add( eDepRaw, volume,lTrack, position);
 	}
 
 }

@@ -52,7 +52,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 
 	const G4ThreeVector & position = thePreStepPoint->GetPosition();
 	HGCSSGenParticle genPart;
-	eventAction_->Detect(eRawDep,pdgID,kinEng, volume,lTrack);
+	eventAction_->Detect(eRawDep, volume,lTrack,position);
 	const G4TrackVector* secondaries= aStep->GetSecondary();
 	//std::cout << "The volume name is " << volume->GetName() << " and the step deposited " << eRawDep << std::endl;
 
