@@ -159,6 +159,8 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 			}
 
 		ssvec_.push_back(lSec);
+		(*detector_)[i].resetCounters();
+
 	}
 
 	event_.dep(totalSens);
@@ -177,7 +179,7 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 	ssvec_.clear();
 	targetPartEngs.clear();
 	novelPartEngs.clear();
-	(*detector_)[i].resetCounters();
+
 	hadronicInts = 0;
 
 }
