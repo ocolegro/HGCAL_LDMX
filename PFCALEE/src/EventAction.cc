@@ -128,7 +128,6 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 			totalSens += (*detector_)[i].getTotalSensE();
 			wgtTotalSens += weight*(*detector_)[i].getTotalSensE();
 
-			(*detector_)[i].resetCounters();
 			} //loop on sensitive layers
 
 	}
@@ -178,6 +177,7 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 	ssvec_.clear();
 	targetPartEngs.clear();
 	novelPartEngs.clear();
+	(*detector_)[i].resetCounters();
 	hadronicInts = 0;
 
 }
