@@ -24,7 +24,6 @@ std::pair<G4bool,G4bool> SamplingSection::add(G4double depositRawE,G4VPhysicalVo
 			lHit.hit_y = position.y();
 			lHit.hit_z = position.z();
 
-			unsigned idx = getSensitiveLayerIndex(lstr);
 			sens_HitVec[idx].push_back(lHit);
 
 
