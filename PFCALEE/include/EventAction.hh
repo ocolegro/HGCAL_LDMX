@@ -57,6 +57,7 @@ public:
 	G4int evtNb_;
 	G4int hadronicInts;
 	std::vector<G4double> targetPartEngs;
+	std::vector<G4int> novelPartEngs;
 private:
 	HGCSSSamplingSectionVec ssvec_;
 	std::vector<SamplingSection> *detector_;

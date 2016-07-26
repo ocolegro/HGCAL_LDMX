@@ -173,7 +173,7 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 	novelVec_.clear();
 	hitvec_.clear();
 	targetPartEngs.clear();
-	targetPartEngs.clear();
+	novelPartEngs.clear();
 	hadronicInts = 0;
 
 }
