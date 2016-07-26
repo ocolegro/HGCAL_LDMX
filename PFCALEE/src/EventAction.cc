@@ -52,6 +52,7 @@ EventAction::EventAction(G4bool doFast) {
 			&escapevec_);
 	tree_->Branch("HGCSSNovelAction", "std::vector<HGCSSGenParticle>",
 			&novelVec_);
+	if (!firstPass)
 	tree_->Branch("HGCSSSamplingSectionVec","std::vector<HGCSSSamplingSection>",
 			&ssvec_);
 
@@ -174,6 +175,7 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 	escapevec_.clear();
 	novelVec_.clear();
 	hitvec_.clear();
+	ssvec_.clear();
 	targetPartEngs.clear();
 	novelPartEngs.clear();
 	hadronicInts = 0;

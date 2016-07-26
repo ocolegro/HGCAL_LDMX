@@ -49,7 +49,7 @@ public:
 		return wait_;
 	}
 	;
-	inline G4bool GetSpeed() {
+	inline G4bool firstPass() {
 		return doFast_;
 	}
 	;

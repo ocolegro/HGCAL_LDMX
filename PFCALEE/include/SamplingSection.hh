@@ -57,7 +57,8 @@ public:
 				sens_HitVec_size_max = 0;
 
 				resetCounters();
-
+				eventAction_ =
+						(EventAction*) G4RunManager::GetRunManager()->GetUserEventAction();
 				std::cout << " -- End of sampling section initialisation. Input " << aThicknessVec.size() << " elements, constructing " << n_elements << " elements with " << n_sens_elements << " sensitive elements." << std::endl;
 
 			};
@@ -144,6 +145,9 @@ public:
 			unsigned n_elements;
 			unsigned n_sectors;
 			unsigned n_sens_elements;
+
+			EventAction *eventAction_;
+
 			std::vector<G4double> sublayer_thick;
 			std::vector<std::string> ele_name;
 			std::vector<G4double> sublayer_X0;

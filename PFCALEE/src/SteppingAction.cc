@@ -58,7 +58,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 
 	bool trackEscapes = ((lTrack->GetTrackStatus()!=fAlive
 			&& (lTrack->GetKineticEnergy() > 10)
-			&& (secondPass || (!eventAction_->GetSpeed()))
+			&& (secondPass || (!eventAction_->firstPass()))
 			&& (volume->GetName() == "expHall")
 			&& secondaries->size() == 0)
 			 );
