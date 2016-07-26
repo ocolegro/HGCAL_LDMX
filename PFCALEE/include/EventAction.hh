@@ -30,7 +30,7 @@ public:
 	void BeginOfEventAction(const G4Event*);
 	void EndOfEventAction(const G4Event*);
 
-	void Detect(G4double eRawDep,G4VPhysicalVolume *volume,G4Track* lTrack,G4ThreeVector position);
+	void Detect(G4double eRawDep,G4VPhysicalVolume *volume,G4Track* lTrack,const G4ThreeVector & position);
 
 	void SetPrintModulo(G4int val) {
 		printModulo = val;

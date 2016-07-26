@@ -2,7 +2,7 @@
 #include "SamplingSection.hh"
 
 //
-std::pair<G4bool,G4bool> SamplingSection::add(G4double depositRawE,G4VPhysicalVolume* vol,G4Track *lTrack,G4ThreeVector position) {
+std::pair<G4bool,G4bool> SamplingSection::add(G4double depositRawE,G4VPhysicalVolume* vol,G4Track *lTrack,const G4ThreeVector & position) {
 	std::string lstr = vol->GetName();
 	bool breakSwitch = false;
 	bool isSens = false;
