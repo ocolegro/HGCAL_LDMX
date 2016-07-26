@@ -172,5 +172,8 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 	escapevec_.clear();
 	novelVec_.clear();
 	hitvec_.clear();
+	targetPartEngs.clear();
+	targetPartEngs.clear();
+	hadronicInts = 0;
 
 }
