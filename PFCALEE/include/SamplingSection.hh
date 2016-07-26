@@ -6,14 +6,14 @@
 #include "G4ThreeVector.hh"
 #include "G4Colour.hh"
 #include "G4Track.hh"
-#include "EventAction.hh"
+//#include "EventAction.hh"
 #include "G4RunManager.hh"
 
 #include <iomanip>
 #include <vector>
 
 #include "G4SiHit.hh"
-class EventAction;
+//class EventAction;
 class SamplingSection {
 public:
 	//CTOR
@@ -103,7 +103,7 @@ public:
 			unsigned n_sectors;
 			unsigned n_sens_elements;
 
-			EventAction *eventAction_;
+			//EventAction *eventAction_;
 
 			std::vector<G4double> sublayer_thick;
 			std::vector<std::string> ele_name;
