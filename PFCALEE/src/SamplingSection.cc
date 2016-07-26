@@ -13,7 +13,7 @@ std::pair<G4bool,G4bool> SamplingSection::add(G4double depositRawE,G4VPhysicalVo
 			unsigned idx = getSensitiveLayerIndex(lstr);
 			unsigned eleidx = ie % n_elements;
 			isSens = isSensitiveElement(eleidx);
-			sublayer_RawDep[eleidx] += depositRawE;
+			sublayer_RawDep[eleidx] += depositRawE;/*
 			if (eventAction_->firstPass() == false){
 				G4SiHit lHit;
 				lHit.energyDep = depositRawE;
@@ -24,7 +24,7 @@ std::pair<G4bool,G4bool> SamplingSection::add(G4double depositRawE,G4VPhysicalVo
 				lHit.hit_z = position.z();
 
 				sens_HitVec[idx].push_back(lHit);
-			}
+			}*/
 
 			} //if in right material
 		} //loop on available materials
