@@ -1,19 +1,17 @@
 #include "EventAction.hh"
-
 #include "EventActionMessenger.hh"
 #include "DetectorConstruction.hh"
 #include "StackingAction.hh"
-
 #include "HGCSSInfo.hh"
-
 #include "G4RunManager.hh"
 #include "G4Event.hh"
 #include "G4UnitsTable.hh"
-
 #include "Randomize.hh"
 #include <iomanip>
 #include "TVector3.h"
 #include "TMath.h"
+#include "SamplingSection.hh"
+
 //
 EventAction::EventAction(G4bool doFast) {
 	eventMessenger = new EventActionMessenger(this);
