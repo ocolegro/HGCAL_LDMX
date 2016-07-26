@@ -16,17 +16,17 @@ std::pair<G4bool,G4bool> SamplingSection::add(G4double depositRawE,G4VPhysicalVo
 			sublayer_RawDep[eleidx] += depositRawE;
 			//if (eventAction_->firstPass() == false){
 				G4SiHit lHit;
-				std::cout << "The deposited raw energy is getting stored " << std::endl;
+				//std::cout << "The deposited raw energy is getting stored " << std::endl;
 				lHit.energyDep = depositRawE;
-				std::cout << "The pdgid is " << std::endl;
+				//std::cout << "The pdgid is " << std::endl;
 				lHit.pdgId = lTrack->GetDefinition()->GetPDGEncoding();
-				std::cout << "The parent KE is " << std::endl;
+				//std::cout << "The parent KE is " << std::endl;
 				lHit.parentKE = lTrack->GetKineticEnergy();
-				std::cout << "The hit_x is " << std::endl;
+				//std::cout << "The hit_x is " << std::endl;
 				lHit.hit_x = position.x();
-				std::cout << "The hit_y is " << std::endl;
+				//std::cout << "The hit_y is " << std::endl;
 				lHit.hit_y = position.y();
-				std::cout << "The hit_z is " << std::endl;
+				//std::cout << "The hit_z is " << std::endl;
 				lHit.hit_z = position.z();
 
 				sens_HitVec[idx].push_back(lHit);
