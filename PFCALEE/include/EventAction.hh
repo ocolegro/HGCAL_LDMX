@@ -2,11 +2,9 @@
 #define EventAction_h 1
 
 #include "SamplingSection.hh"
-
 #include "G4ThreeVector.hh"
 #include "G4UserEventAction.hh"
 #include "globals.hh"
-
 #include "TFile.h"
 #include "TTree.h"
 #include "SamplingSection.hh"

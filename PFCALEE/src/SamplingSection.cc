@@ -15,7 +15,7 @@ std::pair<G4bool,G4bool> SamplingSection::add(G4double depositRawE,G4VPhysicalVo
 			unsigned eleidx = ie % n_elements;
 			isSens = isSensitiveElement(eleidx);
 			sublayer_RawDep[eleidx] += depositRawE;
-			if (!eventAction_->firstPass()){
+			if (true){//!eventAction_->firstPass()){
 				G4SiHit lHit;
 				lHit.energyDep = depositRawE;
 				lHit.pdgId = lTrack->GetDefinition()->GetPDGEncoding();
