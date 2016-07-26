@@ -55,7 +55,6 @@ public:
 	;
 	HGCSSGenParticleVec genvec_,hadvec_,incvec_,escapevec_,novelVec_;
 	G4int evtNb_;
-	HGCSSGenParticleVec novelVec_;
 	G4int hadronicInts;
 	std::vector<G4double> targetPartEngs;
 private:
