@@ -6,6 +6,8 @@
 #include "G4ThreeVector.hh"
 #include "G4Colour.hh"
 #include "G4Track.hh"
+#include "EventAction.hh"
+
 #include <iomanip>
 #include <vector>
 
