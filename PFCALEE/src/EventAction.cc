@@ -137,11 +137,11 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 
 					std::map<unsigned, HGCSSSimHit> lHitMap;
 					std::pair<std::map<unsigned, HGCSSSimHit>::iterator, bool> isInserted;
-					std::cout << "the layer is " << i << " and idx = "<< idx <<  " and the size of the hitvec is " << (*detector_)[i].getSiHitVec(idx).size() << std::endl;
+					//std::cout << "the layer is " << i << " and idx = "<< idx <<  " and the size of the hitvec is " << (*detector_)[i].getSiHitVec(idx).size() << std::endl;
 					for (unsigned iSiHit(0);iSiHit < (*detector_)[i].getSiHitVec(idx).size();++iSiHit) {
 
 						G4SiHit lSiHit = (*detector_)[i].getSiHitVec(idx)[iSiHit];
-						std::cout << "lSiHit is beign evaluated.. it has energy = " << lSiHit.energyDep << std::endl;
+						//std::cout << "lSiHit is beign evaluated.. it has energy = " << lSiHit.energyDep << std::endl;
 						bool is_scint = (*detector_)[i].hasScintillator;
 						HGCSSSimHit lHit(lSiHit, idx,geomConv_->hexagonMap());
 						isInserted = lHitMap.insert(std::pair<unsigned, HGCSSSimHit>(lHit.cellid(), lHit));
