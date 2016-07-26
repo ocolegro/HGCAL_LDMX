@@ -6,14 +6,13 @@
 #include "G4ThreeVector.hh"
 #include "G4Colour.hh"
 #include "G4Track.hh"
-//#include "EventAction.hh"
+#include "EventAction.hh"
 #include "G4RunManager.hh"
 
 #include <iomanip>
 #include <vector>
 
 #include "G4SiHit.hh"
-class EventAction;
 class SamplingSection {
 public:
 	//CTOR

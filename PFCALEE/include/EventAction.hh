@@ -1,7 +1,6 @@
 #ifndef EventAction_h
 #define EventAction_h 1
 
-#include "SamplingSection.hh"
 #include "G4ThreeVector.hh"
 #include "G4UserEventAction.hh"
 #include "globals.hh"
@@ -22,6 +21,7 @@
 
 class EventActionMessenger;
 class StackingAction;
+class SamplingSection;
 
 class EventAction: public G4UserEventAction {
 public:

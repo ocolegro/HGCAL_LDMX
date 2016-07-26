@@ -1,5 +1,4 @@
 #include "G4VPhysicalVolume.hh"
-
 #include "SamplingSection.hh"
 
 //
