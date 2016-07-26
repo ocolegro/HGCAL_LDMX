@@ -77,7 +77,7 @@ std::pair<G4bool,G4bool> SamplingSection::add(G4double depositRawE,G4VPhysicalVo
 				lHit.hit_y = position.y();
 				//std::cout << "The hit_z is " << std::endl;
 				lHit.hit_z = position.z();
-				std::cout << "Processing an event" << std::endl;
+				//std::cout << "Processing an event" << std::endl;
 				sens_HitVec[idx].push_back(lHit);
 			//}
 
