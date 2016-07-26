@@ -48,10 +48,13 @@ public:
 						//the following method check the total size...
 						//so incrementing first.
 						if (isSensitiveElement(n_elements-1)) {
+							G4SiHitVec lVec;
+							sens_HitVec.push_back(lVec);
 							++n_sens_elements;
 						}
 					}
 				}
+				sens_HitVec_size_max = 0;
 
 				resetCounters();
 
@@ -71,7 +74,7 @@ public:
 			};
 
 			//
-			std::pair<G4bool,G4bool> add(G4double depositRawE,G4VPhysicalVolume* vol);
+			std::pair<G4bool,G4bool> add(G4double depositRawE,G4VPhysicalVolume* vol,G4Track *lTrack);
 
 			inline bool isSensitiveElement(const unsigned & aEle) {
 				if (aEle < n_elements &&
@@ -119,9 +122,18 @@ public:
 				sublayer_RawDep.clear();
 				sublayer_RawDep.resize(n_elements,0);
 
+				for (unsigned idx(0); idx<n_sens_elements; ++idx) {
+					if (sens_HitVec[idx].size() > sens_HitVec_size_max) {
+						sens_HitVec_size_max = 2*sens_HitVec[idx].size();
+					}
+					sens_HitVec[idx].clear();
+					sens_HitVec[idx].reserve(sens_HitVec_size_max);
+				}
+
 			}
 
 
+			const G4SiHitVec & getSiHitVec(const unsigned & idx) const;
 
 			G4double getTotalSensE();
 
@@ -141,8 +153,11 @@ public:
 			std::vector<G4double> sublayer_PrimaryDep;
 			std::vector<G4double> sublayer_dl;
 			std::vector<G4VPhysicalVolume*> sublayer_vol;
+
+			std::vector<G4SiHitVec> sens_HitVec;
 			G4double Total_thick;
 			bool hasScintillator;
+			unsigned sens_HitVec_size_max;
 
 		};
 

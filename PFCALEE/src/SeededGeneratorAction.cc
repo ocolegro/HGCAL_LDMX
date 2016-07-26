@@ -138,13 +138,15 @@ void SeededGeneratorAction::GeneratePrimaries(G4Event* anEvent) {
 	G4double et = 0.0;
 	CLHEP::HepRandom::restoreEngineStatus ("temp.rndm");
 	if (inc_->size() != 0){
-		for(int i = 0; i < inc_->size(); i++){
+		eventAction_->SetWait(true);
+		et = 4.0;
+		/*for(int i = 0; i < inc_->size(); i++){
 			HGCSSGenParticle& incPart = (*inc_)[i];
 			if (incPart.vertexKE() > 500){
 				eventAction_->SetWait(true);
 				et = 4.0;
 			}
-		}
+		}*/
 
 	}
 	else{

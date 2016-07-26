@@ -20,18 +20,11 @@ EventAction::EventAction(G4bool doFast) {
 	printModulo = 100;
 	doFast_ = doFast;
 	outF_ = TFile::Open("PFcal.root", "RECREATE");
-	//summedDep = 0;nSteps = 0;nMainSteps = 0;
-	//depCut = 150;
-	/*for (Int_t i = 0; i < 1000000;  i++){
-		step[i] = i;
-		stepMain[i] = i;
-	}*/
-	hadronicInts = 0;
+
 	outF_->cd();
 	double xysize =
 			((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->GetCalorSizeXY();
 	initLayer = ((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->initLayer();
-	//stacker_  = (StackingAction*) G4RunManager::GetRunManager()->GetUserStackingAction();
 
 	//save some info
 	HGCSSInfo *info = new HGCSSInfo();
@@ -48,6 +41,7 @@ EventAction::EventAction(G4bool doFast) {
 
 	tree_ = new TTree("HGCSSTree", "HGC Standalone simulation tree");
 	tree_->Branch("HGCSSEvent", "HGCSSEvent", &event_);
+	tree_->Branch("HGCSSSimHitVec", "std::vector<HGCSSSimHit>", &hitvec_);
 	tree_->Branch("HGCSSGenAction", "std::vector<HGCSSGenParticle>",
 			&genvec_);
 	tree_->Branch("HGCSSHadAction", "std::vector<HGCSSGenParticle>",
@@ -58,15 +52,6 @@ EventAction::EventAction(G4bool doFast) {
 			&escapevec_);
 	tree_->Branch("HGCSSNovelAction", "std::vector<HGCSSGenParticle>",
 			&novelVec_);
-	//tree_->Branch("nSteps",&nSteps,"nSteps/I");
-	//tree_->Branch("nMainSteps",&nMainSteps,"nMainSteps/I");
-
-	//tree_->Branch("step",&step,"step[nSteps]/I");
-	//tree_->Branch("stepDep",&stepDep,"stepDep[nSteps]/F");
-
-	//tree_->Branch("stepMain",&stepMain,"stepMain[nMainSteps]/I");
-	//tree_->Branch("mainKinEng",&mainKinEng,"mainKinEng[nMainSteps]/F");
-
 
 	// }
 }
@@ -91,28 +76,13 @@ void EventAction::BeginOfEventAction(const G4Event* evt) {
 }
 
 //
-void EventAction::Detect(G4double eDepRaw, G4int trackID,G4double kinEng, G4VPhysicalVolume *volume) {
+void EventAction::Detect(G4double eDepRaw, G4int trackID,G4double kinEng, G4VPhysicalVolume *volume,G4Track* lTrack) {
 	std::pair<G4bool,G4bool> stopIter = std::make_pair(false,false);
-
 	for (size_t i = initLayer; i < detector_->size(); i++){
 		if (stopIter.first) break;
 		stopIter = (*detector_)[i].add( eDepRaw, volume);
 	}
-	/*if (stopIter.second)
-		summedDep += eDepRaw;
-	stepDep[nSteps] = summedDep;
-	if (trackID == 1 && kinEng > 500){
-		stepMain [nMainSteps] = nSteps ;
-		mainKinEng [nMainSteps] = kinEng ;
-		nMainSteps = nMainSteps + 1;
-	}
-	if (summedDep > depCut) {
-		nSteps = 0;
-		nMainSteps = 0;
-		G4RunManager::GetRunManager()->AbortEvent();
-	}
-	nSteps = nSteps + 1;
-*/
+
 }
 
 //
@@ -158,36 +128,49 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 
 			(*detector_)[i].resetCounters();
 			} //loop on sensitive layers
-		//G4cout << "This was a good event, the totalSens was " << totalSens << G4endl;
 
 	}
-	/*
-	else{
-		for (size_t i = ((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->initLayer()
-				; i < detector_->size(); i++) {
-			Double_t weight = (i < 8) ? .8 : 1. ;
-			totalSens += (*detector_)[i].getTotalSensE();
-			wgtTotalSens += weight*(*detector_)[i].getTotalSensE();
+	for (size_t i = initLayer; i < detector_->size(); i++) {
+		HGCSSSamplingSection lSec;
 
-			(*detector_)[i].resetCounters();
+		for (unsigned idx(0); idx < (*detector_)[i].n_sens_elements; ++idx) {
+					std::map<unsigned, HGCSSSimHit> lHitMap;
+					std::pair<std::map<unsigned, HGCSSSimHit>::iterator, bool> isInserted;
+
+					for (unsigned iSiHit(0);iSiHit < (*detector_)[i].getSiHitVec(idx).size();++iSiHit) {
+						G4SiHit lSiHit = (*detector_)[i].getSiHitVec(idx)[iSiHit];
+						bool is_scint = (*detector_)[i].hasScintillator;
+
+						HGCSSSimHit lHit(lSiHit, idx,geomConv_->hexagonMap());
+
+						isInserted = lHitMap.insert(std::pair<unsigned, HGCSSSimHit>(lHit.cellid(), lHit));
+						if (!isInserted.second)
+							isInserted.first->second.Add(lSiHit);
+					}
+
+				std::map<unsigned, HGCSSSimHit>::iterator lIter = lHitMap.begin();
+				hitvec_.reserve(hitvec_.size() + lHitMap.size());
+				for (; lIter != lHitMap.end(); ++lIter) {
+					(lIter->second).calculateTime();
+					hitvec_.push_back(lIter->second);
+				}
 			} //loop on sensitive layers
-		//G4cout << "This was a good event, the totalSens was " << totalSens << G4endl;
-	}*/
+
+		ssvec_.push_back(lSec);
+	}
+
 	event_.dep(totalSens);
 	event_.wgtDep(wgtTotalSens);
 	SetWait(false);
 	//G4cout << "The dep cut is " << depCut << " The totalSens is " << totalSens << " The summedDep is " << summedDep << G4endl;
 	tree_->Fill();
-	//summedDep = 0;
-	//nSteps = 0;
-	//nMainSteps = 0;
-	hadronicInts = 0;
+
 	//reset vectors
 	genvec_.clear();
 	hadvec_.clear();
 	incvec_.clear();
 	escapevec_.clear();
-	targetPartEngs.clear();
 	novelVec_.clear();
-	novelPartEngs.clear();
+	hitvec_.clear();
+
 }

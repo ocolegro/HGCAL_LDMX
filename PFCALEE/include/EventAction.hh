@@ -31,7 +31,7 @@ public:
 	void BeginOfEventAction(const G4Event*);
 	void EndOfEventAction(const G4Event*);
 
-	void Detect(G4double eRawDep,G4int trackID,G4double kinEng,G4VPhysicalVolume *volume);
+	void Detect(G4double eRawDep,G4int trackID,G4double kinEng,G4VPhysicalVolume *volume,G4Track* lTrack);
 
 	void SetPrintModulo(G4int val) {
 		printModulo = val;
@@ -54,21 +54,14 @@ public:
 	;
 	HGCSSGenParticleVec genvec_,hadvec_,incvec_,escapevec_,novelVec_;
 	G4int hadronicInts;
-	std::vector<double> targetPartEngs;
 	G4int evtNb_;
-	std::vector<int> novelPartEngs;
 private:
 	std::vector<SamplingSection> *detector_;
 	G4int printModulo,initLayer;
 	G4bool wait_;
 	G4bool doFast_;
-	//int nSteps,nMainSteps;
-	//G4double depCut;
-	//G4double summedDep;
+	HGCSSSimHitVec hitvec_;
 	HGCSSGeometryConversion* geomConv_;
-	//Int_t step[1000000],stepMain[1000000];
-	//Float_t stepDep[1000000],mainKinEng[1000000];
-	//StackingAction* stacker_;
 	TFile *outF_;
 	TTree *tree_;
 	HGCSSEvent event_;
