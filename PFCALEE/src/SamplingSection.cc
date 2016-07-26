@@ -2,6 +2,55 @@
 #include "SamplingSection.hh"
 
 //
+
+SamplingSection::SamplingSection(std::vector<std::pair <G4double,std::string>> iEle) {
+
+			std::vector<G4double> aThicknessVec;std::vector<std::string> aMaterialVec;
+				for (unsigned i = 0; i < iEle.size(); i++)
+				{
+					aThicknessVec.push_back(iEle.at(i).first);
+					aMaterialVec.push_back(iEle.at(i).second);
+
+				}
+				Total_thick = 0;
+				n_sens_elements=0;
+				n_elements=0;
+				n_sectors=0;
+				sublayer_thick.clear();
+				ele_name.clear();
+				sublayer_X0.clear();
+				sublayer_L0.clear();
+				sublayer_vol.clear();
+				hasScintillator = false;
+				for (unsigned ie(0); ie<aThicknessVec.size(); ++ie) {
+					//consider only material with some non-0 width...
+					if (aThicknessVec[ie]>0) {
+						sublayer_thick.push_back(aThicknessVec[ie]);
+						ele_name.push_back(aMaterialVec[ie]);
+						if (aMaterialVec[ie]== "Scintillator") hasScintillator = true;
+						sublayer_X0.push_back(0);
+						sublayer_dEdx.push_back(0);
+						sublayer_L0.push_back(0);
+						sublayer_vol.push_back(0);
+						Total_thick+=aThicknessVec[ie];
+						++n_elements;
+						//the following method check the total size...
+						//so incrementing first.
+						if (isSensitiveElement(n_elements-1)) {
+							G4SiHitVec lVec;
+							sens_HitVec.push_back(lVec);
+							++n_sens_elements;
+						}
+					}
+				}
+				sens_HitVec_size_max = 0;
+
+				resetCounters();
+				eventAction_ =(EventAction*) G4RunManager::GetRunManager()->GetUserEventAction();
+				std::cout << " -- End of sampling section initialisation. Input " << aThicknessVec.size() << " elements, constructing " << n_elements << " elements with " << n_sens_elements << " sensitive elements." << std::endl;
+
+			};
+
 std::pair<G4bool,G4bool> SamplingSection::add(G4double depositRawE,G4VPhysicalVolume* vol,G4Track *lTrack,const G4ThreeVector & position) {
 	std::string lstr = vol->GetName();
 	bool breakSwitch = false;
@@ -14,7 +63,7 @@ std::pair<G4bool,G4bool> SamplingSection::add(G4double depositRawE,G4VPhysicalVo
 			unsigned eleidx = ie % n_elements;
 			isSens = isSensitiveElement(eleidx);
 			sublayer_RawDep[eleidx] += depositRawE;
-			//if (eventAction_->firstPass() == false){
+			if (eventAction_->firstPass() == false){
 				G4SiHit lHit;
 				//std::cout << "The deposited raw energy is getting stored " << std::endl;
 				lHit.energyDep = depositRawE;
@@ -30,7 +79,7 @@ std::pair<G4bool,G4bool> SamplingSection::add(G4double depositRawE,G4VPhysicalVo
 				lHit.hit_z = position.z();
 
 				sens_HitVec[idx].push_back(lHit);
-			//}
+			}
 
 			} //if in right material
 		} //loop on available materials
