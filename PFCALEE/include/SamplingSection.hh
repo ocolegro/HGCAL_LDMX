@@ -7,6 +7,7 @@
 #include "G4Colour.hh"
 #include "G4Track.hh"
 #include "EventAction.hh"
+#include "G4RunManager.hh"
 
 #include <iomanip>
 #include <vector>
