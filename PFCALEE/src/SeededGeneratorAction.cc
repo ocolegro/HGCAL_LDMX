@@ -147,7 +147,6 @@ void SeededGeneratorAction::GeneratePrimaries(G4Event* anEvent) {
 				et = 4.0;
 			}
 		}*/
-
 	}
 	else{
 		PipeData();

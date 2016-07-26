@@ -11,6 +11,7 @@
 #include "TTree.h"
 #include "SamplingSection.hh"
 #include "G4SiHit.hh"
+#include "G4Track.hh"
 #include "HGCSSEvent.hh"
 #include "HGCSSSamplingSection.hh"
 #include "HGCSSSimHit.hh"
