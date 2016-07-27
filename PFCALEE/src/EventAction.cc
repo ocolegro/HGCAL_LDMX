@@ -51,9 +51,6 @@ EventAction::EventAction(G4bool doFast) {
 			&escapevec_);
 	tree_->Branch("HGCSSNovelAction", "std::vector<HGCSSGenParticle>",
 			&novelVec_);
-	if (!firstPass())
-	tree_->Branch("HGCSSSamplingSectionVec","std::vector<HGCSSSamplingSection>",
-			&ssvec_);
 
 	// }
 }
@@ -132,7 +129,6 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 
 	}
 	for (size_t i = 1; i < detector_->size(); i++) {
-		HGCSSSamplingSection lSec;
 		for (unsigned idx(0); idx < (*detector_)[i].n_sens_elements; ++idx) {
 
 					std::map<unsigned, HGCSSSimHit> lHitMap;
@@ -158,7 +154,6 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 				}
 			}
 
-		ssvec_.push_back(lSec);
 		(*detector_)[i].resetCounters();
 
 	}
@@ -176,7 +171,6 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 	escapevec_.clear();
 	novelVec_.clear();
 	hitvec_.clear();
-	ssvec_.clear();
 	targetPartEngs.clear();
 	novelPartEngs.clear();
 

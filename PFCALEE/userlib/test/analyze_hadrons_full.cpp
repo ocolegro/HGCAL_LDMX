@@ -145,9 +145,12 @@ int main(int argc, char** argv) {
 	t1.Branch("escape_zpos", &escape_zpos, "escape_zpos[nEscapes]/F");
 	t1.Branch("escape_VKE", &escape_VKE, "escape_VKE[nEscapes]/F");
 	t1.Branch("escape_FKE", &escape_FKE, "escape_FKE[nEscapes]/F");
-	Float_t summedSen,summedSenWgt,convEng_1,accconvEng_1,lostEng_1,convEng_2,accconvEng_2,lostEng_2,incEng;
+	Float_t summedSen,summedSenWgt,convEng_1,accconvEng_1,lostEng_1,convEng_2,accconvEng_2,lostEng_2,initEng,initX,initY,initZ;
 
-	t1.Branch("incEng", &incEng, "incEng/F");
+	t1.Branch("initEng", &initEng, "initEng/F");
+	t1.Branch("initX", &initX, "initX/F");
+	t1.Branch("initY", &initY, "initY/F");
+	t1.Branch("initZ", &initZ, "initZ/F");
 
 	t1.Branch("convEng_1", &convEng_1, "convEng_1/F");
 	t1.Branch("accconvEng_1", &accconvEng_1, "accconvEng_1/F");
@@ -367,7 +370,13 @@ int main(int argc, char** argv) {
 
 			}
 		}
-		incEng = genVec->at(0).vertexKE();
+		initEng = genVec->at(0).vertexKE();
+		TVector3 initPos = genVec->at(0).vertexPos();
+
+		initX = initPos[0];
+		initY = initPos[1];
+		initZ = initPos[2];
+
 		t1.Fill();
 		hadronKEs.clear();novelKEs.clear();
 	}
