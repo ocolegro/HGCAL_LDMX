@@ -161,8 +161,8 @@ void DetectorConstruction::buildECal(){
 			iEleL.push_back(make_pair(0.1*mm,"Si"));
 			iEleL.push_back(make_pair(0.1*mm,"Si"));
 			iEleL.push_back(make_pair(0.1*mm,"Si"));
-			iEleL.push_back(make_pair(0.1*mm,"Si"));
-			iEleL.push_back(make_pair(0.1*mm,"Si"));
+			//iEleL.push_back(make_pair(0.1*mm,"Si"));
+			//iEleL.push_back(make_pair(0.1*mm,"Si"));
 
 
 			unsigned Nmodule=10;
