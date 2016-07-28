@@ -97,6 +97,13 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 	std::ifstream input(fileN);
 	std::string currentLine;
 	Double_t stat_x = 0,stat_y = 0,seed_x = 0,seed_y = 0;
+	for (size_t i = ((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->initLayer()
+			; i < detector_->size(); i++) {
+		Double_t weight = (i < 8) ? .8 : 1. ;
+		totalSens += (*detector_)[i].getTotalSensE();
+		wgtTotalSens += weight*(*detector_)[i].getTotalSensE();
+
+		} //loop on sensitive layers
 	for(int count = 0; count < 5; count++ ){
 		getline( input, currentLine );
 		if (count == 1)
@@ -115,14 +122,6 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 		event_.seeds(seeds);
 		event_.status(status);
 		//Changing initLayer because initial layers contain tracking sections.
-		for (size_t i = ((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->initLayer()
-				; i < detector_->size(); i++) {
-			Double_t weight = (i < 8) ? .8 : 1. ;
-			totalSens += (*detector_)[i].getTotalSensE();
-			wgtTotalSens += weight*(*detector_)[i].getTotalSensE();
-
-			} //loop on sensitive layers
-
 	}
 	for (size_t i =  ((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->initLayer()
 			; i < detector_->size(); i++) {
