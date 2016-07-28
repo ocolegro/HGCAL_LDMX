@@ -137,7 +137,7 @@ void SeededGeneratorAction::GeneratePrimaries(G4Event* anEvent) {
 	CLHEP::HepRandom::restoreEngineStatus ("temp.rndm");
 	PipeData();
 
-	if (inc_->size() != 0){
+	if (inc_->size()  0){
 		eventAction_->SetWait(true);
 		et = 4.0;
 	}
@@ -148,8 +148,9 @@ void SeededGeneratorAction::GeneratePrimaries(G4Event* anEvent) {
 	particleGun->SetParticleEnergy(et * GeV);
 	particleGun->SetParticleMomentumDirection(G4ThreeVector(0., 0., 1.));
 
-	G4double y0 = G4RandFlat::shoot(-10.,10);
-	G4double x0 = G4RandFlat::shoot(-10.,10);
+
+	G4double x0 = 0.0;//rads[radId]*cos(phi);
+	G4double y0 = 0.0;//rads[radId]*sin(phi);
 	G4double z0 = -0.5 * (Detector->GetWorldSizeZ());
 
 
