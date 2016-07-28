@@ -141,11 +141,11 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent) {
 	particleGun->SetParticleEnergy(et * GeV);
 	particleGun->SetParticleMomentumDirection(G4ThreeVector(0., 0., 1.));
 
-	//G4double phi = (rand() % 314)/200.;
+	G4double phi = (rand() % 314)/200.;
 	//G4double y0 = G4RandFlat::shoot(-10.,10);
 	//G4double x0 = G4RandFlat::shoot(-10.,10);
-	//unsigned radId = (rand() % 5);
-	//double rads[5] = {0.,5.,10.,15.,20.};
+	unsigned radId = (rand() % 5);
+	double rads[5] = {0.,5.,10.,15.,20.};
 
 	G4double x0 = 0.0;//rads[radId]*cos(phi);
 	G4double y0 = 0.0;//rads[radId]*sin(phi);
