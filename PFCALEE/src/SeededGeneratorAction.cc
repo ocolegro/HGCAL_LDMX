@@ -137,7 +137,7 @@ void SeededGeneratorAction::GeneratePrimaries(G4Event* anEvent) {
 	CLHEP::HepRandom::restoreEngineStatus ("temp.rndm");
 	PipeData();
 
-	if (inc_->size() !=  0){
+	if (inc_->size() >  0){
 		eventAction_->SetWait(true);
 		et = 4.0;
 	}
