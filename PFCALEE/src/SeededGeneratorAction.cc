@@ -74,7 +74,6 @@ SeededGeneratorAction::SeededGeneratorAction(G4int mod,
 			(EventAction*) G4RunManager::GetRunManager()->GetUserEventAction();
 	eventAction_->Add(
 			((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->getStructure());
-	//stacker_ = (StackingAction*) G4RunManager::GetRunManager()->GetUserStackingAction();
 
 	// default generator is particle gun.
 	currentGenerator = particleGun = new G4ParticleGun(n_particle);
@@ -95,7 +94,6 @@ SeededGeneratorAction::SeededGeneratorAction(G4int mod,
 	//create a messenger for this class
 
 	// default particle kinematic
-
 	gunMessenger = new SeededGeneratorMessenger(this);
 
 	G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
@@ -137,19 +135,13 @@ void SeededGeneratorAction::GeneratePrimaries(G4Event* anEvent) {
 	tree_->GetEntry(currentEvt);
 	G4double et = 0.0;
 	CLHEP::HepRandom::restoreEngineStatus ("temp.rndm");
-	if (inc_->size() > 0){
+	PipeData();
+
+	if (inc_->size() != 0){
 		eventAction_->SetWait(true);
 		et = 4.0;
-		/*for(int i = 0; i < inc_->size(); i++){
-			HGCSSGenParticle& incPart = (*inc_)[i];
-			if (incPart.vertexKE() > 500){
-				eventAction_->SetWait(true);
-				et = 4.0;
-			}
-		}*/
 	}
 	else{
-		PipeData();
 		eventAction_->SetWait(false);
 	}
 

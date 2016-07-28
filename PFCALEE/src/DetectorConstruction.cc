@@ -39,8 +39,6 @@ DetectorConstruction::DetectorConstruction(G4int ver, G4int mod, double steelThi
 		buildHCal(steelThick);
 		//Add the target
 
-
-
 	DefineMaterials();
 	SetMagField(0);
 	m_detectorMessenger = new DetectorMessenger(this);

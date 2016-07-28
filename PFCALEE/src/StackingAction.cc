@@ -59,14 +59,7 @@ StackingAction::ClassifyNewTrack(const G4Track* lTrack)
 {
 	G4double kinEng = lTrack->GetKineticEnergy();
 	G4int pdgID = lTrack->GetDefinition()->GetPDGEncoding();
-	/*
-	G4int trackID = lTrack->GetTrackID();
-	unsigned int hadronTrackLoc = std::find(eventAction_->targetPartEngs.begin(),
-			eventAction_->targetPartEngs.end(), trackID)
-			- eventAction_->targetPartEngs.begin();
-	G4double kineng = lTrack->GetKineticEnergy();
-	G4int pdgId = lTrack->GetDefinition()->GetPDGEncoding();
-	 */
+
 	if (kinEng>10 && (abs(pdgID) != 11) && (abs(pdgID) != 22 )){
 			HGCSSGenParticle genPart;
 			genPart.vertexKE(lTrack->GetKineticEnergy());

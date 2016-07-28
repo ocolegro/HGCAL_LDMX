@@ -37,7 +37,6 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 	const G4StepPoint *thePostStepPoint = aStep->GetPostStepPoint();
 
 	G4Track* lTrack = aStep->GetTrack();
-	//G4int trackID = lTrack->GetTrackID();
 	G4double kinEng = lTrack->GetKineticEnergy();
 	G4int pdgID = lTrack->GetDefinition()->GetPDGEncoding();
 
@@ -54,7 +53,6 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 	HGCSSGenParticle genPart;
 	eventAction_->Detect(eRawDep, volume,lTrack,position);
 	const G4TrackVector* secondaries= aStep->GetSecondary();
-	//std::cout << "The volume name is " << volume->GetName() << " and the step deposited " << eRawDep << std::endl;
 
 	bool trackEscapes = ((lTrack->GetTrackStatus()!=fAlive
 			&& (lTrack->GetKineticEnergy() > 10)

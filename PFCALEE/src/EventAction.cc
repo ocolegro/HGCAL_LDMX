@@ -51,8 +51,6 @@ EventAction::EventAction(G4bool doFast) {
 			&escapevec_);
 	tree_->Branch("HGCSSNovelAction", "std::vector<HGCSSGenParticle>",
 			&novelVec_);
-
-	// }
 }
 
 //
@@ -83,8 +81,6 @@ void EventAction::Detect(G4double eDepRaw, G4VPhysicalVolume *volume,G4Track* lT
 	}
 
 }
-
-//
 
 
 void EventAction::EndOfEventAction(const G4Event* g4evt) {
@@ -128,16 +124,15 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 			} //loop on sensitive layers
 
 	}
-	for (size_t i = 1; i < detector_->size(); i++) {
+	for (size_t i =  ((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->initLayer()
+			; i < detector_->size(); i++) {
 		for (unsigned idx(0); idx < (*detector_)[i].n_sens_elements; ++idx) {
 
 					std::map<unsigned, HGCSSSimHit> lHitMap;
 					std::pair<std::map<unsigned, HGCSSSimHit>::iterator, bool> isInserted;
-					//std::cout << "the layer is " << i << " and idx = "<< idx <<  " and the size of the hitvec is " << (*detector_)[i].getSiHitVec(idx).size() << std::endl;
 					for (unsigned iSiHit(0);iSiHit < (*detector_)[i].getSiHitVec(idx).size();++iSiHit) {
 
 						G4SiHit lSiHit = (*detector_)[i].getSiHitVec(idx)[iSiHit];
-						//std::cout << "lSiHit is beign evaluated.. it has energy = " << lSiHit.energyDep << std::endl;
 						bool is_scint = (*detector_)[i].hasScintillator;
 						HGCSSSimHit lHit(lSiHit, idx,geomConv_->hexagonMap());
 						isInserted = lHitMap.insert(std::pair<unsigned, HGCSSSimHit>(lHit.cellid(), lHit));
@@ -161,7 +156,6 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 	event_.dep(totalSens);
 	event_.wgtDep(wgtTotalSens);
 	SetWait(false);
-	//G4cout << "The dep cut is " << depCut << " The totalSens is " << totalSens << " The summedDep is " << summedDep << G4endl;
 	tree_->Fill();
 
 	//reset vectors
