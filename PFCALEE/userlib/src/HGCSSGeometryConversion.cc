@@ -154,10 +154,11 @@ void HGCSSGeometryConversion::initialiseHoneyComb(TH2Poly *map,
 	unsigned nx = ncellwide + 4;
 	double xstart = -((double) ncellwide + 0.5) * side;
 	double ystart = -((double) ncellwide + 1) * side * sqrt(3) / 2;
-	if (print) {
+	for (unsigned i = 0; i < 5; i++){
 		std::cout << " -- Initialising HoneyComb with parameters: " << std::endl
 				<< " ---- (xstart,ystart) = (" << xstart << "," << ystart << ")"
 				<< ", side = " << side << ", nx = " << nx << ", ny=" << ny
+				<< ", width = " << width
 				<< std::endl;
 	}
 	//map->Honeycomb(-1.*xymin,-1.*xymin,side,nx,ny);
