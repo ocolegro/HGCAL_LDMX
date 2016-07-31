@@ -47,10 +47,11 @@ DetectorConstruction::DetectorConstruction(G4int ver, G4int mod, double steelThi
 void DetectorConstruction::buildTracker(){
 
 		std::vector<std::pair <G4double,std::string>> iEleL;
-		initLayer(1);
+
 		for (int i =0; i < 5; i ++)
 			G4cout << "The version is " << version_ << G4endl;
 		if (version_ == HGCAL_E26_TH || version_ == HGCAL_E26_T || version_ == HGCAL_E40_TH || version_ == HGCAL_E40_T || version_ == T){
+			initLayer(0);
 			for (int i = 0; i < 6; i ++){
 				iEleL.push_back(make_pair(.7*mm,"Si"));
 				iEleL.push_back(make_pair(99.3*mm,"G4_Galactic"));
@@ -612,7 +613,7 @@ void DetectorConstruction::SetDetModel(G4int model) {
 	model_ = model;
 }
 
-G4VSolid *DetectorConstruction::constructSolid(std::string baseName,
+G4VSolid *DetectorConstruction::constructSolfid(std::string baseName,
 		G4double thick, G4double zpos, const G4double & minL,
 		const G4double & width, size_t which_ele) {
 	G4VSolid *solid;

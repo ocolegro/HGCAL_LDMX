@@ -128,8 +128,7 @@ void SeededGeneratorAction::GeneratePrimaries(G4Event* anEvent) {
 	G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
 	G4String particleName;
 
-	G4ParticleDefinition* particle = particleTable->FindParticle(particleName =
-			"e-");
+	G4ParticleDefinition* particle = particleTable->FindParticle(gamma);
 	particleGun->SetParticleDefinition(particle);
 	int currentEvt = anEvent->GetEventID();
 	tree_->GetEntry(currentEvt);
@@ -139,7 +138,7 @@ void SeededGeneratorAction::GeneratePrimaries(G4Event* anEvent) {
 
 	if (inc_->size() >  0){
 		eventAction_->SetWait(true);
-		et = 4.0;
+		et = 2.95;
 	}
 	else{
 		eventAction_->SetWait(false);

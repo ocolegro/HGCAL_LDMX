@@ -102,11 +102,10 @@ PrimaryGeneratorAction::PrimaryGeneratorAction(G4int mod, bool signal,
 
 	G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
 	G4String particleName;
-	G4ParticleDefinition* particle = particleTable->FindParticle(particleName =
-			"e-");
+	G4ParticleDefinition* particle = particleTable->FindParticle(22);
 	particleGun->SetParticleDefinition(particle);
 	particleGun->SetParticleMomentumDirection(G4ThreeVector(0., 0., 1.));
-	particleGun->SetParticleEnergy(4. * GeV);
+	particleGun->SetParticleEnergy(2.95 * GeV);
 	G4double position = -0.5 * (Detector->GetWorldSizeZ());
 	particleGun->SetParticlePosition(G4ThreeVector(0. * cm, 0. * cm, position));
 
