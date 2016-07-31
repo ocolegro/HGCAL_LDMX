@@ -48,7 +48,8 @@ void DetectorConstruction::buildTracker(){
 
 		std::vector<std::pair <G4double,std::string>> iEleL;
 		initLayer(1);
-
+		for (int i =0; i < 5; i ++)
+			G4cout << "The version is " << version_ << G4endl;
 		if (version_ == HGCAL_E26_TH || version_ == HGCAL_E26_T || version_ == HGCAL_E40_TH || version_ == HGCAL_E40_T || version_ == T){
 			for (int i = 0; i < 6; i ++){
 				iEleL.push_back(make_pair(.7*mm,"Si"));

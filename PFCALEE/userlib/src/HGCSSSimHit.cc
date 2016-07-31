@@ -19,11 +19,11 @@ HGCSSSimHit::HGCSSSimHit(const G4SiHit & aSiHit, const unsigned & asilayer,
 
 	assert(map);
 	cellid_ = map->FindBin(x, y);
-	std::cout << " The layer is "<< aSiHit.layer <<std::endl;
+	//std::cout << " The layer is "<< aSiHit.layer <<std::endl;
 //	setLayer(aSiHit.layer, asilayer);
 	//aSiHit.layer = asilayer;
 	layer_ = aSiHit.layer;
-	std::cout << "THe cellid for this hit is " << cellid_ << std::endl;
+	//std::cout << "THe cellid for this hit is " << cellid_ << std::endl;
 	nGammas_ = 0;
 	nElectrons_ = 0;
 	nMuons_ = 0;
