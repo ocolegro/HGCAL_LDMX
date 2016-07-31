@@ -22,7 +22,7 @@ HGCSSSimHit::HGCSSSimHit(const G4SiHit & aSiHit, const unsigned & asilayer,
 	std::cout << " The layer is "<< aSiHit.layer <<std::endl;
 //	setLayer(aSiHit.layer, asilayer);
 	//aSiHit.layer = asilayer;
-	layer_ = aSiHit.energyDep;
+	layer_ = aSiHit.layer;
 	std::cout << "THe cellid for this hit is " << cellid_ << std::endl;
 	nGammas_ = 0;
 	nElectrons_ = 0;
