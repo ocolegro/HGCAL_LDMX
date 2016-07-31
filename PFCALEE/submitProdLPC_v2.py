@@ -105,7 +105,7 @@ for thickness in thickness_:
         f2.write("Executable = %s \n" % ('%s/runJob.sh'%(outDir)) );
         f2.write('Requirements = OpSys == "LINUX" && (Arch != "DUMMY" )\n');
         f2.write("request_disk = 100000\n");
-        f2.write("request_memory = 250\n");
+        f2.write("request_memory = 500\n");
         f2.write("Should_Transfer_Files = YES \n");
         if (opt.pass_ == 0):
             f2.write("Transfer_Input_Files = g4env4lpc.sh,libPFCalEE.so,libPFCalEEuserlib.so,PFCalEE,g4steer.mac \n" );

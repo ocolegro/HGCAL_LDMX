@@ -12,18 +12,12 @@ HGCSSSimHit::HGCSSSimHit(const G4SiHit & aSiHit, const unsigned & asilayer,
 	//have been added to have divided by totalE!!
 	time_ = aSiHit.time * aSiHit.energyDep;
 	zpos_ = aSiHit.hit_z;
-	//coordinates in mm
-	//double z = aSiHit.hit_x;
 	double x = aSiHit.hit_x;
 	double y = aSiHit.hit_y;
 
 	assert(map);
 	cellid_ = map->FindBin(x, y);
-	//std::cout << " The layer is "<< aSiHit.layer <<std::endl;
-//	setLayer(aSiHit.layer, asilayer);
-	//aSiHit.layer = asilayer;
 	layer_ = aSiHit.layer;
-	//std::cout << "THe cellid for this hit is " << cellid_ << std::endl;
 	nGammas_ = 0;
 	nElectrons_ = 0;
 	nMuons_ = 0;
@@ -76,14 +70,7 @@ void HGCSSSimHit::Add(const G4SiHit & aSiHit) {
 
 }
 
-/*double HGCSSSimHit::eta() const {
- double x = get_x();
- double y = get_y();
- double theta = acos(fabs(zpos_)/sqrt(zpos_*zpos_+x*x+y*y));
- double leta = -log(tan(theta/2.));
- if (zpos_>0) return leta;
- else return -leta;
- }*/
+
 
 std::pair<double, double> HGCSSSimHit::get_xy(const bool isScintillator,
 		const HGCSSGeometryConversion & aGeom) const {
