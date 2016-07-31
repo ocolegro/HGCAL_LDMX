@@ -617,7 +617,7 @@ G4VSolid *DetectorConstruction::constructSolid(std::string baseName,
 		const G4double & width, size_t which_ele) {
 	G4VSolid *solid;
 
-	if (which_ele == 0) {
+	if (which_ele == 0 && (version_ == HGCAL_E26_TH || version_ == HGCAL_E26_T || version_ == HGCAL_E40_TH || version_ == HGCAL_E40_T || version_ == T)) {
 
 		solid = new G4Box(baseName + "box", width / 2, m_CalorSizeXY / 2,
 				thick / 2);
