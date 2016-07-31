@@ -12,7 +12,6 @@ HGCSSSimHit::HGCSSSimHit(const G4SiHit & aSiHit, const unsigned & asilayer,
 	//have been added to have divided by totalE!!
 	time_ = aSiHit.time * aSiHit.energyDep;
 	zpos_ = aSiHit.hit_z;
-	setLayer(aSiHit.layer, asilayer);
 	//coordinates in mm
 	//double z = aSiHit.hit_x;
 	double x = aSiHit.hit_x;
@@ -20,7 +19,10 @@ HGCSSSimHit::HGCSSSimHit(const G4SiHit & aSiHit, const unsigned & asilayer,
 
 	assert(map);
 	cellid_ = map->FindBin(x, y);
-	std::cout << " The layer is "<< asilayer<<std::endl;
+	std::cout << " The layer is "<< aSiHit.layer <<std::endl;
+//	setLayer(aSiHit.layer, asilayer);
+	//aSiHit.layer = asilayer;
+	layer_ = aSiHit.energyDep;
 	std::cout << "THe cellid for this hit is " << cellid_ << std::endl;
 	nGammas_ = 0;
 	nElectrons_ = 0;
