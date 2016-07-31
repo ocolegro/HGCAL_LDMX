@@ -160,8 +160,8 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 		(*detector_)[i].resetCounters();
 
 	}
-	std::cout << "The initial layer is i = " << ((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->initLayer() << std::endl;
-	std::cout << "The total deposited energy is " << totalSens << std::endl;
+	//std::cout << "The initial layer is i = " << ((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->initLayer() << std::endl;
+	//std::cout << "The total deposited energy is " << totalSens << std::endl;
 	event_.dep(totalSens);
 	event_.wgtDep(wgtTotalSens);
 	SetWait(false);

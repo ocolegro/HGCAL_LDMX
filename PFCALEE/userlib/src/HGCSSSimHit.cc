@@ -20,7 +20,7 @@ HGCSSSimHit::HGCSSSimHit(const G4SiHit & aSiHit, const unsigned & asilayer,
 
 	assert(map);
 	cellid_ = map->FindBin(x, y);
-
+	std::cout << "THe cellid for this hit is " << cellid_ << std::endl;
 	nGammas_ = 0;
 	nElectrons_ = 0;
 	nMuons_ = 0;
