@@ -72,6 +72,8 @@ std::pair<G4bool,G4bool> SamplingSection::add(G4double depositRawE,G4VPhysicalVo
 				lHit.hit_y = position.y();
 				lHit.hit_z = position.z();
 				lHit.layer = eleidx;
+				if (eleidx > 10)
+					std::cout << "The layer was " << eleidx << std::endl;
 				sens_HitVec[idx].push_back(lHit);
 			//}
 
