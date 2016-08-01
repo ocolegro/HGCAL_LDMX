@@ -29,7 +29,7 @@ public:
 
 	}
 	;
-	HGCSSSimHit(const G4SiHit & aSiHit, const unsigned & asilayer, TH2Poly* map,
+	HGCSSSimHit(const G4SiHit & aSiHit,  TH2Poly* map,
 			const float cellSize = CELL_SIZE_X);
 
 	~HGCSSSimHit() {

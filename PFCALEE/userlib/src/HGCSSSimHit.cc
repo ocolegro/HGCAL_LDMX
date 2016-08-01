@@ -4,7 +4,7 @@
 #include <cmath>
 #include <stdlib.h>
 
-HGCSSSimHit::HGCSSSimHit(const G4SiHit & aSiHit, const unsigned & asilayer,
+HGCSSSimHit::HGCSSSimHit(const G4SiHit & aSiHit,
 		TH2Poly* map, const float) {
 	//energy weighted time
 	//have been added to have divided by totalE!!
