@@ -156,6 +156,7 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent) {
 	genPart.vertexPos(vec);
 	int pdgid = particle->GetPDGEncoding();
 	genPart.pdgid(pdgid);
+	std::cout << "Genearting an event " << std::endl;
 
 	if (currentGenerator) {
 		currentGenerator->GeneratePrimaryVertex(anEvent);
