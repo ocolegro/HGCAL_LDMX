@@ -142,6 +142,7 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 						isInserted = lHitMap.insert(std::pair<unsigned, HGCSSSimHit>(lHit.cellid(), lHit));
 						if (!isInserted.second)
 							isInserted.first->second.Add(lSiHit);
+							std::cout << "This hit is being added to the original" << std::endl;
 					}
 
 				std::map<unsigned, HGCSSSimHit>::iterator lIter = lHitMap.begin();
