@@ -25,7 +25,7 @@ public:
 	HGCSSSimHit() :
 			energy_(0), time_(0), zpos_(0), layer_(0), cellid_(0), nGammas_(0), nElectrons_(
 					0), nMuons_(0), nNeutrons_(0), nProtons_(0), nHadrons_(0), trackIDMainParent_(
-					0), energyMainParent_(0), pdgIDMainParent_(0), parentEng_(0) {
+					0), eDepMainParent_(0), pdgIDMainParent_(0), parentEng_(0) {
 
 	}
 	;
@@ -174,7 +174,7 @@ public:
 	;
 
 	inline double mainParentEfrac() const {
-		return energyMainParent_ / energy_;
+		return eDepMainParent_ / energy_;
 	}
 	;
 
