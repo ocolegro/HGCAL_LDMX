@@ -191,8 +191,6 @@ void DetectorConstruction::buildHCal(double steelThick){
 
 	if (version_ == HGCAL_E26_TH || version_ == HGCAL_E26_H || version_ == HGCAL_E40_TH || version_ == HGCAL_E40_H || version_ == H){
 
-
-
 		iEleL.push_back(make_pair(3*mm,"Cu"));
 		iEleL.push_back(make_pair(1*mm,"Pb"));
 		iEleL.push_back(make_pair(steelThick*mm,"SSteel"));

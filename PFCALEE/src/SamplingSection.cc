@@ -51,6 +51,7 @@ SamplingSection::SamplingSection(std::vector<std::pair <G4double,std::string>> i
 			};
 
 std::pair<G4bool,G4bool> SamplingSection::add(G4double depositRawE,G4VPhysicalVolume* vol,G4Track *lTrack,const G4ThreeVector & position) {
+	std::cout << "Finding a hit " << std::endl;
 	std::string lstr = vol->GetName();
 	bool breakSwitch = false;
 	bool isSens = false;
@@ -62,18 +63,15 @@ std::pair<G4bool,G4bool> SamplingSection::add(G4double depositRawE,G4VPhysicalVo
 			unsigned eleidx = ie % n_elements;
 			isSens = isSensitiveElement(eleidx);
 			sublayer_RawDep[eleidx] += depositRawE;
-			//if (eventAction_->firstPass() == false){
-				G4SiHit lHit;
-				lHit.energyDep = depositRawE;
-				lHit.pdgId = lTrack->GetDefinition()->GetPDGEncoding();
-				lHit.parentKE = lTrack->GetKineticEnergy();
-				lHit.hit_x = position.x();
-				lHit.hit_y = position.y();
-				lHit.hit_z = position.z();
-				lHit.layer = getLayer(lstr);
-				sens_HitVec[idx].push_back(lHit);
-			//}
-
+			G4SiHit lHit;
+			lHit.energyDep = depositRawE;
+			lHit.pdgId = lTrack->GetDefinition()->GetPDGEncoding();
+			lHit.parentKE = lTrack->GetKineticEnergy();
+			lHit.hit_x = position.x();
+			lHit.hit_y = position.y();
+			lHit.hit_z = position.z();
+			lHit.layer = getLayer(lstr);
+			sens_HitVec[idx].push_back(lHit);
 			} //if in right material
 		} //loop on available materials
 

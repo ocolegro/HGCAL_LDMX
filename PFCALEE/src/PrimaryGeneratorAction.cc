@@ -129,7 +129,7 @@ PrimaryGeneratorAction::~PrimaryGeneratorAction() {
 void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent) {
 	G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
 	G4String particleName;
-
+	std::cout << "Genearting an event " << std::endl;
 	G4ParticleDefinition* particle = particleTable->FindParticle(13);
 	particleGun->SetParticleDefinition(particle);
 	G4double et = .2;//2.95;
