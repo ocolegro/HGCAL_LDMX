@@ -134,7 +134,7 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 					std::map<unsigned, HGCSSSimHit> lHitMap;
 					std::pair<std::map<unsigned, HGCSSSimHit>::iterator, bool> isInserted;
 					for (unsigned iSiHit(0);iSiHit < (*detector_)[i].getSiHitVec(idx).size();++iSiHit) {
-
+						std::cout << "The layer is i = " << i << "the hit is idx = " << idx << "the cellid is " << lHit.cellid() << std::endl;
 						G4SiHit lSiHit = (*detector_)[i].getSiHitVec(idx)[iSiHit];
 						bool is_scint = (*detector_)[i].hasScintillator;
 						HGCSSSimHit lHit(lSiHit, idx,is_scint ?geomConv_->squareMap() : geomConv_->hexagonMap());
@@ -149,9 +149,7 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 					hitvec_.push_back(lIter->second);
 				}
 			}
-
 		(*detector_)[i].resetCounters();
-
 	}
 	//std::cout << "The initial layer is i = " << ((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->initLayer() << std::endl;
 	//std::cout << "The total deposited energy is " << totalSens << std::endl;
