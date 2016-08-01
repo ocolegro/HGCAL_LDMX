@@ -51,7 +51,6 @@ SamplingSection::SamplingSection(std::vector<std::pair <G4double,std::string>> i
 			};
 
 std::pair<G4bool,G4bool> SamplingSection::add(G4double depositRawE,G4VPhysicalVolume* vol,G4Track *lTrack,const G4ThreeVector & position) {
-	std::cout << "Finding a hit " << std::endl;
 	std::string lstr = vol->GetName();
 	bool breakSwitch = false;
 	bool isSens = false;
