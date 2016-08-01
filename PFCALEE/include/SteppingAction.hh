@@ -13,6 +13,12 @@ public:
 
 	void UserSteppingAction(const G4Step*);
 
+	inline bool checkDuplicate(std::vector<double> engVec,double currentEng){
+		for (unsigned i = 0; i < engVec.size(); i++){
+			if ( (engVec.at(i) - currentEng) < .01) return false;
+		}
+		return true;
+	};
 	G4double stepPDGID,stepKE;
 private:
 	void printParticle(G4Track* aTrack);
