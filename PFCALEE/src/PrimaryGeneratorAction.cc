@@ -130,7 +130,7 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent) {
 	G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
 	G4String particleName;
 
-	G4ParticleDefinition* particle = particleTable->FindParticle(13);
+	G4ParticleDefinition* particle = particleTable->FindParticle("mu-");
 	particleGun->SetParticleDefinition(particle);
 	G4double et = .200;//2.95;
 	//double engs3[16] = {.25,.5,.75,1.,1.25,1.5,1.75,2,2.25,2.5,2.75,3.,3.25,3.5,3.75,4.0};
@@ -139,11 +139,11 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent) {
 	particleGun->SetParticleEnergy(et * GeV);
 	particleGun->SetParticleMomentumDirection(G4ThreeVector(0., 0., 1.));
 
-	G4double phi = (rand() % 314)/200.;
+	//G4double phi = (rand() % 314)/200.;
 	//G4double y0 = G4RandFlat::shoot(-10.,10);
 	//G4double x0 = G4RandFlat::shoot(-10.,10);
-	unsigned radId = (rand() % 5);
-	double rads[5] = {0.,5.,10.,15.,20.};
+	//unsigned radId = (rand() % 5);
+	//double rads[5] = {0.,5.,10.,15.,20.};
 
 	G4double x0 = 0.0;//rads[radId]*cos(phi);
 	G4double y0 = 0.0;//rads[radId]*sin(phi);
