@@ -32,6 +32,8 @@ SteppingAction::~SteppingAction() {
 
 //
 void SteppingAction::UserSteppingAction(const G4Step* aStep) {
+	std::cout << "Taking a step " << std::endl;
+
 	// get PreStepPoint
 	const G4StepPoint *thePreStepPoint = aStep->GetPreStepPoint();
 	const G4StepPoint *thePostStepPoint = aStep->GetPostStepPoint();
