@@ -6,24 +6,19 @@
 
 HGCSSSimHit::HGCSSSimHit(const G4SiHit & aSiHit, const unsigned & asilayer,
 		TH2Poly* map, const float) {
-	energy_ = aSiHit.energyDep;
 	//energy weighted time
-	//PS: need to call calculateTime() after all hits 
 	//have been added to have divided by totalE!!
-	time_ = aSiHit.time * aSiHit.energyDep;
-	zpos_ = aSiHit.hit_z;
 	double x = aSiHit.hit_x;
 	double y = aSiHit.hit_y;
-
 	assert(map);
-	cellid_ = map->FindBin(x, y);
-	layer_ = aSiHit.layer;
+
 	nGammas_ = 0;
 	nElectrons_ = 0;
 	nMuons_ = 0;
 	nNeutrons_ = 0;
 	nProtons_ = 0;
 	nHadrons_ = 0;
+
 	if (abs(aSiHit.pdgId) == 22)
 		nGammas_++;
 	else if (abs(aSiHit.pdgId) == 11)
@@ -37,17 +32,16 @@ HGCSSSimHit::HGCSSSimHit(const G4SiHit & aSiHit, const unsigned & asilayer,
 	else
 		nHadrons_++;
 
-	trackIDMainParent_ = aSiHit.parentId;
+	cellid_ = map->FindBin(x, y);
+	layer_ = aSiHit.layer;
+	energy_ = aSiHit.energyDep;
+	trackIDMainParent_ = aSiHit.trackId;
 	energyMainParent_ = aSiHit.energyDep;
-	trackID_ = aSiHit.trackId;
+	pdgIDMainParent_ = aSiHit.pdgId;
 	parentEng_ = aSiHit.parentKE;
 }
 
 void HGCSSSimHit::Add(const G4SiHit & aSiHit) {
-
-	time_ = time_ + aSiHit.time * aSiHit.energyDep;
-	//PS: need to call calculateTime() after all hits 
-	//have been added to have divided by totalE!!
 
 	if (abs(aSiHit.pdgId) == 22)
 		nGammas_++;
@@ -66,6 +60,7 @@ void HGCSSSimHit::Add(const G4SiHit & aSiHit) {
 	if (aSiHit.energyDep > energyMainParent_) {
 		trackIDMainParent_ = aSiHit.parentId;
 		energyMainParent_ = aSiHit.energyDep;
+		pdgIDMainParent_ = aSiHit.pdgId;
 	}
 
 }

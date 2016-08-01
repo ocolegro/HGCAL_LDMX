@@ -131,17 +131,13 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 	for (size_t i =  ((DetectorConstruction*) G4RunManager::GetRunManager()->GetUserDetectorConstruction())->initLayer()
 			; i < detector_->size(); i++) {
 		for (unsigned idx(0); idx < (*detector_)[i].n_sens_elements; ++idx) {
-
 					std::map<unsigned, HGCSSSimHit> lHitMap;
 					std::pair<std::map<unsigned, HGCSSSimHit>::iterator, bool> isInserted;
 					for (unsigned iSiHit(0);iSiHit < (*detector_)[i].getSiHitVec(idx).size();++iSiHit) {
 
 						G4SiHit lSiHit = (*detector_)[i].getSiHitVec(idx)[iSiHit];
 						bool is_scint = (*detector_)[i].hasScintillator;
-						HGCSSSimHit lHit(lSiHit, idx,
-								is_scint ?
-										geomConv_->squareMap() :
-										geomConv_->hexagonMap());
+						HGCSSSimHit lHit(lSiHit, idx,is_scint ?geomConv_->squareMap() : geomConv_->hexagonMap());
 						isInserted = lHitMap.insert(std::pair<unsigned, HGCSSSimHit>(lHit.cellid(), lHit));
 						if (!isInserted.second)
 							isInserted.first->second.Add(lSiHit);
@@ -150,8 +146,6 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 				std::map<unsigned, HGCSSSimHit>::iterator lIter = lHitMap.begin();
 				hitvec_.reserve(hitvec_.size() + lHitMap.size());
 				for (; lIter != lHitMap.end(); ++lIter) {
-
-					(lIter->second).calculateTime();
 					hitvec_.push_back(lIter->second);
 				}
 			}
