@@ -72,7 +72,9 @@ std::pair<G4bool,G4bool> SamplingSection::add(G4double depositRawE,G4VPhysicalVo
 				lHit.hit_y = position.y();
 				lHit.hit_z = position.z();
 				lHit.layer = eleidx;
+					std::cout << "The number of elements is " << n_elements << " The number of sectors " << n_sectors << std::endl;
 					std::cout << "The layer was " << eleidx << std::endl;
+					std::cout << "The value of ie was " << ie << std::endl;
 				sens_HitVec[idx].push_back(lHit);
 			//}
 
