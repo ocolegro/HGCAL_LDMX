@@ -64,9 +64,9 @@ std::pair<G4bool,G4bool> SamplingSection::add(G4double depositRawE,G4VPhysicalVo
 			sublayer_RawDep[eleidx] += depositRawE;
 			G4SiHit lHit;
 			//lHit.pdgId = lTrack->GetDefinition()->GetPDGEncoding();
-			std::cout << "adding a hit for layer = " << getLayer(lstr) << std::endl;
-			std::cout << "The hit energy is = " << depositRawE << std::endl;
-			std::cout << "the trackId is  " << lTrack->GetTrackID() << std::endl;
+			//std::cout << "adding a hit for layer = " << getLayer(lstr) << std::endl;
+			//std::cout << "The hit energy is = " << depositRawE << std::endl;
+			//std::cout << "the trackId is  " << lTrack->GetTrackID() << std::endl;
 			lHit.parentKE = lTrack->GetKineticEnergy();
 			lHit.hit_x = position.x();
 			lHit.hit_y = position.y();
