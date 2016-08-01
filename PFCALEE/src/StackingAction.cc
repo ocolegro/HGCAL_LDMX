@@ -59,27 +59,25 @@ StackingAction::ClassifyNewTrack(const G4Track* lTrack)
 {
 	G4double kinEng = lTrack->GetKineticEnergy();
 	G4int pdgID = lTrack->GetDefinition()->GetPDGEncoding();
+	G4int trackID = lTrack->GetTrackID();
+	std::cout << trackID << std::endl;
 	std::cout << "test" << std::endl;
 
-	if (kinEng>10 && (abs(pdgID) != 11) && (abs(pdgID) != 22 )){
-			if(stepAction_->stepKE){
-				HGCSSGenParticle genPart;
-				genPart.vertexKE(lTrack->GetKineticEnergy());
-				const G4ThreeVector &p = lTrack->GetMomentumDirection();
-				const G4ThreeVector &pos = lTrack->GetPosition();
-				TVector3 momVec(p[0], p[1], p[2]);
-				genPart.vertexMom(momVec);
-				TVector3 posVec(pos[0], pos[1], pos[2] );
-				genPart.vertexPos(posVec);
-				genPart.mass(lTrack->GetDefinition()->GetPDGMass());
-				genPart.pdgid(lTrack->GetDefinition()->GetPDGEncoding());
-				genPart.parentKE(stepAction_->stepKE);
-				genPart.parentPdgId(stepAction_->stepPDGID);
-				eventAction_->novelVec_.push_back(genPart);
-				eventAction_->novelPartEngs.push_back(lTrack->GetTrackID());
-			}
-
-
+	if (kinEng>10 && (abs(pdgID) != 11) && (abs(pdgID) != 22 && trackID != 1)){
+		HGCSSGenParticle genPart;
+		genPart.vertexKE(lTrack->GetKineticEnergy());
+		const G4ThreeVector &p = lTrack->GetMomentumDirection();
+		const G4ThreeVector &pos = lTrack->GetPosition();
+		TVector3 momVec(p[0], p[1], p[2]);
+		genPart.vertexMom(momVec);
+		TVector3 posVec(pos[0], pos[1], pos[2] );
+		genPart.vertexPos(posVec);
+		genPart.mass(lTrack->GetDefinition()->GetPDGMass());
+		genPart.pdgid(lTrack->GetDefinition()->GetPDGEncoding());
+		genPart.parentKE(stepAction_->stepKE);
+		genPart.parentPdgId(stepAction_->stepPDGID);
+		eventAction_->novelVec_.push_back(genPart);
+		eventAction_->novelPartEngs.push_back(lTrack->GetTrackID());
 	}
 
 	if ( ((abs(pdgID) == 11) ||  (abs(pdgID) == 22)) && kinEng < 500) {
