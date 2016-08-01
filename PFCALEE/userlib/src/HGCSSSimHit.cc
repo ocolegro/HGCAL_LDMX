@@ -63,6 +63,7 @@ void HGCSSSimHit::Add(const G4SiHit & aSiHit) {
 		eDepMainParent_ = aSiHit.energyDep;
 		pdgIDMainParent_ = aSiHit.pdgId;
 		KEMainParent_ = aSiHit.parentKE;
+
 	}
 
 }
