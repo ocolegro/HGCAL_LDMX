@@ -129,7 +129,7 @@ PrimaryGeneratorAction::~PrimaryGeneratorAction() {
 void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent) {
 	G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
 	G4String particleName;
-	std::cout << "Genearting an event " << std::endl;
+	std::cout << "Genearting an event1 " << std::endl;
 	G4ParticleDefinition* particle = particleTable->FindParticle(2212);
 	particleGun->SetParticleDefinition(particle);
 	G4double et = 2;//2.95;
@@ -156,15 +156,20 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent) {
 	genPart.vertexPos(vec);
 	int pdgid = particle->GetPDGEncoding();
 	genPart.pdgid(pdgid);
-	std::cout << "Genearting an event " << std::endl;
+	std::cout << "Genearting an event2 " << std::endl;
 
 	if (currentGenerator) {
+		std::cout << "Genearting an event3 " << std::endl;
+
 		currentGenerator->GeneratePrimaryVertex(anEvent);
+		std::cout << "Genearting an event4 " << std::endl;
+
 		eventAction_->genvec_.push_back(genPart);
 	} else
 		G4Exception("PrimaryGeneratorAction::GeneratePrimaries",
 				"PrimaryGeneratorAction001", FatalException,
 				"generator is not instanciated.");
+	std::cout << "Genearting an event5 " << std::endl;
 
 }
 
