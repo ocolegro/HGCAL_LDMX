@@ -133,6 +133,7 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 		for (unsigned idx(0); idx < (*detector_)[i].n_sens_elements; ++idx) {
 					std::map<unsigned, HGCSSSimHit> lHitMap;
 					std::pair<std::map<unsigned, HGCSSSimHit>::iterator, bool> isInserted;
+
 					for (unsigned iSiHit(0);iSiHit < (*detector_)[i].getSiHitVec(idx).size();++iSiHit) {
 						G4SiHit lSiHit = (*detector_)[i].getSiHitVec(idx)[iSiHit];
 						bool is_scint = (*detector_)[i].hasScintillator;
