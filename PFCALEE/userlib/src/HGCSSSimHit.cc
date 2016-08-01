@@ -36,8 +36,9 @@ HGCSSSimHit::HGCSSSimHit(const G4SiHit & aSiHit, const unsigned & asilayer,
 	layer_ = aSiHit.layer;
 	energy_ = aSiHit.energyDep;
 	trackIDMainParent_ = aSiHit.trackId;
-	energyMainParent_ = aSiHit.parentKE;
+	KEMainParent_ = aSiHit.parentKE;
 	pdgIDMainParent_ = aSiHit.pdgId;
+	eDepMainParent_ = aSiHit.energyDep;
 	//parentEng_ = aSiHit.parentKE;
 }
 
@@ -57,10 +58,13 @@ void HGCSSSimHit::Add(const G4SiHit & aSiHit) {
 		nHadrons_++;
 
 	energy_ += aSiHit.energyDep;
-	if (aSiHit.energyDep > energyMainParent_) {
+	if (aSiHit.energyDep > eDepMainParent_) {
 		trackIDMainParent_ = aSiHit.parentId;
-		energyMainParent_ = aSiHit.parentKE;
+		eDepMainParent_ = aSiHit.energyDep;
 		pdgIDMainParent_ = aSiHit.pdgId;
+		KEMainParent_ = aSiHit.parentKE;
+
+
 	}
 
 }

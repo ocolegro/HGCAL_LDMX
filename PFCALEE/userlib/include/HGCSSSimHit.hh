@@ -196,7 +196,8 @@ private:
 	unsigned nProtons_;
 	unsigned nHadrons_;
 	int trackIDMainParent_;
-	double energyMainParent_;
+	double eDepMainParent_;
+	double KEMainParent_;
 
 ClassDef(HGCSSSimHit,1)
 	;
