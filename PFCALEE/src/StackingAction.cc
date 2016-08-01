@@ -60,8 +60,6 @@ StackingAction::ClassifyNewTrack(const G4Track* lTrack)
 	G4double kinEng = lTrack->GetKineticEnergy();
 	G4int pdgID = lTrack->GetDefinition()->GetPDGEncoding();
 	G4int trackID = lTrack->GetTrackID();
-	std::cout << trackID << std::endl;
-	std::cout << "test" << std::endl;
 
 	if (kinEng>10 && (abs(pdgID) != 11) && (abs(pdgID) != 22 && trackID != 1)){
 		HGCSSGenParticle genPart;
