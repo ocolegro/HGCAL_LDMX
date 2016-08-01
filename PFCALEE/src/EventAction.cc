@@ -138,12 +138,12 @@ void EventAction::EndOfEventAction(const G4Event* g4evt) {
 						G4SiHit lSiHit = (*detector_)[i].getSiHitVec(idx)[iSiHit];
 						bool is_scint = (*detector_)[i].hasScintillator;
 						HGCSSSimHit lHit(lSiHit, idx,is_scint ?geomConv_->squareMap() : geomConv_->hexagonMap());
-						std::cout << "The layer is i = " << i << "the hit is idx = " << idx << "the cellid is " << lHit.cellid() << std::endl;
+						//std::cout << "The layer is i = " << i << "the hit is idx = " << idx << "the cellid is " << lHit.cellid() << std::endl;
 
 						isInserted = lHitMap.insert(std::pair<unsigned, HGCSSSimHit>(lHit.cellid(), lHit));
 						if (!isInserted.second)
 							isInserted.first->second.Add(lSiHit);
-							std::cout << "This hit is being added to the original" << std::endl;
+							//std::cout << "This hit is being added to the original" << std::endl;
 					}
 
 				std::map<unsigned, HGCSSSimHit>::iterator lIter = lHitMap.begin();
