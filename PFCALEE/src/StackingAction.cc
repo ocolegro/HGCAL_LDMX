@@ -81,7 +81,7 @@ StackingAction::ClassifyNewTrack(const G4Track* lTrack)
 			eventAction_->novelVec_.push_back(genPart);
 			eventAction_->novelPartEngs.push_back(lTrack->GetTrackID());*/
 
-		}
+
 	if ( ((abs(pdgID) == 11) ||  (abs(pdgID) == 22)) && kinEng < 500) {
 		if (!eventAction_->GetWait()){
 			if (eventAction_->firstPass()){
