@@ -59,7 +59,7 @@ StackingAction::ClassifyNewTrack(const G4Track* lTrack)
 {
 	G4double kinEng = lTrack->GetKineticEnergy();
 	G4int pdgID = lTrack->GetDefinition()->GetPDGEncoding();
-	/*
+
 	if (kinEng>10 && (abs(pdgID) != 11) && (abs(pdgID) != 22 )){
 			HGCSSGenParticle genPart;
 			genPart.vertexKE(lTrack->GetKineticEnergy());
@@ -73,11 +73,11 @@ StackingAction::ClassifyNewTrack(const G4Track* lTrack)
 			genPart.pdgid(lTrack->GetDefinition()->GetPDGEncoding());
 			genPart.parentKE(stepAction_->stepKE);
 			genPart.parentPdgId(stepAction_->stepPDGID);
-
+			/*
 			eventAction_->novelVec_.push_back(genPart);
-			eventAction_->novelPartEngs.push_back(lTrack->GetTrackID());
+			eventAction_->novelPartEngs.push_back(lTrack->GetTrackID());*/
 
-		} */
+		}
 	if ( ((abs(pdgID) == 11) ||  (abs(pdgID) == 22)) && kinEng < 500) {
 		if (!eventAction_->GetWait()){
 			if (eventAction_->firstPass()){
