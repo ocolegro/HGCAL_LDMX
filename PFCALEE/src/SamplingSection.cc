@@ -75,6 +75,8 @@ std::pair<G4bool,G4bool> SamplingSection::add(G4double depositRawE,G4VPhysicalVo
 					std::cout << "The number of elements is " << n_elements << " The number of sectors " << n_sectors << std::endl;
 					std::cout << "The layer was " << floor(float(ie)/float(n_elements)) << std::endl;
 					std::cout << "The value of ie was " << ie << std::endl;
+					std::cout << "sublayer_vol[ie] = " << sublayer_vol[ie] << std::endl;
+					std::cout << "lstr = " << lstr << std::endl;
 				sens_HitVec[idx].push_back(lHit);
 			//}
 
