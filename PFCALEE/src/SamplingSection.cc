@@ -55,7 +55,7 @@ std::pair<G4bool,G4bool> SamplingSection::add(G4double depositRawE,G4VPhysicalVo
 	std::string lstr = vol->GetName();
 	bool breakSwitch = false;
 	bool isSens = false;
-	for (double ie(0); ie < n_elements * n_sectors; ++ie) {
+	for (unsigned ie(0); ie < n_elements * n_sectors; ++ie) {
 			if (breakSwitch) return std::make_pair(breakSwitch,isSens);
 		if (sublayer_vol[ie] && lstr == sublayer_vol[ie]->GetName()) {
 			breakSwitch = true;
@@ -73,7 +73,7 @@ std::pair<G4bool,G4bool> SamplingSection::add(G4double depositRawE,G4VPhysicalVo
 				lHit.hit_z = position.z();
 				lHit.layer = eleidx;
 					std::cout << "The number of elements is " << n_elements << " The number of sectors " << n_sectors << std::endl;
-					std::cout << "The layer was " << floor(ie/n_elements) << std::endl;
+					std::cout << "The layer was " << floor(float(ie)/float(n_elements)) << std::endl;
 					std::cout << "The value of ie was " << ie << std::endl;
 				sens_HitVec[idx].push_back(lHit);
 			//}
