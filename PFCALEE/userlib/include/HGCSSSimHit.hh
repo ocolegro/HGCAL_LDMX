@@ -7,7 +7,6 @@
 #include <sstream>
 #include <iostream>
 #include <map>
-#include "G4RunManager.hh"
 
 #include "G4SiHit.hh"
 #include "HGCSSGeometryConversion.hh"
@@ -37,12 +36,12 @@ public:
 	}
 	;
 
-	inline G4double energy() const {
+	inline double energy() const {
 		return energy_;
 	}
 	;
 
-	inline G4double time() const {
+	inline double time() const {
 		return time_;
 	}
 	;
@@ -114,54 +113,54 @@ public:
 	}
 	;
 
-	inline G4double gFrac() const {
+	inline double gFrac() const {
 		return nGammas_ / numberOfParticles();
 	}
 	;
 
-	inline G4double eFrac() const {
+	inline double eFrac() const {
 		return nElectrons_ / numberOfParticles();
 	}
 	;
 
-	inline G4double muFrac() const {
+	inline double muFrac() const {
 		return nMuons_ / numberOfParticles();
 	}
 	;
 
-	inline G4double neutronFrac() const {
+	inline double neutronFrac() const {
 		return nNeutrons_ / numberOfParticles();
 	}
 	;
 
-	inline G4double protonFrac() const {
+	inline double protonFrac() const {
 		return nProtons_ / numberOfParticles();
 	}
 	;
 
-	inline G4double hadFrac() const {
+	inline double hadFrac() const {
 		return nHadrons_ / numberOfParticles();
 	}
 	;
 
 	void Add(const G4SiHit & aSiHit);
 
-	std::pair<G4double, G4double> get_xy(const bool isScintillator,
+	std::pair<double, double> get_xy(const bool isScintillator,
 			const HGCSSGeometryConversion & aGeom) const;
 
 	ROOT::Math::XYZPoint position(const bool isScintillator,
 			const HGCSSGeometryConversion & aGeom) const;
 
-	inline G4double get_z() const {
+	inline double get_z() const {
 		return zpos_;
 	}
 	;
 
-	G4double eta(const bool isScintillator,
+	double eta(const bool isScintillator,
 			const HGCSSGeometryConversion & aGeom) const;
-	G4double theta(const bool isScintillator,
+	double theta(const bool isScintillator,
 			const HGCSSGeometryConversion & aGeom) const;
-	G4double phi(const bool isScintillator,
+	double phi(const bool isScintillator,
 			const HGCSSGeometryConversion & aGeom) const;
 
 	inline unsigned getGranularity() const {
@@ -174,7 +173,7 @@ public:
 	}
 	;
 
-	inline G4double mainParentEfrac() const {
+	inline double mainParentEfrac() const {
 		return eDepMainParent_ / energy_;
 	}
 	;
@@ -183,11 +182,11 @@ public:
 
 private:
 
-	G4double energy_;
-	G4double parentEng_;
-	G4double time_;
-	G4double zpos_;
-	G4double pdgIDMainParent_;
+	double energy_;
+	double parentEng_;
+	double time_;
+	double zpos_;
+	double pdgIDMainParent_;
 	unsigned layer_;
 	unsigned cellid_;
 	unsigned nGammas_;
@@ -197,8 +196,8 @@ private:
 	unsigned nProtons_;
 	unsigned nHadrons_;
 	int trackIDMainParent_;
-	G4double eDepMainParent_;
-	G4double KEMainParent_;
+	double eDepMainParent_;
+	double KEMainParent_;
 
 ClassDef(HGCSSSimHit,1)
 	;

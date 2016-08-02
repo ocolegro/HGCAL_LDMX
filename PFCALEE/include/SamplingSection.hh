@@ -11,7 +11,6 @@
 
 #include <iomanip>
 #include <vector>
-
 #include "G4SiHit.hh"
 //class EventAction;
 class SamplingSection {
