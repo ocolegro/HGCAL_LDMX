@@ -67,8 +67,8 @@ std::pair<G4bool,G4bool> SamplingSection::add(G4double depositRawE,G4VPhysicalVo
 			//std::cout << "adding a hit for layer = " << getLayer(lstr) << std::endl;
 			//std::cout << "The hit energy is = " << depositRawE << std::endl;
 			//std::cout << "the trackId is  " << lTrack->GetTrackID() << std::endl;
-			lHit.parentKE = lTrack->GetKineticEnergy()* keV;
-			lHit.energyDep = depositRawE * keV;
+			lHit.parentKE = lTrack->GetKineticEnergy()* MeV;
+			lHit.energyDep = depositRawE * MeV;
 
 			lHit.hit_x = position.x();
 			lHit.hit_y = position.y();
