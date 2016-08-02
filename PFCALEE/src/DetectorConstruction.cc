@@ -160,10 +160,10 @@ void DetectorConstruction::buildECal(){
 			iEleL.push_back(make_pair(0.5*mm,"Cu"));
 			iEleL.push_back(make_pair(airThick,"Air"));
 			iEleL.push_back(make_pair(pcbThick,"PCB"));
-			//iEleL.push_back(make_pair(0.3*mm,"Si"));
-			iEleL.push_back(make_pair(0.1*mm,"Si"));
-			iEleL.push_back(make_pair(0.1*mm,"Si"));
-			iEleL.push_back(make_pair(0.1*mm,"Si"));
+			iEleL.push_back(make_pair(0.3*mm,"Si"));
+			//iEleL.push_back(make_pair(0.1*mm,"Si"));
+			//iEleL.push_back(make_pair(0.1*mm,"Si"));
+			//iEleL.push_back(make_pair(0.1*mm,"Si"));
 			//iEleL.push_back(make_pair(0.1*mm,"Si"));
 
 
