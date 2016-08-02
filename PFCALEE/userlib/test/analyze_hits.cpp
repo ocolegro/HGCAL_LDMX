@@ -65,6 +65,7 @@ int main(int argc, char** argv) {
 	unsigned nEvts = tree->GetEntries();
 	for (unsigned ievt(0); ievt < nEvts; ++ievt) { //loop on entries
 		nHits = hitVec_->size();
+		std::cout << "The size of hitVec_ is " << nHits << std::endl;
 		for (unsigned j = 0; j < hitVec_->size(); j++) {
 			HGCSSSimHit& hit = (*hitVec_)[j];
 			cellLayer[j] 			= hit.layer_;
