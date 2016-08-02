@@ -31,7 +31,7 @@ HGCSSSimHit::HGCSSSimHit(const G4SiHit & aSiHit,
 		nHadrons_++;
 
 	cellid_ = map->FindBin(x, y);
-	if (cellid_ > 1e6)
+	if (cellid_ > 1e5)
 		std::cout << "The cell id = " << cellid_ << ", (x,y) = " << "(" << x << ", " << y << ")" << std::endl;
 	layer_ = aSiHit.layer;
 	energy_ = aSiHit.energyDep;
