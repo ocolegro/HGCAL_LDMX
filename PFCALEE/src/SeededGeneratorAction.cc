@@ -138,13 +138,13 @@ void SeededGeneratorAction::GeneratePrimaries(G4Event* anEvent) {
 
 	if (inc_->size() >  0){
 		eventAction_->SetWait(true);
-		et = 2.95;
+		et = 295;
 	}
 	else{
 		eventAction_->SetWait(false);
 	}
 
-	particleGun->SetParticleEnergy(et * GeV);
+	particleGun->SetParticleEnergy(et * MeV);
 	particleGun->SetParticleMomentumDirection(G4ThreeVector(0., 0., 1.));
 
 	G4double y0 = 0;//G4RandFlat::shoot(-10.,10);

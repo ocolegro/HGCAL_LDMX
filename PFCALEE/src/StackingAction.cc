@@ -57,13 +57,13 @@ StackingAction::~StackingAction()
 G4ClassificationOfNewTrack
 StackingAction::ClassifyNewTrack(const G4Track* lTrack)
 {
-	G4double kinEng = lTrack->GetKineticEnergy();
+	G4double kinEng = lTrack->GetKineticEnergy() *MeV;
 	G4int pdgID = lTrack->GetDefinition()->GetPDGEncoding();
 	G4int trackID = lTrack->GetTrackID();
 
 	if (kinEng>10 && (abs(pdgID) != 11) && (abs(pdgID) != 22 && trackID != 1)){
 		HGCSSGenParticle genPart;
-		genPart.vertexKE(lTrack->GetKineticEnergy());
+		genPart.vertexKE(lTrack->GetKineticEnergy()*MeV);
 		const G4ThreeVector &p = lTrack->GetMomentumDirection();
 		const G4ThreeVector &pos = lTrack->GetPosition();
 		TVector3 momVec(p[0], p[1], p[2]);
