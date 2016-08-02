@@ -7,6 +7,7 @@
 #include <sstream>
 #include <iostream>
 #include <map>
+#include "G4RunManager.hh"
 
 #include "G4SiHit.hh"
 #include "HGCSSGeometryConversion.hh"
