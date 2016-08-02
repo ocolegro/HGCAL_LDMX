@@ -65,7 +65,7 @@ int main(int argc, char** argv) {
 		nHits = hitVec_->size();
 		for (unsigned j = 0; j < hitVec_->size(); j++) {
 			HGCSSSimHit& hit = (*hitVec_)[j];
-			cellLayer 			= hit.layer_;
+			cellLayer[j] 			= hit.layer_;
 			cellID[j]			= hit.cellid_;
 			cellEnergy[j]		= hit.energy_;
 			cellParentID[j]		= hit.pdgIDMainParent_;
