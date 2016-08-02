@@ -34,7 +34,7 @@ HGCSSSimHit::HGCSSSimHit(const G4SiHit & aSiHit,
 
 	cellid_ = map->FindBin(x, y);
 	layer_ = aSiHit.layer;
-	energy_ = aSiHit.energyDep;
+	energy_ = aSiHit.energyDep *keV;
 	trackIDMainParent_ = aSiHit.trackId;
 	KEMainParent_ = aSiHit.parentKE;
 	pdgIDMainParent_ = aSiHit.pdgId;
@@ -57,10 +57,10 @@ void HGCSSSimHit::Add(const G4SiHit & aSiHit) {
 	else
 		nHadrons_++;
 
-	energy_ += aSiHit.energyDep;
+	energy_ += aSiHit.energyDep  *keV;
 	if (aSiHit.energyDep > eDepMainParent_) {
 		trackIDMainParent_ = aSiHit.parentId;
-		eDepMainParent_ = aSiHit.energyDep;
+		eDepMainParent_ = aSiHit.energyDep  *keV;
 		pdgIDMainParent_ = aSiHit.pdgId;
 		KEMainParent_ = aSiHit.parentKE;
 
