@@ -133,7 +133,7 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent) {
 	particleGun->SetParticleDefinition(particle);
 	//G4double et = 300;//2.95;
 	double engs[11] = {100,150,200,250,300,350,400,450,500,1000,2000};
-	insigned iSecret = rand() % 11 ;
+	unsigned iSecret = rand() % 11 ;
 	G4double et = engs[iSecret];
 
 	particleGun->SetParticleEnergy(et * MeV);
