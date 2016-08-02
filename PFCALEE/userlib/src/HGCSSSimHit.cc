@@ -3,12 +3,9 @@
 #include <iomanip>
 #include <cmath>
 #include <stdlib.h>
-#include "globals.hh"
 
 HGCSSSimHit::HGCSSSimHit(const G4SiHit & aSiHit,
 		TH2Poly* map, const float) {
-	//energy weighted time
-	//have been added to have divided by totalE!!
 	double x = aSiHit.hit_x;
 	double y = aSiHit.hit_y;
 	assert(map);
@@ -40,7 +37,6 @@ HGCSSSimHit::HGCSSSimHit(const G4SiHit & aSiHit,
 	KEMainParent_ = aSiHit.parentKE;
 	pdgIDMainParent_ = aSiHit.pdgId;
 	eDepMainParent_ = aSiHit.energyDep * keV;
-	//parentEng_ = aSiHit.parentKE;
 }
 
 void HGCSSSimHit::Add(const G4SiHit & aSiHit) {
