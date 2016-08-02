@@ -61,7 +61,6 @@ std::pair<G4bool,G4bool> SamplingSection::add(G4double depositRawE,G4VPhysicalVo
 			unsigned idx = getSensitiveLayerIndex(lstr);
 			unsigned eleidx = ie % n_elements;
 			if (isSensitiveElement(ie)){
-				std::cout << "The lstr reads " << lstr << std::endl;
 				isSens = isSensitiveElement(eleidx);
 				sublayer_RawDep[eleidx] += depositRawE;
 				G4SiHit lHit;
