@@ -36,12 +36,12 @@ public:
 	}
 	;
 
-	inline double energy() const {
+	inline G4double energy() const {
 		return energy_;
 	}
 	;
 
-	inline double time() const {
+	inline G4double time() const {
 		return time_;
 	}
 	;
@@ -113,54 +113,54 @@ public:
 	}
 	;
 
-	inline double gFrac() const {
+	inline G4double gFrac() const {
 		return nGammas_ / numberOfParticles();
 	}
 	;
 
-	inline double eFrac() const {
+	inline G4double eFrac() const {
 		return nElectrons_ / numberOfParticles();
 	}
 	;
 
-	inline double muFrac() const {
+	inline G4double muFrac() const {
 		return nMuons_ / numberOfParticles();
 	}
 	;
 
-	inline double neutronFrac() const {
+	inline G4double neutronFrac() const {
 		return nNeutrons_ / numberOfParticles();
 	}
 	;
 
-	inline double protonFrac() const {
+	inline G4double protonFrac() const {
 		return nProtons_ / numberOfParticles();
 	}
 	;
 
-	inline double hadFrac() const {
+	inline G4double hadFrac() const {
 		return nHadrons_ / numberOfParticles();
 	}
 	;
 
 	void Add(const G4SiHit & aSiHit);
 
-	std::pair<double, double> get_xy(const bool isScintillator,
+	std::pair<G4double, G4double> get_xy(const bool isScintillator,
 			const HGCSSGeometryConversion & aGeom) const;
 
 	ROOT::Math::XYZPoint position(const bool isScintillator,
 			const HGCSSGeometryConversion & aGeom) const;
 
-	inline double get_z() const {
+	inline G4double get_z() const {
 		return zpos_;
 	}
 	;
 
-	double eta(const bool isScintillator,
+	G4double eta(const bool isScintillator,
 			const HGCSSGeometryConversion & aGeom) const;
-	double theta(const bool isScintillator,
+	G4double theta(const bool isScintillator,
 			const HGCSSGeometryConversion & aGeom) const;
-	double phi(const bool isScintillator,
+	G4double phi(const bool isScintillator,
 			const HGCSSGeometryConversion & aGeom) const;
 
 	inline unsigned getGranularity() const {
@@ -173,7 +173,7 @@ public:
 	}
 	;
 
-	inline double mainParentEfrac() const {
+	inline G4double mainParentEfrac() const {
 		return eDepMainParent_ / energy_;
 	}
 	;
@@ -182,11 +182,11 @@ public:
 
 private:
 
-	double energy_;
-	double parentEng_;
-	double time_;
-	double zpos_;
-	double pdgIDMainParent_;
+	G4double energy_;
+	G4double parentEng_;
+	G4double time_;
+	G4double zpos_;
+	G4double pdgIDMainParent_;
 	unsigned layer_;
 	unsigned cellid_;
 	unsigned nGammas_;
@@ -196,8 +196,8 @@ private:
 	unsigned nProtons_;
 	unsigned nHadrons_;
 	int trackIDMainParent_;
-	double eDepMainParent_;
-	double KEMainParent_;
+	G4double eDepMainParent_;
+	G4double KEMainParent_;
 
 ClassDef(HGCSSSimHit,1)
 	;
