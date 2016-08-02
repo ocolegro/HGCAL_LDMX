@@ -16,7 +16,7 @@ parser.add_option('-t', '--git-tag'     ,    dest='gittag'             , help='g
 parser.add_option('-r', '--run'         ,    dest='run'                , help='stat run'                     , default=-1,      type=int)
 parser.add_option('-v', '--version'     ,    dest='version'            , help='detector version'             , default=1,      type=int)
 parser.add_option('-m', '--model'       ,    dest='model'              , help='detector model'               , default=2,      type=int)
-parser.add_option('-s', '--signal'      ,    dest='signal'             , help='signal flag'                  , default=0,      type=int)
+parser.add_option('-f', '--fast'      ,    dest='fast'             , help='fast flag'                  , default=0,      type=int)
 parser.add_option('-n', '--nevts'       ,    dest='nevts'              , help='number of events to generate' , default=1000,    type=int)
 parser.add_option('-o', '--out'         ,    dest='out'                , help='output directory'             , default=os.getcwd() )
 parser.add_option('-e', '--eos'         ,    dest='eos'                , help='eos path to save root file to EOS',         default='')
@@ -41,7 +41,7 @@ for thickness in thickness_:
     outDir='%s/git_%s/version_%d/model_%d'%(opt.out,opt.gittag,opt.version,opt.model)
     outDir='%s/%s'%(outDir,label)
     eosDir='%s/git%s'%(opt.eos,opt.gittag)
-    if opt.signal>0 : outDir='%s/signal_%3.3f/'%(outDir,opt.signal)
+    if opt.fast>0 : outDir='%s/fast_%3.3f/'%(outDir,opt.fast)
     if (opt.run>=0) : outDir='%s/run_%d/'%(outDir,opt.run)
 
     os.system('mkdir -p %s'%outDir)
@@ -53,10 +53,10 @@ for thickness in thickness_:
     scriptFile.write('source g4env4lpc.sh\n')#%(os.getcwd()))
     outTag='%s_version%d_model%d_thick%s'%(label,opt.version,opt.model,thickness)
     if (opt.run>=0) : outTag='%s_run%d'%(outTag,opt.run)
-    if (opt.signal>0) : outTag = '%s_second' % (outTag)
+    if (opt.fast>0) : outTag = '%s_second' % (outTag)
 
 
-    scriptFile.write('./%s root://cmseos.fnal.gov/%s/HGcal_%s_second.root  \n'%(opt.macro,outDir,outTag))
+    scriptFile.write('./%s root://cmseos.fnal.gov/%s/HGcal_%s.root  \n'%(opt.macro,outDir,outTag))
 
     scriptFile.write('xrdcp -f analyzed_tuple.root root://cmseos.fnal.gov/%s/analyzed_%s.root\n'%(outDir,outTag))
 
