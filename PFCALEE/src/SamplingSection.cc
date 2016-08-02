@@ -71,7 +71,7 @@ std::pair<G4bool,G4bool> SamplingSection::add(G4double depositRawE,G4VPhysicalVo
 			lHit.hit_x = position.x();
 			lHit.hit_y = position.y();
 			lHit.hit_z = position.z();
-			lHit.energyDep = depositRawE;
+			lHit.energyDep = depositRawE * KeV;
 			lHit.layer = getLayer(lstr);
 			lHit.trackId = lTrack->GetTrackID();
 			lHit.pdgId = lTrack->GetDefinition()->GetPDGEncoding();
