@@ -51,16 +51,26 @@ int main(int argc, char** argv) {
 	TTree t1("sampling", "Hadronic Study");
 
 
-	Int_t nHits = 0,cellID[500000],cellEnergy[500000],cellDT[500000],cellParentID[500000];
+	unsigned nHits = 0,cellID[500000],cellLayer[500000];
+	Float_t cellEnergy[500000],cellParentID[500000],cellParentKE[500000],cellParentTrack[500000];
 	t1.Branch("nHits", &nHits, "nHits/I");
+	t1.Branch("cellID", &cellID, "cellID[nHits]/I");
+	t1.Branch("cellEnergy", &cellEnergy, "cellEnergy[nHits]/I");
+	t1.Branch("cellParentID", &cellParentID, "cellParentID[nHits]/I");
+	t1.Branch("cellParentKE", &cellParentKE, "cellParentKE[nHits]/I");
+	t1.Branch("cellParentTrack", &cellParentTrack, "cellParentTrack[nHits]/I");
 
 	unsigned nEvts = tree->GetEntries();
 	for (unsigned ievt(0); ievt < nEvts; ++ievt) { //loop on entries
 		nHits = hitVec_->size();
-		for (Int_t j = 0; j < hitVec_->size(); j++) {
+		for (unsigned j = 0; j < hitVec_->size(); j++) {
 			HGCSSSimHit& hit = (*hitVec_)[j];
-			cellID[j]			= hit.cellid();
-			cellEnergy[j]		= hit.energy();
+			cellLayer 			= hit.layer_;
+			cellID[j]			= hit.cellid_;
+			cellEnergy[j]		= hit.energy_;
+			cellParentID[j]		= hit.pdgIDMainParent_;
+			cellParentKE[j]		= hit.KEMainParent_;
+			cellParentTrack[j]	= hit.trackIDMainParent_;
 
 		}
 
