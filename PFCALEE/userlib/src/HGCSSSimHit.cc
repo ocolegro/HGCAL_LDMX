@@ -57,6 +57,7 @@ void HGCSSSimHit::Add(const G4SiHit & aSiHit) {
 		nHadrons_++;
 
 	energy_ += aSiHit.energyDep;
+	std::cout << "The cellid_ is" << cellid_ << std::endl;
 	if (aSiHit.energyDep > eDepMainParent_) {
 		trackIDMainParent_ = aSiHit.parentId;
 		eDepMainParent_ = aSiHit.energyDep;
