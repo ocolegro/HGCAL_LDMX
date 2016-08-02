@@ -38,7 +38,7 @@ HGCSSSimHit::HGCSSSimHit(const G4SiHit & aSiHit,
 	trackIDMainParent_ = aSiHit.trackId;
 	KEMainParent_ = aSiHit.parentKE;
 	pdgIDMainParent_ = aSiHit.pdgId;
-	eDepMainParent_ = aSiHit.energyDep;
+	eDepMainParent_ = aSiHit.energyDep*keV;
 	//parentEng_ = aSiHit.parentKE;
 }
 
