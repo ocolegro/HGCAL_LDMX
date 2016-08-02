@@ -60,25 +60,24 @@ std::pair<G4bool,G4bool> SamplingSection::add(G4double depositRawE,G4VPhysicalVo
 			breakSwitch = true;
 			unsigned idx = getSensitiveLayerIndex(lstr);
 			unsigned eleidx = ie % n_elements;
-			isSens = isSensitiveElement(eleidx);
-			sublayer_RawDep[eleidx] += depositRawE;
-			G4SiHit lHit;
-			//lHit.pdgId = lTrack->GetDefinition()->GetPDGEncoding();
-			//std::cout << "adding a hit for layer = " << getLayer(lstr) << std::endl;
-			//std::cout << "The hit energy is = " << depositRawE << std::endl;
-			//std::cout << "the trackId is  " << lTrack->GetTrackID() << std::endl;
-			lHit.parentKE = lTrack->GetKineticEnergy()* MeV;
-			lHit.energyDep = depositRawE;
+			if (isSensitiveElement(ie)){
+				std::cout << "The lstr reads " << lstr << std::endl;
+				isSens = isSensitiveElement(eleidx);
+				sublayer_RawDep[eleidx] += depositRawE;
+				G4SiHit lHit;
+				lHit.parentKE = lTrack->GetKineticEnergy()* MeV;
+				lHit.energyDep = depositRawE;
 
-			lHit.hit_x = position.x();
-			lHit.hit_y = position.y();
-			lHit.hit_z = position.z();
+				lHit.hit_x = position.x();
+				lHit.hit_y = position.y();
+				lHit.hit_z = position.z();
 
-			lHit.layer = getLayer(lstr);
-			lHit.trackId = lTrack->GetTrackID();
-			lHit.pdgId = lTrack->GetDefinition()->GetPDGEncoding();
+				lHit.layer = getLayer(lstr);
+				lHit.trackId = lTrack->GetTrackID();
+				lHit.pdgId = lTrack->GetDefinition()->GetPDGEncoding();
 
-			sens_HitVec[idx].push_back(lHit);
+				sens_HitVec[idx].push_back(lHit);
+			}
 			} //if in right material
 		} //loop on available materials
 
