@@ -55,10 +55,12 @@ int main(int argc, char** argv) {
 	Float_t cellEnergy[500000],cellParentID[500000],cellParentKE[500000],cellParentTrack[500000];
 	t1.Branch("nHits", &nHits, "nHits/I");
 	t1.Branch("cellID", &cellID, "cellID[nHits]/I");
-	t1.Branch("cellEnergy", &cellEnergy, "cellEnergy[nHits]/I");
-	t1.Branch("cellParentID", &cellParentID, "cellParentID[nHits]/I");
-	t1.Branch("cellParentKE", &cellParentKE, "cellParentKE[nHits]/I");
-	t1.Branch("cellParentTrack", &cellParentTrack, "cellParentTrack[nHits]/I");
+	t1.Branch("cellLayer", &cellLayer, "cellLayer[nHits]/I");
+
+	t1.Branch("cellEnergy", &cellEnergy, "cellEnergy[nHits]/F");
+	t1.Branch("cellParentID", &cellParentID, "cellParentID[nHits]/F");
+	t1.Branch("cellParentKE", &cellParentKE, "cellParentKE[nHits]/F");
+	t1.Branch("cellParentTrack", &cellParentTrack, "cellParentTrack[nHits]/F");
 
 	unsigned nEvts = tree->GetEntries();
 	for (unsigned ievt(0); ievt < nEvts; ++ievt) { //loop on entries
