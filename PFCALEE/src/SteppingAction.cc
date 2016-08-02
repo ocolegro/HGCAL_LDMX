@@ -45,7 +45,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep) {
 
 
 
-	G4double eRawDep = aStep->GetTotalEnergyDeposit();
+	G4double eRawDep = aStep->GetTotalEnergyDeposit()  * MeV;
 
 	stepPDGID = pdgID;
 	stepKE = kinEng - aStep->GetDeltaEnergy();
