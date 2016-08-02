@@ -63,7 +63,6 @@ int main(int argc, char** argv) {
 			cellEnergy[j]		= hit.energy();
 			cellID[j]			= hit.cellid_;
 
-
 		}
 
 		t1.Fill();
