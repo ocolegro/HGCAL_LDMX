@@ -180,7 +180,7 @@ public:
 
 	void Print(std::ostream & aOs) const;
 
-private:
+public:
 
 	double energy_;
 	double parentEng_;

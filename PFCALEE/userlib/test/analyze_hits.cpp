@@ -61,7 +61,6 @@ int main(int argc, char** argv) {
 			HGCSSSimHit& hit = (*hitVec_)[j];
 			cellID[j]			= hit.cellid();
 			cellEnergy[j]		= hit.energy();
-			cellID[j]			= hit.cellid_;
 
 		}
 
