@@ -3,6 +3,7 @@
 #include <iomanip>
 #include <cmath>
 #include <stdlib.h>
+#include "globals.hh"
 
 HGCSSSimHit::HGCSSSimHit(const G4SiHit & aSiHit,
 		TH2Poly* map, const float) {
@@ -34,11 +35,11 @@ HGCSSSimHit::HGCSSSimHit(const G4SiHit & aSiHit,
 
 	cellid_ = map->FindBin(x, y);
 	layer_ = aSiHit.layer;
-	energy_ = aSiHit.energyDep *keV;
+	energy_ = aSiHit.energyDep * keV;
 	trackIDMainParent_ = aSiHit.trackId;
 	KEMainParent_ = aSiHit.parentKE;
 	pdgIDMainParent_ = aSiHit.pdgId;
-	eDepMainParent_ = aSiHit.energyDep*keV;
+	eDepMainParent_ = aSiHit.energyDep * keV;
 	//parentEng_ = aSiHit.parentKE;
 }
 
@@ -57,10 +58,10 @@ void HGCSSSimHit::Add(const G4SiHit & aSiHit) {
 	else
 		nHadrons_++;
 
-	energy_ += aSiHit.energyDep  *keV;
+	energy_ += aSiHit.energyDep  * keV;
 	if (aSiHit.energyDep > eDepMainParent_) {
 		trackIDMainParent_ = aSiHit.parentId;
-		eDepMainParent_ = aSiHit.energyDep  *keV;
+		eDepMainParent_ = aSiHit.energyDep  * keV;
 		pdgIDMainParent_ = aSiHit.pdgId;
 		KEMainParent_ = aSiHit.parentKE;
 
