@@ -347,7 +347,7 @@ void DetectorConstruction::UpdateCalorSize() {
 
 		m_maxRadius = (maxRadLen ) * tan(m_maxTheta);
 		cout << "The maximum radius is " << m_maxRadius << endl;
-		m_CalorSizeXY = m_maxRadius * 2; //use full length for making hexagon map
+		m_CalorSizeXY = 800; //use full length for making hexagon map
 		std::cout << "The calorimeter size is " << m_CalorSizeXY << "the width is " << m_sectorWidth << std::endl;
 		m_sectorWidth = m_CalorSizeXY;
 	}
