@@ -43,7 +43,7 @@ for thickness in thickness_:
     if opt.fast>0 : outDir='%s/fast_%3.3f/'%(outDir,opt.fast)
     if (opt.run>=0) : outDir='%s/run_%d/'%(outDir,opt.run)
 
-    os.system('xrdfs root://cmseos.fnal.gov rm  mkdir %s'%outDir)
+    os.system('xrdfs root://cmseos.fnal.gov mkdir %s'%outDir)
 
     os.system('xrdfs root://cmseos.fnal.gov rm  /%s/PFCalEE' % outDir)
     os.system('xrdfs root://cmseos.fnal.gov rm  /%s/g4env4lpc.sh' % outDir)
