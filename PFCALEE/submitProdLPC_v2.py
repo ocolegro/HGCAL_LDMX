@@ -64,10 +64,10 @@ for thickness in thickness_:
     if (opt.run>=0) : outTag='%s_run%d'%(outTag,opt.run)
 
     if (opt.pass_ == 0):
-        scriptFile.write('PFCalEE g4steer.mac %d %d %f %s | tee g4.log\n'%(opt.version,opt.model,opt.fast,thickness))
+        scriptFile.write('./PFCalEE g4steer.mac %d %d %f %s | tee g4.log\n'%(opt.version,opt.model,opt.fast,thickness))
     else:
         #scriptFile.write('./PFCalEE g4steer.mac %d %d %f %s root://cmseos.fnal.gov/%s/HGcal_%s.root | tee g4.log\n'%(opt.version,opt.model,opt.fast,thickness,outDir,outTag))
-        scriptFile.write('PFCalEE g4steer.mac %d %d %f %s HGcal_%s.root | tee g4.log\n'%(opt.version,opt.model,opt.fast,thickness,outTag))
+        scriptFile.write('./PFCalEE g4steer.mac %d %d %f %s HGcal_%s.root | tee g4.log\n'%(opt.version,opt.model,opt.fast,thickness,outTag))
 
     if (opt.pass_ == 0):
         scriptFile.write('xrdcp -f PFcal.root root://cmseos.fnal.gov/%s/HGcal_%s.root\n'%(outDir,outTag))
@@ -106,8 +106,10 @@ for thickness in thickness_:
     if opt.nosubmit : os.system('LSB_JOB_REPORT_MAIL=N echo bsub -q %s -N %s/runJob.sh'%(myqueue,outDir))
     else:
         #os.system("LSB_JOB_REPORT_MAIL=N bsub -q %s -N \'%s/runJob.sh\'"%(myqueue,outDir))
+        print 'Changing dir to %s' % (outDir)
+        os.chdir("%s" % (outDir));
         name = "submitRun%s" % (opt.run)
-        f2n = "%s/submit.jdl" % (outDir);
+        f2n = "submit.jdl";
         outtag = "out_%s_$(Cluster)" % (name)
         f2=open(f2n, 'w')
         f2.write("universe = vanilla \n");
@@ -128,6 +130,5 @@ for thickness in thickness_:
         f2.write("x509userproxy = $ENV(X509_USER_PROXY) \n")
         f2.write("Queue 1 \n");
         f2.close();
-        print 'Changing dir to %s' % (outDir)
-        os.chdir("%s" % (outDir));
+
         os.system("condor_submit submit.jdl");# % (submit.jdl));
