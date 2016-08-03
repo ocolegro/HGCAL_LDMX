@@ -45,10 +45,10 @@ for thickness in thickness_:
 
     os.system('eosmkdir -p %s'%outDir)
 
-    os.system('eosrm /%s/PFCalEE' % outDir)
-    os.system('eosrm /%s/g4env4lpc.sh' % outDir)
-    os.system('eosrm /%s/libPFCalEE.so' % outDir)
-    os.system('eosrm /%s/libPFCalEEuserlib.so' % outDir)
+    os.system('rm /%s/PFCalEE' % outDir)
+    os.system('rm /%s/g4env4lpc.sh' % outDir)
+    os.system('rm /%s/libPFCalEE.so' % outDir)
+    os.system('rm /%s/libPFCalEEuserlib.so' % outDir)
 
 
     os.system('xrdcp ~/geant4_workdir/bin/Linux-g++/PFCalEE root://cmseos.fnal.gov/%s/' % outDir)
