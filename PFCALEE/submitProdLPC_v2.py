@@ -45,7 +45,7 @@ for thickness in thickness_:
 
     os.system('xrdfs root://cmseos.fnal.gov mkdir %s'%outDir)
     os.system('xrdfs root://cmseos.fnal.gov rm  /%s/PFCalEE' % outDir)
-    os.system('xrdfs root://cmseos.fnal.gov rm  /%s/g4env4lpc.sh' % outDir)
+    os.system('xrdfs root://cmseos.fnal.gov rm  /%s/g4env4lpc.csh' % outDir)
     os.system('xrdfs root://cmseos.fnal.gov rm  /%s/libPFCalEE.so' % outDir)
     os.system('xrdfs root://cmseos.fnal.gov rm  /%s/libPFCalEEuserlib.so' % outDir)
 
@@ -106,10 +106,8 @@ for thickness in thickness_:
     if opt.nosubmit : os.system('LSB_JOB_REPORT_MAIL=N echo bsub -q %s -N %s/runJob.sh'%(myqueue,outDir))
     else:
         #os.system("LSB_JOB_REPORT_MAIL=N bsub -q %s -N \'%s/runJob.sh\'"%(myqueue,outDir))
-        print 'Changing dir to %s' % (outDir)
-        os.chdir("%s" % (outDir));
         name = "submitRun%s" % (opt.run)
-        f2n = "submit.jdl";
+        f2n = "%s/submit.jdl" % (outDir);
         outtag = "out_%s_$(Cluster)" % (name)
         f2=open(f2n, 'w')
         f2.write("universe = vanilla \n");
@@ -130,5 +128,6 @@ for thickness in thickness_:
         f2.write("x509userproxy = $ENV(X509_USER_PROXY) \n")
         f2.write("Queue 1 \n");
         f2.close();
-
+        print 'Changing dir to %s' % (outDir)
+        os.chdir("%s" % (outDir));
         os.system("condor_submit submit.jdl");# % (submit.jdl));
