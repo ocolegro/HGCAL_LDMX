@@ -117,9 +117,9 @@ for thickness in thickness_:
         f2.write("request_memory = 500\n");
         f2.write("Should_Transfer_Files = YES \n");
         if (opt.pass_ == 0):
-            f2.write("Transfer_Input_Files = g4env4lpc.sh,libPFCalEE.so,libPFCalEEuserlib.so,PFCalEE,g4steer.mac \n" );
+            f2.write("Transfer_Input_Files = g4env4lpc.csh,libPFCalEE.so,libPFCalEEuserlib.so,PFCalEE,g4steer.mac \n" );
         else:
-            f2.write("Transfer_Input_Files = g4env4lpc.sh,libPFCalEE.so,libPFCalEEuserlib.so,PFCalEE,g4steer.mac,HGcal_%s.root \n" %(outTag) );
+            f2.write("Transfer_Input_Files = g4env4lpc.csh,libPFCalEE.so,libPFCalEEuserlib.so,PFCalEE,g4steer.mac,HGcal_%s.root \n" %(outTag) );
         f2.write("WhenToTransferOutput  = ON_EXIT_OR_EVICT \n");
         f2.write("Output = "+outtag+".stdout \n");
         f2.write("Error = "+outtag+".stderr \n");
