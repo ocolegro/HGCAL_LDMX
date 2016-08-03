@@ -52,7 +52,7 @@ for thickness in thickness_:
 
 
     os.system('xrdcp ~/geant4_workdir/bin/Linux-g++/PFCalEE root://cmseos.fnal.gov/%s/' % outDir)
-    os.system('xrdcp root://cmseos.fnal.gov/g4env4lpc.sh %s/' % outDir)
+    os.system('xrdcp g4env4lpc.sh root://cmseos.fnal.gov/%s/' % outDir)
     os.system('xrdcp ~/geant4_workdir/tmp/Linux-g++/PFCalEE/libPFCalEE.so root://cmseos.fnal.gov/%s/' % outDir)
     os.system('xrdcp userlib/lib/libPFCalEEuserlib.so root://cmseos.fnal.gov/%s/' % outDir)
 
