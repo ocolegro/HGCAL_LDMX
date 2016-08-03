@@ -44,10 +44,8 @@ for thickness in thickness_:
     if opt.fast>0 : outDir='%s/fast_%3.3f/'%(outDir,opt.fast)
     if (opt.run>=0) : outDir='%s/run_%d/'%(outDir,opt.run)
 
-    os.system('eosmkdir -p %s'%outDir)
-    os.system('eosrm root://cmseos.fnal.gov/%s/' % (outDir))
-
-    os.system('xrdcp bin/%s root://cmseos.fnal.gov/%s/' % (opt.macro,outDir))
+    os.system('mkdir -p %s'%outDir)
+    os.system('cp bin/%s %s/' % (opt.macro,outDir))
 
     #wrapper
     scriptFile = open('%s/runJob.sh'%(outDir), 'w')
@@ -58,9 +56,9 @@ for thickness in thickness_:
     if (opt.fast>0) : outTag = '%s_second' % (outTag)
 
 
-    scriptFile.write('./%s root://cmseos.fnal.gov/%s/HGcal_%s.root  \n'%(opt.macro,outDir,outTag))
+    scriptFile.write('./%s root://cmseos.fnal.gov/%s/HGcal_%s_second.root  \n'%(opt.macro,outDir,outTag))
 
-#scriptFile.write('xrdcp -f analyzed_tuple.root root://cmseos.fnal.gov/%s/analyzed_%s.root\n'%(outDir,outTag))
+    #scriptFile.write('xrdcp -f analyzed_tuple.root root://cmseos.fnal.gov/%s/analyzed_%s.root\n'%(outDir,outTag))
 
     scriptFile.write('localdir=`pwd`\n')
     scriptFile.write('echo "--Local directory is " $localdir >> g4.log\n')

@@ -48,7 +48,7 @@ for thickness in thickness_:
     os.system('xrdfs root://cmseos.fnal.gov rm  /%s/g4env4lpc.csh' % outDir)
     os.system('xrdfs root://cmseos.fnal.gov rm  /%s/libPFCalEE.so' % outDir)
     os.system('xrdfs root://cmseos.fnal.gov rm  /%s/libPFCalEEuserlib.so' % outDir)
-    
+
     os.system('mkdir -p %s'%outDir)
     os.system('cp ~/geant4_workdir/bin/Linux-g++/PFCalEE %s/' % outDir)
     os.system('cp g4env4lpc.sh %s/' % outDir)
