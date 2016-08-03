@@ -43,7 +43,7 @@ for thickness in thickness_:
     if opt.fast>0 : outDir='%s/fast_%3.3f/'%(outDir,opt.fast)
     if (opt.run>=0) : outDir='%s/run_%d/'%(outDir,opt.run)
 
-    os.system('echo \'eosmkdir -p %s\''%outDir)
+    os.system('eosmkdir -p %s'%outDir)
 
     os.system('eosrm /%s/PFCalEE' % outDir)
     os.system('eosrm /%s/g4env4lpc.sh' % outDir)
@@ -59,7 +59,7 @@ for thickness in thickness_:
 
     #wrapper
     scriptFile = open('%s/runJob.sh'%(outDir), 'w')
-    scriptFile.write('#!/bin/bash\n')
+    scriptFile.write('#!/bin/csh\n')
     scriptFile.write('source g4env4lpc.sh\n')#%(os.getcwd()))
     outTag='%s_version%d_model%d_thick%s'%(label,opt.version,opt.model,thickness)
     if (opt.run>=0) : outTag='%s_run%d'%(outTag,opt.run)
