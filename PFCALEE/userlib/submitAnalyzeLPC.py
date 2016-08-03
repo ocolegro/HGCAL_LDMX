@@ -58,7 +58,7 @@ for thickness in thickness_:
 
     scriptFile.write('./%s root://cmseos.fnal.gov/%s/HGcal_%s.root  \n'%(opt.macro,outDir,outTag))
 
-    scriptFile.write('xrdcp -f analyzed_tuple.root root://cmseos.fnal.gov/%s/analyzed_%s.root\n'%(outDir,outTag))
+#scriptFile.write('xrdcp -f analyzed_tuple.root root://cmseos.fnal.gov/%s/analyzed_%s.root\n'%(outDir,outTag))
 
     scriptFile.write('localdir=`pwd`\n')
     scriptFile.write('echo "--Local directory is " $localdir >> g4.log\n')
