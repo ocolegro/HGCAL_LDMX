@@ -87,6 +87,8 @@ for thickness in thickness_:
     #submit
     os.system('echo %s ' %('chmod 777 %s/runJob.sh'%outDir))
     os.system('chmod 777 %s/runJob.sh'%outDir)
+    os.system('chmod 777 %s/%s'%opt.macro)
+
     if opt.nosubmit   :
         os.chdir("%s" % (outDir));
         os.system('echo %s'%(outDir))
