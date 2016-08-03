@@ -44,7 +44,7 @@ for thickness in thickness_:
     if opt.fast>0 : outDir='%s/fast_%3.3f/'%(outDir,opt.fast)
     if (opt.run>=0) : outDir='%s/run_%d/'%(outDir,opt.run)
 
-    os.system('eos mkdir -p %s'%outDir)
+    os.system('eosmkdir -p %s'%outDir)
     os.system('xrdcp bin/%s root://cmseos.fnal.gov/%s/' % (opt.macro,outDir))
 
     #wrapper
