@@ -49,25 +49,23 @@ for thickness in thickness_:
     os.system('xrdfs root://cmseos.fnal.gov rm  /%s/libPFCalEE.so' % outDir)
     os.system('xrdfs root://cmseos.fnal.gov rm  /%s/libPFCalEEuserlib.so' % outDir)
 
-
     os.system('xrdcp ~/geant4_workdir/bin/Linux-g++/PFCalEE root://cmseos.fnal.gov/%s/' % outDir)
-    os.system('xrdcp g4env4lpc.csh root://cmseos.fnal.gov/%s/' % outDir)
+    os.system('xrdcp g4env4lpc.sh root://cmseos.fnal.gov/%s/' % outDir)
     os.system('xrdcp ~/geant4_workdir/tmp/Linux-g++/PFCalEE/libPFCalEE.so root://cmseos.fnal.gov/%s/' % outDir)
     os.system('xrdcp userlib/lib/libPFCalEEuserlib.so root://cmseos.fnal.gov/%s/' % outDir)
 
 
     #wrapper
     scriptFile = open('%s/runJob.sh'%(outDir), 'w')
-    scriptFile.write('#!/bin/csh\n')
-    scriptFile.write('source g4env4lpc.csh\n')#%(os.getcwd()))
+    scriptFile.write('#!/bin/bash\n')
+    scriptFile.write('source g4env4lpc.sh\n')#%(os.getcwd()))
     outTag='%s_version%d_model%d_thick%s'%(label,opt.version,opt.model,thickness)
     if (opt.run>=0) : outTag='%s_run%d'%(outTag,opt.run)
 
     if (opt.pass_ == 0):
         scriptFile.write('./PFCalEE g4steer.mac %d %d %f %s | tee g4.log\n'%(opt.version,opt.model,opt.fast,thickness))
     else:
-        #scriptFile.write('./PFCalEE g4steer.mac %d %d %f %s root://cmseos.fnal.gov/%s/HGcal_%s.root | tee g4.log\n'%(opt.version,opt.model,opt.fast,thickness,outDir,outTag))
-        scriptFile.write('./PFCalEE g4steer.mac %d %d %f %s HGcal_%s.root | tee g4.log\n'%(opt.version,opt.model,opt.fast,thickness,outTag))
+        scriptFile.write('./PFCalEE g4steer.mac %d %d %f %s root://cmseos.fnal.gov/%s/HGcal_%s.root | tee g4.log\n'%(opt.version,opt.model,opt.fast,thickness,outDir,outTag))
 
     if (opt.pass_ == 0):
         scriptFile.write('xrdcp -f PFcal.root root://cmseos.fnal.gov/%s/HGcal_%s.root\n'%(outDir,outTag))
@@ -99,10 +97,8 @@ for thickness in thickness_:
     g4Macro.close()
 
     #submit
-    #os.system('echo %s ' %('chmod 777 %s/runJob.sh'%outDir))
+    os.system('echo %s ' %('chmod 777 %s/runJob.sh'%outDir))
     os.system('chmod 777 %s/runJob.sh'%outDir)
-    os.system('chmod 777 %s/PFCalEE'%outDir)
-
     if opt.nosubmit : os.system('LSB_JOB_REPORT_MAIL=N echo bsub -q %s -N %s/runJob.sh'%(myqueue,outDir))
     else:
         #os.system("LSB_JOB_REPORT_MAIL=N bsub -q %s -N \'%s/runJob.sh\'"%(myqueue,outDir))
@@ -117,9 +113,9 @@ for thickness in thickness_:
         f2.write("request_memory = 500\n");
         f2.write("Should_Transfer_Files = YES \n");
         if (opt.pass_ == 0):
-            f2.write("Transfer_Input_Files = g4env4lpc.csh,libPFCalEE.so,libPFCalEEuserlib.so,PFCalEE,g4steer.mac \n" );
+            f2.write("Transfer_Input_Files = g4env4lpc.sh,libPFCalEE.so,libPFCalEEuserlib.so,PFCalEE,g4steer.mac \n" );
         else:
-            f2.write("Transfer_Input_Files = g4env4lpc.csh,libPFCalEE.so,libPFCalEEuserlib.so,PFCalEE,g4steer.mac,HGcal_%s.root \n" %(outTag) );
+            f2.write("Transfer_Input_Files = g4env4lpc.sh,libPFCalEE.so,libPFCalEEuserlib.so,PFCalEE,g4steer.mac,HGcal_%s.root \n" %(outTag) );
         f2.write("WhenToTransferOutput  = ON_EXIT_OR_EVICT \n");
         f2.write("Output = "+outtag+".stdout \n");
         f2.write("Error = "+outtag+".stderr \n");
