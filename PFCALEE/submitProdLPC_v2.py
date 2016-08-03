@@ -44,7 +44,6 @@ for thickness in thickness_:
     if (opt.run>=0) : outDir='%s/run_%d/'%(outDir,opt.run)
 
     os.system('xrdfs root://cmseos.fnal.gov mkdir %s'%outDir)
-
     os.system('xrdfs root://cmseos.fnal.gov rm  /%s/PFCalEE' % outDir)
     os.system('xrdfs root://cmseos.fnal.gov rm  /%s/g4env4lpc.sh' % outDir)
     os.system('xrdfs root://cmseos.fnal.gov rm  /%s/libPFCalEE.so' % outDir)
@@ -52,7 +51,7 @@ for thickness in thickness_:
 
 
     os.system('xrdcp ~/geant4_workdir/bin/Linux-g++/PFCalEE root://cmseos.fnal.gov/%s/' % outDir)
-    os.system('xrdcp g4env4lpc.sh root://cmseos.fnal.gov/%s/' % outDir)
+    os.system('xrdcp g4env4lpc.csh root://cmseos.fnal.gov/%s/' % outDir)
     os.system('xrdcp ~/geant4_workdir/tmp/Linux-g++/PFCalEE/libPFCalEE.so root://cmseos.fnal.gov/%s/' % outDir)
     os.system('xrdcp userlib/lib/libPFCalEEuserlib.so root://cmseos.fnal.gov/%s/' % outDir)
 
