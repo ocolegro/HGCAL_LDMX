@@ -43,7 +43,7 @@ for thickness in thickness_:
     if opt.fast>0 : outDir='%s/fast_%3.3f/'%(outDir,opt.fast)
     if (opt.run>=0) : outDir='%s/run_%d/'%(outDir,opt.run)
 
-    os.system('mkdir -p %s'%outDir)
+    os.system('eosmkdir -p %s'%outDir)
     os.system('xrdcp ~/geant4_workdir/bin/Linux-g++/PFCalEE root://cmseos.fnal.gov/%s/' % outDir)
     os.system('xrdcp root://cmseos.fnal.gov/g4env4lpc.sh %s/' % outDir)
     os.system('xrdcp ~/geant4_workdir/tmp/Linux-g++/PFCalEE/libPFCalEE.so root://cmseos.fnal.gov/%s/' % outDir)
@@ -60,7 +60,7 @@ for thickness in thickness_:
     if (opt.pass_ == 0):
         scriptFile.write('./PFCalEE g4steer.mac %d %d %f %s | tee g4.log\n'%(opt.version,opt.model,opt.fast,thickness))
     else:
-        scriptFile.write('./PFCalEE g4steer.mac %d %d %f %s HGcal_%s.root | tee g4.log\n'%(opt.version,opt.model,opt.fast,thickness,outTag))
+        scriptFile.write('./PFCalEE g4steer.mac %d %d %f %s root://cmseos.fnal.gov/%s/HGcal_%s.root | tee g4.log\n'%(outDir,opt.version,opt.model,opt.fast,thickness,outTag))
 
     if (opt.pass_ == 0):
         scriptFile.write('xrdcp -f PFcal.root root://cmseos.fnal.gov/%s/HGcal_%s.root\n'%(outDir,outTag))
