@@ -46,13 +46,15 @@ int main(int argc, char** argv) {
 	std::vector<HGCSSSimHit> * hitVec_ = 0;
 	tree->SetBranchAddress("HGCSSSimHitVec", &hitVec_);
 
+	std::vector<HGCSSGenParticle> * genVec = 0;
+	tree->SetBranchAddress("HGCSSGenAction", &genVec);
 
 	TFile hfile("analyzed_tuple.root", "RECREATE");
 	TTree t1("sampling", "Hadronic Study");
 
 
 	unsigned nHits = 0,cellID[500000],cellLayer[500000];
-	Float_t cellEnergy[500000],cellParentID[500000],cellParentKE[500000],cellParentTrack[500000];
+	Float_t cellEnergy[500000],cellParentID[500000],cellParentKE[500000],cellParentTrack[500000],initEng;
 	t1.Branch("nHits", &nHits, "nHits/I");
 	t1.Branch("cellID", &cellID, "cellID[nHits]/I");
 	t1.Branch("cellLayer", &cellLayer, "cellLayer[nHits]/I");
@@ -61,6 +63,7 @@ int main(int argc, char** argv) {
 	t1.Branch("cellParentID", &cellParentID, "cellParentID[nHits]/F");
 	t1.Branch("cellParentKE", &cellParentKE, "cellParentKE[nHits]/F");
 	t1.Branch("cellParentTrack", &cellParentTrack, "cellParentTrack[nHits]/F");
+	t1.Branch("initEng", &initEng, "initEng/F");
 
 	unsigned nEvts = tree->GetEntries();
 	for (unsigned ievt(0); ievt < nEvts; ++ievt) { //loop on entries
@@ -77,7 +80,7 @@ int main(int argc, char** argv) {
 			cellParentTrack[j]	= hit.trackIDMainParent_;
 
 		}
-
+		initEng = genVec->at(0).vertexKE();
 		t1.Fill();
 	}
 	t1.Write();
