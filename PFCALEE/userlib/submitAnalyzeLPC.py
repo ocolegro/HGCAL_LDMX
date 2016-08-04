@@ -92,7 +92,7 @@ for thickness in thickness_:
     #os.system('echo %s ' %('chmod 777 %s/runJob.sh'%outDir))
     os.system('xrdfs root://cmseos.fnal.gov rm  %s/runJob.sh'%outDir)
     os.system('xrdcp runJob.sh root://cmseos.fnal.gov/bin/%s' % (outDir))
-    os.system('echo "runJob.sh root://cmseos.fnal.gov/bin/%s"' % (opt.macro,outDir))
+    os.system('echo "xrdcp runJob.sh root://cmseos.fnal.gov/bin/%s"' % (outDir))
 
     os.system('chmod 777 %s/runJob.sh'%outDir)
     os.system('chmod 777 %s/%s'%(outDir,opt.macro))
