@@ -45,7 +45,8 @@ for thickness in thickness_:
     if (opt.run>=0) : outDir='%s/run_%d/'%(outDir,opt.run)
 
     os.system('mkdir -p %s'%outDir)
-    os.system('cp bin/%s %s/' % (opt.macro,outDir))
+    os.system('xrdfs root://cmseos.fnal.gov rm  bin/%s %s/' % (opt.macro,outDir))
+    os.system('xrdfs root://cmseos.fnal.gov cp bin/%s %s/' % (opt.macro,outDir))
 
     #wrapper
     scriptFile = open('%s/runJob.sh'%(outDir), 'w')
