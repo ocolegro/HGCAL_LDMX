@@ -49,7 +49,8 @@ for thickness in thickness_:
     os.system('xrdfs root://cmseos.fnal.gov cp bin/%s %s/' % (opt.macro,outDir))
 
     #wrapper
-    scriptFile = open('%s/runJob.sh'%(outDir), 'w')
+    #scriptFile = open('%s/runJob.sh'%(outDir), 'w')
+    scriptFile = open('runJob.sh', 'w')
     scriptFile.write('#!/bin/bash\n')
     scriptFile.write('source g4env4lpc.sh\n')#%(os.getcwd()))
     outTag='%s_version%d_model%d_thick%s'%(label,opt.version,opt.model,thickness)
@@ -86,7 +87,9 @@ for thickness in thickness_:
     g4Macro.close()
 
     #submit
-    os.system('echo %s ' %('chmod 777 %s/runJob.sh'%outDir))
+    #os.system('echo %s ' %('chmod 777 %s/runJob.sh'%outDir))
+    os.system('xrdfs root://cmseos.fnal.gov rm  %s/runJob.sh'%outDir)
+    os.system('xrdfs root://cmseos.fnal.gov cp %s/runJob.sh'%outDir)
     os.system('chmod 777 %s/runJob.sh'%outDir)
     os.system('chmod 777 %s/%s'%(outDir,opt.macro))
 
