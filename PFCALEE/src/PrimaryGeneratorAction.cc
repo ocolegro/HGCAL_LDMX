@@ -129,24 +129,16 @@ PrimaryGeneratorAction::~PrimaryGeneratorAction() {
 void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent) {
 	G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
 	G4String particleName;
-	G4ParticleDefinition* particle = particleTable->FindParticle(11);
+	G4ParticleDefinition* particle = particleTable->FindParticle(22);
 	particleGun->SetParticleDefinition(particle);
-	G4double et = 2950;//2.95;
-	//double engs[11] = {100,150,200,250,300,350,400,450,500,1000,2000};
-	//unsigned iSecret = rand() % 11 ;
-	//G4double et = engs[iSecret];
+	G4double et = 2950;
+
 
 	particleGun->SetParticleEnergy(et * MeV);
 	particleGun->SetParticleMomentumDirection(G4ThreeVector(0., 0., 1.));
 
-	//G4double phi = (rand() % 314)/200.;
-	//G4double y0 = G4RandFlat::shoot(-10.,10);
-	//G4double x0 = G4RandFlat::shoot(-10.,10);
-	//unsigned radId = (rand() % 5);
-	//double rads[5] = {0.,5.,10.,15.,20.};
-
-	G4double x0 = 0.0;//rads[radId]*cos(phi);
-	G4double y0 = 0.0;//rads[radId]*sin(phi);
+	G4double x0 = 0.0;
+	G4double y0 = 0.0;
 	G4double z0 = -0.5 * (Detector->GetWorldSizeZ());
 
 	particleGun->SetParticlePosition(G4ThreeVector(x0, y0, z0));
