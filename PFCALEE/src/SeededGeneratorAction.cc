@@ -138,7 +138,7 @@ void SeededGeneratorAction::GeneratePrimaries(G4Event* anEvent) {
 
 	if (inc_->size() >  0){
 		eventAction_->SetWait(true);
-		et = 295;
+		et = 2950;
 	}
 	else{
 		eventAction_->SetWait(false);
