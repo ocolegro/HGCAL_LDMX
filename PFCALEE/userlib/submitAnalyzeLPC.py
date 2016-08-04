@@ -46,7 +46,7 @@ for thickness in thickness_:
 
     os.system('mkdir -p %s'%outDir)
     os.system('xrdfs root://cmseos.fnal.gov rm  bin/%s %s/' % (opt.macro,outDir))
-    os.system('xrdfs root://cmseos.fnal.gov cp bin/%s %s/' % (opt.macro,outDir))
+    os.system('xrdfs root://cmseos.fnal.gov cp %s bin/%s /' % (opt.macro,outDir))
 
     #wrapper
     #scriptFile = open('%s/runJob.sh'%(outDir), 'w')
@@ -89,7 +89,7 @@ for thickness in thickness_:
     #submit
     #os.system('echo %s ' %('chmod 777 %s/runJob.sh'%outDir))
     os.system('xrdfs root://cmseos.fnal.gov rm  %s/runJob.sh'%outDir)
-    os.system('xrdfs root://cmseos.fnal.gov cp %s/runJob.sh'%outDir)
+    os.system('xrdfs root://cmseos.fnal.gov cp runJob.sh %s/runJob.sh'%outDir)
     os.system('chmod 777 %s/runJob.sh'%outDir)
     os.system('chmod 777 %s/%s'%(outDir,opt.macro))
 
