@@ -100,11 +100,14 @@ int main(int argc, char** argv) {
 	unsigned nx = ncellwide + 4;
 	double xstart = -((double) ncellwide) * side ;
 	double ystart = -((double) ncellwide) * side * sqrt(3) / 2.0;
+	freopen("log.txt", "w", stdout);
+
+	std::cout << "Generating Map " << std::endl;
 	myHoneycomb(hcomb, xstart, ystart, side, ny, nx);
 
+	std::cout << " Map Generated " << std::endl;
 	TFile *infile = TFile::Open(argv[1]);
 	TTree *tree = (TTree*) infile->Get("HGCSSTree");
-	freopen("log.txt", "w", stdout);
 
 	HGCSSEvent* evt_ = 0;
 	tree->SetBranchAddress("HGCSSEvent", &evt_);
