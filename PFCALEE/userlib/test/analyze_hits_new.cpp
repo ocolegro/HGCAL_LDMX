@@ -163,7 +163,7 @@ int main(int argc, char** argv) {
 			nProtons 			= hit.nProtons_;
 			nMuons				= hit.nMuons_;
 			cellRellIso[j] = 0;
-			if (cellEnergy[j] > .075){
+			/*if (cellEnergy[j] > .075){
 				double outerDep = 0;
 				for (unsigned k = 0; k < hitVec_->size(); k++) {
 					HGCSSSimHit& nbr = (*hitVec_)[k];
@@ -186,10 +186,9 @@ int main(int argc, char** argv) {
 				}
 				if (outerDep > 0)
 					cellRellIso[j] = cellEnergy[j]/(cellEnergy[j]+outerDep);
-			}
+			}*/
 
 		}
-		initEng = genVec->at(0).vertexKE();
 		t1.Fill();
 	}
 	t1.Write();
