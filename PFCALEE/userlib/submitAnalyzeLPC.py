@@ -108,7 +108,7 @@ for thickness in thickness_:
         f2.write("request_disk = 100000\n");
         f2.write("request_memory = 10\n");
         f2.write("Should_Transfer_Files = YES \n");
-        f2.write("Transfer_Input_Files = %s,g4env4lpc.sh \n" % (opt.macro) );
+        f2.write("Transfer_Input_Files = %s,g4env4lpc.sh,libPFCalEE.so,libPFCalEEuserlib.so \n" % (opt.macro) );
         f2.write("WhenToTransferOutput  = ON_EXIT_OR_EVICT \n");
         f2.write("Output = "+outtag+".stdout \n");
         f2.write("Error = "+outtag+".stderr \n");
