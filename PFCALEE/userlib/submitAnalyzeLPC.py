@@ -76,17 +76,7 @@ for thickness in thickness_:
     scriptFile.write('echo "All done"\n')
     scriptFile.close()
     print 'submitting to the cluster'
-#write geant 4 macro
-    g4Macro = open('%s/g4steer.mac'%(outDir), 'w')
-    g4Macro.write('/control/verbose 0\n')
-    g4Macro.write('/control/saveHistory\n')
-    g4Macro.write('/run/verbose 0\n')
-    g4Macro.write('/event/verbose 0\n')
-    g4Macro.write('/tracking/verbose 0\n')
-    g4Macro.write('/N03/det/setModel %d\n'%opt.model)
-    g4Macro.write('/random/setSeeds %d %d\n'%( random.uniform(0,100000), random.uniform(0,100000) ) )
-    g4Macro.write('/run/beamOn %d\n'%(nevents))
-    g4Macro.close()
+
 
     #submit
     #os.system('echo %s ' %('chmod 777 %s/runJob.sh'%outDir))
@@ -115,7 +105,7 @@ for thickness in thickness_:
         f2.write("request_disk = 100000\n");
         f2.write("request_memory = 10\n");
         f2.write("Should_Transfer_Files = YES \n");
-        f2.write("Transfer_Input_Files = %s,HGcal_%s.root,g4env4lpc.sh,libPFCalEE.so,libPFCalEEuserlib.so,PFCalEE,g4steer.mac \n" % (opt.macro,outTag) );
+        f2.write("Transfer_Input_Files = %s,HGcal_%s.root,g4env4lpc.sh,libPFCalEE.so,libPFCalEEuserlib.so,PFCalEE \n" % (opt.macro,outTag) );
         f2.write("WhenToTransferOutput  = ON_EXIT_OR_EVICT \n");
         f2.write("Output = "+outtag+".stdout \n");
         f2.write("Error = "+outtag+".stderr \n");
