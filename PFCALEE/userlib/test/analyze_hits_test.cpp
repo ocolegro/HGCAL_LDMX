@@ -34,7 +34,71 @@
 #pragma link C++ class vector<float>+;
 #endif
 
+void myHoneycomb(TH2Poly* map, Double_t xstart,
+		Double_t ystart, Double_t a,  // side length
+		Int_t k,     // # hexagons in a column
+		Int_t s)     // # columns
+		{
+	// Add the bins
+	Double_t numberOfHexagonsInAColumn;
+	Double_t x[6], y[6];
+	Double_t xloop, yloop, ytemp;
+	xloop = xstart;
+	yloop = ystart + a * TMath::Sqrt(3) / 2.0;
+	for (int sCounter = 0; sCounter < s; sCounter++) {
+
+		ytemp = yloop; // Resets the temp variable
+
+		// Determine the number of hexagons in that column
+		if (sCounter % 2 == 0) {
+			numberOfHexagonsInAColumn = k;
+		} else {
+			numberOfHexagonsInAColumn = k - 1;
+		}
+
+		for (int kCounter = 0; kCounter < numberOfHexagonsInAColumn;
+				kCounter++) {
+
+			// Go around the hexagon
+			x[0] = xloop;
+			y[0] = ytemp;
+			x[1] = x[0] + a / 2.0;
+			y[1] = y[0] + a * TMath::Sqrt(3) / 2.0;
+			x[2] = x[1] + a;
+			y[2] = y[1];
+			x[3] = x[2] + a / 2.0;
+			y[3] = y[1] - a * TMath::Sqrt(3) / 2.0;
+			;
+			x[4] = x[2];
+			y[4] = y[3] - a * TMath::Sqrt(3) / 2.0;
+			;
+			x[5] = x[1];
+			y[5] = y[4];
+
+			map->AddBin(6, x, y);
+
+			// Go up
+			ytemp += a * TMath::Sqrt(3);
+		}
+
+		// Increment the starting position
+		if (sCounter % 2 == 0)
+			yloop += a * TMath::Sqrt(3) / 2.0;
+		else
+			yloop -= a * TMath::Sqrt(3) / 2.0;
+		xloop += 1.5 * a;
+	}
+}
+
 int main(int argc, char** argv) {
+	TH2Poly *hcomb = new TH2Poly();
+	double width = 622.5;
+	double side = 4.5936;
+	unsigned ncellwide = width / (2. * side);
+	unsigned ny = ncellwide + 1;
+	unsigned nx = ncellwide + 4;
+	double xstart = -((double) ncellwide) * side ;
+	double ystart = -((double) ncellwide) * side * sqrt(3) / 2.0;
 
 	TFile *infile = TFile::Open(argv[1]);
 	TTree *tree = (TTree*) infile->Get("HGCSSTree");
@@ -54,7 +118,7 @@ int main(int argc, char** argv) {
 
 
 	unsigned nHits = 0,cellID[500000],cellLayer[500000];
-	Float_t cellEnergy[500000],cellParentID[500000],cellParentKE[500000],cellParentTrack[500000];
+	Float_t cellEnergy[500000],cellParentID[500000],cellParentKE[500000],cellParentTrack[500000],engDep;
 	unsigned initEng,nHadrons,nGammas,nElectrons,nProtons,nMuons;
 	t1.Branch("nHits", &nHits, "nHits/I");
 	t1.Branch("cellID", &cellID, "cellID[nHits]/I");
@@ -65,6 +129,7 @@ int main(int argc, char** argv) {
 	t1.Branch("cellParentTrack", &cellParentTrack, "cellParentTrack[nHits]/F");
 
 	t1.Branch("initEng", &initEng, "initEng/I");
+	t1.Branch("engDep", &engDep, "engDep/F");
 	t1.Branch("nHadrons", &nHadrons, "nHadrons/I");
 	t1.Branch("nGammas", &nGammas, "nGammas/I");
 	t1.Branch("nElectrons", &nElectrons, "nElectrons/I");
