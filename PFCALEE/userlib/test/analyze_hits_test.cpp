@@ -118,7 +118,7 @@ int main(int argc, char** argv) {
 
 
 	unsigned nHits = 0,cellID[500000],cellLayer[500000];
-	Float_t cellEnergy[500000],cellParentID[500000],cellParentKE[500000],cellParentTrack[500000],engDep;
+	Float_t cellEnergy[500000],cellParentID[500000],cellParentKE[500000],cellParentTrack[500000],cellRellIso[500000],engDep;
 	unsigned initEng,nHadrons,nGammas,nElectrons,nProtons,nMuons;
 	t1.Branch("nHits", &nHits, "nHits/I");
 	t1.Branch("cellID", &cellID, "cellID[nHits]/I");
@@ -127,6 +127,7 @@ int main(int argc, char** argv) {
 	t1.Branch("cellParentID", &cellParentID, "cellParentID[nHits]/F");
 	t1.Branch("cellParentKE", &cellParentKE, "cellParentKE[nHits]/F");
 	t1.Branch("cellParentTrack", &cellParentTrack, "cellParentTrack[nHits]/F");
+	//t1.Branch("cellRellIso", &cellRellIso, "cellRellIso[nHits]/F");
 
 	t1.Branch("initEng", &initEng, "initEng/I");
 	t1.Branch("engDep", &engDep, "engDep/F");
@@ -135,7 +136,8 @@ int main(int argc, char** argv) {
 	t1.Branch("nElectrons", &nElectrons, "nElectrons/I");
 	t1.Branch("nProtons", &nProtons, "nProtons/I");
 	t1.Branch("nMuons", &nMuons, "nMuons/I");
-
+	TH2PolyBin *centerCell = 0;
+	TH2PolyBin *neighborCell = 0;
 	unsigned nEvts = tree->GetEntries();
 	for (unsigned ievt(0); ievt < nEvts; ++ievt) { //loop on entries
 		tree->GetEntry(ievt);
@@ -158,7 +160,30 @@ int main(int argc, char** argv) {
 			nElectrons 			= hit.nElectrons_;
 			nProtons 			= hit.nProtons_;
 			nMuons				= hit.nMuons_;
+			/*if (cellEnergy[j] > .075){
+				double outerDep = 0;
+				for (unsigned k = 0; k < hitVec_->size(); k++) {
+					HGCSSSimHit& nbr = (*hitVec_)[k];
+					if (nbr.layer_ != cellLayer[j]) continue;
+					if (nbr.cellid_ != cellID[j] +1 || nbr.cellid_ != cellID[j] - 1 ||
+							nbr.cellid_ != cellID[j] +  67|| nbr.cellid_ != cellID[j] -67 ||
+							nbr.cellid_ != cellID[j] +  68|| nbr.cellid_ != cellID[j]) continue;
+					centerCell = (TH2PolyBin*) hcomb->GetBins()->At(cellID[j]-1);
+					neighborCell = (TH2PolyBin*) hcomb->GetBins()->At(nbr.cellid_ - 1);
+					if (centerCell != nullptr and neighborCell != nullptr){
+						double x_1 = (centerCell->GetXMax() + centerCell->GetXMin()) / 2.;
+						double x_2 = (neighborCell->GetXMax() + neighborCell->GetXMin()) / 2.;
 
+						double y_1 = (centerCell->GetYMax() + centerCell->GetYMin()) / 2.;
+						double y_2 = (neighborCell->GetYMax() + neighborCell->GetYMin()) / 2.;
+
+						if (pow( pow((x_1 - x_2),2) +pow((y_1 - y_2),2),.5) < 8)
+							outerDep += neighborCell->GetContent();
+					}
+				}
+				if (outerDep > 0)
+					cellRellIso[j] = cellEnergy[j]/(cellEnergy[j]+outerDep);
+			}*/
 		}
 		t1.Fill();
 	}
