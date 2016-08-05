@@ -146,7 +146,7 @@ int main(int argc, char** argv) {
 		initEng =  genVec->at(0).vertexKE();
 		if (initEng < 10) continue;
 		engDep = evt_->wgtDep();
-		if (engDep < 15.) {
+		if (engDep > 15.) {
 			t1.Fill();
 			continue;
 		}
