@@ -168,7 +168,7 @@ int main(int argc, char** argv) {
 					if (nbr.cellid_ != cellID[j] +1 || nbr.cellid_ != cellID[j] - 1 ||
 							nbr.cellid_ != cellID[j] +  67|| nbr.cellid_ != cellID[j] -67 ||
 							nbr.cellid_ != cellID[j] +  68|| nbr.cellid_ != cellID[j]) continue;
-					TH2PolyBin* centerCell = (TH2PolyBin*) hcomb->GetBins()->At(cellID[j]-1);
+					/*TH2PolyBin* centerCell = (TH2PolyBin*) hcomb->GetBins()->At(cellID[j]-1);
 					TH2PolyBin* neighborCell = (TH2PolyBin*) hcomb->GetBins()->At(nbr.cellid_ - 1);
 					if (centerCell != nullptr and neighborCell != nullptr){
 						double x_1 = (centerCell->GetXMax() + centerCell->GetXMin()) / 2.;
@@ -179,7 +179,7 @@ int main(int argc, char** argv) {
 
 						if (pow( pow((x_1 - x_2),2) +pow((y_1 - y_2),2),.5) < 8)
 							outerDep += neighborCell->GetContent();
-					}
+					}*/
 				}
 				if (outerDep > 0)
 					cellRellIso[j] = cellEnergy[j]/(cellEnergy[j]+outerDep);
