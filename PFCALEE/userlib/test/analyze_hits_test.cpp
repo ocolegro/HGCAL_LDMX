@@ -168,9 +168,12 @@ int main(int argc, char** argv) {
 					if (nbr.cellid_ != cellID[j] +1 && nbr.cellid_ != cellID[j] - 1 &&
 							nbr.cellid_ != cellID[j] +  67 && nbr.cellid_ != cellID[j] -67 &&
 							nbr.cellid_ != cellID[j] +  68 && nbr.cellid_ != cellID[j]) continue;
+					std::cout << "Getting the center bin " << std::endl;
 					centerCell = (TH2PolyBin*) hcomb->GetBins()->At(cellID[j]-1);
+					std::cout << "Getting the nbr bin " << std::endl;
 					neighborCell = (TH2PolyBin*) hcomb->GetBins()->At(nbr.cellid_ - 1);
 					if (centerCell != nullptr and neighborCell != nullptr){
+						std::cout << "Computing the radius and summing the energy" << std::endl;
 						double x_1 = (centerCell->GetXMax() + centerCell->GetXMin()) / 2.;
 						double x_2 = (neighborCell->GetXMax() + neighborCell->GetXMin()) / 2.;
 
