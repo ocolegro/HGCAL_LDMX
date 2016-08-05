@@ -165,9 +165,9 @@ int main(int argc, char** argv) {
 				for (unsigned k = 0; k < hitVec_->size(); k++) {
 					HGCSSSimHit& nbr = (*hitVec_)[k];
 					if (nbr.layer_ != cellLayer[j]) continue;
-					if (nbr.cellid_ != cellID[j] +1 || nbr.cellid_ != cellID[j] - 1 ||
-							nbr.cellid_ != cellID[j] +  67|| nbr.cellid_ != cellID[j] -67 ||
-							nbr.cellid_ != cellID[j] +  68|| nbr.cellid_ != cellID[j]) continue;
+					if (nbr.cellid_ != cellID[j] +1 && nbr.cellid_ != cellID[j] - 1 &&
+							nbr.cellid_ != cellID[j] +  67 && nbr.cellid_ != cellID[j] -67 &&
+							nbr.cellid_ != cellID[j] +  68 && nbr.cellid_ != cellID[j]) continue;
 					centerCell = (TH2PolyBin*) hcomb->GetBins()->At(cellID[j]-1);
 					neighborCell = (TH2PolyBin*) hcomb->GetBins()->At(nbr.cellid_ - 1);
 					if (centerCell != nullptr and neighborCell != nullptr){
