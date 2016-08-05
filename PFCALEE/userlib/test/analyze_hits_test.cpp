@@ -99,7 +99,7 @@ int main(int argc, char** argv) {
 	unsigned nx = ncellwide + 4;
 	double xstart = -((double) ncellwide) * side ;
 	double ystart = -((double) ncellwide) * side * sqrt(3) / 2.0;
-
+	myHoneycomb(hcomb, xstart, ystart, side, ny, nx);
 	TFile *infile = TFile::Open(argv[1]);
 	TTree *tree = (TTree*) infile->Get("HGCSSTree");
 	freopen("log.txt", "w", stdout);
@@ -142,11 +142,14 @@ int main(int argc, char** argv) {
 	for (unsigned ievt(0); ievt < nEvts; ++ievt) { //loop on entries
 		tree->GetEntry(ievt);
 		nHits = hitVec_->size();
-		std::cout << "The size of hitVec_ is " << nHits << std::endl;
+		//std::cout << "The size of hitVec_ is " << nHits << std::endl;
 		initEng =  genVec->at(0).vertexKE();
 		if (initEng < 10) continue;
 		engDep = evt_->wgtDep();
-		if (engDep < 15.) continue;
+		if (engDep < 15.) {
+			t1.Fill();
+			continue;
+		}
 		for (unsigned j = 0; j < hitVec_->size(); j++) {
 			HGCSSSimHit& hit = (*hitVec_)[j];
 			cellLayer[j] 		= hit.layer_;
@@ -166,8 +169,8 @@ int main(int argc, char** argv) {
 					HGCSSSimHit& nbr = (*hitVec_)[k];
 					if (nbr.layer_ != cellLayer[j]) continue;
 					if (nbr.cellid_ != cellID[j] +1 && nbr.cellid_ != cellID[j] - 1 &&
-							nbr.cellid_ != cellID[j] +  67 && nbr.cellid_ != cellID[j] -67 &&
-							nbr.cellid_ != cellID[j] +  68 && nbr.cellid_ != cellID[j]) continue;
+							nbr.cellid_ != cellID[j] +  67 && nbr.cellid_ != cellID[j] - 67 &&
+							nbr.cellid_ != cellID[j] +  68 && nbr.cellid_ != cellID[j] - 67) continue;
 					std::cout << "Getting the center bin " << std::endl;
 					centerCell = (TH2PolyBin*) hcomb->GetBins()->At(cellID[j]-1);
 					std::cout << "Getting the nbr bin " << std::endl;
