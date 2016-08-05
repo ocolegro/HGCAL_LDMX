@@ -59,11 +59,11 @@ int main(int argc, char** argv) {
 	t1.Branch("nHits", &nHits, "nHits/I");
 	t1.Branch("cellID", &cellID, "cellID[nHits]/I");
 	t1.Branch("cellLayer", &cellLayer, "cellLayer[nHits]/I");
-
 	t1.Branch("cellEnergy", &cellEnergy, "cellEnergy[nHits]/F");
 	t1.Branch("cellParentID", &cellParentID, "cellParentID[nHits]/F");
 	t1.Branch("cellParentKE", &cellParentKE, "cellParentKE[nHits]/F");
 	t1.Branch("cellParentTrack", &cellParentTrack, "cellParentTrack[nHits]/F");
+
 	t1.Branch("initEng", &initEng, "initEng/I");
 	t1.Branch("nHadrons", &nHadrons, "nHadrons/I");
 	t1.Branch("nGammas", &nGammas, "nGammas/I");
@@ -79,7 +79,7 @@ int main(int argc, char** argv) {
 		initEng =  genVec->at(0).vertexKE();
 		for (unsigned j = 0; j < hitVec_->size(); j++) {
 			HGCSSSimHit& hit = (*hitVec_)[j];
-			cellLayer[j] 			= hit.layer_;
+			cellLayer[j] 		= hit.layer_;
 			cellID[j]			= hit.cellid_;
 			cellEnergy[j]		= hit.energy_;
 			cellParentID[j]		= hit.pdgIDMainParent_;
