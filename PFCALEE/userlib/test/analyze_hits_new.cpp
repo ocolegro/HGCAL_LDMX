@@ -34,7 +34,7 @@
 #pragma link C++ class vector<float>+;
 #endif
 
-
+/*
 void myHoneycomb(TH2Poly* map, Double_t xstart,
 		Double_t ystart, Double_t a,  // side length
 		Int_t k,     // # hexagons in a column
@@ -90,7 +90,7 @@ void myHoneycomb(TH2Poly* map, Double_t xstart,
 		xloop += 1.5 * a;
 	}
 }
-
+*/
 int main(int argc, char** argv) {
 	/*TH2Poly *hcomb = new TH2Poly();
 	double width = 622.5;
