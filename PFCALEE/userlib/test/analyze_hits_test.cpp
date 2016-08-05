@@ -117,8 +117,8 @@ int main(int argc, char** argv) {
 	TTree t1("sampling", "Hadronic Study");
 
 
-	unsigned nHits = 0,cellID[500000],cellLayer[500000];
-	Float_t cellEnergy[500000],cellParentID[500000],cellParentKE[500000],cellParentTrack[500000],cellRellIso[500000],engDep;
+	unsigned nHits = 0,cellID[50000],cellLayer[50000];
+	Float_t cellEnergy[50000],cellParentID[50000],cellParentKE[50000],cellParentTrack[50000],cellRellIso[50000],engDep;
 	unsigned initEng,nHadrons,nGammas,nElectrons,nProtons,nMuons;
 	t1.Branch("nHits", &nHits, "nHits/I");
 	t1.Branch("cellID", &cellID, "cellID[nHits]/I");
