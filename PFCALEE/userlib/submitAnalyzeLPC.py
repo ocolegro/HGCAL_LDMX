@@ -52,7 +52,7 @@ for thickness in thickness_:
     os.system('xrdcp ../g4env4lpc.sh root://cmseos.fnal.gov/%s/' % outDir)
     #os.system('echo "xrdcp g4env4lpc.sh root://cmseos.fnal.gov/%s/" ' % (opt.macro))
     os.system('xrdcp $HOME/geant4_workdir/tmp/Linux-g++/PFCalEE/libPFCalEE.so root://cmseos.fnal.gov/%s/' % outDir)
-    os.system('xrdcp userlib/lib/libPFCalEEuserlib.so root://cmseos.fnal.gov/%s/' % outDir)
+    os.system('xrdcp lib/libPFCalEEuserlib.so root://cmseos.fnal.gov/%s/' % outDir)
     #wrapper
     #scriptFile = open('%s/runJob.sh'%(outDir), 'w')
     scriptFile = open('runJob.sh', 'w')
