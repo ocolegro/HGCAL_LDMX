@@ -160,7 +160,7 @@ int main(int argc, char** argv) {
 			nElectrons 			= hit.nElectrons_;
 			nProtons 			= hit.nProtons_;
 			nMuons				= hit.nMuons_;
-			/*if (cellEnergy[j] > .075){
+			if (cellEnergy[j] > .075){
 				double outerDep = 0;
 				for (unsigned k = 0; k < hitVec_->size(); k++) {
 					HGCSSSimHit& nbr = (*hitVec_)[k];
@@ -178,12 +178,12 @@ int main(int argc, char** argv) {
 						double y_2 = (neighborCell->GetYMax() + neighborCell->GetYMin()) / 2.;
 
 						if (pow( pow((x_1 - x_2),2) +pow((y_1 - y_2),2),.5) < 8)
-							outerDep += neighborCell->GetContent();
+							outerDep += nbr.energy_;
 					}
 				}
 				if (outerDep > 0)
 					cellRellIso[j] = cellEnergy[j]/(cellEnergy[j]+outerDep);
-			}*/
+			}
 		}
 		t1.Fill();
 	}
