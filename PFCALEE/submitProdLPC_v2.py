@@ -51,9 +51,9 @@ for thickness in thickness_:
     os.system('xrdfs root://cmseos.fnal.gov rm  /%s/runJob.sh' % outDir)
 
     os.system('eosmkdir -p %s'%outDir)
-    os.system('xrdcp ~/geant4_workdir/bin/Linux-g++/PFCalEE root://cmseos.fnal.gov/%s/' % outDir)
+    os.system('xrdcp $HOME/geant4_workdir/bin/Linux-g++/PFCalEE root://cmseos.fnal.gov/%s/' % outDir)
     os.system('xrdcp g4env4lpc.sh root://cmseos.fnal.gov/%s/' % outDir)
-    os.system('xrdcp ~/geant4_workdir/tmp/Linux-g++/PFCalEE/libPFCalEE.so root://cmseos.fnal.gov/%s/' % outDir)
+    os.system('xrdcp $HOME/geant4_workdir/tmp/Linux-g++/PFCalEE/libPFCalEE.so root://cmseos.fnal.gov/%s/' % outDir)
     os.system('xrdcp userlib/lib/libPFCalEEuserlib.so root://cmseos.fnal.gov/%s/' % outDir)
 
 
@@ -114,7 +114,7 @@ for thickness in thickness_:
         f2.write("Executable = %s \n" % ('%s/runJob.sh'%(outDir)) );
         f2.write('Requirements = OpSys == "LINUX" && (Arch != "DUMMY" )\n');
         f2.write("request_disk = 100000\n");
-        f2.write("request_memory = 500\n");
+        f2.write("request_memory = 1000\n");
         f2.write("Should_Transfer_Files = YES \n");
         if (opt.pass_ == 0):
             f2.write("Transfer_Input_Files = g4env4lpc.sh,libPFCalEE.so,libPFCalEEuserlib.so,PFCalEE,g4steer.mac \n" );
