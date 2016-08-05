@@ -92,18 +92,18 @@ void myHoneycomb(TH2Poly* map, Double_t xstart,
 }
 
 int main(int argc, char** argv) {
-	TH2Poly *hcomb = new TH2Poly();
+	/*TH2Poly *hcomb = new TH2Poly();
 	double width = 622.5;
 	double side = 4.5936;
 	unsigned ncellwide = width / (2. * side);
 	unsigned ny = ncellwide + 1;
 	unsigned nx = ncellwide + 4;
 	double xstart = -((double) ncellwide) * side ;
-	double ystart = -((double) ncellwide) * side * sqrt(3) / 2.0;
+	double ystart = -((double) ncellwide) * side * sqrt(3) / 2.0;*/
 	freopen("log.txt", "w", stdout);
 
 	std::cout << "Generating Map " << std::endl;
-	myHoneycomb(hcomb, xstart, ystart, side, ny, nx);
+	//myHoneycomb(hcomb, xstart, ystart, side, ny, nx);
 
 	std::cout << " Map Generated " << std::endl;
 	TFile *infile = TFile::Open(argv[1]);
