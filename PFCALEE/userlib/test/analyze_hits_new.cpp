@@ -146,9 +146,9 @@ int main(int argc, char** argv) {
 		nHits = hitVec_->size();
 		std::cout << "The size of hitVec_ is " << nHits << std::endl;
 		initEng =  genVec->at(0).vertexKE();
-		if (initEng < 10) continue;
-		engDep = evt_->wgtDep();
-		if (engDep < 15.) continue;
+		//if (initEng < 10) continue;
+		//engDep = evt_->wgtDep();
+		//if (engDep < 15.) continue;
 		for (unsigned j = 0; j < hitVec_->size(); j++) {
 			HGCSSSimHit& hit = (*hitVec_)[j];
 			cellLayer[j] 		= hit.layer_;
