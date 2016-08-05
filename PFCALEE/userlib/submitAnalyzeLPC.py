@@ -49,7 +49,7 @@ for thickness in thickness_:
 
     os.system('xrdcp bin/%s root://cmseos.fnal.gov/%s ' % (opt.macro,outDir))
     os.system('echo "xrdcp bin/%s root://cmseos.fnal.gov/%s" ' % (opt.macro,outDir))
-    os.system('xrdcp g4env4lpc.sh root://cmseos.fnal.gov/%s/' % outDir)
+    os.system('xrdcp ../g4env4lpc.sh root://cmseos.fnal.gov/%s/' % outDir)
     os.system('echo "xrdcp g4env4lpc.sh root://cmseos.fnal.gov/%s/" ' % (opt.macro))
 
     #wrapper
