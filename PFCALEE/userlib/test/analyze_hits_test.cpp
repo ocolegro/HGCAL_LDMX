@@ -136,8 +136,8 @@ int main(int argc, char** argv) {
 	t1.Branch("nElectrons", &nElectrons, "nElectrons/I");
 	t1.Branch("nProtons", &nProtons, "nProtons/I");
 	t1.Branch("nMuons", &nMuons, "nMuons/I");
-	TH2PolyBin *centerCell = 0;
-	TH2PolyBin *neighborCell = 0;
+	//TH2PolyBin *centerCell = 0;
+	//TH2PolyBin *neighborCell = 0;
 	unsigned nEvts = tree->GetEntries();
 	for (unsigned ievt(0); ievt < nEvts; ++ievt) { //loop on entries
 		tree->GetEntry(ievt);
@@ -168,8 +168,8 @@ int main(int argc, char** argv) {
 					if (nbr.cellid_ != cellID[j] +1 || nbr.cellid_ != cellID[j] - 1 ||
 							nbr.cellid_ != cellID[j] +  67|| nbr.cellid_ != cellID[j] -67 ||
 							nbr.cellid_ != cellID[j] +  68|| nbr.cellid_ != cellID[j]) continue;
-					centerCell = (TH2PolyBin*) hcomb->GetBins()->At(cellID[j]-1);
-					neighborCell = (TH2PolyBin*) hcomb->GetBins()->At(nbr.cellid_ - 1);
+					TH2PolyBin* centerCell = (TH2PolyBin*) hcomb->GetBins()->At(cellID[j]-1);
+					TH2PolyBin* neighborCell = (TH2PolyBin*) hcomb->GetBins()->At(nbr.cellid_ - 1);
 					if (centerCell != nullptr and neighborCell != nullptr){
 						double x_1 = (centerCell->GetXMax() + centerCell->GetXMin()) / 2.;
 						double x_2 = (neighborCell->GetXMax() + neighborCell->GetXMin()) / 2.;
