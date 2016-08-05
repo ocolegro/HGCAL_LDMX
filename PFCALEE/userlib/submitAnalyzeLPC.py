@@ -63,7 +63,7 @@ for thickness in thickness_:
     if (opt.fast>0) : outTag = '%s_second' % (outTag)
 
     if opt.nosubmit   : scriptFile.write('./%s root://cmseos.fnal.gov//%s/HGcal_%s.root  \n'%(opt.macro,outDir,outTag))
-    else: scriptFile.write('./%s HGcal_%s.root  \n'%(opt.macro,outDir,outTag))
+    else: scriptFile.write('./%s HGcal_%s.root  \n'%(opt.macro,outTag))
 
     #scriptFile.write('xrdcp -f analyzed_tuple.root root://cmseos.fnal.gov/%s/analyzed_%s.root\n'%(outDir,outTag))
 
